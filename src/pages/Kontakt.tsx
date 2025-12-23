@@ -10,6 +10,7 @@ import { MapPin, Phone, Mail, Clock, Send, Building2, Globe } from "lucide-react
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import ScrollReveal from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
 
 const Kontakt = () => {
   const { toast } = useToast();
@@ -32,23 +33,36 @@ const Kontakt = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
 
-    toast({
-      title: "Nachricht gesendet!",
-      description: "Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.",
-    });
+      if (error) throw error;
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      subject: "",
-      message: ""
-    });
-    setIsSubmitting(false);
+      toast({
+        title: "Nachricht gesendet!",
+        description: "Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.",
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        subject: "",
+        message: ""
+      });
+    } catch (error: any) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Fehler beim Senden",
+        description: "Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
