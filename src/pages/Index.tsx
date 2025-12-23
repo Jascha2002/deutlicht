@@ -1,13 +1,34 @@
+import { Helmet } from "react-helmet-async";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/Hero";
+import LeistungenTeaser from "@/components/LeistungenTeaser";
+import Footer from "@/components/Footer";
+
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <h1 className="font-display text-4xl font-bold text-foreground">
-          DeutLicht<span className="text-accent">®</span>
-        </h1>
-        <p className="text-muted-foreground">Website wird erstellt...</p>
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>DeutLicht® – Digitalisierung mit Klarheit | Ihr Partner für die digitale Zukunft</title>
+        <meta
+          name="description"
+          content="DeutLicht® begleitet Ihr Unternehmen durch die digitale Transformation. Über 30 Jahre Erfahrung in Digitalisierung, CRM, Webentwicklung und Marketing."
+        />
+        <meta
+          name="keywords"
+          content="Digitalisierung, CRM, ERP, Webentwicklung, Marketing, KMU, Beratung, Förderung"
+        />
+        <link rel="canonical" href="https://deutlicht.de" />
+      </Helmet>
+
+      <Navigation />
+      
+      <main>
+        <Hero />
+        <LeistungenTeaser />
+      </main>
+
+      <Footer />
+    </>
   );
 };
 
