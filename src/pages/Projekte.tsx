@@ -19,10 +19,17 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 
+// Project images
+import projektHandwerk from "@/assets/projekt-handwerk.jpg";
+import projektEinzelhandel from "@/assets/projekt-einzelhandel.jpg";
+import projektGastronomie from "@/assets/projekt-gastronomie.jpg";
+import projektGesundheit from "@/assets/projekt-gesundheit.jpg";
+
 const caseStudies = [
   {
     id: "handwerk",
     icon: Factory,
+    image: projektHandwerk,
     industry: "Handwerk & Produktion",
     client: "Metallbau Schmidt GmbH",
     title: "Digitalisierung eines traditionellen Handwerksbetriebs",
@@ -39,6 +46,7 @@ const caseStudies = [
   {
     id: "einzelhandel",
     icon: ShoppingBag,
+    image: projektEinzelhandel,
     industry: "Einzelhandel",
     client: "Modehaus Berger",
     title: "E-Commerce-Transformation mit CRM-Integration",
@@ -55,6 +63,7 @@ const caseStudies = [
   {
     id: "gastronomie",
     icon: Utensils,
+    image: projektGastronomie,
     industry: "Gastronomie",
     client: "Restaurant-Gruppe Rheintal",
     title: "Multi-Location Management & Marketing",
@@ -71,6 +80,7 @@ const caseStudies = [
   {
     id: "gesundheit",
     icon: Heart,
+    image: projektGesundheit,
     industry: "Gesundheitswesen",
     client: "Praxisgemeinschaft Wellness+",
     title: "Digitale Patientenreise optimieren",
@@ -266,9 +276,21 @@ const Projekte = () => {
                       </div>
                     </div>
 
-                    {/* Results Card */}
+                    {/* Image + Results Card */}
                     <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                      <div className="bg-card rounded-2xl p-8 shadow-lg border border-border h-full">
+                      {/* Project Image */}
+                      <div className="relative rounded-2xl overflow-hidden mb-6 shadow-lg">
+                        <img 
+                          src={study.image} 
+                          alt={`${study.client} - ${study.industry} Projekt`}
+                          className="w-full h-64 object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                      </div>
+                      
+                      {/* Results Card */}
+                      <div className="bg-card rounded-2xl p-8 shadow-lg border border-border">
                         <div className="flex items-center gap-2 mb-6">
                           <TrendingUp className="w-5 h-5 text-accent" />
                           <h4 className="font-display text-lg font-semibold text-foreground">
