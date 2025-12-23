@@ -1,4 +1,6 @@
 import { Helmet } from "react-helmet-async";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Hintergrund = () => {
   return (
@@ -11,7 +13,9 @@ const Hintergrund = () => {
         />
       </Helmet>
 
-      <main className="min-h-screen bg-background">
+      <Navigation />
+
+      <main className="min-h-screen bg-background pt-20">
         {/* Hero Section with Video */}
         <section className="relative py-16 lg:py-24">
           <div className="container max-w-6xl mx-auto px-4">
@@ -102,6 +106,8 @@ const Hintergrund = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 };
