@@ -30,7 +30,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to the business
     const notificationEmail = await resend.emails.send({
-      from: "DeutLicht Kontaktformular <onboarding@resend.dev>",
+      from: "DeutLicht Kontaktformular <kontakt@deutlicht.de>",
       to: ["info@deutlicht.de"], // Replace with your actual email
       subject: `Neue Kontaktanfrage: ${subject}`,
       html: `
@@ -56,7 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to the customer
     const confirmationEmail = await resend.emails.send({
-      from: "DeutLicht GmbH <onboarding@resend.dev>",
+      from: "DeutLicht GmbH <kontakt@deutlicht.de>",
       to: [email],
       subject: "Vielen Dank für Ihre Anfrage - DeutLicht",
       html: `
