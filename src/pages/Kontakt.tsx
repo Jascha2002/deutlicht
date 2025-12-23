@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, Send, Building2, Globe } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const Kontakt = () => {
   const { toast } = useToast();
@@ -117,7 +118,7 @@ const Kontakt = () => {
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-12">
               {/* Contact Form */}
-              <div className="lg:col-span-2">
+              <ScrollReveal className="lg:col-span-2">
                 <Card className="border-border/50 shadow-xl">
                   <CardContent className="p-8 md:p-10">
                     <div className="mb-8">
@@ -239,12 +240,13 @@ const Kontakt = () => {
                     </form>
                   </CardContent>
                 </Card>
-              </div>
+              </ScrollReveal>
 
               {/* Contact Info Sidebar */}
               <div className="space-y-6">
                 {/* Contact Cards */}
                 {contactInfo.map((info, index) => (
+                  <ScrollReveal key={index} delay={index * 100}>
                   <Card key={index} className="border-border/50 hover:border-primary/30 transition-colors">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
@@ -259,9 +261,11 @@ const Kontakt = () => {
                       </div>
                     </CardContent>
                   </Card>
+                  </ScrollReveal>
                 ))}
 
                 {/* Business Hours */}
+                <ScrollReveal delay={400}>
                 <Card className="border-border/50 bg-primary/5">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
@@ -280,6 +284,7 @@ const Kontakt = () => {
                     </div>
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               </div>
             </div>
           </div>

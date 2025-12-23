@@ -17,6 +17,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const caseStudies = [
   {
@@ -141,12 +142,14 @@ const Projekte = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <p className="font-display text-3xl md:text-4xl font-bold text-accent mb-2">
-                    {stat.value}
-                  </p>
-                  <p className="text-muted-foreground text-sm">{stat.label}</p>
-                </div>
+                <ScrollReveal key={index} delay={index * 100}>
+                  <div className="text-center">
+                    <p className="font-display text-3xl md:text-4xl font-bold text-accent mb-2">
+                      {stat.value}
+                    </p>
+                    <p className="text-muted-foreground text-sm">{stat.label}</p>
+                  </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -156,28 +159,31 @@ const Projekte = () => {
         <section className="py-16 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-                  Branchen, in denen wir Erfahrung haben
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Unsere Lösungen sind branchenübergreifend einsetzbar und werden individuell angepasst.
-                </p>
-              </div>
+              <ScrollReveal>
+                <div className="text-center mb-12">
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                    Branchen, in denen wir Erfahrung haben
+                  </h2>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Unsere Lösungen sind branchenübergreifend einsetzbar und werden individuell angepasst.
+                  </p>
+                </div>
+              </ScrollReveal>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {industries.map((industry, index) => (
-                  <div 
-                    key={index} 
-                    className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
-                      <industry.icon className="w-6 h-6 text-accent" />
+                  <ScrollReveal key={index} delay={index * 50}>
+                    <div 
+                      className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300"
+                    >
+                      <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+                        <industry.icon className="w-6 h-6 text-accent" />
+                      </div>
+                      <span className="text-sm font-medium text-foreground text-center">
+                        {industry.name}
+                      </span>
                     </div>
-                    <span className="text-sm font-medium text-foreground text-center">
-                      {industry.name}
-                    </span>
-                  </div>
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
@@ -188,23 +194,25 @@ const Projekte = () => {
         <section className="py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  Fallstudien
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Detaillierte Einblicke in ausgewählte Projekte – von der Herausforderung bis zum messbaren Erfolg.
-                </p>
-              </div>
+              <ScrollReveal>
+                <div className="text-center mb-16">
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+                    Fallstudien
+                  </h2>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Detaillierte Einblicke in ausgewählte Projekte – von der Herausforderung bis zum messbaren Erfolg.
+                  </p>
+                </div>
+              </ScrollReveal>
 
               <div className="space-y-16">
                 {caseStudies.map((study, index) => (
-                  <div 
-                    key={study.id}
-                    className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
-                      index % 2 === 1 ? "" : ""
-                    }`}
-                  >
+                  <ScrollReveal key={study.id} delay={100}>
+                    <div 
+                      className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
+                        index % 2 === 1 ? "" : ""
+                      }`}
+                    >
                     {/* Content */}
                     <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                       <div className="flex items-center gap-3 mb-4">
@@ -298,6 +306,7 @@ const Projekte = () => {
                       </div>
                     </div>
                   </div>
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
@@ -309,47 +318,51 @@ const Projekte = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
-                    Unser Ansatz für Ihren Erfolg
-                  </h2>
-                  <p className="text-muted-foreground leading-relaxed mb-8">
-                    Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. 
-                    Gemeinsam entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie 
-                    von der Planung bis zur erfolgreichen Umsetzung.
-                  </p>
+                <ScrollReveal direction="left">
+                  <div>
+                    <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+                      Unser Ansatz für Ihren Erfolg
+                    </h2>
+                    <p className="text-muted-foreground leading-relaxed mb-8">
+                      Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. 
+                      Gemeinsam entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie 
+                      von der Planung bis zur erfolgreichen Umsetzung.
+                    </p>
 
-                  <div className="space-y-4">
-                    {[
-                      "Individuelle Bedarfsanalyse",
-                      "Maßgeschneiderte Lösungskonzepte",
-                      "Agile Umsetzung mit regelmäßigem Feedback",
-                      "Schulung und nachhaltiger Support",
-                      "Messbare Ergebnisse und Optimierung"
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
-                        <span className="text-foreground">{item}</span>
-                      </div>
-                    ))}
+                    <div className="space-y-4">
+                      {[
+                        "Individuelle Bedarfsanalyse",
+                        "Maßgeschneiderte Lösungskonzepte",
+                        "Agile Umsetzung mit regelmäßigem Feedback",
+                        "Schulung und nachhaltiger Support",
+                        "Messbare Ergebnisse und Optimierung"
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
+                          <span className="text-foreground">{item}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </ScrollReveal>
 
-                <div className="gradient-gold rounded-2xl p-8 shadow-xl">
-                  <h3 className="font-display text-2xl font-semibold text-accent-foreground mb-4">
-                    Ihr Projekt könnte das nächste sein
-                  </h3>
-                  <p className="text-accent-foreground/90 leading-relaxed mb-6">
-                    Lassen Sie uns gemeinsam herausfinden, wie wir Ihre digitale 
-                    Transformation vorantreiben können. Das erste Gespräch ist kostenlos.
-                  </p>
-                  <Link to="/kontakt">
-                    <Button variant="secondary" className="group">
-                      Projekt besprechen
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
+                <ScrollReveal direction="right" delay={200}>
+                  <div className="gradient-gold rounded-2xl p-8 shadow-xl">
+                    <h3 className="font-display text-2xl font-semibold text-accent-foreground mb-4">
+                      Ihr Projekt könnte das nächste sein
+                    </h3>
+                    <p className="text-accent-foreground/90 leading-relaxed mb-6">
+                      Lassen Sie uns gemeinsam herausfinden, wie wir Ihre digitale 
+                      Transformation vorantreiben können. Das erste Gespräch ist kostenlos.
+                    </p>
+                    <Link to="/kontakt">
+                      <Button variant="secondary" className="group">
+                        Projekt besprechen
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
           </div>

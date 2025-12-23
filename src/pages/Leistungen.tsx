@@ -20,6 +20,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const services = [
   {
@@ -184,7 +185,7 @@ const Leistungen = () => {
               <div className="max-w-6xl mx-auto">
                 <div className={`grid lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
                   {/* Content */}
-                  <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                  <ScrollReveal direction={index % 2 === 0 ? "left" : "right"} className={index % 2 === 1 ? "lg:order-2" : ""}>
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center">
                         <service.icon className="w-7 h-7 text-accent" />
@@ -217,10 +218,10 @@ const Leistungen = () => {
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
-                  </div>
+                  </ScrollReveal>
 
                   {/* Benefits Card */}
-                  <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
+                  <ScrollReveal direction={index % 2 === 0 ? "right" : "left"} delay={200} className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
                     <div className="bg-card rounded-2xl p-8 shadow-lg border border-border">
                       <h3 className="font-display text-xl font-semibold text-foreground mb-6">
                         Ihre Vorteile
@@ -251,7 +252,7 @@ const Leistungen = () => {
                         </p>
                       </div>
                     )}
-                  </div>
+                  </ScrollReveal>
                 </div>
               </div>
             </div>
