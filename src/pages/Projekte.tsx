@@ -24,7 +24,7 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import projektHandwerk from "@/assets/handwerk-option-2.jpg";
 import projektEinzelhandel from "@/assets/einzelhandel-option-3.jpg";
 import projektGastronomie from "@/assets/gastronomie-option-5.jpg";
-import projektGesundheit from "@/assets/projekt-gesundheit.jpg";
+import projektGesundheit from "@/assets/gesundheit-option-4.jpg";
 
 const caseStudies = [
   {
