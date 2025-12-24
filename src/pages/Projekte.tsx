@@ -21,7 +21,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
 // Project images
-import projektHandwerk from "@/assets/projekt-handwerk.jpg";
+import projektHandwerk from "@/assets/handwerk-option-2.jpg";
 import projektEinzelhandel from "@/assets/projekt-einzelhandel.jpg";
 import projektGastronomie from "@/assets/projekt-gastronomie.jpg";
 import projektGesundheit from "@/assets/projekt-gesundheit.jpg";
