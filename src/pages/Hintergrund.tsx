@@ -76,6 +76,84 @@ const Hintergrund = () => {
                   </p>
                 </section>
 
+                {/* Gründer-Profil */}
+                <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-accent/10 via-card to-primary/5 p-8 md:p-10 shadow-2xl border border-accent/20">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="px-3 py-1 text-xs font-semibold bg-accent/20 text-accent rounded-full uppercase tracking-wider">
+                        Der Gründer
+                      </span>
+                      <span className="px-3 py-1 text-xs font-medium bg-muted text-muted-foreground rounded-full">
+                        Expertenprofil
+                      </span>
+                    </div>
+                    
+                    <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
+                      Carsten van de Sand
+                    </h2>
+                    <p className="text-lg md:text-xl text-accent font-medium mb-6">
+                      C-Level-Partner für Digitalisierung & Vertrieb
+                    </p>
+                    
+                    <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
+                      Mit über 30 Jahren Vertriebserfahrung – davon viele Jahre als Vertriebsleiter und Geschäftsführer auf C-Level – und mehr als 25 Jahren Praxis in Web- und Digitaltechnologien ist Carsten van de Sand einer der wenigen Experten, die beides hochprofessionell verbinden: <strong className="text-foreground">Technologie verstehen und sie erfolgreich verkaufen.</strong>
+                    </p>
+
+                    <h3 className="font-display text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                      <span className="w-8 h-0.5 bg-accent"></span>
+                      Kernkompetenzen im Überblick
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                      <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border/50">
+                        <div className="text-3xl font-bold text-accent mb-2">30+</div>
+                        <div className="font-semibold text-foreground mb-2">Jahre Vertrieb auf C-Level</div>
+                        <p className="text-sm text-muted-foreground">
+                          Strategische Vertriebsleitung, Aufbau und Führung von Vertriebsteams, Großkundenbetreuung in internationalen Konzernen und Startups.
+                        </p>
+                      </div>
+
+                      <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border/50">
+                        <div className="text-3xl font-bold text-accent mb-2">25+</div>
+                        <div className="font-semibold text-foreground mb-2">Jahre Web- & Digitaltechnologie</div>
+                        <p className="text-sm text-muted-foreground">
+                          Seit den Pionierjahren des Internets aktiv: Webentwicklung, SEO/SEA, App-Entwicklung, KI-Sprachlösungen, Prozessautomatisierung und digitale Produktmanagement.
+                        </p>
+                      </div>
+
+                      <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border/50">
+                        <div className="text-xl font-bold text-accent mb-2">🎯</div>
+                        <div className="font-semibold text-foreground mb-2">Frühe Zusammenarbeit auf Managementebene</div>
+                        <p className="text-sm text-muted-foreground">
+                          Bereits um die Jahrtausendwende fachliche Diskussionen und Machbarkeitsbewertungen auf höchster Ebene zu Business Intelligence, Relevanzbewertung und Wertermittlung von Informationen (u. a. mit Dr. Bernd Ullrich Kaiser, damaliger Leiter Knowledge Management bei Bayer).
+                        </p>
+                      </div>
+
+                      <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border/50">
+                        <div className="text-xl font-bold text-accent mb-2">💡</div>
+                        <div className="font-semibold text-foreground mb-2">Spezialist für förderfähige Digitalisierungsprojekte</div>
+                        <p className="text-sm text-muted-foreground">
+                          Umfassendes Know-how bei EFRE, BAFA, INQA-Coaching, ZIM und weiteren Programmen – von der Antragstellung bis zur erfolgreichen Abrechnung.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-accent/10 rounded-xl p-6 border-l-4 border-accent">
+                      <p className="text-foreground font-medium mb-2">Ergebnisorientiert & marktnah</p>
+                      <p className="text-muted-foreground">
+                        Er konzipiert nicht nur – er setzt um, verkauft und macht Projekte profitabel.
+                      </p>
+                    </div>
+
+                    <div className="mt-8 pt-6 border-t border-border/50">
+                      <p className="text-lg text-foreground italic">
+                        „Wer einen Partner sucht, der seit über drei Jahrzehnten Technologie auf höchstem Niveau diskutiert, entwickelt und vor allem verkauft – ist bei Carsten van de Sand genau richtig."
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
                 {/* Philosophie */}
                 <section className="bg-card rounded-xl p-8 shadow-lg border border-border">
                   <h2 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-4">
