@@ -82,7 +82,7 @@ const Navigation = () => {
             <img 
               src={deutlichtLogo} 
               alt="DeutLicht Logo" 
-              className="h-12 w-auto"
+              className="h-16 w-auto"
             />
             <span className="text-xs font-medium text-muted-foreground tracking-wide mt-0.5">Klare Vision – Starke Präsenz</span>
           </Link>
