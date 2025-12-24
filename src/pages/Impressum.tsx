@@ -38,9 +38,9 @@ const Impressum = () => {
                   Angaben gemäß § 5 TMG
                 </h2>
                 <div className="text-muted-foreground space-y-1">
-                  <p className="font-semibold text-foreground">DeutLicht® GmbH</p>
-                  <p>Musterstraße 123</p>
-                  <p>12345 Berlin</p>
+                  <p className="font-semibold text-foreground">DeutLicht UG (i.Gr.)</p>
+                  <p>Gemeindeweg 4</p>
+                  <p>07546 Gera</p>
                   <p>Deutschland</p>
                 </div>
               </div>
@@ -52,8 +52,8 @@ const Impressum = () => {
                   Kontakt
                 </h2>
                 <div className="text-muted-foreground space-y-1">
-                  <p>Telefon: +49 (0) 30 123 456 78</p>
-                  <p>E-Mail: info@deutlicht.de</p>
+                  <p>Telefon: +49 178 5549216</p>
+                  <p>E-Mail: info@DeutLicht.de</p>
                   <p>Web: www.deutlicht.de</p>
                 </div>
               </div>
@@ -62,11 +62,10 @@ const Impressum = () => {
             <ScrollReveal delay={0.2}>
               <div className="mb-12">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Handelsregister
+                  Vorübergehender Verantwortlicher
                 </h2>
-                <div className="text-muted-foreground space-y-1">
-                  <p>Registergericht: Amtsgericht Berlin-Charlottenburg</p>
-                  <p>Registernummer: HRB 123456</p>
+                <div className="text-muted-foreground">
+                  <p>Carsten van de Sand</p>
                 </div>
               </div>
             </ScrollReveal>
@@ -74,35 +73,12 @@ const Impressum = () => {
             <ScrollReveal delay={0.3}>
               <div className="mb-12">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Umsatzsteuer-ID
-                </h2>
-                <div className="text-muted-foreground">
-                  <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:</p>
-                  <p>DE 123 456 789</p>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.4}>
-              <div className="mb-12">
-                <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Geschäftsführung
-                </h2>
-                <div className="text-muted-foreground">
-                  <p>Max Mustermann (Geschäftsführer)</p>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.5}>
-              <div className="mb-12">
-                <h2 className="text-2xl font-display font-bold text-foreground mb-4">
                   Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
                 </h2>
                 <div className="text-muted-foreground space-y-1">
-                  <p className="font-semibold text-foreground">Max Mustermann</p>
-                  <p>Musterstraße 123</p>
-                  <p>12345 Berlin</p>
+                  <p className="font-semibold text-foreground">Carsten van de Sand</p>
+                  <p>Gemeindeweg 4</p>
+                  <p>07546 Gera</p>
                 </div>
               </div>
             </ScrollReveal>

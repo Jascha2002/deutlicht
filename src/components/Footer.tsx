@@ -125,9 +125,18 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+                <a
+                  href="tel:+491785549216"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  +49 178 5549216
+                </a>
+              </li>
+              <li>
                 <div className="flex items-start gap-2 text-muted-foreground text-sm">
                   <MapPin className="w-4 h-4 mt-0.5" />
-                  <span>Deutschland</span>
+                  <span>Gemeindeweg 4, 07546 Gera</span>
                 </div>
               </li>
             </ul>
