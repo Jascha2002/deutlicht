@@ -13,7 +13,7 @@ const Hero = () => {
           loop
           playsInline
           className="w-full h-full object-cover contrast-110 saturate-110"
-          style={{ objectPosition: 'center 20%' }}
+          style={{ objectPosition: 'center 0%' }}
           aria-hidden="true"
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
