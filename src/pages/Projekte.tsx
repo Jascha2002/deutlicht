@@ -32,7 +32,7 @@ const caseStudies = [
     icon: Factory,
     image: projektHandwerk,
     industry: "Handwerk & Produktion",
-    client: "Metallbau Schmidt GmbH",
+    client: "Metallbauunternehmen aus der Region",
     title: "Digitalisierung eines traditionellen Handwerksbetriebs",
     challenge: "Veraltete Prozesse, manuelle Auftragserfassung und fehlende Übersicht über laufende Projekte führten zu Ineffizienzen und verpassten Chancen.",
     solution: "Implementierung eines integrierten CRM- und ERP-Systems mit automatisierter Auftragserfassung, digitalem Projektmanagement und Echtzeit-Reporting.",
@@ -42,14 +42,14 @@ const caseStudies = [
       { metric: "50%", label: "Förderung durch go-digital" }
     ],
     quote: "DeutLicht® hat uns geholfen, den Sprung ins digitale Zeitalter zu schaffen – ohne unsere bewährten Werte zu verlieren.",
-    author: "Thomas Schmidt, Geschäftsführer"
+    author: "Geschäftsführer"
   },
   {
     id: "einzelhandel",
     icon: ShoppingBag,
     image: projektEinzelhandel,
     industry: "Einzelhandel",
-    client: "Modehaus Berger",
+    client: "Traditionsreiches Modehaus",
     title: "E-Commerce-Transformation mit CRM-Integration",
     challenge: "Ein etabliertes Modehaus wollte seine Reichweite durch einen Onlineshop erweitern, ohne die persönliche Kundenbeziehung zu verlieren.",
     solution: "Aufbau eines responsiven Shopsystems mit nahtloser CRM-Anbindung, automatisierten E-Mail-Kampagnen und Kundenbindungsprogramm.",
@@ -59,14 +59,14 @@ const caseStudies = [
       { metric: "60%", label: "Automatisierte Kundenansprache" }
     ],
     quote: "Die Kombination aus Online-Shop und CRM hat unsere Kundenbindung auf ein neues Level gehoben.",
-    author: "Claudia Berger, Inhaberin"
+    author: "Inhaberin"
   },
   {
     id: "gastronomie",
     icon: Utensils,
     image: projektGastronomie,
     industry: "Gastronomie",
-    client: "Restaurant-Gruppe Rheintal",
+    client: "Restaurant-Gruppe mit mehreren Standorten",
     title: "Multi-Location Management & Marketing",
     challenge: "Drei Restaurants an verschiedenen Standorten mit unterschiedlichen Systemen, keine einheitliche Marketingstrategie und fehlende Datenauswertung.",
     solution: "Zentrales CRM-System für alle Standorte, einheitliche Social-Media-Strategie mit lokalen Anpassungen und KI-gestütztes Performance-Tracking.",
@@ -76,14 +76,14 @@ const caseStudies = [
       { metric: "1", label: "Zentrales Dashboard für alle Standorte" }
     ],
     quote: "Endlich haben wir den Überblick über alle drei Standorte – und unsere Online-Präsenz spricht unsere Gäste wirklich an.",
-    author: "Michael Rheinberger, Geschäftsführer"
+    author: "Geschäftsführer"
   },
   {
     id: "gesundheit",
     icon: Heart,
     image: projektGesundheit,
     industry: "Gesundheitswesen",
-    client: "Praxisgemeinschaft Wellness+",
+    client: "Praxisgemeinschaft im Gesundheitsbereich",
     title: "Digitale Patientenreise optimieren",
     challenge: "Hoher administrativer Aufwand bei Terminbuchungen, fehlende Patientenkommunikation zwischen den Terminen und manuelle Dokumentation.",
     solution: "Online-Terminbuchungssystem, automatisierte Terminerinnerungen, digitale Patientenakte und Newsletter-Automatisierung.",
@@ -93,7 +93,7 @@ const caseStudies = [
       { metric: "90%", label: "Positive Patientenbewertungen" }
     ],
     quote: "Unsere Patienten schätzen die digitalen Services und wir haben endlich mehr Zeit für das, was zählt.",
-    author: "Dr. Sarah Weber"
+    author: "Praxisleitung"
   }
 ];
 
