@@ -150,6 +150,26 @@ const Kontakt = () => {
           </div>
         </section>
 
+        {/* Video Section */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <ScrollReveal>
+              <div className="max-w-4xl mx-auto">
+                <Card className="overflow-hidden border-border/50 shadow-xl">
+                  <video
+                    autoPlay
+                    playsInline
+                    className="w-full aspect-video object-cover"
+                  >
+                    <source src="/videos/deutlicht-beratung.mp4" type="video/mp4" />
+                    Ihr Browser unterstützt keine Videos.
+                  </video>
+                </Card>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
         {/* Contact Form & Info Section */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
