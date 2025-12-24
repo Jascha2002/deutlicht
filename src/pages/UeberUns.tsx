@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const UeberUns = () => {
   return (
@@ -26,17 +27,7 @@ const UeberUns = () => {
             <div className="max-w-4xl mx-auto text-center">
               {/* Animated Logo */}
               <div className="mb-8 flex justify-center">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-2 border-accent/30">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                  >
-                    <source src="/videos/deutlicht-logo-animation.mp4" type="video/mp4" />
-                  </video>
-                </div>
+                <AnimatedLogo size="md" />
               </div>
 
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6">

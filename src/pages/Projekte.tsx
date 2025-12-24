@@ -18,6 +18,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 // Project images
 import projektHandwerk from "@/assets/projekt-handwerk.jpg";
@@ -130,6 +131,10 @@ const Projekte = () => {
         <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 flex justify-center">
+                <AnimatedLogo size="md" />
+              </div>
+              
               <span className="text-accent font-medium uppercase tracking-widest text-sm">
                 Projekte & Referenzen
               </span>
