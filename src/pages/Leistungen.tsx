@@ -336,6 +336,28 @@ const Leistungen = () => {
                       </div>
                     </div>
 
+                    {/* BIM Video */}
+                    {service.id === "bim" && (
+                      <div className="mt-6 rounded-xl overflow-hidden shadow-lg border border-border">
+                        <video
+                          autoPlay
+                          muted
+                          playsInline
+                          className="w-full max-h-48 object-cover"
+                          onEnded={(e) => {
+                            const video = e.currentTarget;
+                            const playCount = parseInt(video.dataset.playCount || "1");
+                            if (playCount < 5) {
+                              video.dataset.playCount = (playCount + 1).toString();
+                              video.play();
+                            }
+                          }}
+                        >
+                          <source src="/videos/deutlicht-bim.mp4" type="video/mp4" />
+                        </video>
+                      </div>
+                    )}
+
                     {/* Additional Info Card for some services */}
                     {service.id === "foerderung" && (
                       <div className="gradient-gold rounded-2xl p-8 shadow-xl mt-6">
