@@ -120,8 +120,8 @@ const Navigation = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "lg:hidden bg-background border-t border-border overflow-hidden transition-all duration-300",
-          isOpen ? "max-h-[500px]" : "max-h-0"
+          "lg:hidden bg-background border-t border-border transition-all duration-300",
+          isOpen ? "max-h-[80vh] overflow-y-auto" : "max-h-0 overflow-hidden"
         )}
       >
         <div className="px-4 py-4 space-y-2">
