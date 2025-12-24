@@ -21,7 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import deutlichtLogo from "@/assets/deutlicht-logo-cropped.png";
+import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
 
 interface SubMenuItem {
   name: string;
@@ -82,8 +82,7 @@ const Navigation = () => {
             <img 
               src={deutlichtLogo} 
               alt="DeutLicht - Klare Vision, Starke Präsenz" 
-              className="h-24 w-auto contrast-105 drop-shadow-sm"
-              style={{ imageRendering: 'crisp-edges' }}
+              className="h-14 w-auto rounded-lg"
             />
           </Link>
 
