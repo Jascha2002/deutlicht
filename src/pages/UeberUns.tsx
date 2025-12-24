@@ -24,6 +24,21 @@ const UeberUns = () => {
         <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
+              {/* Animated Logo */}
+              <div className="mb-8 flex justify-center">
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-2 border-accent/30">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  >
+                    <source src="/videos/hero-video.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </div>
+
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6">
                 <Clock className="w-4 h-4" />
                 Auf einen schnellen Blick
