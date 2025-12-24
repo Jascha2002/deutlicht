@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border">
+    <footer className="bg-card border-t border-border" role="contentinfo" aria-label="Fußzeile">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
@@ -20,11 +20,11 @@ const Footer = () => {
           </div>
 
           {/* Navigation */}
-          <div>
+          <nav aria-label="Footer Navigation">
             <h4 className="font-display font-semibold text-foreground mb-4">
               Navigation
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3" role="list">
               <li>
                 <Link
                   to="/"
@@ -66,14 +66,14 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Leistungen */}
-          <div>
+          <nav aria-label="Leistungen Navigation">
             <h4 className="font-display font-semibold text-foreground mb-4">
               Leistungen
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3" role="list">
               <li>
                 <Link
                   to="/leistungen#digitalisierung"
@@ -107,7 +107,7 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Kontakt */}
           <div>
@@ -118,26 +118,28 @@ const Footer = () => {
               <li>
                 <a
                   href="mailto:info@DeutLicht.de"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+                  aria-label="E-Mail an info@DeutLicht.de senden"
                 >
-                  <Mail className="w-4 h-4" />
+                  <Mail className="w-4 h-4" aria-hidden="true" />
                   info@DeutLicht.de
                 </a>
               </li>
               <li>
                 <a
                   href="tel:+491785549216"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+                  aria-label="Telefonnummer +49 178 5549216 anrufen"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   +49 178 5549216
                 </a>
               </li>
               <li>
-                <div className="flex items-start gap-2 text-muted-foreground text-sm">
-                  <MapPin className="w-4 h-4 mt-0.5" />
+                <address className="flex items-start gap-2 text-muted-foreground text-sm not-italic">
+                  <MapPin className="w-4 h-4 mt-0.5" aria-hidden="true" />
                   <span>Gemeindeweg 4, 07546 Gera</span>
-                </div>
+                </address>
               </li>
             </ul>
           </div>

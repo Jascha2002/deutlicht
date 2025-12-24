@@ -22,7 +22,7 @@ const Index = () => {
 
       <Navigation />
       
-      <main>
+      <main id="main-content">
         <Hero />
         <LeistungenTeaser />
       </main>
