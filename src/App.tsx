@@ -9,6 +9,7 @@ import { CookieBanner } from "@/components/CookieBanner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
 import ChatWidget from "@/components/ChatWidget";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 import Index from "./pages/Index";
 import UeberUns from "./pages/UeberUns";
 import Hintergrund from "./pages/Hintergrund";
@@ -51,6 +52,7 @@ const App = () => (
             <ScrollDepthTracker />
             <CookieBanner />
             <ChatWidget />
+            <AccessibilityWidget />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

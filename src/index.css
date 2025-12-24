@@ -119,3 +119,32 @@
     background: linear-gradient(135deg, hsl(var(--navy)) 0%, hsl(var(--navy-light)) 100%);
   }
 }
+
+/* Accessibility Styles */
+.high-contrast {
+  --foreground: 0 0% 0%;
+  --background: 0 0% 100%;
+  --muted-foreground: 0 0% 20%;
+}
+
+.dark.high-contrast {
+  --foreground: 0 0% 100%;
+  --background: 0 0% 0%;
+  --muted-foreground: 0 0% 85%;
+}
+
+.large-spacing {
+  line-height: 1.8 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.large-spacing p,
+.large-spacing li,
+.large-spacing span {
+  line-height: 2 !important;
+}
+
+.underline-links a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
