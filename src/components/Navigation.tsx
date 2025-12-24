@@ -8,6 +8,7 @@ import deutlichtLogo from "@/assets/deutlicht-logo.png";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ueberUnsOpen, setUeberUnsOpen] = useState(false);
+  const [leistungenOpen, setLeistungenOpen] = useState(false);
 
   const navItems = [
     { name: "Startseite", href: "/" },
@@ -18,7 +19,21 @@ const Navigation = () => {
         { name: "Hintergrund", href: "/ueber-uns/hintergrund" },
       ],
     },
-    { name: "Leistungen", href: "/leistungen" },
+    { 
+      name: "Leistungen", 
+      href: "/leistungen",
+      submenu: [
+        { name: "Digitalisierung", href: "/leistungen#digitalisierung" },
+        { name: "CRM & ERP Systeme", href: "/leistungen#crm-erp" },
+        { name: "BIM Systeme", href: "/leistungen#bim" },
+        { name: "PIM Systeme", href: "/leistungen#pim" },
+        { name: "Wissensmanagement", href: "/leistungen#wissensmanagement" },
+        { name: "Self-Order & 24/7", href: "/leistungen/chayns-loesungen" },
+        { name: "Websites & Shops", href: "/leistungen#web" },
+        { name: "Marketing & Social Media", href: "/leistungen#marketing" },
+        { name: "Förderberatung", href: "/leistungen#foerderung" },
+      ],
+    },
     { name: "Projekte", href: "/projekte" },
     { name: "Medien", href: "/medien" },
     { name: "Kontakt", href: "/kontakt" },
@@ -53,14 +68,14 @@ const Navigation = () => {
                     <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" />
                     
                     {/* Dropdown */}
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[180px]">
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.name}
                             to={subItem.href}
                             onClick={() => trackNavClick(subItem.href)}
-                            className="block px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors"
+                            className="block px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm"
                           >
                             {subItem.name}
                           </Link>
@@ -115,24 +130,30 @@ const Navigation = () => {
               {item.submenu ? (
                 <div>
                   <button
-                    onClick={() => setUeberUnsOpen(!ueberUnsOpen)}
+                    onClick={() => {
+                      if (item.name === "Über uns") {
+                        setUeberUnsOpen(!ueberUnsOpen);
+                      } else if (item.name === "Leistungen") {
+                        setLeistungenOpen(!leistungenOpen);
+                      }
+                    }}
                     className="flex items-center justify-between w-full py-2 text-foreground/80"
                   >
                     <span>{item.name}</span>
                     <ChevronDown
                       className={cn(
                         "w-4 h-4 transition-transform",
-                        ueberUnsOpen && "rotate-180"
+                        (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) && "rotate-180"
                       )}
                     />
                   </button>
                   <div
                     className={cn(
-                      "pl-4 space-y-2 overflow-hidden transition-all",
-                      ueberUnsOpen ? "max-h-40" : "max-h-0"
+                      "pl-4 space-y-1 overflow-hidden transition-all",
+                      (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) ? "max-h-[400px]" : "max-h-0"
                     )}
                   >
-                      {item.submenu.map((subItem) => (
+                    {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.name}
                         to={subItem.href}
@@ -140,7 +161,7 @@ const Navigation = () => {
                           trackNavClick(subItem.href);
                           setIsOpen(false);
                         }}
-                        className="block py-2 text-foreground/60 hover:text-accent"
+                        className="block py-2 text-foreground/60 hover:text-accent text-sm"
                       >
                         {subItem.name}
                       </Link>
