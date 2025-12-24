@@ -17,12 +17,12 @@ const Hero = () => {
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-8 bg-background/70 dark:bg-background/50 backdrop-blur-sm rounded-3xl p-8 md:p-12">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-2">
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
