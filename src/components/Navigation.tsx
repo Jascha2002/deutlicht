@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +42,7 @@ const Navigation = () => {
                   <div className="flex items-center space-x-1 cursor-pointer">
                     <Link
                       to={item.href}
+                      onClick={() => trackNavClick(item.href)}
                       className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium"
                     >
                       {item.name}
@@ -54,6 +56,7 @@ const Navigation = () => {
                           <Link
                             key={subItem.name}
                             to={subItem.href}
+                            onClick={() => trackNavClick(subItem.href)}
                             className="block px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors"
                           >
                             {subItem.name}
@@ -65,6 +68,7 @@ const Navigation = () => {
                 ) : (
                   <Link
                     to={item.href}
+                    onClick={() => trackNavClick(item.href)}
                     className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium"
                   >
                     {item.name}
@@ -78,6 +82,7 @@ const Navigation = () => {
           <div className="hidden lg:block">
             <Link
               to="/kontakt"
+              onClick={() => trackCTAClick("Beratung anfragen", "navigation")}
               className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200"
             >
               Beratung anfragen
@@ -124,11 +129,14 @@ const Navigation = () => {
                       ueberUnsOpen ? "max-h-40" : "max-h-0"
                     )}
                   >
-                    {item.submenu.map((subItem) => (
+                      {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.name}
                         to={subItem.href}
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => {
+                          trackNavClick(subItem.href);
+                          setIsOpen(false);
+                        }}
                         className="block py-2 text-foreground/60 hover:text-accent"
                       >
                         {subItem.name}
@@ -139,7 +147,10 @@ const Navigation = () => {
               ) : (
                 <Link
                   to={item.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    trackNavClick(item.href);
+                    setIsOpen(false);
+                  }}
                   className="block py-2 text-foreground/80 hover:text-accent"
                 >
                   {item.name}
@@ -149,7 +160,10 @@ const Navigation = () => {
           ))}
           <Link
             to="/kontakt"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              trackCTAClick("Beratung anfragen", "mobile_navigation");
+              setIsOpen(false);
+            }}
             className="block w-full text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium mt-4"
           >
             Beratung anfragen
