@@ -21,7 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import deutlichtLogo from "@/assets/deutlicht-logo-icon.png";
+import deutlichtLogo from "@/assets/deutlicht-logo-cropped.png";
 
 interface SubMenuItem {
   name: string;
