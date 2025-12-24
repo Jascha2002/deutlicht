@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import deutlichtLogo from "@/assets/deutlicht-logo.png";
 
 interface SubMenuItem {
@@ -130,8 +131,9 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
+          {/* CTA Button & Theme Toggle */}
+          <div className="hidden lg:flex items-center gap-3">
+            <ThemeToggle />
             <Link
               to="/kontakt"
               onClick={() => trackCTAClick("Beratung anfragen", "navigation")}
@@ -220,16 +222,19 @@ const Navigation = () => {
               )}
             </div>
           ))}
-          <Link
-            to="/kontakt"
-            onClick={() => {
-              trackCTAClick("Beratung anfragen", "mobile_navigation");
-              setIsOpen(false);
-            }}
-            className="block w-full text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium mt-4"
-          >
-            Beratung anfragen
-          </Link>
+          <div className="flex items-center justify-between mt-4 gap-3">
+            <ThemeToggle />
+            <Link
+              to="/kontakt"
+              onClick={() => {
+                trackCTAClick("Beratung anfragen", "mobile_navigation");
+                setIsOpen(false);
+              }}
+              className="flex-1 text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium"
+            >
+              Beratung anfragen
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
