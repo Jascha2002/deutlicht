@@ -54,6 +54,14 @@ const Hero = () => {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
+              to="/schnelluebersicht"
+              onClick={() => trackCTAClick("Schnellübersicht lesen", "hero")}
+              className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-accent px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105"
+            >
+              Schnellübersicht lesen
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
               to="/ueber-uns/hintergrund"
               onClick={() => trackCTAClick("Mehr erfahren", "hero")}
               className="group flex items-center gap-2 bg-card/50 hover:bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200"
