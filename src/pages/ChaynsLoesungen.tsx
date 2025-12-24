@@ -64,7 +64,8 @@ const useCases = [
       "Sharing-Konzepte",
       "Automaten-Integration",
       "24/7 Support-Chat"
-    ]
+    ],
+    hasHardwarePage: true
   },
   {
     id: "events",
@@ -237,6 +238,14 @@ const ChaynsLoesungen = () => {
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
+                      {useCase.hasHardwarePage && (
+                        <Link to="/leistungen/chayns-hardware">
+                          <Button variant="ghost" className="group text-accent">
+                            Hardware-Lösungen
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                     <div className={`bg-card rounded-2xl p-6 border border-border ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                       <h4 className="font-semibold text-foreground mb-4">Features</h4>

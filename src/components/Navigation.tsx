@@ -14,6 +14,8 @@ import {
   Megaphone, 
   FileText,
   Users,
+  Lock,
+  Bot,
   type LucideIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -56,6 +58,7 @@ const Navigation = () => {
         { name: "PIM Systeme", href: "/leistungen#pim", icon: Package },
         { name: "Wissensmanagement", href: "/leistungen#wissensmanagement", icon: BookOpen },
         { name: "Self-Order & 24/7", href: "/leistungen/chayns-loesungen", icon: Smartphone },
+        { name: "Schlösser & Roboter", href: "/leistungen/chayns-hardware", icon: Lock },
         { name: "Websites & Shops", href: "/leistungen#web", icon: Globe },
         { name: "Marketing & Social Media", href: "/leistungen#marketing", icon: Megaphone },
         { name: "Förderberatung", href: "/leistungen#foerderung", icon: FileText },
