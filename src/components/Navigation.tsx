@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
+import deutlichtLogo from "@/assets/deutlicht-logo.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,10 +29,12 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="font-display text-2xl font-bold text-foreground">
-              DeutLicht<span className="text-accent">®</span>
-            </span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={deutlichtLogo} 
+              alt="DeutLicht - Klare Vision, Starke Präsenz" 
+              className="h-14 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
