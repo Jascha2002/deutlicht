@@ -146,7 +146,8 @@ const services = [
       { icon: Headphones, text: "Bis zu 70% Automatisierung" },
       { icon: Users, text: "98% Kundenzufriedenheit" }
     ],
-    hasVoiceDemo: true
+    hasVoiceDemo: true,
+    hasAIAgentPage: true
   },
   {
     id: "selforder",
@@ -334,6 +335,14 @@ const Leistungen = () => {
                         <Link to="/leistungen/chayns-loesungen">
                           <Button variant="outline" className="group">
                             Mehr erfahren
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      )}
+                      {(service as any).hasAIAgentPage && (
+                        <Link to="/leistungen/ai-agenten">
+                          <Button variant="outline" className="group">
+                            Alle AI Agenten entdecken
                             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </Link>
