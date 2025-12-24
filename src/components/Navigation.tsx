@@ -71,35 +71,38 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border" role="navigation" aria-label="Hauptnavigation">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:bg-accent focus:text-accent-foreground focus:px-4 focus:py-2 focus:rounded-md">
+        Zum Hauptinhalt springen
+      </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
             <img 
               src={deutlichtLogo} 
-              alt="DeutLicht - Klare Vision, Starke Präsenz" 
+              alt="DeutLicht Logo" 
               className="h-14 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8" role="menubar">
             {navItems.map((item) => (
-              <div key={item.name} className="relative group">
+              <div key={item.name} className="relative group" role="none">
                 {item.submenu ? (
-                  <div className="flex items-center space-x-1 cursor-pointer">
+                  <div className="flex items-center space-x-1 cursor-pointer" role="menuitem" aria-haspopup="true">
                     <Link
                       to={item.href}
                       onClick={() => trackNavClick(item.href)}
-                      className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium"
+                      className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
                     >
                       {item.name}
                     </Link>
-                    <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" />
+                    <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" aria-hidden="true" />
                     
                     {/* Dropdown */}
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" role="menu" aria-label={`${item.name} Untermenü`}>
                       <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
                         {item.submenu.map((subItem) => {
                           const IconComponent = subItem.icon;
@@ -108,9 +111,10 @@ const Navigation = () => {
                               key={subItem.name}
                               to={subItem.href}
                               onClick={() => trackNavClick(subItem.href)}
-                              className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm"
+                              className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent"
+                              role="menuitem"
                             >
-                              {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
+                              {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
                               {subItem.name}
                             </Link>
                           );
@@ -122,7 +126,8 @@ const Navigation = () => {
                   <Link
                     to={item.href}
                     onClick={() => trackNavClick(item.href)}
-                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium"
+                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+                    role="menuitem"
                   >
                     {item.name}
                   </Link>
@@ -137,7 +142,7 @@ const Navigation = () => {
             <Link
               to="/kontakt"
               onClick={() => trackCTAClick("Beratung anfragen", "navigation")}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Beratung anfragen
             </Link>
@@ -146,19 +151,25 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-foreground"
+            className="lg:hidden p-2 text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+            aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       <div
+        id="mobile-menu"
         className={cn(
           "lg:hidden bg-background border-t border-border transition-all duration-300",
           isOpen ? "max-h-[80vh] overflow-y-auto" : "max-h-0 overflow-hidden"
         )}
+        role="menu"
+        aria-label="Mobile Navigation"
       >
         <div className="px-4 py-4 space-y-2">
           {navItems.map((item) => (

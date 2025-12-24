@@ -101,6 +101,9 @@ const ChatWidget = () => {
 
       {/* Chat Window */}
       <div
+        role="dialog"
+        aria-label="Chat mit DeutLicht Assistent"
+        aria-modal="true"
         className={cn(
           "fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col transition-all duration-300 origin-bottom-right",
           isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
@@ -127,7 +130,7 @@ const ChatWidget = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4" role="log" aria-live="polite" aria-label="Chat-Nachrichten">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -143,15 +146,18 @@ const ChatWidget = () => {
                     ? "bg-accent text-accent-foreground rounded-br-md"
                     : "bg-muted text-foreground rounded-bl-md"
                 )}
+                role="article"
+                aria-label={message.role === "user" ? "Ihre Nachricht" : "Antwort des Assistenten"}
               >
                 {message.content}
               </div>
             </div>
           ))}
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-muted text-foreground px-4 py-2.5 rounded-2xl rounded-bl-md">
-                <Loader2 className="w-4 h-4 animate-spin" />
+            <div className="flex justify-start" aria-live="polite">
+              <div className="bg-muted text-foreground px-4 py-2.5 rounded-2xl rounded-bl-md" aria-label="Assistent schreibt...">
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                <span className="sr-only">Nachricht wird geschrieben...</span>
               </div>
             </div>
           )}
@@ -159,22 +165,27 @@ const ChatWidget = () => {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="p-4 border-t border-border">
+        <form onSubmit={handleSubmit} className="p-4 border-t border-border" aria-label="Nachricht senden">
           <div className="flex gap-2">
+            <label htmlFor="chat-input" className="sr-only">Ihre Nachricht eingeben</label>
             <Input
+              id="chat-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ihre Nachricht..."
               className="flex-1 bg-background"
               disabled={isLoading}
+              aria-describedby="chat-input-hint"
             />
+            <span id="chat-input-hint" className="sr-only">Drücken Sie Enter oder klicken Sie auf Senden</span>
             <Button 
               type="submit" 
               size="icon" 
               disabled={!input.trim() || isLoading}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
+              aria-label="Nachricht senden"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4" aria-hidden="true" />
             </Button>
           </div>
         </form>
