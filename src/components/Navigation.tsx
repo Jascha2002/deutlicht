@@ -1,37 +1,64 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { 
+  Menu, 
+  X, 
+  ChevronDown, 
+  Monitor, 
+  Cog, 
+  Building2, 
+  Package, 
+  BookOpen, 
+  Smartphone, 
+  Globe, 
+  Megaphone, 
+  FileText,
+  Users,
+  type LucideIcon
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import deutlichtLogo from "@/assets/deutlicht-logo.png";
+
+interface SubMenuItem {
+  name: string;
+  href: string;
+  icon?: LucideIcon;
+}
+
+interface NavItem {
+  name: string;
+  href: string;
+  submenu?: SubMenuItem[];
+}
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ueberUnsOpen, setUeberUnsOpen] = useState(false);
   const [leistungenOpen, setLeistungenOpen] = useState(false);
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { name: "Startseite", href: "/" },
     {
       name: "Über uns",
       href: "/ueber-uns",
       submenu: [
-        { name: "Hintergrund", href: "/ueber-uns/hintergrund" },
+        { name: "Hintergrund", href: "/ueber-uns/hintergrund", icon: Users },
       ],
     },
     { 
       name: "Leistungen", 
       href: "/leistungen",
       submenu: [
-        { name: "Digitalisierung", href: "/leistungen#digitalisierung" },
-        { name: "CRM & ERP Systeme", href: "/leistungen#crm-erp" },
-        { name: "BIM Systeme", href: "/leistungen#bim" },
-        { name: "PIM Systeme", href: "/leistungen#pim" },
-        { name: "Wissensmanagement", href: "/leistungen#wissensmanagement" },
-        { name: "Self-Order & 24/7", href: "/leistungen/chayns-loesungen" },
-        { name: "Websites & Shops", href: "/leistungen#web" },
-        { name: "Marketing & Social Media", href: "/leistungen#marketing" },
-        { name: "Förderberatung", href: "/leistungen#foerderung" },
+        { name: "Digitalisierung", href: "/leistungen#digitalisierung", icon: Monitor },
+        { name: "CRM & ERP Systeme", href: "/leistungen#crm-erp", icon: Cog },
+        { name: "BIM Systeme", href: "/leistungen#bim", icon: Building2 },
+        { name: "PIM Systeme", href: "/leistungen#pim", icon: Package },
+        { name: "Wissensmanagement", href: "/leistungen#wissensmanagement", icon: BookOpen },
+        { name: "Self-Order & 24/7", href: "/leistungen/chayns-loesungen", icon: Smartphone },
+        { name: "Websites & Shops", href: "/leistungen#web", icon: Globe },
+        { name: "Marketing & Social Media", href: "/leistungen#marketing", icon: Megaphone },
+        { name: "Förderberatung", href: "/leistungen#foerderung", icon: FileText },
       ],
     },
     { name: "Projekte", href: "/projekte" },
@@ -70,16 +97,20 @@ const Navigation = () => {
                     {/* Dropdown */}
                     <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                       <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
-                        {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            to={subItem.href}
-                            onClick={() => trackNavClick(subItem.href)}
-                            className="block px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm"
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
+                        {item.submenu.map((subItem) => {
+                          const IconComponent = subItem.icon;
+                          return (
+                            <Link
+                              key={subItem.name}
+                              to={subItem.href}
+                              onClick={() => trackNavClick(subItem.href)}
+                              className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm"
+                            >
+                              {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
+                              {subItem.name}
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -153,19 +184,23 @@ const Navigation = () => {
                       (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) ? "max-h-[400px]" : "max-h-0"
                     )}
                   >
-                    {item.submenu.map((subItem) => (
-                      <Link
-                        key={subItem.name}
-                        to={subItem.href}
-                        onClick={() => {
-                          trackNavClick(subItem.href);
-                          setIsOpen(false);
-                        }}
-                        className="block py-2 text-foreground/60 hover:text-accent text-sm"
-                      >
-                        {subItem.name}
-                      </Link>
-                    ))}
+                    {item.submenu.map((subItem) => {
+                      const IconComponent = subItem.icon;
+                      return (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          onClick={() => {
+                            trackNavClick(subItem.href);
+                            setIsOpen(false);
+                          }}
+                          className="flex items-center gap-3 py-2 text-foreground/60 hover:text-accent text-sm"
+                        >
+                          {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
+                          {subItem.name}
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               ) : (
