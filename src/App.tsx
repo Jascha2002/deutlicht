@@ -16,6 +16,7 @@ import Kontakt from "./pages/Kontakt";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import Schnelluebersicht from "./pages/Schnelluebersicht";
+import ChaynsLoesungen from "./pages/ChaynsLoesungen";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/schnelluebersicht" element={<Schnelluebersicht />} />
+            <Route path="/leistungen/chayns-loesungen" element={<ChaynsLoesungen />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

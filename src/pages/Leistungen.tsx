@@ -15,7 +15,11 @@ import {
   Users,
   Bot,
   FileText,
-  Coins
+  Coins,
+  Building2,
+  BookOpen,
+  Package,
+  Smartphone
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -61,6 +65,83 @@ const services = [
       { icon: Zap, text: "Automatisierte Prozesse" },
       { icon: BarChart3, text: "Echtzeit-Reporting" }
     ]
+  },
+  {
+    id: "bim",
+    icon: Building2,
+    title: "BIM Systeme",
+    subtitle: "Building Information Management für Bau & Immobilien",
+    description: "Building Information Management (BIM) revolutioniert die Bau- und Immobilienbranche. Wir implementieren und integrieren BIM-Systeme, die alle Projektbeteiligten vernetzen und den gesamten Lebenszyklus eines Gebäudes digital abbilden.",
+    features: [
+      "BIM-Strategieberatung und Einführung",
+      "3D-Modellierung und Datenmanagement",
+      "Kollaborationsplattformen einrichten",
+      "Integration mit ERP und Projektmanagement",
+      "Schulung für alle Projektbeteiligten"
+    ],
+    benefits: [
+      { icon: Building2, text: "Transparente Projektabwicklung" },
+      { icon: Database, text: "Zentrale Datenhaltung" },
+      { icon: Zap, text: "Weniger Planungsfehler" }
+    ]
+  },
+  {
+    id: "pim",
+    icon: Package,
+    title: "PIM Systeme",
+    subtitle: "Product Information Management für den Handel",
+    description: "Product Information Management (PIM) zentralisiert alle Produktdaten und sorgt für konsistente Informationen über alle Verkaufskanäle. Wir helfen bei der Auswahl, Implementierung und Integration von PIM-Systemen.",
+    features: [
+      "Anforderungsanalyse und Systemauswahl",
+      "Produktdatenmodellierung",
+      "Multi-Channel-Publishing",
+      "Integration mit Webshop und ERP",
+      "Automatisierte Datenqualitätsprüfung"
+    ],
+    benefits: [
+      { icon: Package, text: "Konsistente Produktdaten" },
+      { icon: Globe, text: "Multi-Channel-fähig" },
+      { icon: Zap, text: "Schnellere Time-to-Market" }
+    ]
+  },
+  {
+    id: "wissensmanagement",
+    icon: BookOpen,
+    title: "Wissensmanagement",
+    subtitle: "Unternehmenswissen systematisch erfassen und nutzen",
+    description: "Wissen ist der wichtigste Rohstoff moderner Unternehmen. Wir implementieren Wissensmanagement-Systeme, die Erfahrungen, Prozesse und Know-how strukturiert erfassen, teilen und für die Zukunft sichern.",
+    features: [
+      "Wissensdatenbanken aufbauen",
+      "Dokumentenmanagement-Systeme",
+      "Onboarding- und Schulungsplattformen",
+      "KI-gestützte Wissenssuche",
+      "Prozessdokumentation"
+    ],
+    benefits: [
+      { icon: BookOpen, text: "Wissen nachhaltig sichern" },
+      { icon: Users, text: "Schnelleres Onboarding" },
+      { icon: Zap, text: "Effizientere Zusammenarbeit" }
+    ]
+  },
+  {
+    id: "selforder",
+    icon: Smartphone,
+    title: "Self-Order & 24/7 Lösungen",
+    subtitle: "Digitale Bestell- und Bezahlsysteme mit chayns®",
+    description: "Mit chayns® von Tobit bieten wir innovative Self-Order-Systeme für Gastronomie, Einzelhandel und 24/7-Geschäftsmodelle. Digitale Bestellung, kontaktlose Bezahlung und automatisierte Abläufe – alles aus einer Hand.",
+    features: [
+      "Self-Order-Terminals und Mobile Ordering",
+      "Kontaktlose Bezahlung (Google Pay, etc.)",
+      "24/7 Zugangssysteme via Bluetooth",
+      "Reservierungs- und Ticketsysteme",
+      "Integration in bestehende Systeme"
+    ],
+    benefits: [
+      { icon: Smartphone, text: "Moderne Kundenerfahrung" },
+      { icon: ShoppingCart, text: "Höhere Umsätze" },
+      { icon: Zap, text: "Automatisierte Abläufe" }
+    ],
+    hasDetailPage: true
   },
   {
     id: "web",
@@ -217,12 +298,22 @@ const Leistungen = () => {
                       ))}
                     </div>
 
-                    <Link to="/kontakt">
-                      <Button className="group">
-                        Beratung anfragen
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
+                    <div className="flex flex-wrap gap-3">
+                      <Link to="/kontakt">
+                        <Button className="group">
+                          Beratung anfragen
+                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                      {(service as any).hasDetailPage && (
+                        <Link to="/leistungen/chayns-loesungen">
+                          <Button variant="outline" className="group">
+                            Mehr erfahren
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
                   </ScrollReveal>
 
                   {/* Benefits Card */}
