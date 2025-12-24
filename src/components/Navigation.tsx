@@ -82,7 +82,8 @@ const Navigation = () => {
             <img 
               src={deutlichtLogo} 
               alt="DeutLicht - Klare Vision, Starke Präsenz" 
-              className="h-20 w-auto"
+              className="h-24 w-auto contrast-105 drop-shadow-sm"
+              style={{ imageRendering: 'crisp-edges' }}
             />
           </Link>
 
