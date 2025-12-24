@@ -169,7 +169,7 @@ const Leistungen = () => {
                 <a
                   key={service.id}
                   href={`#${service.id}`}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted hover:bg-accent/20 text-muted-foreground hover:text-accent transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 shadow-md hover:shadow-lg transition-all text-sm font-medium"
                 >
                   <service.icon className="w-4 h-4" />
                   {service.title}
