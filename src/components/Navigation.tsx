@@ -78,12 +78,13 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
+          <Link to="/" className="flex flex-col items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
             <img 
               src={deutlichtLogo} 
               alt="DeutLicht Logo" 
-              className="h-20 w-auto"
+              className="h-12 w-auto"
             />
+            <span className="text-xs font-medium text-muted-foreground tracking-wide mt-0.5">Klare Vision – Starke Präsenz</span>
           </Link>
 
           {/* Desktop Navigation */}
