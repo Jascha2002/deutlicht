@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
+import { trackCTAClick } from "@/lib/analytics";
 
 const Hero = () => {
   return (
@@ -46,6 +47,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
               to="/kontakt"
+              onClick={() => trackCTAClick("Kostenlose Beratung", "hero")}
               className="group flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105"
             >
               Kostenlose Beratung
@@ -53,6 +55,7 @@ const Hero = () => {
             </Link>
             <Link
               to="/ueber-uns/hintergrund"
+              onClick={() => trackCTAClick("Mehr erfahren", "hero")}
               className="group flex items-center gap-2 bg-card/50 hover:bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200"
             >
               <Play className="w-5 h-5 text-accent" />
