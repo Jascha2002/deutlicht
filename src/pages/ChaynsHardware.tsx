@@ -25,6 +25,7 @@ import smartlockImage from "@/assets/chayns-smartlock.jpg";
 import servicerobotImage from "@/assets/chayns-servicerobot.jpg";
 import bikerentalImage from "@/assets/chayns-bikerental.jpg";
 import lockersImage from "@/assets/chayns-lockers.jpg";
+import butlerbotImage from "@/assets/chayns-butlerbot.jpg";
 
 const lockSolutions = [
   {
@@ -101,6 +102,7 @@ const robotSolutions = [
   {
     id: "butlerbot",
     icon: Hotel,
+    image: butlerbotImage,
     title: "Butlerbot – Room-Service-Roboter für Hotels",
     description: "Lieferroboter für den Hotelbereich. Rufen selbstständig Aufzüge, navigieren zu Zimmern und liefern Bestellungen sicher ab.",
     features: [
