@@ -75,19 +75,19 @@ const Kontakt = () => {
     {
       icon: Building2,
       title: "Firmensitz",
-      content: "DeutLicht GmbH",
-      subcontent: "Musterstraße 123, 12345 Berlin"
+      content: "DeutLicht UG (i.Gr.)",
+      subcontent: "Gemeindeweg 4, 07546 Gera"
     },
     {
       icon: Phone,
       title: "Telefon",
-      content: "+49 (0) 30 123 456 78",
+      content: "+49 178 5549216",
       subcontent: "Mo-Fr: 9:00 - 18:00 Uhr"
     },
     {
       icon: Mail,
       title: "E-Mail",
-      content: "info@deutlicht.de",
+      content: "info@DeutLicht.de",
       subcontent: "Antwort innerhalb von 24h"
     },
     {
@@ -335,7 +335,7 @@ const Kontakt = () => {
                 So finden Sie uns
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Besuchen Sie uns in unserem Büro in Berlin oder vereinbaren Sie einen Termin für ein Online-Meeting.
+                Besuchen Sie uns in Gera oder vereinbaren Sie einen Termin für ein Online-Meeting.
               </p>
             </div>
 
@@ -350,7 +350,7 @@ const Kontakt = () => {
                         Interaktive Karte
                       </h3>
                       <p className="text-muted-foreground mb-4">
-                        Musterstraße 123, 12345 Berlin
+                        Gemeindeweg 4, 07546 Gera
                       </p>
                       <Button variant="outline" asChild>
                         <a 
@@ -373,8 +373,7 @@ const Kontakt = () => {
                   <CardContent className="p-6">
                     <h3 className="font-semibold text-foreground mb-4">Anfahrt mit dem Auto</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      Über die A100, Ausfahrt Musterstraße. Parkplätze sind direkt vor dem Gebäude 
-                      sowie im Parkhaus nebenan verfügbar.
+                      Über die A4, Ausfahrt Gera. Parkplätze sind in der Umgebung verfügbar.
                     </p>
                   </CardContent>
                 </Card>
@@ -383,8 +382,7 @@ const Kontakt = () => {
                   <CardContent className="p-6">
                     <h3 className="font-semibold text-foreground mb-4">Öffentliche Verkehrsmittel</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      U-Bahn: Linie U1, U2 bis Haltestelle Musterplatz (5 Min. Fußweg)<br />
-                      Bus: Linie 100, 200 bis Haltestelle Musterstraße
+                      Busverbindungen ab Gera Hauptbahnhof in die Innenstadt verfügbar.
                     </p>
                   </CardContent>
                 </Card>
@@ -422,9 +420,9 @@ const Kontakt = () => {
                 onClick={() => trackExternalLink("phone_cta")}
                 asChild
               >
-                <a href="tel:+4930123456789">
+                <a href="tel:+491785549216">
                   <Phone className="w-5 h-5 mr-2" />
-                  +49 (0) 30 123 456 78
+                  +49 178 5549216
                 </a>
               </Button>
               <Button 
