@@ -39,7 +39,7 @@ const Impressum = () => {
                 </h2>
                 <div className="text-muted-foreground space-y-1">
                   <p className="font-semibold text-foreground">DeutLicht UG (i.Gr.)</p>
-                  <p>Gemeindeweg 4</p>
+                  <p>Gemeindeweg 4 (Mäuseturm)</p>
                   <p>07546 Gera</p>
                   <p>Deutschland</p>
                 </div>
@@ -77,7 +77,7 @@ const Impressum = () => {
                 </h2>
                 <div className="text-muted-foreground space-y-1">
                   <p className="font-semibold text-foreground">Carsten van de Sand</p>
-                  <p>Gemeindeweg 4</p>
+                  <p>Gemeindeweg 4 (Mäuseturm)</p>
                   <p>07546 Gera</p>
                 </div>
               </div>
