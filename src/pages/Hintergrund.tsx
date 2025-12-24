@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const Hintergrund = () => {
   return (
@@ -33,9 +34,12 @@ const Hintergrund = () => {
 
             {/* Content */}
             <article className="prose prose-lg max-w-none">
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight">
-                Die Geschichte und Vision von DeutLicht®
-              </h1>
+              <div className="flex items-center gap-6 mb-8">
+                <AnimatedLogo size="sm" />
+                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight m-0">
+                  Die Geschichte und Vision von DeutLicht®
+                </h1>
+              </div>
 
               <p className="text-xl md:text-2xl text-accent font-medium mb-12 leading-relaxed">
                 DeutLicht® ist mehr als eine Agentur – wir sind Ihr Partner für die digitale Zukunft.
