@@ -19,13 +19,18 @@ import {
   Building2,
   BookOpen,
   Package,
-  Smartphone
+  Smartphone,
+  Phone,
+  Headphones,
+  Clock
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
+import VoiceAgentDemo from "@/components/VoiceAgentDemo";
+import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
 
 const services = [
   {
@@ -122,6 +127,26 @@ const services = [
       { icon: Users, text: "Schnelleres Onboarding" },
       { icon: Zap, text: "Effizientere Zusammenarbeit" }
     ]
+  },
+  {
+    id: "voice-agents",
+    icon: Phone,
+    title: "KI Voice Agents",
+    subtitle: "Sprachgesteuerte Kundenservice-Automatisierung",
+    description: "KI-gestützte Sprachassistenten revolutionieren Ihren Kundenservice. Unsere Voice Agents verstehen natürliche Sprache, beantworten Anfragen automatisch und sind rund um die Uhr erreichbar – mit Automatisierungsraten von bis zu 70%.",
+    features: [
+      "Natural Language Understanding (NLU)",
+      "24/7 Erreichbarkeit ohne Wartezeiten",
+      "Automatische Kundenidentifikation",
+      "Nahtlose CRM-Integration",
+      "Übergabe an Mitarbeiter bei Bedarf"
+    ],
+    benefits: [
+      { icon: Clock, text: "24/7 Verfügbarkeit" },
+      { icon: Headphones, text: "Bis zu 70% Automatisierung" },
+      { icon: Users, text: "98% Kundenzufriedenheit" }
+    ],
+    hasVoiceDemo: true
   },
   {
     id: "selforder",
@@ -355,6 +380,47 @@ const Leistungen = () => {
                         >
                           <source src="/videos/deutlicht-bim.mp4" type="video/mp4" />
                         </video>
+                      </div>
+                    )}
+
+                    {/* Voice Agent Demo */}
+                    {(service as any).hasVoiceDemo && (
+                      <div className="mt-6">
+                        <VoiceAgentDemo />
+                        
+                        {/* Voice Agent Hero Image */}
+                        <div className="mt-6 rounded-xl overflow-hidden shadow-lg border border-border">
+                          <img 
+                            src={voiceAgentHero} 
+                            alt="KI Voice Agent Technologie" 
+                            className="w-full h-48 object-cover"
+                          />
+                        </div>
+                        
+                        {/* Use Cases */}
+                        <div className="mt-6 bg-muted/30 rounded-xl p-6">
+                          <h4 className="font-display text-lg font-semibold text-foreground mb-4">
+                            Typische Anwendungsfälle
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-accent" />
+                              <span>Bestellstatus-Abfragen</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-accent" />
+                              <span>Terminvereinbarungen</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-accent" />
+                              <span>FAQ-Beantwortung</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-accent" />
+                              <span>Kundenidentifikation</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )}
 
