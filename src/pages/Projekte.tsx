@@ -152,6 +152,27 @@ const Projekte = () => {
           </div>
         </section>
 
+        {/* Video Section */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <ScrollReveal>
+              <div className="max-w-3xl mx-auto">
+                <div className="rounded-xl overflow-hidden shadow-lg border border-border">
+                  <video
+                    autoPlay
+                    muted
+                    playsInline
+                    className="w-full aspect-video object-cover"
+                  >
+                    <source src="/videos/deutlicht-vernetzt.mp4" type="video/mp4" />
+                    Ihr Browser unterstützt keine Videos.
+                  </video>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
         {/* Stats Section */}
         <section className="py-12 bg-card border-y border-border">
           <div className="container mx-auto px-4">
