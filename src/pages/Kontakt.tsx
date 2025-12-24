@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import ScrollReveal from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { trackFormSubmission, trackCTAClick } from "@/lib/analytics";
 
 const Kontakt = () => {
   const { toast } = useToast();
@@ -40,6 +41,8 @@ const Kontakt = () => {
 
       if (error) throw error;
 
+      trackFormSubmission("contact_form", true);
+      
       toast({
         title: "Nachricht gesendet!",
         description: "Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.",
@@ -55,6 +58,8 @@ const Kontakt = () => {
       });
     } catch (error: any) {
       console.error("Error sending email:", error);
+      trackFormSubmission("contact_form", false);
+      
       toast({
         title: "Fehler beim Senden",
         description: "Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.",
