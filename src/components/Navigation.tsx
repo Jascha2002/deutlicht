@@ -58,6 +58,7 @@ const Navigation = () => {
         { name: "BIM Systeme", href: "/leistungen#bim", icon: Building2 },
         { name: "PIM Systeme", href: "/leistungen#pim", icon: Package },
         { name: "Wissensmanagement", href: "/leistungen#wissensmanagement", icon: BookOpen },
+        { name: "AI Agenten", href: "/leistungen/ai-agenten", icon: Bot },
         { name: "Self-Order & 24/7", href: "/leistungen/chayns-loesungen", icon: Smartphone },
         { name: "Schlösser & Roboter", href: "/leistungen/chayns-hardware", icon: Lock },
         { name: "Websites & Shops", href: "/leistungen#web", icon: Globe },
