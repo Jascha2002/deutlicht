@@ -1,7 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Phone, PhoneOff, Mic, Volume2, Package, Calendar, AlertCircle, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
@@ -23,7 +22,7 @@ const demoScenarios: DemoScenario[] = [
       { role: "user", text: "Ich möchte den Status meiner Bestellung abfragen." },
       { role: "agent", text: "Natürlich! Können Sie mir bitte Ihre Bestellnummer nennen?" },
       { role: "user", text: "Meine Bestellnummer ist 12345." },
-      { role: "agent", text: "Vielen Dank. Ihre Bestellung wurde heute versendet und wird morgen bei Ihnen eintreffen. Kann ich Ihnen noch bei etwas anderem helfen?" },
+      { role: "agent", text: "Vielen Dank. Ihre Bestellung wurde heute versendet und wird morgen bei Ihnen eintreffen." },
     ]
   },
   {
@@ -35,9 +34,9 @@ const demoScenarios: DemoScenario[] = [
       { role: "user", text: "Ich möchte gerne einen Beratungstermin vereinbaren." },
       { role: "agent", text: "Sehr gerne! Für welchen Service benötigen Sie die Beratung?" },
       { role: "user", text: "Es geht um die Einführung eines CRM-Systems." },
-      { role: "agent", text: "Perfekt. Ich habe freie Termine am Mittwoch um 10 Uhr oder Donnerstag um 14 Uhr. Welcher passt Ihnen besser?" },
+      { role: "agent", text: "Perfekt. Ich habe freie Termine am Mittwoch um 10 Uhr oder Donnerstag um 14 Uhr." },
       { role: "user", text: "Donnerstag um 14 Uhr wäre ideal." },
-      { role: "agent", text: "Hervorragend! Ich habe Ihren Termin für Donnerstag eingetragen. Sie erhalten in Kürze eine Bestätigung per E-Mail." },
+      { role: "agent", text: "Hervorragend! Ich habe Ihren Termin eingetragen. Sie erhalten eine Bestätigung per E-Mail." },
     ]
   },
   {
@@ -47,9 +46,9 @@ const demoScenarios: DemoScenario[] = [
     conversation: [
       { role: "agent", text: "Guten Tag! Wie kann ich Ihnen behilflich sein?" },
       { role: "user", text: "Ich habe ein defektes Produkt erhalten und möchte reklamieren." },
-      { role: "agent", text: "Das tut mir sehr leid zu hören. Können Sie mir bitte Ihre Bestellnummer nennen?" },
+      { role: "agent", text: "Das tut mir sehr leid. Können Sie mir bitte Ihre Bestellnummer nennen?" },
       { role: "user", text: "Die Bestellnummer ist 78901." },
-      { role: "agent", text: "Vielen Dank. Ich habe einen Rücksendeschein erstellt. Sobald wir das Gerät erhalten, senden wir Ihnen Ersatz." },
+      { role: "agent", text: "Ich habe einen Rücksendeschein erstellt. Sobald wir das Gerät erhalten, senden wir Ersatz." },
     ]
   },
   {
@@ -59,9 +58,9 @@ const demoScenarios: DemoScenario[] = [
     conversation: [
       { role: "agent", text: "Herzlich willkommen beim Support! Was kann ich für Sie tun?" },
       { role: "user", text: "Wie kann ich mein Passwort zurücksetzen?" },
-      { role: "agent", text: "Gehen Sie auf unsere Website und klicken Sie auf Passwort vergessen. Sie erhalten dann eine E-Mail mit einem Link." },
+      { role: "agent", text: "Klicken Sie auf Passwort vergessen. Sie erhalten dann eine E-Mail mit einem Link." },
       { role: "user", text: "Ja, das wäre super." },
-      { role: "agent", text: "Ich habe gerade eine E-Mail an Ihre Adresse gesendet. Der Link ist 24 Stunden gültig." },
+      { role: "agent", text: "Ich habe eine E-Mail gesendet. Der Link ist 24 Stunden gültig." },
     ]
   }
 ];
@@ -71,57 +70,62 @@ const VoiceAgentDemo = () => {
   const [transcript, setTranscript] = useState<string[]>([]);
   const [selectedScenario, setSelectedScenario] = useState<DemoScenario>(demoScenarios[0]);
   const [isLoading, setIsLoading] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const abortRef = useRef(false);
   const { toast } = useToast();
 
-  const playAudio = useCallback(async (text: string): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-            },
-            body: JSON.stringify({ text }),
-            signal: abortControllerRef.current?.signal,
-          }
-        );
+  // Load voices when component mounts
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setVoicesLoaded(true);
+      }
+    };
 
-        if (!response.ok) {
-          throw new Error(`TTS request failed: ${response.status}`);
-        }
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
 
-        const data = await response.json();
-        
-        if (data.error) {
-          throw new Error(data.error);
-        }
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
 
-        const audioUrl = `data:audio/mpeg;base64,${data.audioContent}`;
-        
-        if (audioRef.current) {
-          audioRef.current.pause();
-        }
-        
-        const audio = new Audio(audioUrl);
-        audioRef.current = audio;
-        
-        audio.onended = () => resolve();
-        audio.onerror = () => reject(new Error('Audio playback failed'));
-        
-        await audio.play();
-      } catch (error) {
-        if ((error as Error).name === 'AbortError') {
+  const speak = useCallback((text: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      if (abortRef.current) {
+        resolve();
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Try to find a German voice
+      const voices = window.speechSynthesis.getVoices();
+      const germanVoice = voices.find(v => v.lang.startsWith('de')) || 
+                          voices.find(v => v.name.toLowerCase().includes('german')) ||
+                          voices[0];
+      
+      if (germanVoice) {
+        utterance.voice = germanVoice;
+      }
+      
+      utterance.lang = 'de-DE';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      
+      utterance.onend = () => resolve();
+      utterance.onerror = (e) => {
+        if (e.error === 'interrupted' || e.error === 'canceled') {
           resolve();
         } else {
-          reject(error);
+          reject(e);
         }
-      }
+      };
+      
+      window.speechSynthesis.speak(utterance);
     });
   }, []);
 
@@ -129,13 +133,13 @@ const VoiceAgentDemo = () => {
     setAgentState("connecting");
     setTranscript([]);
     setIsLoading(true);
-    abortControllerRef.current = new AbortController();
+    abortRef.current = false;
 
     try {
       await new Promise(resolve => setTimeout(resolve, 500));
       
       for (let i = 0; i < selectedScenario.conversation.length; i++) {
-        if (abortControllerRef.current?.signal.aborted) break;
+        if (abortRef.current) break;
         
         const item = selectedScenario.conversation[i];
         
@@ -144,10 +148,10 @@ const VoiceAgentDemo = () => {
           setTranscript(prev => [...prev, `🤖 Agent: ${item.text}`]);
           
           try {
-            await playAudio(item.text);
+            await speak(item.text);
           } catch (error) {
-            console.error('TTS Error:', error);
-            // Fallback: show text without audio
+            console.error('Speech error:', error);
+            // Fallback: just wait based on text length
             await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
           }
         } else {
@@ -156,18 +160,20 @@ const VoiceAgentDemo = () => {
           await new Promise(resolve => setTimeout(resolve, item.text.length * 25));
         }
         
-        if (i < selectedScenario.conversation.length - 1) {
+        if (i < selectedScenario.conversation.length - 1 && !abortRef.current) {
           setAgentState("thinking");
-          await new Promise(resolve => setTimeout(resolve, 800));
+          await new Promise(resolve => setTimeout(resolve, 600));
         }
       }
       
-      setAgentState("idle");
+      if (!abortRef.current) {
+        setAgentState("idle");
+      }
     } catch (error) {
       console.error('Demo error:', error);
       toast({
         title: "Demo-Fehler",
-        description: "Es gab ein Problem mit der Sprachausgabe. Bitte versuchen Sie es erneut.",
+        description: "Es gab ein Problem. Bitte versuchen Sie es erneut.",
         variant: "destructive",
       });
       setAgentState("idle");
@@ -177,11 +183,8 @@ const VoiceAgentDemo = () => {
   };
 
   const stopDemo = () => {
-    abortControllerRef.current?.abort();
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
+    abortRef.current = true;
+    window.speechSynthesis.cancel();
     setAgentState("idle");
     setTranscript([]);
     setIsLoading(false);
