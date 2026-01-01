@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Phone, PhoneOff, Mic, Volume2, Package, Calendar, AlertCircle, HelpCircle } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
+import { Phone, PhoneOff, Mic, Volume2, Package, Calendar, AlertCircle, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
 
@@ -35,7 +37,7 @@ const demoScenarios: DemoScenario[] = [
       { role: "user", text: "Es geht um die Einführung eines CRM-Systems." },
       { role: "agent", text: "Perfekt. Ich habe freie Termine am Mittwoch um 10 Uhr oder Donnerstag um 14 Uhr. Welcher passt Ihnen besser?" },
       { role: "user", text: "Donnerstag um 14 Uhr wäre ideal." },
-      { role: "agent", text: "Hervorragend! Ich habe Ihren Termin für Donnerstag, den 28. Dezember um 14 Uhr eingetragen. Sie erhalten in Kürze eine Bestätigung per E-Mail. Kann ich noch etwas für Sie tun?" },
+      { role: "agent", text: "Hervorragend! Ich habe Ihren Termin für Donnerstag eingetragen. Sie erhalten in Kürze eine Bestätigung per E-Mail." },
     ]
   },
   {
@@ -45,13 +47,9 @@ const demoScenarios: DemoScenario[] = [
     conversation: [
       { role: "agent", text: "Guten Tag! Wie kann ich Ihnen behilflich sein?" },
       { role: "user", text: "Ich habe ein defektes Produkt erhalten und möchte reklamieren." },
-      { role: "agent", text: "Das tut mir sehr leid zu hören. Können Sie mir bitte Ihre Bestellnummer und den Artikelnamen nennen?" },
-      { role: "user", text: "Die Bestellnummer ist 78901, es handelt sich um einen Drucker." },
-      { role: "agent", text: "Vielen Dank. Ich habe die Bestellung gefunden. Können Sie mir kurz beschreiben, was genau defekt ist?" },
-      { role: "user", text: "Der Drucker macht seltsame Geräusche und druckt nicht mehr." },
-      { role: "agent", text: "Ich verstehe. Ich habe einen Rücksendeschein für Sie erstellt, den Sie per E-Mail erhalten. Sobald wir das Gerät erhalten, senden wir Ihnen umgehend einen Ersatz. Die Rücksendung ist für Sie kostenlos." },
-      { role: "user", text: "Super, vielen Dank!" },
-      { role: "agent", text: "Gern geschehen! Haben Sie noch weitere Fragen?" },
+      { role: "agent", text: "Das tut mir sehr leid zu hören. Können Sie mir bitte Ihre Bestellnummer nennen?" },
+      { role: "user", text: "Die Bestellnummer ist 78901." },
+      { role: "agent", text: "Vielen Dank. Ich habe einen Rücksendeschein erstellt. Sobald wir das Gerät erhalten, senden wir Ihnen Ersatz." },
     ]
   },
   {
@@ -61,9 +59,9 @@ const demoScenarios: DemoScenario[] = [
     conversation: [
       { role: "agent", text: "Herzlich willkommen beim Support! Was kann ich für Sie tun?" },
       { role: "user", text: "Wie kann ich mein Passwort zurücksetzen?" },
-      { role: "agent", text: "Kein Problem! Gehen Sie auf unsere Website und klicken Sie auf 'Passwort vergessen'. Sie erhalten dann eine E-Mail mit einem Link zum Zurücksetzen. Soll ich Ihnen den Link direkt zusenden?" },
+      { role: "agent", text: "Gehen Sie auf unsere Website und klicken Sie auf Passwort vergessen. Sie erhalten dann eine E-Mail mit einem Link." },
       { role: "user", text: "Ja, das wäre super." },
-      { role: "agent", text: "Ich habe gerade eine E-Mail an Ihre hinterlegte Adresse gesendet. Der Link ist 24 Stunden gültig. Kann ich Ihnen noch bei etwas anderem helfen?" },
+      { role: "agent", text: "Ich habe gerade eine E-Mail an Ihre Adresse gesendet. Der Link ist 24 Stunden gültig." },
     ]
   }
 ];
@@ -72,44 +70,121 @@ const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
   const [transcript, setTranscript] = useState<string[]>([]);
   const [selectedScenario, setSelectedScenario] = useState<DemoScenario>(demoScenarios[0]);
+  const [isLoading, setIsLoading] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const { toast } = useToast();
 
-  const startDemo = () => {
-    setAgentState("connecting");
-    setTranscript([]);
-    
-    setTimeout(() => {
-      setAgentState("speaking");
-      let index = 0;
-      
-      const playConversation = () => {
-        if (index >= selectedScenario.conversation.length) {
-          setAgentState("idle");
-          return;
+  const playAudio = useCallback(async (text: string): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            },
+            body: JSON.stringify({ text }),
+            signal: abortControllerRef.current?.signal,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`TTS request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        const audioUrl = `data:audio/mpeg;base64,${data.audioContent}`;
+        
+        if (audioRef.current) {
+          audioRef.current.pause();
         }
         
-        const item = selectedScenario.conversation[index];
-        setAgentState(item.role === "agent" ? "speaking" : "listening");
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
         
-        setTimeout(() => {
-          setTranscript(prev => [...prev, `${item.role === "agent" ? "🤖 Agent" : "👤 Kunde"}: ${item.text}`]);
-          index++;
-          
-          if (index < selectedScenario.conversation.length) {
-            setAgentState("thinking");
-            setTimeout(playConversation, 1000);
-          } else {
-            setTimeout(() => setAgentState("idle"), 1500);
-          }
-        }, item.text.length * 35);
-      };
+        audio.onended = () => resolve();
+        audio.onerror = () => reject(new Error('Audio playback failed'));
+        
+        await audio.play();
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') {
+          resolve();
+        } else {
+          reject(error);
+        }
+      }
+    });
+  }, []);
+
+  const startDemo = async () => {
+    setAgentState("connecting");
+    setTranscript([]);
+    setIsLoading(true);
+    abortControllerRef.current = new AbortController();
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      playConversation();
-    }, 1500);
+      for (let i = 0; i < selectedScenario.conversation.length; i++) {
+        if (abortControllerRef.current?.signal.aborted) break;
+        
+        const item = selectedScenario.conversation[i];
+        
+        if (item.role === "agent") {
+          setAgentState("speaking");
+          setTranscript(prev => [...prev, `🤖 Agent: ${item.text}`]);
+          
+          try {
+            await playAudio(item.text);
+          } catch (error) {
+            console.error('TTS Error:', error);
+            // Fallback: show text without audio
+            await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
+          }
+        } else {
+          setAgentState("listening");
+          setTranscript(prev => [...prev, `👤 Kunde: ${item.text}`]);
+          await new Promise(resolve => setTimeout(resolve, item.text.length * 25));
+        }
+        
+        if (i < selectedScenario.conversation.length - 1) {
+          setAgentState("thinking");
+          await new Promise(resolve => setTimeout(resolve, 800));
+        }
+      }
+      
+      setAgentState("idle");
+    } catch (error) {
+      console.error('Demo error:', error);
+      toast({
+        title: "Demo-Fehler",
+        description: "Es gab ein Problem mit der Sprachausgabe. Bitte versuchen Sie es erneut.",
+        variant: "destructive",
+      });
+      setAgentState("idle");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const stopDemo = () => {
+    abortControllerRef.current?.abort();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
     setAgentState("idle");
     setTranscript([]);
+    setIsLoading(false);
   };
 
   return (
@@ -117,6 +192,7 @@ const VoiceAgentDemo = () => {
       <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-3">
         <Phone className="w-5 h-5 text-accent" />
         Live Demo: KI-Sprachassistent
+        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">Mit Sprachausgabe</span>
       </h3>
       
       {/* Scenario Selection */}
@@ -197,6 +273,13 @@ const VoiceAgentDemo = () => {
              "Verarbeitet..."}
           </span>
         </div>
+
+        {/* Volume indicator when speaking */}
+        {agentState === "speaking" && (
+          <div className="absolute top-3 right-3">
+            <Volume2 className="w-5 h-5 text-accent animate-pulse" />
+          </div>
+        )}
       </div>
       
       {/* Transcript */}
@@ -214,8 +297,12 @@ const VoiceAgentDemo = () => {
       {/* Controls */}
       <div className="flex gap-3">
         {agentState === "idle" ? (
-          <Button onClick={startDemo} className="flex-1 group">
-            <Phone className="w-4 h-4 mr-2" />
+          <Button onClick={startDemo} className="flex-1 group" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Phone className="w-4 h-4 mr-2" />
+            )}
             Demo starten
           </Button>
         ) : (
@@ -237,6 +324,10 @@ const VoiceAgentDemo = () => {
           <span>Natürliche Stimme</span>
         </div>
       </div>
+      
+      <p className="text-xs text-muted-foreground mt-4 text-center">
+        🔊 Stellen Sie sicher, dass Ihr Lautsprecher eingeschaltet ist
+      </p>
     </div>
   );
 };
