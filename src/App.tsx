@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookieBanner } from "@/components/CookieBanner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
-import ChatWidget from "@/components/ChatWidget";
+
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ElevenLabsWidget from "@/components/ElevenLabsWidget";
 import Index from "./pages/Index";
@@ -54,7 +54,7 @@ const App = () => (
             <GoogleAnalytics />
             <ScrollDepthTracker />
             <CookieBanner />
-            <ChatWidget />
+            
             <AccessibilityWidget />
             <ElevenLabsWidget />
           </BrowserRouter>
