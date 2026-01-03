@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { text, voiceId = "onwK4e9ZLuTAKqWW03F9" } = await req.json(); // Daniel - German voice
+    const { text, voiceId = "MbbPUteESkJWr4IAaW35" } = await req.json(); // Grim Indian Leopard
     
     const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
     

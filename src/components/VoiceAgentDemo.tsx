@@ -65,9 +65,8 @@ const demoScenarios: DemoScenario[] = [
   }
 ];
 
-// Voice ID for "Grim Indian Leopard" - a custom ElevenLabs voice
-// Falls back to Daniel (German) if not available
-const ELEVENLABS_VOICE_ID = "onwK4e9ZLuTAKqWW03F9"; // Daniel - German voice as fallback
+// Voice ID for "Grim Indian Leopard" - custom ElevenLabs voice
+const ELEVENLABS_VOICE_ID = "MbbPUteESkJWr4IAaW35";
 
 const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
