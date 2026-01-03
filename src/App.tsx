@@ -11,6 +11,7 @@ import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
 
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ElevenLabsWidget from "@/components/ElevenLabsWidget";
+import DeutLichtChat from "@/components/DeutLichtChat";
 import Index from "./pages/Index";
 import UeberUns from "./pages/UeberUns";
 import Hintergrund from "./pages/Hintergrund";
@@ -57,6 +58,7 @@ const App = () => (
             
             <AccessibilityWidget />
             <ElevenLabsWidget />
+            <DeutLichtChat />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
