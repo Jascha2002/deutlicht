@@ -65,33 +65,96 @@ const demoScenarios: DemoScenario[] = [
   }
 ];
 
+// Voice ID for "Grim Indian Leopard" - a custom ElevenLabs voice
+// Falls back to Daniel (German) if not available
+const ELEVENLABS_VOICE_ID = "onwK4e9ZLuTAKqWW03F9"; // Daniel - German voice as fallback
+
 const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
   const [transcript, setTranscript] = useState<string[]>([]);
   const [selectedScenario, setSelectedScenario] = useState<DemoScenario>(demoScenarios[0]);
   const [isLoading, setIsLoading] = useState(false);
-  const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const [useElevenLabs, setUseElevenLabs] = useState(true);
   const abortRef = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
 
-  // Load voices when component mounts
+  // Cleanup audio on unmount
   useEffect(() => {
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        setVoicesLoaded(true);
-      }
-    };
-
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-
     return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
       window.speechSynthesis.cancel();
     };
   }, []);
 
-  const speak = useCallback((text: string): Promise<void> => {
+  // ElevenLabs TTS function
+  const speakWithElevenLabs = useCallback(async (text: string): Promise<void> => {
+    if (abortRef.current) return;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ 
+            text, 
+            voiceId: ELEVENLABS_VOICE_ID 
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`TTS request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (abortRef.current) return;
+
+      // Play audio using data URI
+      const audioUrl = `data:audio/mpeg;base64,${data.audioContent}`;
+      
+      return new Promise((resolve, reject) => {
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
+        
+        audio.onended = () => {
+          audioRef.current = null;
+          resolve();
+        };
+        
+        audio.onerror = (e) => {
+          audioRef.current = null;
+          reject(e);
+        };
+        
+        if (abortRef.current) {
+          resolve();
+          return;
+        }
+        
+        audio.play().catch(reject);
+      });
+    } catch (error) {
+      console.error('ElevenLabs TTS error:', error);
+      throw error;
+    }
+  }, []);
+
+  // Browser TTS fallback
+  const speakWithBrowser = useCallback((text: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (abortRef.current) {
         resolve();
@@ -102,7 +165,6 @@ const VoiceAgentDemo = () => {
 
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // Try to find a German voice
       const voices = window.speechSynthesis.getVoices();
       const germanVoice = voices.find(v => v.lang.startsWith('de')) || 
                           voices.find(v => v.name.toLowerCase().includes('german')) ||
@@ -128,6 +190,22 @@ const VoiceAgentDemo = () => {
       window.speechSynthesis.speak(utterance);
     });
   }, []);
+
+  // Main speak function that tries ElevenLabs first, falls back to browser
+  const speak = useCallback(async (text: string): Promise<void> => {
+    if (useElevenLabs) {
+      try {
+        await speakWithElevenLabs(text);
+        return;
+      } catch (error) {
+        console.warn('ElevenLabs failed, falling back to browser TTS:', error);
+        // Don't disable ElevenLabs permanently, just use fallback for this utterance
+      }
+    }
+    
+    // Fallback to browser TTS
+    await speakWithBrowser(text);
+  }, [useElevenLabs, speakWithElevenLabs, speakWithBrowser]);
 
   const startDemo = async () => {
     setAgentState("connecting");
@@ -184,7 +262,16 @@ const VoiceAgentDemo = () => {
 
   const stopDemo = () => {
     abortRef.current = true;
+    
+    // Stop ElevenLabs audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    
+    // Stop browser TTS
     window.speechSynthesis.cancel();
+    
     setAgentState("idle");
     setTranscript([]);
     setIsLoading(false);
@@ -195,7 +282,7 @@ const VoiceAgentDemo = () => {
       <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-3">
         <Phone className="w-5 h-5 text-accent" />
         Live Demo: KI-Sprachassistent
-        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">Mit Sprachausgabe</span>
+        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">ElevenLabs TTS</span>
       </h3>
       
       {/* Scenario Selection */}
@@ -324,7 +411,7 @@ const VoiceAgentDemo = () => {
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Volume2 className="w-4 h-4 text-accent" />
-          <span>Natürliche Stimme</span>
+          <span>ElevenLabs Stimme</span>
         </div>
       </div>
       
