@@ -6,13 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Clock, Send, Building2, Globe } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Building2, Globe, FileText } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import ScrollReveal from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 import { trackFormSubmission, trackCTAClick, trackExternalLink } from "@/lib/analytics";
 import AnimatedLogo from "@/components/AnimatedLogo";
+import InquiryFormDialog from "@/components/InquiryFormDialog";
 
 const Kontakt = () => {
   const { toast } = useToast();
@@ -178,12 +179,34 @@ const Kontakt = () => {
               <ScrollReveal className="lg:col-span-2">
                 <Card className="border-border/50 shadow-xl">
                   <CardContent className="p-8 md:p-10">
+                    {/* Inquiry CTA */}
+                    <div className="mb-8 p-6 bg-primary/5 rounded-xl border border-primary/20">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-1">
+                            Qualifizierte Anfrage stellen
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            Für eine verbindliche Beratung mit persönlichem Ansprechpartner
+                          </p>
+                        </div>
+                        <InquiryFormDialog
+                          trigger={
+                            <Button className="gap-2 whitespace-nowrap">
+                              <FileText className="w-4 h-4" />
+                              Anfrage stellen
+                            </Button>
+                          }
+                        />
+                      </div>
+                    </div>
+
                     <div className="mb-8">
                       <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-                        Schreiben Sie uns
+                        Oder schreiben Sie uns direkt
                       </h2>
                       <p className="text-muted-foreground">
-                        Füllen Sie das Formular aus und wir melden uns schnellstmöglich bei Ihnen.
+                        Für allgemeine Fragen nutzen Sie gerne das Kontaktformular.
                       </p>
                     </div>
 
