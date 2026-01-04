@@ -111,11 +111,29 @@ const VoiceAgentDemo = () => {
       );
 
       if (!response.ok) {
-        throw new Error(`TTS request failed: ${response.status}`);
+        let serverMessage = `TTS request failed: ${response.status}`;
+        try {
+          const errJson = await response.json();
+          if (errJson?.error) serverMessage = errJson.error;
+          if (errJson?.details) {
+            // keep details for console only
+            console.warn("TTS details:", errJson.details);
+          }
+        } catch {
+          // ignore JSON parse errors
+        }
+
+        toast({
+          title: "ElevenLabs TTS nicht verfügbar",
+          description: "Der API-Key wird von ElevenLabs abgelehnt (z.B. keine Berechtigung, ungültig oder Free-Tier gesperrt).",
+          variant: "destructive",
+        });
+
+        throw new Error(serverMessage);
       }
 
       const data = await response.json();
-      
+
       if (data.error) {
         throw new Error(data.error);
       }
