@@ -67,8 +67,10 @@ const Navigation = () => {
       ],
     },
     { name: "Projekte", href: "/projekte" },
-    { name: "Medien", href: "/medien" },
+    { name: "Schnellübersicht", href: "/schnelluebersicht" },
     { name: "Kontakt", href: "/kontakt" },
+    { name: "Impressum", href: "/impressum" },
+    { name: "Datenschutz", href: "/datenschutz" },
   ];
 
   return (

@@ -7,7 +7,7 @@ const FloatingInquiryButton = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-6 left-6 z-40">
+    <div className="fixed top-24 right-6 z-40">
       <InquiryFormDialog
         trigger={
           <button
