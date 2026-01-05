@@ -127,28 +127,28 @@ const DeutLichtChat = () => {
 
   return (
     <>
-      {/* Chat Button */}
+      {/* Chat Button - Top Left */}
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-6 right-24 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all duration-300 flex items-center justify-center group",
+          "fixed top-24 left-6 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all duration-300 flex items-center justify-center group",
           isOpen && "scale-0 opacity-0"
         )}
         aria-label="Chat öffnen"
       >
         <MessageCircle className="w-6 h-6" />
-        <span className="absolute -top-10 right-0 bg-card text-card-foreground text-sm px-3 py-1 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-border">
+        <span className="absolute top-1/2 -translate-y-1/2 left-16 bg-card text-card-foreground text-sm px-3 py-1 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-border">
           Fragen? Chatten Sie mit uns!
         </span>
       </button>
 
-      {/* Chat Window */}
+      {/* Chat Window - Top Left */}
       <div
         className={cn(
-          "fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] bg-card rounded-2xl shadow-2xl border border-border transition-all duration-300 transform origin-bottom-right",
+          "fixed top-24 left-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] bg-card rounded-2xl shadow-2xl border border-border transition-all duration-300 transform origin-top-left",
           isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
         )}
-        style={{ height: '500px', maxHeight: 'calc(100vh - 6rem)' }}
+        style={{ height: '500px', maxHeight: 'calc(100vh - 8rem)' }}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border bg-primary/5 rounded-t-2xl">
