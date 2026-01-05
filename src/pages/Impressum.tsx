@@ -8,7 +8,7 @@ const Impressum = () => {
     <>
       <Helmet>
         <title>Impressum | DeutLicht® - Rechtliche Angaben</title>
-        <meta name="description" content="Impressum und rechtliche Angaben der DeutLicht® GmbH - Lichtwerbung und Außenwerbung in Berlin." />
+        <meta name="description" content="Impressum und rechtliche Angaben der Stadtnetz UG (haftungsbeschränkt) handelnd unter der Marke DeutLicht® - Digitalisierung und KI-Lösungen." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -22,7 +22,7 @@ const Impressum = () => {
               Impressum
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl">
-              Rechtliche Angaben gemäß § 5 TMG
+              Rechtliche Angaben gemäß § 5 TMG / § 18 Abs. 2 MStV
             </p>
           </ScrollReveal>
         </div>
@@ -35,13 +35,13 @@ const Impressum = () => {
             <ScrollReveal>
               <div className="mb-12">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Angaben gemäß § 5 TMG
+                  Angaben gemäß § 5 TMG / § 18 Abs. 2 MStV
                 </h2>
                 <div className="text-muted-foreground space-y-1">
-                  <p className="font-semibold text-foreground">DeutLicht UG (i.Gr.)</p>
+                  <p className="font-semibold text-foreground">Stadtnetz UG (haftungsbeschränkt)</p>
+                  <p>handelnd unter der Marke DeutLicht®</p>
                   <p>Gemeindeweg 4 (Mäuseturm)</p>
-                  <p>07546 Gera</p>
-                  <p>Deutschland</p>
+                  <p>07546 Gera (Deutschland)</p>
                 </div>
               </div>
             </ScrollReveal>
@@ -53,7 +53,7 @@ const Impressum = () => {
                 </h2>
                 <div className="text-muted-foreground space-y-1">
                   <p>Telefon: +49 178 5549216</p>
-                  <p>E-Mail: info@DeutLicht.de</p>
+                  <p>E-Mail: info@deutlicht.de</p>
                   <p>Web: www.deutlicht.de</p>
                 </div>
               </div>
@@ -62,10 +62,11 @@ const Impressum = () => {
             <ScrollReveal delay={0.2}>
               <div className="mb-12">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Vorübergehender Verantwortlicher
+                  Vertretungsberechtigte
                 </h2>
-                <div className="text-muted-foreground">
-                  <p>Carsten van de Sand</p>
+                <div className="text-muted-foreground space-y-1">
+                  <p className="font-semibold text-foreground">Geschäftsführer: Carsten van de Sand</p>
+                  <p>(Stadtnetz UG (haftungsbeschränkt))</p>
                 </div>
               </div>
             </ScrollReveal>
@@ -73,12 +74,44 @@ const Impressum = () => {
             <ScrollReveal delay={0.3}>
               <div className="mb-12">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-                  Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+                  Verantwortlich für den Inhalt
                 </h2>
                 <div className="text-muted-foreground space-y-1">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Inhaltlich verantwortlich gemäß § 18 Abs. 2 Medienstaatsvertrag (MStV):
+                  </p>
                   <p className="font-semibold text-foreground">Carsten van de Sand</p>
                   <p>Gemeindeweg 4 (Mäuseturm)</p>
-                  <p>07546 Gera</p>
+                  <p>07546 Gera (Deutschland)</p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.4}>
+              <div className="mb-12">
+                <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+                  Unternehmensangaben
+                </h2>
+                <div className="text-muted-foreground space-y-1">
+                  <p><strong className="text-foreground">Rechtsform:</strong> Unternehmergesellschaft (haftungsbeschränkt)</p>
+                  <p><strong className="text-foreground">Firmierung:</strong> Stadtnetz UG (haftungsbeschränkt)</p>
+                  <p><strong className="text-foreground">Marke:</strong> DeutLicht®</p>
+                  <p><strong className="text-foreground">Handelsregister:</strong> HRB 514530, Amtsgericht Jena</p>
+                  <p><strong className="text-foreground">Betriebsnummer:</strong> 90892833</p>
+                  <p><strong className="text-foreground">Steuernummer:</strong> 161/120/05343</p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.5}>
+              <div className="mb-12">
+                <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+                  Hinweis zur Marke
+                </h2>
+                <div className="text-muted-foreground">
+                  <p>
+                    Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz UG (haftungsbeschränkt).
+                  </p>
                 </div>
               </div>
             </ScrollReveal>

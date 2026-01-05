@@ -8,7 +8,7 @@ const Datenschutz = () => {
     <>
       <Helmet>
         <title>Datenschutzerklärung | DeutLicht® - Ihre Privatsphäre</title>
-        <meta name="description" content="Datenschutzerklärung der DeutLicht® GmbH - Informationen zum Umgang mit Ihren personenbezogenen Daten." />
+        <meta name="description" content="Datenschutzerklärung der Stadtnetz UG (haftungsbeschränkt) handelnd unter der Marke DeutLicht® - Informationen zum Umgang mit Ihren personenbezogenen Daten." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -75,11 +75,17 @@ const Datenschutz = () => {
                   2. Verantwortliche Stelle
                 </h2>
                 <div className="text-muted-foreground space-y-1 mb-4">
-                  <p className="font-semibold text-foreground">DeutLicht® GmbH</p>
-                  <p>Musterstraße 123</p>
-                  <p>12345 Berlin</p>
-                  <p>Telefon: +49 (0) 30 123 456 78</p>
-                  <p>E-Mail: datenschutz@deutlicht.de</p>
+                  <p className="font-semibold text-foreground">Stadtnetz UG (haftungsbeschränkt)</p>
+                  <p>handelnd unter der Marke DeutLicht®</p>
+                  <p>Gemeindeweg 4 (Mäuseturm)</p>
+                  <p>07546 Gera (Deutschland)</p>
+                  <p className="mt-2">Telefon: +49 178 5549216</p>
+                  <p>E-Mail: info@deutlicht.de</p>
+                  <p>Web: www.deutlicht.de</p>
+                </div>
+                <div className="text-muted-foreground space-y-1 mb-4 mt-4">
+                  <p className="font-semibold text-foreground">Geschäftsführer: Carsten van de Sand</p>
+                  <p>Handelsregister: HRB 514530, Amtsgericht Jena</p>
                 </div>
                 <p className="text-muted-foreground">
                   Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder 
@@ -229,7 +235,7 @@ const Datenschutz = () => {
             <ScrollReveal delay={0.7}>
               <div className="p-6 bg-muted/30 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Stand:</strong> Dezember 2024
+                  <strong className="text-foreground">Stand:</strong> Januar 2025
                 </p>
               </div>
             </ScrollReveal>
