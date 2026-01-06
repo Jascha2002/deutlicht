@@ -1,0 +1,83 @@
+import FormField from "../FormField";
+import { Input } from "@/components/ui/input";
+import { KlarheitsCheckData, WEBSITE_GOALS, WEBSITE_FEATURES } from "../types";
+
+interface ConditionalWebsiteProps {
+  data: KlarheitsCheckData;
+  onChange: (field: keyof KlarheitsCheckData, value: any) => void;
+}
+
+const ConditionalWebsite = ({ data, onChange }: ConditionalWebsiteProps) => {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+          <span className="text-primary text-lg">🌐</span>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">Website</h3>
+          <p className="text-sm text-muted-foreground">Details zu Ihrem Website-Projekt</p>
+        </div>
+      </div>
+
+      <FormField
+        type="radio"
+        name="existing_website"
+        label="Haben Sie bereits eine Website?"
+        value={data.existing_website}
+        onChange={(v) => onChange('existing_website', v)}
+        options={[
+          { value: 'ja', label: 'Ja, bestehende Website' },
+          { value: 'nein', label: 'Nein, Neuentwicklung' },
+        ]}
+      />
+
+      {data.existing_website === 'ja' && (
+        <div className="pl-4 border-l-2 border-primary/30">
+          <label className="text-sm font-medium block mb-2">
+            Aktuelle Website-URL
+          </label>
+          <Input
+            value={data.website_url}
+            onChange={(e) => onChange('website_url', e.target.value)}
+            placeholder="https://www.ihre-website.de"
+            className="bg-background"
+          />
+        </div>
+      )}
+
+      <FormField
+        type="checkbox-group"
+        name="website_goals"
+        label="Hauptziele der Website"
+        value={data.website_goals}
+        onChange={(v) => onChange('website_goals', v)}
+        options={WEBSITE_GOALS}
+      />
+
+      <FormField
+        type="radio"
+        name="content_creation"
+        label="Wer erstellt die Inhalte?"
+        value={data.content_creation}
+        onChange={(v) => onChange('content_creation', v)}
+        options={[
+          { value: 'kunde', label: 'Wir (Kunde)' },
+          { value: 'deutlicht', label: 'DeutLicht' },
+          { value: 'gemeinsam', label: 'Gemeinsam' },
+        ]}
+      />
+
+      <FormField
+        type="checkbox-group"
+        name="required_features"
+        label="Benötigte Funktionen"
+        value={data.required_features}
+        onChange={(v) => onChange('required_features', v)}
+        options={WEBSITE_FEATURES}
+      />
+    </div>
+  );
+};
+
+export default ConditionalWebsite;
