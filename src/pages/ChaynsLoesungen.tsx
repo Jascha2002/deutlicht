@@ -151,17 +151,17 @@ const ChaynsLoesungen = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/kontakt">
+                  <Link to="/klarheitscheck">
                     <Button size="lg" className="group w-full sm:w-auto">
-                      Kostenlose Beratung
+                      Klarheitscheck starten
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <a href="#anwendungen">
+                  <Link to="/kontakt">
                     <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                      Anwendungsbereiche
+                      Kostenlose Beratung
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </ScrollReveal>
             </div>
@@ -312,13 +312,13 @@ const ChaynsLoesungen = () => {
                 Bereit für Ihr digitales Geschäftsmodell?
               </h2>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Lassen Sie uns gemeinsam herausfinden, wie chayns® Ihr Unternehmen 
-                effizienter und kundenfreundlicher machen kann.
+                Unser Klarheitscheck hilft Ihnen in wenigen Minuten herauszufinden,
+                welche Lösung zu Ihrem Unternehmen passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/kontakt">
+                <Link to="/klarheitscheck">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Kostenlose Erstberatung
+                    Klarheitscheck starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

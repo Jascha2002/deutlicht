@@ -188,22 +188,17 @@ const ChaynsHardware = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/kontakt">
+                  <Link to="/klarheitscheck">
                     <Button size="lg" className="group w-full sm:w-auto">
-                      Beratungstermin vereinbaren
+                      Klarheitscheck starten
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <a href="#schloesser">
+                  <Link to="/kontakt">
                     <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                      Schlösser entdecken
+                      Beratungstermin vereinbaren
                     </Button>
-                  </a>
-                  <a href="#roboter">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                      Roboter entdecken
-                    </Button>
-                  </a>
+                  </Link>
                 </div>
               </ScrollReveal>
             </div>
@@ -426,19 +421,19 @@ const ChaynsHardware = () => {
                 Interesse an smarter Hardware?
               </h2>
               <p className="text-accent-foreground/80 text-lg mb-8">
-                Lassen Sie uns gemeinsam herausfinden, welche Hardware-Lösung 
+                Unser Klarheitscheck hilft Ihnen herauszufinden, welche Hardware-Lösung 
                 zu Ihrem Geschäftsmodell passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/kontakt">
+                <Link to="/klarheitscheck">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Kostenlose Beratung anfragen
+                    Klarheitscheck starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/chayns-loesungen">
+                <Link to="/leistungen/chayns-loesungen">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-accent-foreground/30 text-accent-foreground hover:bg-accent-foreground/10">
-                    Zurück zur Übersicht
+                    Zur Plattform-Übersicht
                   </Button>
                 </Link>
               </div>
