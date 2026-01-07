@@ -91,7 +91,7 @@ const LeistungenTeaser = () => {
               to="/klarheitscheck"
               className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105"
             >
-              Klarheitscheck starten – Bedarf klären
+              Klarheits-Check starten – Bedarf klären
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

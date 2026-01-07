@@ -1,82 +1,20 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Clock, Send, Building2, Globe, FileText } from "lucide-react";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { MapPin, Phone, Mail, Clock, Building2, Globe } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
-import { supabase } from "@/integrations/supabase/client";
-import { trackFormSubmission, trackCTAClick, trackExternalLink } from "@/lib/analytics";
+import { trackExternalLink } from "@/lib/analytics";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import InquiryFormDialog from "@/components/InquiryFormDialog";
+import InquiryForm from "@/components/InquiryForm";
+import { Button } from "@/components/ui/button";
 
 const Kontakt = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    subject: "",
-    message: ""
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
-
-      if (error) throw error;
-
-      trackFormSubmission("contact_form", true);
-      
-      toast({
-        title: "Nachricht gesendet!",
-        description: "Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.",
-      });
-
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        subject: "",
-        message: ""
-      });
-    } catch (error: any) {
-      console.error("Error sending email:", error);
-      trackFormSubmission("contact_form", false);
-      
-      toast({
-        title: "Fehler beim Senden",
-        description: "Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const contactInfo = [
     {
       icon: Building2,
       title: "Firmensitz",
-      content: "DeutLicht UG (i.Gr.)",
+      content: "Stadtnetz UG (haftungsbeschränkt)",
       subcontent: "Gemeindeweg 4, 07546 Gera"
     },
     {
@@ -88,7 +26,7 @@ const Kontakt = () => {
     {
       icon: Mail,
       title: "E-Mail",
-      content: "info@DeutLicht.de",
+      content: "info@deutlicht.de",
       subcontent: "Antwort innerhalb von 24h"
     },
     {
@@ -171,153 +109,24 @@ const Kontakt = () => {
           </div>
         </section>
 
-        {/* Contact Form & Info Section */}
+        {/* Inquiry Form & Info Section */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-12">
-              {/* Contact Form */}
+              {/* Inquiry Form */}
               <ScrollReveal className="lg:col-span-2">
                 <Card className="border-border/50 shadow-xl">
                   <CardContent className="p-8 md:p-10">
-                    {/* Inquiry CTA */}
-                    <div className="mb-8 p-6 bg-primary/5 rounded-xl border border-primary/20">
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-1">
-                            Qualifizierte Anfrage stellen
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            Für eine verbindliche Beratung mit persönlichem Ansprechpartner
-                          </p>
-                        </div>
-                        <InquiryFormDialog
-                          trigger={
-                            <Button className="gap-2 whitespace-nowrap">
-                              <FileText className="w-4 h-4" />
-                              Anfrage stellen
-                            </Button>
-                          }
-                        />
-                      </div>
-                    </div>
-
                     <div className="mb-8">
                       <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-                        Oder schreiben Sie uns direkt
+                        Qualifizierte Anfrage stellen
                       </h2>
                       <p className="text-muted-foreground">
-                        Für allgemeine Fragen nutzen Sie gerne das Kontaktformular.
+                        Für eine verbindliche Beratung mit persönlichem Ansprechpartner
                       </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="name">Name *</Label>
-                          <Input
-                            id="name"
-                            name="name"
-                            type="text"
-                            placeholder="Ihr vollständiger Name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            className="bg-background"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="email">E-Mail *</Label>
-                          <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="ihre@email.de"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            className="bg-background"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="phone">Telefon</Label>
-                          <Input
-                            id="phone"
-                            name="phone"
-                            type="tel"
-                            placeholder="+49 123 456789"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="bg-background"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="company">Unternehmen</Label>
-                          <Input
-                            id="company"
-                            name="company"
-                            type="text"
-                            placeholder="Ihr Unternehmen"
-                            value={formData.company}
-                            onChange={handleChange}
-                            className="bg-background"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="subject">Betreff *</Label>
-                        <Input
-                          id="subject"
-                          name="subject"
-                          type="text"
-                          placeholder="Worum geht es?"
-                          value={formData.subject}
-                          onChange={handleChange}
-                          required
-                          className="bg-background"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="message">Ihre Nachricht *</Label>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          placeholder="Beschreiben Sie Ihr Anliegen..."
-                          value={formData.message}
-                          onChange={handleChange}
-                          required
-                          rows={6}
-                          className="bg-background resize-none"
-                        />
-                      </div>
-
-                      <div className="flex items-start gap-3 text-sm text-muted-foreground">
-                        <p>
-                          Mit dem Absenden stimmen Sie unserer Datenschutzerklärung zu. 
-                          Ihre Daten werden vertraulich behandelt.
-                        </p>
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        size="lg" 
-                        className="w-full md:w-auto"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          "Wird gesendet..."
-                        ) : (
-                          <>
-                            <Send className="w-5 h-5 mr-2" />
-                            Nachricht senden
-                          </>
-                        )}
-                      </Button>
-                    </form>
+                    <InquiryForm />
                   </CardContent>
                 </Card>
               </ScrollReveal>
@@ -433,52 +242,12 @@ const Kontakt = () => {
                 <Card className="border-border/50 bg-primary/5">
                   <CardContent className="p-6">
                     <h3 className="font-semibold text-foreground mb-4">Online-Meeting</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                      Kein Termin vor Ort möglich? Gerne treffen wir uns auch virtuell per Video-Call.
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      Kein Problem! Wir bieten auch virtuelle Beratungsgespräche per Video-Call an.
                     </p>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Termin vereinbaren
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 md:py-24 bg-primary text-primary-foreground">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Bereit für die digitale Transformation?
-            </h2>
-            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-              Vereinbaren Sie jetzt Ihr kostenloses Erstgespräch und erfahren Sie, 
-              wie wir Ihr Unternehmen voranbringen können.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                variant="secondary"
-                onClick={() => trackExternalLink("phone_cta")}
-                asChild
-              >
-                <a href="tel:+491785549216">
-                  <Phone className="w-5 h-5 mr-2" />
-                  +49 178 5549216
-                </a>
-              </Button>
-              <Button 
-                size="lg" 
-                variant="secondary"
-                onClick={() => trackExternalLink("email_cta")}
-                asChild
-              >
-                <a href="mailto:info@deutlicht.de">
-                  <Mail className="w-5 h-5 mr-2" />
-                  info@DeutLicht.de
-                </a>
-              </Button>
             </div>
           </div>
         </section>

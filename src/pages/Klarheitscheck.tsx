@@ -7,10 +7,10 @@ const KlarheitscheckPage = () => {
   return (
     <>
       <Helmet>
-        <title>Klarheitscheck | DeutLicht - Digitale Beratung</title>
+        <title>Klarheits-Check | DeutLicht - Digitale Beratung</title>
         <meta 
           name="description" 
-          content="Der DeutLicht-Klarheitscheck: In wenigen Minuten zur richtigen digitalen Lösung. Durchblick. DeutLicht." 
+          content="Der DeutLicht-Klarheits-Check: In wenigen Minuten zur richtigen digitalen Lösung. Durchblick. DeutLicht." 
         />
       </Helmet>
       
