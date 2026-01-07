@@ -259,7 +259,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Der DeutLicht-Klarheitscheck
+            Der DeutLicht-Klarheits-Check
           </h1>
           
           <p className="text-lg text-muted-foreground">
@@ -272,7 +272,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
             <p className="text-muted-foreground leading-relaxed">
               <strong className="text-foreground">DeutLicht.</strong> Wo Komplexes einfach wird.
               <br /><br />
-              Unser digitaler Klarheitscheck zeigt in wenigen Minuten,
+              Unser digitaler Klarheits-Check zeigt in wenigen Minuten,
               welche Lösung wirklich zu Ihnen passt.
             </p>
           </div>
@@ -330,7 +330,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
               setFormData(initialFormData);
             }}
           >
-            Neuen Klarheitscheck starten
+            Neuen Klarheits-Check starten
           </Button>
         </div>
       </Card>

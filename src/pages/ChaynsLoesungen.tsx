@@ -153,7 +153,7 @@ const ChaynsLoesungen = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link to="/klarheitscheck">
                     <Button size="lg" className="group w-full sm:w-auto">
-                      Klarheitscheck starten
+                      Klarheits-Check starten
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
@@ -318,7 +318,7 @@ const ChaynsLoesungen = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/klarheitscheck">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Klarheitscheck starten
+                    Klarheits-Check starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

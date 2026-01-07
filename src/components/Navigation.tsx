@@ -66,7 +66,7 @@ const Navigation = () => {
         { name: "Förderberatung", href: "/leistungen#foerderung", icon: FileText },
       ],
     },
-    { name: "Klarheitscheck", href: "/klarheitscheck" },
+    { name: "Check", href: "/klarheitscheck" },
     { name: "Projekte", href: "/projekte" },
     { name: "Kontakt", href: "/kontakt" },
     { name: "Impressum", href: "/impressum" },

@@ -59,6 +59,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  to="/klarheitscheck"
+                  className="text-muted-foreground hover:text-accent transition-colors text-sm"
+                >
+                  Klarheits-Check
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/kontakt"
                   className="text-muted-foreground hover:text-accent transition-colors text-sm"
                 >
