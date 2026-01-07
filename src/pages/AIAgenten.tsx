@@ -184,17 +184,17 @@ const AIAgenten = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/kontakt">
+                <Link to="/klarheitscheck">
                   <Button size="lg" className="group w-full sm:w-auto">
-                    Kostenlose Beratung
+                    Klarheitscheck starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <a href="#agent-types">
+                <Link to="/kontakt">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                    Agent-Typen entdecken
+                    Kostenlose Beratung
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -460,19 +460,18 @@ const AIAgenten = () => {
                 Bereit für Ihre digitalen Mitarbeiter?
               </h2>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Lassen Sie uns gemeinsam herausfinden, wie AI Agenten Ihr Unternehmen 
-                effizienter und wettbewerbsfähiger machen können.
+                Unser Klarheitscheck hilft Ihnen herauszufinden, welche AI-Lösung zu Ihnen passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/kontakt">
+                <Link to="/klarheitscheck">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Kostenlose Erstberatung
+                    Klarheitscheck starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/projekte">
+                <Link to="/kontakt">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                    Referenzen ansehen
+                    Direkt Kontakt aufnehmen
                   </Button>
                 </Link>
               </div>

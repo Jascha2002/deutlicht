@@ -78,7 +78,7 @@ const LeistungenTeaser = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 space-y-4">
           <Link
             to="/leistungen"
             className="inline-flex items-center gap-2 text-accent hover:text-accent/80 font-medium transition-colors"
@@ -86,6 +86,15 @@ const LeistungenTeaser = () => {
             Alle Leistungen ansehen
             <ArrowRight className="w-5 h-5" />
           </Link>
+          <div className="pt-6">
+            <Link
+              to="/klarheitscheck"
+              className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105"
+            >
+              Klarheitscheck starten – Bedarf klären
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>
