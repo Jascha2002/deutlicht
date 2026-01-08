@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
-import { Accessibility, Plus, Minus, Sun, Moon, Type, RotateCcw, X } from "lucide-react";
+import { Accessibility, Plus, Minus, Sun, Type, RotateCcw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-const AccessibilityWidget = () => {
+interface AccessibilityWidgetProps {
+  triggerClassName?: string;
+}
+
+const AccessibilityWidget = ({ triggerClassName }: AccessibilityWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [fontSize, setFontSize] = useState(100);
   const [highContrast, setHighContrast] = useState(false);
@@ -68,22 +77,33 @@ const AccessibilityWidget = () => {
   };
 
   return (
-    <>
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed left-4 bottom-4 z-50 bg-primary text-primary-foreground p-3 rounded-full shadow-lg hover:bg-primary/90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        aria-label="Barrierefreiheit-Einstellungen öffnen"
-        aria-expanded={isOpen}
-      >
-        <Accessibility className="w-6 h-6" />
-      </button>
+    <div className="relative">
+      {/* Trigger Button with Tooltip */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
+              "text-muted-foreground hover:text-accent",
+              triggerClassName
+            )}
+            aria-label="Barrierefreiheit aktivieren"
+            aria-expanded={isOpen}
+          >
+            <Accessibility className="w-5 h-5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Barrierefreiheit aktivieren</p>
+        </TooltipContent>
+      </Tooltip>
 
-      {/* Widget Panel */}
+      {/* Widget Panel - Dropdown */}
       <div
         className={cn(
-          "fixed left-4 bottom-20 z-50 bg-card border border-border rounded-xl shadow-xl p-4 w-72 transition-all duration-300",
-          isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-4 invisible"
+          "absolute top-full right-0 mt-2 z-50 bg-card border border-border rounded-xl shadow-xl p-4 w-72 transition-all duration-300",
+          isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible pointer-events-none"
         )}
         role="dialog"
         aria-label="Barrierefreiheit-Einstellungen"
@@ -207,7 +227,7 @@ const AccessibilityWidget = () => {
           Zurücksetzen
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
