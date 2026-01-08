@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import KICheckCTA from "@/components/KICheckCTA";
 import LeistungenTeaser from "@/components/LeistungenTeaser";
 import Footer from "@/components/Footer";
-
 const Index = () => {
   return (
     <>
@@ -24,6 +24,7 @@ const Index = () => {
       
       <main id="main-content">
         <Hero />
+        <KICheckCTA />
         <LeistungenTeaser />
       </main>
 
