@@ -171,6 +171,12 @@ const Footer = () => {
             >
               Datenschutz
             </Link>
+            <Link
+              to="/barrierefreiheit"
+              className="text-muted-foreground hover:text-accent transition-colors text-sm"
+            >
+              Barrierefreiheit
+            </Link>
           </div>
         </div>
       </div>

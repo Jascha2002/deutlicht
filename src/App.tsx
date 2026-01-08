@@ -9,7 +9,6 @@ import { CookieBanner } from "@/components/CookieBanner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
 
-import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ElevenLabsWidget from "@/components/ElevenLabsWidget";
 import Index from "./pages/Index";
 import UeberUns from "./pages/UeberUns";
@@ -56,8 +55,6 @@ const App = () => (
             <GoogleAnalytics />
             <ScrollDepthTracker />
             <CookieBanner />
-            
-            <AccessibilityWidget />
             <ElevenLabsWidget />
           </BrowserRouter>
         </TooltipProvider>

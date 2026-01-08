@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
 
 interface SubMenuItem {
@@ -139,8 +140,9 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* CTA Button & Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* CTA Button, Accessibility & Theme Toggle */}
+          <div className="hidden lg:flex items-center gap-2">
+            <AccessibilityWidget />
             <ThemeToggle />
             <Link
               to="/kontakt"
@@ -237,7 +239,10 @@ const Navigation = () => {
             </div>
           ))}
           <div className="flex items-center justify-between mt-4 gap-3">
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <AccessibilityWidget />
+              <ThemeToggle />
+            </div>
             <Link
               to="/kontakt"
               onClick={() => {
