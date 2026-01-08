@@ -34,6 +34,7 @@ interface NavItem {
   name: string;
   href: string;
   submenu?: SubMenuItem[];
+  badge?: string;
 }
 
 const Navigation = () => {
@@ -67,6 +68,7 @@ const Navigation = () => {
         { name: "Förderberatung", href: "/leistungen#foerderung", icon: FileText },
       ],
     },
+    { name: "KI-Check", href: "/ki-check", badge: "Kostenlos" },
     { name: "Check", href: "/klarheitscheck" },
     { name: "Projekte", href: "/projekte" },
     { name: "Kontakt", href: "/kontakt" },
@@ -130,10 +132,15 @@ const Navigation = () => {
                   <Link
                     to={item.href}
                     onClick={() => trackNavClick(item.href)}
-                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex items-center gap-2"
                     role="menuitem"
                   >
                     {item.name}
+                    {item.badge && (
+                      <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse">
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 )}
               </div>
@@ -233,7 +240,14 @@ const Navigation = () => {
                   }}
                   className="block py-2 text-foreground/80 hover:text-accent"
                 >
-                  {item.name}
+                  <span className="flex flex-col items-start gap-1">
+                    <span>{item.name}</span>
+                    {item.badge && (
+                      <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse">
+                        {item.badge}
+                      </span>
+                    )}
+                  </span>
                 </Link>
               )}
             </div>
