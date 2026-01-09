@@ -22,7 +22,7 @@ import Schnelluebersicht from "./pages/Schnelluebersicht";
 import ChaynsLoesungen from "./pages/ChaynsLoesungen";
 import ChaynsHardware from "./pages/ChaynsHardware";
 import AIAgenten from "./pages/AIAgenten";
-import Klarheitscheck from "./pages/Klarheitscheck";
+import AngebotsGenerator from "./pages/AngebotsGenerator";
 import KICheck from "./pages/KICheck";
 import NotFound from "./pages/NotFound";
 
@@ -49,7 +49,8 @@ const App = () => (
               <Route path="/leistungen/chayns-loesungen" element={<ChaynsLoesungen />} />
               <Route path="/leistungen/chayns-hardware" element={<ChaynsHardware />} />
               <Route path="/leistungen/ai-agenten" element={<AIAgenten />} />
-              <Route path="/klarheitscheck" element={<Klarheitscheck />} />
+              <Route path="/angebots-generator" element={<AngebotsGenerator />} />
+              <Route path="/klarheitscheck" element={<AngebotsGenerator />} />
               <Route path="/ki-check" element={<KICheck />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

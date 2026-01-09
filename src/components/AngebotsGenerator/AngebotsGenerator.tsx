@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Send, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, FileText, CheckCircle2, Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import StepIndicator from "./StepIndicator";
@@ -17,11 +18,11 @@ import ConditionalVoicebots from "./steps/ConditionalVoicebots";
 import ConditionalProzesse from "./steps/ConditionalProzesse";
 import StepZusammenarbeit from "./steps/StepZusammenarbeit";
 
-interface KlarheitsCheckProps {
+interface AngebotsGeneratorProps {
   onComplete?: (data: KlarheitsCheckData) => void;
 }
 
-const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
+const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<KlarheitsCheckData>(initialFormData);
@@ -94,7 +95,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
     return [
       ...baseSteps,
       ...conditionalLabels,
-      { key: 'zusammenarbeit', label: 'Zusammenarbeit' },
+      { key: 'zusammenarbeit', label: 'Abschluss' },
     ];
   }, [conditionalSteps]);
 
@@ -214,7 +215,8 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
         ...formData,
         _meta: {
           submitted_at: new Date().toISOString(),
-          form_version: '1.0',
+          form_version: '2.0',
+          form_type: 'angebots-generator',
           ...analysis,
         },
       };
@@ -222,7 +224,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
       // Send to edge function
       const { error } = await supabase.functions.invoke('send-inquiry-email', {
         body: {
-          type: 'klarheitscheck',
+          type: 'angebots-generator',
           data: fullData,
         },
       });
@@ -233,8 +235,8 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
       onComplete?.(formData);
 
       toast({
-        title: "Anfrage erfolgreich gesendet!",
-        description: "Wir melden uns zeitnah bei Ihnen.",
+        title: "Angebot wird erstellt!",
+        description: "Sie erhalten es in Kürze per E-Mail.",
       });
 
     } catch (error) {
@@ -254,32 +256,38 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
     return (
       <Card className="max-w-2xl mx-auto p-8 md:p-12">
         <div className="text-center space-y-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-            <Sparkles className="w-8 h-8 text-primary" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-2xl mb-4">
+            <FileText className="w-8 h-8 text-accent" />
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Der DeutLicht-Klarheits-Check
+            Der DeutLicht Angebots-Generator
           </h1>
           
           <p className="text-lg text-muted-foreground">
-            In wenigen Minuten zur richtigen digitalen Lösung.
+            Ihr personalisiertes Angebot in nur 5 Minuten.
             <br />
-            <span className="font-medium text-foreground">Durchblick. DeutLicht.</span>
+            <span className="font-medium text-foreground">Kostenlos und unverbindlich.</span>
           </p>
           
-          <div className="bg-muted/50 rounded-xl p-6 text-left">
+          <div className="bg-accent/5 border border-accent/20 rounded-xl p-6 text-left">
             <p className="text-muted-foreground leading-relaxed">
-              <strong className="text-foreground">DeutLicht.</strong> Wo Komplexes einfach wird.
+              <strong className="text-foreground">So funktioniert's:</strong>
               <br /><br />
-              Unser digitaler Klarheits-Check zeigt in wenigen Minuten,
-              welche Lösung wirklich zu Ihnen passt.
+              Beantworten Sie einige Fragen zu Ihrem Projekt und erhalten Sie 
+              eine individuelle Kostenabschätzung mit konkreten Handlungsempfehlungen.
             </p>
           </div>
           
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <span className="inline-block w-2 h-2 bg-primary/60 rounded-full"></span>
-            <span>Dauer: ca. 2–4 Minuten</span>
+          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
+              Dauer: ca. 5 Minuten
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 bg-accent rounded-full"></span>
+              100% kostenlos
+            </span>
           </div>
           
           <Button 
@@ -287,7 +295,7 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
             onClick={() => setStarted(true)}
             className="gap-2 text-lg px-8 py-6"
           >
-            Bedarf klären
+            Jetzt Angebot anfordern
             <ArrowRight className="w-5 h-5" />
           </Button>
         </div>
@@ -304,34 +312,54 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
             <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
           </div>
           
-          <h1 className="text-3xl font-bold">Vielen Dank!</h1>
+          <h1 className="text-3xl font-bold">Ihr Angebot wird erstellt!</h1>
           
           <p className="text-lg text-muted-foreground">
-            Ihre Anfrage wurde erfolgreich übermittelt.
-            <br />
-            Wir melden uns zeitnah bei Ihnen.
+            Sie erhalten es in Kürze per E-Mail.
           </p>
           
           <div className="bg-muted/50 rounded-xl p-6">
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">Was passiert jetzt?</strong>
               <br /><br />
-              Unser Team analysiert Ihre Angaben und bereitet ein individuelles Angebot vor. 
-              Sie erhalten in Kürze eine E-Mail mit den nächsten Schritten.
+              Unser Team analysiert Ihre Angaben und erstellt ein individuelles Angebot 
+              mit vorläufiger Kostenabschätzung. Sie erhalten eine E-Mail mit:
             </p>
+            <ul className="text-left mt-4 space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                Zusammenfassung Ihrer angeforderten Leistungen
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                Vorläufige Kostenabschätzung
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                Konkrete nächste Schritte
+              </li>
+            </ul>
           </div>
           
-          <Button 
-            variant="outline" 
-            onClick={() => {
-              setStarted(false);
-              setIsComplete(false);
-              setCurrentStep(1);
-              setFormData(initialFormData);
-            }}
-          >
-            Neuen Klarheits-Check starten
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/">
+              <Button variant="default" className="gap-2 w-full sm:w-auto">
+                <Home className="w-4 h-4" />
+                Zurück zur Startseite
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setStarted(false);
+                setIsComplete(false);
+                setCurrentStep(1);
+                setFormData(initialFormData);
+              }}
+            >
+              Neues Angebot anfordern
+            </Button>
+          </div>
         </div>
       </Card>
     );
@@ -370,13 +398,13 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
           <Button 
             onClick={handleSubmit} 
             disabled={isSubmitting}
-            className="gap-2"
+            className="gap-2 bg-accent hover:bg-accent/90"
           >
             {isSubmitting ? (
               <>Wird gesendet...</>
             ) : (
               <>
-                Anfrage absenden
+                Angebot anfordern
                 <Send className="w-4 h-4" />
               </>
             )}
@@ -387,4 +415,4 @@ const KlarheitsCheck = ({ onComplete }: KlarheitsCheckProps) => {
   );
 };
 
-export default KlarheitsCheck;
+export default AngebotsGenerator;

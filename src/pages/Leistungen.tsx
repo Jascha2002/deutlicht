@@ -324,16 +324,21 @@ const Leistungen = () => {
                       ))}
                     </div>
 
+                    {/* Hint text */}
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Kosten für Ihre Situation? → Jetzt Angebot erstellen
+                    </p>
+                    
                     <div className="flex flex-wrap gap-3">
-                      <Link to="/klarheitscheck">
-                        <Button className="group">
-                          Klarheits-Check starten
-                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
                       <Link to="/kontakt">
                         <Button variant="outline" className="group">
                           Beratung anfragen
+                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                      <Link to="/angebots-generator">
+                        <Button className="group">
+                          Angebot erstellen
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
@@ -466,12 +471,12 @@ const Leistungen = () => {
                 Bereit für den nächsten Schritt?
               </h2>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Unser Klarheits-Check hilft Ihnen in wenigen Minuten, die passende Lösung zu finden.
+                Unser Angebots-Generator erstellt Ihnen in wenigen Minuten ein personalisiertes Angebot.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/klarheitscheck">
+                <Link to="/angebots-generator">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Klarheits-Check starten
+                    Angebot anfordern
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

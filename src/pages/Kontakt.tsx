@@ -1,13 +1,14 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Clock, Building2, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MapPin, Phone, Mail, Clock, Building2, Globe, ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { trackExternalLink } from "@/lib/analytics";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import InquiryForm from "@/components/InquiryForm";
-import { Button } from "@/components/ui/button";
 
 const Kontakt = () => {
   const contactInfo = [
@@ -106,6 +107,28 @@ const Kontakt = () => {
                 </Card>
               </div>
             </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Quick Way CTA */}
+        <section className="py-8 bg-accent/5 border-y border-accent/20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  Du möchtest schneller zu den Kosten?
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Nutze unseren Angebots-Generator für sofortige Kostenabschätzung.
+                </p>
+              </div>
+              <Link to="/angebots-generator">
+                <Button className="gap-2 whitespace-nowrap">
+                  Angebots-Generator nutzen
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
 

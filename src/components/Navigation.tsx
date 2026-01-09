@@ -35,6 +35,7 @@ interface NavItem {
   href: string;
   submenu?: SubMenuItem[];
   badge?: string;
+  badgeStyle?: 'inline' | 'below';
 }
 
 const Navigation = () => {
@@ -68,12 +69,10 @@ const Navigation = () => {
         { name: "Förderberatung", href: "/leistungen#foerderung", icon: FileText },
       ],
     },
-    { name: "KI-Check", href: "/ki-check", badge: "Kostenlos" },
-    { name: "Check", href: "/klarheitscheck" },
+    { name: "KI-Check", href: "/ki-check", badge: "kostenlos", badgeStyle: 'below' },
+    { name: "Angebots-Generator", href: "/angebots-generator" },
     { name: "Projekte", href: "/projekte" },
     { name: "Kontakt", href: "/kontakt" },
-    { name: "Impressum", href: "/impressum" },
-    { name: "Datenschutz", href: "/datenschutz" },
   ];
 
   return (
@@ -132,12 +131,17 @@ const Navigation = () => {
                   <Link
                     to={item.href}
                     onClick={() => trackNavClick(item.href)}
-                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex items-center gap-2"
+                    className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex flex-col items-center"
                     role="menuitem"
                   >
-                    {item.name}
-                    {item.badge && (
-                      <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse">
+                    <span>{item.name}</span>
+                    {item.badge && item.badgeStyle === 'below' && (
+                      <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded bg-yellow-400 text-yellow-900 -mt-0.5">
+                        {item.badge}
+                      </span>
+                    )}
+                    {item.badge && item.badgeStyle !== 'below' && (
+                      <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse ml-2">
                         {item.badge}
                       </span>
                     )}
@@ -243,7 +247,12 @@ const Navigation = () => {
                   <span className="flex flex-col items-start gap-1">
                     <span>{item.name}</span>
                     {item.badge && (
-                      <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse">
+                      <span className={cn(
+                        "inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded",
+                        item.badgeStyle === 'below' 
+                          ? "bg-yellow-400 text-yellow-900" 
+                          : "bg-accent text-accent-foreground animate-pulse rounded-full"
+                      )}>
                         {item.badge}
                       </span>
                     )}
