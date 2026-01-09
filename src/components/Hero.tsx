@@ -48,19 +48,19 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4" role="group" aria-label="Handlungsoptionen">
             <Link
-              to="/klarheitscheck"
-              onClick={() => trackCTAClick("Klarheits-Check starten", "hero")}
+              to="/angebots-generator"
+              onClick={() => trackCTAClick("Jetzt Angebot anfordern", "hero")}
               className="group flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
-              Klarheits-Check starten
+              Jetzt Angebot anfordern
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
             <Link
-              to="/schnelluebersicht"
-              onClick={() => trackCTAClick("Schnellübersicht lesen", "hero")}
+              to="/leistungen"
+              onClick={() => trackCTAClick("Mehr erfahren", "hero")}
               className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-accent px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
-              Schnellübersicht lesen
+              Mehr erfahren
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
             <Link
