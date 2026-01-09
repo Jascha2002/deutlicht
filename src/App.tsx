@@ -23,6 +23,7 @@ import ChaynsLoesungen from "./pages/ChaynsLoesungen";
 import ChaynsHardware from "./pages/ChaynsHardware";
 import AIAgenten from "./pages/AIAgenten";
 import Klarheitscheck from "./pages/Klarheitscheck";
+import KICheck from "./pages/KICheck";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/leistungen/chayns-hardware" element={<ChaynsHardware />} />
               <Route path="/leistungen/ai-agenten" element={<AIAgenten />} />
               <Route path="/klarheitscheck" element={<Klarheitscheck />} />
+              <Route path="/ki-check" element={<KICheck />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
