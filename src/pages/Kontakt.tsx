@@ -119,12 +119,12 @@ const Kontakt = () => {
                   Du möchtest schneller zu den Kosten?
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Nutze unseren Angebots-Generator für sofortige Kostenabschätzung.
+                  Nutze unsere Projektanfrage für sofortige Kostenabschätzung.
                 </p>
               </div>
-              <Link to="/angebots-generator">
+              <Link to="/projektanfrage">
                 <Button className="gap-2 whitespace-nowrap">
-                  Angebots-Generator nutzen
+                  Projektanfrage starten
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>

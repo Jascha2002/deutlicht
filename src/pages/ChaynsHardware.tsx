@@ -188,9 +188,9 @@ const ChaynsHardware = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/klarheitscheck">
+                  <Link to="/projektanfrage">
                     <Button size="lg" className="group w-full sm:w-auto">
-                      Klarheits-Check starten
+                      Projektanfrage starten
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
@@ -421,13 +421,13 @@ const ChaynsHardware = () => {
                 Interesse an smarter Hardware?
               </h2>
               <p className="text-accent-foreground/80 text-lg mb-8">
-                Unser Klarheitscheck hilft Ihnen herauszufinden, welche Hardware-Lösung 
+                Unsere Projektanfrage hilft Ihnen herauszufinden, welche Hardware-Lösung 
                 zu Ihrem Geschäftsmodell passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/klarheitscheck">
+                <Link to="/projektanfrage">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Klarheits-Check starten
+                    Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

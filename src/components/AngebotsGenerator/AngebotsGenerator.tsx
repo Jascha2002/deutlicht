@@ -216,7 +216,7 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
         _meta: {
           submitted_at: new Date().toISOString(),
           form_version: '2.0',
-          form_type: 'angebots-generator',
+          form_type: 'projektanfrage',
           ...analysis,
         },
       };
@@ -224,7 +224,7 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
       // Send to edge function
       const { error } = await supabase.functions.invoke('send-inquiry-email', {
         body: {
-          type: 'angebots-generator',
+          type: 'projektanfrage',
           data: fullData,
         },
       });
@@ -261,7 +261,7 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Der DeutLicht Angebots-Generator
+            Die DeutLicht Projektanfrage
           </h1>
           
           <p className="text-lg text-muted-foreground">

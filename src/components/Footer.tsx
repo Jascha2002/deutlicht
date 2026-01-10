@@ -67,11 +67,11 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/angebots-generator"
+                  to="/projektanfrage"
                   className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-1"
                 >
                   <FileText className="w-3 h-3" />
-                  Angebots-Generator
+                  Projektanfrage
                 </Link>
               </li>
               <li>
@@ -163,10 +163,10 @@ const Footer = () => {
             {/* Quick CTA */}
             <div className="mt-6 pt-4 border-t border-border">
               <Link
-                to="/angebots-generator"
+                to="/projektanfrage"
                 className="inline-flex items-center gap-2 text-accent hover:text-accent/80 text-sm font-medium transition-colors"
               >
-                Jetzt Angebot anfordern
+                Jetzt Projektanfrage starten
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -180,10 +180,10 @@ const Footer = () => {
           </p>
           <div className="flex items-center gap-6">
             <Link
-              to="/angebots-generator"
+              to="/projektanfrage"
               className="text-muted-foreground hover:text-accent transition-colors text-sm"
             >
-              Angebots-Generator
+              Projektanfrage
             </Link>
             <Link
               to="/impressum"
