@@ -240,30 +240,30 @@ const handler = async (req: Request): Promise<Response> => {
 
       // Send notification to business
       const notificationEmail = await resend.emails.send({
-        from: "DeutLicht Klarheits-Check <kontakt@deutlicht.de>",
+        from: "DeutLicht Projektanfrage <kontakt@deutlicht.de>",
         to: ["info@deutlicht.de"],
-        subject: `🎯 Klarheits-Check: ${data.company_name} | ${data._meta?.lead_priority || 'Normal'} Priorität`,
+        subject: `🎯 Projektanfrage: ${data.company_name} | ${data._meta?.lead_priority || 'Normal'} Priorität`,
         html: formatKlarheitsCheckEmail(data),
       });
 
-      console.log("Klarheits-Check notification sent:", notificationEmail);
+      console.log("Projektanfrage notification sent:", notificationEmail);
 
       // Send confirmation to customer
       const confirmationEmail = await resend.emails.send({
         from: "DeutLicht <kontakt@deutlicht.de>",
         to: [data.email],
-        subject: "Ihr DeutLicht-Klarheits-Check – Wir analysieren Ihren Bedarf!",
+        subject: "Ihre DeutLicht-Projektanfrage – Wir analysieren Ihren Bedarf!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #0f172a; margin-bottom: 10px;">Vielen Dank für Ihren Klarheits-Check!</h1>
+              <h1 style="color: #0f172a; margin-bottom: 10px;">Vielen Dank für Ihre Projektanfrage!</h1>
               <p style="color: #64748b; font-size: 16px;">Wir haben Ihre Angaben erhalten und analysieren nun Ihren individuellen Bedarf.</p>
             </div>
 
             <div style="background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px;">
               <p style="margin: 0; color: #0f172a;">Sehr geehrte/r ${data.contact_person},</p>
               <p style="color: #334155; line-height: 1.6;">
-                herzlichen Dank, dass Sie sich Zeit für unseren Klarheits-Check genommen haben. Basierend auf Ihren Angaben erstellen wir nun eine erste Analyse und Empfehlung.
+                herzlichen Dank, dass Sie sich Zeit für unsere Projektanfrage genommen haben. Basierend auf Ihren Angaben erstellen wir nun eine erste Analyse und Empfehlung.
               </p>
               <p style="color: #334155; line-height: 1.6;">
                 <strong>Ein persönlicher Berater wird sich innerhalb von 24 Stunden bei Ihnen melden.</strong>

@@ -49,6 +49,7 @@ const App = () => (
               <Route path="/leistungen/chayns-loesungen" element={<ChaynsLoesungen />} />
               <Route path="/leistungen/chayns-hardware" element={<ChaynsHardware />} />
               <Route path="/leistungen/ai-agenten" element={<AIAgenten />} />
+              <Route path="/projektanfrage" element={<AngebotsGenerator />} />
               <Route path="/angebots-generator" element={<AngebotsGenerator />} />
               <Route path="/klarheitscheck" element={<AngebotsGenerator />} />
               <Route path="/ki-check" element={<KICheck />} />

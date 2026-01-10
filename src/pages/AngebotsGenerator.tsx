@@ -7,10 +7,10 @@ const AngebotsGeneratorPage = () => {
   return (
     <>
       <Helmet>
-        <title>Angebots-Generator | DeutLicht - Ihr persönliches Angebot in 5 Minuten</title>
+        <title>Projektanfrage | DeutLicht - Ihr persönliches Angebot in 5 Minuten</title>
         <meta 
           name="description" 
-          content="Der DeutLicht Angebots-Generator: In wenigen Minuten zu Ihrem persönlichen Angebot. Kostenlos und unverbindlich." 
+          content="Die DeutLicht Projektanfrage: In wenigen Minuten zu Ihrem persönlichen Angebot. Kostenlos und unverbindlich." 
         />
       </Helmet>
       

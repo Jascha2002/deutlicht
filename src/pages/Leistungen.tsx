@@ -336,9 +336,9 @@ const Leistungen = () => {
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
-                      <Link to="/angebots-generator">
+                      <Link to="/projektanfrage">
                         <Button className="group">
-                          Angebot erstellen
+                          Projektanfrage stellen
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
@@ -471,12 +471,12 @@ const Leistungen = () => {
                 Bereit für den nächsten Schritt?
               </h2>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Unser Angebots-Generator erstellt Ihnen in wenigen Minuten ein personalisiertes Angebot.
+                Unsere Projektanfrage erstellt Ihnen in wenigen Minuten ein personalisiertes Angebot.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/angebots-generator">
+                <Link to="/projektanfrage">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Angebot anfordern
+                    Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
