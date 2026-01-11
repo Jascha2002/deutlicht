@@ -70,6 +70,7 @@ const Navigation = () => {
       ],
     },
     { name: "KI-Check", href: "/ki-check", badge: "kostenlos", badgeStyle: 'below' },
+    { name: "Branchen-Lösungen", href: "/branchen-loesungen" },
     { name: "Projektanfrage", href: "/projektanfrage" },
     { name: "Projekte", href: "/projekte" },
     { name: "Kontakt", href: "/kontakt" },

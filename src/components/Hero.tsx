@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
 import { trackCTAClick } from "@/lib/analytics";
+import BranchenSelectorButton from "@/components/BranchenSelectorButton";
 
 const Hero = () => {
   return (
@@ -20,6 +21,9 @@ const Hero = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
       </div>
+
+      {/* Branchen-Selector Button */}
+      <BranchenSelectorButton />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
