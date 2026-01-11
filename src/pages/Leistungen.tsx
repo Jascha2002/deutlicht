@@ -450,10 +450,16 @@ const Leistungen = () => {
                         <h4 className="font-display text-xl font-semibold text-accent-foreground mb-3">
                           Kostenloser Fördermittel-Check
                         </h4>
-                        <p className="text-accent-foreground/90 text-sm leading-relaxed">
+                        <p className="text-accent-foreground/90 text-sm leading-relaxed mb-4">
                           Prüfen Sie jetzt, welche Förderprogramme für Ihr Unternehmen in Frage kommen. 
                           Unverbindlich und kostenlos.
                         </p>
+                        <Link to="/kontakt#anfrage-formular">
+                          <Button variant="secondary" className="group">
+                            Jetzt Anfrage stellen
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
                       </div>
                     )}
                   </ScrollReveal>

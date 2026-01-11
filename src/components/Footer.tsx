@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/branchen-loesungen"
+                  to="/leistungen/branchen-loesungen"
                   className="text-muted-foreground hover:text-accent transition-colors text-sm"
                 >
                   Branchen-Lösungen
