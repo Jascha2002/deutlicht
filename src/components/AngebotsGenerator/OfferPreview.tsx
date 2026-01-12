@@ -151,7 +151,7 @@ const OfferPreview = ({ data, onDownload }: OfferPreviewProps) => {
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Umsetzung</p>
               <p className="font-semibold text-lg">{paket.umsetzungWochen} Wochen</p>
-              <p className="text-sm text-muted-foreground">Bis {kalkulation.umsetzungEnde}</p>
+              <p className="text-sm text-muted-foreground">Bis {kalkulation.projektEndeDatum}</p>
             </div>
           </div>
         </Card>

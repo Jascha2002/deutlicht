@@ -1,4 +1,5 @@
-// DeutLicht Angebotsgenerator v3.1 - Branchenpakete & Kalkulation
+// DeutLicht Angebotsgenerator v3.1 - Vollautomatische Angebotserstellung
+// JSON-Projektanfrage → PDF-Angebot in 30 Sekunden
 
 export interface BranchenPaket {
   id: string;
@@ -11,6 +12,7 @@ export interface BranchenPaket {
   zielgruppe: string;
 }
 
+// Branchenspezifische Bot-Pakete
 export const branchenPakete: BranchenPaket[] = [
   {
     id: "handwerk",
@@ -23,7 +25,7 @@ export const branchenPakete: BranchenPaket[] = [
       "Angebots- & Terminabstimmung",
       "Wartungs- & Upsell-Hinweise",
       "Kundenstatus-Updates",
-      "Dokumentenmanagement"
+      "70% weniger Telefonate"
     ],
     umsetzungWochen: 4,
     zielgruppe: "Handwerksbetriebe mit 5-50 Mitarbeitern"
@@ -62,6 +64,55 @@ export const branchenPakete: BranchenPaket[] = [
     zielgruppe: "Online-Shops mit 1.000+ Bestellungen/Monat"
   },
   {
+    id: "produktion",
+    branche: "Maschinenbau & Industrie",
+    botName: "ProdBot",
+    einmalpreis: 3490,
+    monatspreis: 299,
+    features: [
+      "Produktkonfigurator",
+      "Technische Vorqualifizierung",
+      "Angebotsvorbereitung",
+      "ERP-Integration",
+      "Lead-Scoring & Übergabe",
+      "50% kürzere Angebotsphasen"
+    ],
+    umsetzungWochen: 6,
+    zielgruppe: "Produzierende Unternehmen mit komplexen Produkten"
+  },
+  {
+    id: "gesundheit",
+    branche: "Gesundheit & Pflege",
+    botName: "CareBot",
+    einmalpreis: 2490,
+    monatspreis: 199,
+    features: [
+      "Terminvereinbarung & Erinnerungen",
+      "Angehörigen-Updates",
+      "Dokumentationshilfe",
+      "Informationshotline",
+      "DSGVO-konforme Patientendaten"
+    ],
+    umsetzungWochen: 5,
+    zielgruppe: "Arztpraxen, Pflegeeinrichtungen, Therapiepraxen"
+  },
+  {
+    id: "bildung",
+    branche: "Bildung & Weiterbildung",
+    botName: "LernBot",
+    einmalpreis: 2790,
+    monatspreis: 249,
+    features: [
+      "Kursberatung & Anmeldung",
+      "Förderfähigkeits-Check (BAFA)",
+      "Terminmanagement",
+      "Teilnehmerkommunikation",
+      "Zertifikats-Verwaltung"
+    ],
+    umsetzungWochen: 4,
+    zielgruppe: "Bildungsträger, Schulen, Akademien"
+  },
+  {
     id: "gastronomie",
     branche: "Gastronomie & Hotellerie",
     botName: "GastroBot",
@@ -72,7 +123,7 @@ export const branchenPakete: BranchenPaket[] = [
       "Reservierungsmanagement",
       "Abhol- & Lieferstatus",
       "Zusatzverkäufe (Upselling)",
-      "Gästefeedback-Erfassung"
+      "+30% Umsatz durch permanente Bestellbarkeit"
     ],
     umsetzungWochen: 4,
     zielgruppe: "Restaurants, Hotels, Cafés"
@@ -88,58 +139,10 @@ export const branchenPakete: BranchenPaket[] = [
       "Formularhilfe & Antragsstatus",
       "Terminbuchung",
       "Bürgerumfragen",
-      "Eskalation an Sachbearbeiter"
+      "80% Routineanfragen automatisiert"
     ],
     umsetzungWochen: 6,
     zielgruppe: "Kommunen und Behörden"
-  },
-  {
-    id: "gesundheit",
-    branche: "Gesundheit & Pflege",
-    botName: "CareBot",
-    einmalpreis: 2990,
-    monatspreis: 249,
-    features: [
-      "Terminvereinbarung & Erinnerungen",
-      "Angehörigen-Updates",
-      "Dokumentationshilfe",
-      "Informationshotline",
-      "DSGVO-konforme Patientendaten"
-    ],
-    umsetzungWochen: 5,
-    zielgruppe: "Arztpraxen, Pflegeeinrichtungen, Therapiepraxen"
-  },
-  {
-    id: "industrie",
-    branche: "Maschinenbau & Industrie",
-    botName: "ProdBot",
-    einmalpreis: 5990,
-    monatspreis: 449,
-    features: [
-      "Produktkonfigurator",
-      "Technische Vorqualifizierung",
-      "Angebotsvorbereitung",
-      "ERP-Integration",
-      "Lead-Scoring & Übergabe"
-    ],
-    umsetzungWochen: 8,
-    zielgruppe: "Produzierende Unternehmen mit komplexen Produkten"
-  },
-  {
-    id: "bildung",
-    branche: "Bildung & Weiterbildung",
-    botName: "LernBot",
-    einmalpreis: 1990,
-    monatspreis: 149,
-    features: [
-      "Kursberatung & Anmeldung",
-      "Förderfähigkeits-Check (BAFA)",
-      "Terminmanagement",
-      "Teilnehmerkommunikation",
-      "Zertifikats-Verwaltung"
-    ],
-    umsetzungWochen: 4,
-    zielgruppe: "Bildungsträger, Schulen, Akademien"
   },
   {
     id: "immobilien",
@@ -159,7 +162,7 @@ export const branchenPakete: BranchenPaket[] = [
   },
   {
     id: "standard",
-    branche: "Standard-Paket",
+    branche: "Sonstiges",
     botName: "BranchenBot",
     einmalpreis: 2490,
     monatspreis: 199,
@@ -175,28 +178,52 @@ export const branchenPakete: BranchenPaket[] = [
   }
 ];
 
-// Unternehmensgrößen-Faktoren
+// Website-Preise
+export const websitePreise = {
+  onepager: { min: 1200, max: 2200, avg: 1800 },
+  "5-seiten": { min: 1900, max: 3800, avg: 3500, perPage: 340 },
+  webshop_starter: { min: 3500, max: 5500, avg: 4500 }
+};
+
+// Voicebot-Preise
+export const voicebotPreise = {
+  weiterleitung: 3500,
+  qualifizierung: 6000,
+  vollauto: 9500
+};
+
+// Unternehmensgrößen-Faktoren (aktualisiert)
 export const COMPANY_SIZE_FACTORS: Record<string, number> = {
   "1-10": 1.0,
-  "11-50": 1.2,
-  "51-250": 1.5,
-  ">250": 2.0
+  "11-50": 1.3,
+  "51-250": 1.6,
+  ">250": 2.2
 };
 
-// Zeitfaktoren (Dringlichkeit)
-export const TIME_FACTORS: Record<string, number> = {
-  "sofort": 1.15,
-  "1-3-monate": 1.0,
-  "3-6-monate": 0.95,
-  "offen": 1.0
+// Zeitfaktoren basierend auf Monaten bis Projektstart
+export const TIME_FACTORS: Record<string, { factor: number; label: string }> = {
+  ">6": { factor: 0.85, label: "Mehr als 6 Monate Vorlauf" },
+  "3-6": { factor: 0.9, label: "3-6 Monate Vorlauf" },
+  "1-3": { factor: 1.0, label: "1-3 Monate Vorlauf" },
+  "<1": { factor: 1.2, label: "Weniger als 1 Monat" },
+  "<2w": { factor: 1.4, label: "Express (unter 2 Wochen)" }
 };
 
-// Hosting-Kosten
-export const HOSTING_COSTS = {
-  onepager: 12,
-  service: 39,
-  total: 51
-};
+// Hosting-Pakete (aktualisiert)
+export interface HostingPaket {
+  id: string;
+  name: string;
+  basis: number;
+  service: number;
+  total: number;
+  jahrespreis: number;
+}
+
+export const hostingPakete: HostingPaket[] = [
+  { id: "onepager", name: "Onepager", basis: 12, service: 39, total: 51, jahrespreis: 561 },
+  { id: "5-seiten", name: "5-Seiten Website", basis: 22, service: 42, total: 64, jahrespreis: 704 },
+  { id: "webshop", name: "Webshop", basis: 79, service: 59, total: 138, jahrespreis: 1518 }
+];
 
 // Zusatzleistungen
 export interface Zusatzleistung {
@@ -224,68 +251,179 @@ export function getBranchenPaketByIndustry(industry: string): BranchenPaket {
     "Gesundheitswesen": "gesundheit",
     "IT & Technologie": "standard",
     "Beratung & Dienstleistung": "kanzlei",
-    "Produktion & Industrie": "industrie",
+    "Produktion & Industrie": "produktion",
     "Immobilien": "immobilien",
     "Bildung & Schulung": "bildung",
     "Öffentliche Verwaltung / Kommune": "verwaltung",
     "Vereine & Verbände": "standard",
-    "Sonstiges": "standard"
+    "Sonstiges": "standard",
+    // Alternative Schreibweisen
+    "Kanzlei": "kanzlei",
+    "ECommerce": "ecommerce",
+    "Industrie": "produktion",
+    "Kommunen": "verwaltung",
+    "Gesundheit": "gesundheit",
+    "Bildung": "bildung"
   };
 
   const paketId = industryMapping[industry] || "standard";
   return branchenPakete.find(p => p.id === paketId) || branchenPakete.find(p => p.id === "standard")!;
 }
 
-// Kalkulationslogik
+// Berechne Monate bis Projektstart
+export function berechneMonateBisStart(projectStart: string): { months: number; category: string } {
+  if (!projectStart) return { months: 3, category: "1-3" };
+  
+  // Handle predefined categories
+  if (projectStart === 'sofort') return { months: 0, category: "<1" };
+  if (projectStart === '1-3-monate') return { months: 2, category: "1-3" };
+  if (projectStart === '3-6-monate') return { months: 4, category: "3-6" };
+  if (projectStart === 'offen') return { months: 3, category: "1-3" };
+  
+  // Handle date string
+  const startDate = new Date(projectStart);
+  const today = new Date();
+  const diffTime = startDate.getTime() - today.getTime();
+  const diffMonths = diffTime / (1000 * 60 * 60 * 24 * 30);
+  
+  if (diffMonths < 0.5) return { months: 0, category: "<2w" };
+  if (diffMonths < 1) return { months: 1, category: "<1" };
+  if (diffMonths < 3) return { months: Math.round(diffMonths), category: "1-3" };
+  if (diffMonths < 6) return { months: Math.round(diffMonths), category: "3-6" };
+  return { months: Math.round(diffMonths), category: ">6" };
+}
+
+// Bestimme Hosting-Paket basierend auf Services
+export function getHostingPaket(servicesNeeded: string[], pagesNeeded?: number): HostingPaket {
+  if (servicesNeeded.includes('Webshop')) {
+    return hostingPakete.find(p => p.id === 'webshop')!;
+  }
+  if (pagesNeeded && pagesNeeded > 1) {
+    return hostingPakete.find(p => p.id === '5-seiten')!;
+  }
+  return hostingPakete.find(p => p.id === 'onepager')!;
+}
+
+// Vollständige Angebotskalkulation
 export interface AngebotKalkulation {
+  // Paket Info
   branchenPaket: BranchenPaket;
+  hostingPaket: HostingPaket;
+  
+  // Faktoren
   basispreis: number;
   unternehmenfaktor: number;
   zeitfaktor: number;
+  zeitfaktorLabel: string;
+  monateBisStart: number;
+  
+  // Berechnete Preise
   einmalpreisFinal: number;
   monatspreisFinal: number;
   hostingKosten: number;
+  hostingJahrespreis: number;
   gesamtMonatlich: number;
-  umsetzungStart: string;
-  umsetzungEnde: string;
+  
+  // Zusatzkosten für Website
+  websiteKosten: number;
+  voicebotKosten: number;
+  
+  // Zeitplan
+  umsetzungWochen: number;
+  projektStartDatum: string;
+  projektEndeDatum: string;
+  naechstesBesprechung: string;
+  
+  // Services
+  selectedServices: string[];
 }
 
 export function berechneAngebot(
   industry: string,
   companySize: string,
   projectStart: string,
-  additionalServices: string[] = []
+  servicesNeeded: string[] = [],
+  pagesNeeded: number = 5,
+  budgetRange?: string
 ): AngebotKalkulation {
   const paket = getBranchenPaketByIndustry(industry);
   const unternehmenfaktor = COMPANY_SIZE_FACTORS[companySize] || 1.0;
-  const zeitfaktor = TIME_FACTORS[projectStart] || 1.0;
+  
+  const { months, category } = berechneMonateBisStart(projectStart);
+  const zeitInfo = TIME_FACTORS[category] || TIME_FACTORS["1-3"];
+  const zeitfaktor = zeitInfo.factor;
+  
+  const hostingPaket = getHostingPaket(servicesNeeded, pagesNeeded);
 
-  const einmalpreisFinal = Math.round(paket.einmalpreis * unternehmenfaktor * zeitfaktor);
+  // Basispreis für Bot-Paket
+  let basispreis = paket.einmalpreis;
+  
+  // Zusätzliche Website-Kosten
+  let websiteKosten = 0;
+  if (servicesNeeded.includes('Website')) {
+    if (pagesNeeded <= 1) {
+      websiteKosten = websitePreise.onepager.avg;
+    } else {
+      websiteKosten = websitePreise["5-seiten"].avg + ((pagesNeeded - 5) * websitePreise["5-seiten"].perPage);
+    }
+  }
+  if (servicesNeeded.includes('Webshop')) {
+    websiteKosten = websitePreise.webshop_starter.avg;
+  }
+  
+  // Voicebot-Kosten
+  let voicebotKosten = 0;
+  if (servicesNeeded.includes('Voicebots / Sprachassistenz')) {
+    voicebotKosten = voicebotPreise.qualifizierung;
+  }
+
+  // Gesamtberechnung
+  const einmalpreisFinal = Math.round((basispreis + websiteKosten + voicebotKosten) * unternehmenfaktor * zeitfaktor);
   const monatspreisFinal = Math.round(paket.monatspreis * unternehmenfaktor);
-  
-  const hostingKosten = HOSTING_COSTS.total;
-  const gesamtMonatlich = monatspreisFinal + hostingKosten;
+  const gesamtMonatlich = monatspreisFinal + hostingPaket.total;
 
-  // Berechne Umsetzungszeitraum
-  const today = new Date();
-  const startDate = projectStart === 'sofort' ? today : 
-    projectStart === '1-3-monate' ? new Date(today.setMonth(today.getMonth() + 1)) :
-    new Date(today.setMonth(today.getMonth() + 3));
+  // Zeitplan berechnen
+  const heute = new Date();
+  let startDatum: Date;
   
-  const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + (paket.umsetzungWochen * 7));
+  if (projectStart === 'sofort') {
+    startDatum = new Date(heute.setDate(heute.getDate() + 7));
+  } else if (projectStart === '1-3-monate') {
+    startDatum = new Date(heute.setMonth(heute.getMonth() + 1));
+  } else if (projectStart === '3-6-monate') {
+    startDatum = new Date(heute.setMonth(heute.getMonth() + 3));
+  } else if (projectStart && !isNaN(Date.parse(projectStart))) {
+    startDatum = new Date(projectStart);
+  } else {
+    startDatum = new Date(heute.setMonth(heute.getMonth() + 1));
+  }
+  
+  const endDatum = new Date(startDatum);
+  endDatum.setDate(endDatum.getDate() + (paket.umsetzungWochen * 7));
+  
+  const naechstesBesprechung = new Date();
+  naechstesBesprechung.setDate(naechstesBesprechung.getDate() + 3);
 
   return {
     branchenPaket: paket,
-    basispreis: paket.einmalpreis,
+    hostingPaket,
+    basispreis: basispreis + websiteKosten + voicebotKosten,
     unternehmenfaktor,
     zeitfaktor,
+    zeitfaktorLabel: zeitInfo.label,
+    monateBisStart: months,
     einmalpreisFinal,
     monatspreisFinal,
-    hostingKosten,
+    hostingKosten: hostingPaket.total,
+    hostingJahrespreis: hostingPaket.jahrespreis,
     gesamtMonatlich,
-    umsetzungStart: startDate.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
-    umsetzungEnde: endDate.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })
+    websiteKosten,
+    voicebotKosten,
+    umsetzungWochen: paket.umsetzungWochen,
+    projektStartDatum: startDatum.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
+    projektEndeDatum: endDatum.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
+    naechstesBesprechung: naechstesBesprechung.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
+    selectedServices: servicesNeeded
   };
 }
 
@@ -297,4 +435,9 @@ export function formatCurrency(amount: number): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(amount);
+}
+
+// Format number with thousand separators
+export function formatNumber(amount: number): string {
+  return new Intl.NumberFormat('de-DE').format(amount);
 }
