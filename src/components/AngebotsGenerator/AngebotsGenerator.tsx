@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Send, FileText, CheckCircle2, Home } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, FileText, CheckCircle2, Home, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import StepIndicator from "./StepIndicator";
@@ -17,6 +17,7 @@ import ConditionalKI from "./steps/ConditionalKI";
 import ConditionalVoicebots from "./steps/ConditionalVoicebots";
 import ConditionalProzesse from "./steps/ConditionalProzesse";
 import StepZusammenarbeit from "./steps/StepZusammenarbeit";
+import OfferPreview from "./OfferPreview";
 
 interface AngebotsGeneratorProps {
   onComplete?: (data: KlarheitsCheckData) => void;
@@ -303,65 +304,58 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
     );
   }
 
-  // Success screen
+  // Success screen with PDF preview
   if (isComplete) {
     return (
-      <Card className="max-w-2xl mx-auto p-8 md:p-12">
-        <div className="text-center space-y-6">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
-            <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
-          </div>
-          
-          <h1 className="text-3xl font-bold">Ihr Angebot wird erstellt!</h1>
-          
-          <p className="text-lg text-muted-foreground">
-            Sie erhalten es in Kürze per E-Mail.
-          </p>
-          
-          <div className="bg-muted/50 rounded-xl p-6">
-            <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Was passiert jetzt?</strong>
-              <br /><br />
-              Unser Team analysiert Ihre Angaben und erstellt ein individuelles Angebot 
-              mit vorläufiger Kostenabschätzung. Sie erhalten eine E-Mail mit:
+      <div className="max-w-4xl mx-auto space-y-6">
+        <Card className="p-8 md:p-12">
+          <div className="text-center space-y-4 mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+              <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
+            </div>
+            
+            <h1 className="text-3xl font-bold">Ihr Angebot ist fertig!</h1>
+            
+            <p className="text-lg text-muted-foreground">
+              Laden Sie Ihr personalisiertes PDF-Angebot herunter oder sehen Sie sich die Vorschau an.
             </p>
-            <ul className="text-left mt-4 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                Zusammenfassung Ihrer angeforderten Leistungen
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                Vorläufige Kostenabschätzung
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                Konkrete nächste Schritte
-              </li>
-            </ul>
           </div>
+
+          {/* Offer Preview Component */}
+          <OfferPreview data={formData} />
           
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/">
-              <Button variant="default" className="gap-2 w-full sm:w-auto">
-                <Home className="w-4 h-4" />
-                Zurück zur Startseite
+          <div className="mt-8 pt-6 border-t">
+            <div className="bg-muted/50 rounded-xl p-6 mb-6">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">✉️ E-Mail-Bestätigung</strong>
+                <br /><br />
+                Eine Kopie Ihrer Anfrage wurde an <strong>{formData.email}</strong> gesendet. 
+                Unser Team wird sich innerhalb von 24 Stunden bei Ihnen melden.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/">
+                <Button variant="outline" className="gap-2 w-full sm:w-auto">
+                  <Home className="w-4 h-4" />
+                  Zur Startseite
+                </Button>
+              </Link>
+              <Button 
+                variant="ghost" 
+                onClick={() => {
+                  setStarted(false);
+                  setIsComplete(false);
+                  setCurrentStep(1);
+                  setFormData(initialFormData);
+                }}
+              >
+                Neues Angebot anfordern
               </Button>
-            </Link>
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setStarted(false);
-                setIsComplete(false);
-                setCurrentStep(1);
-                setFormData(initialFormData);
-              }}
-            >
-              Neues Angebot anfordern
-            </Button>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     );
   }
 
