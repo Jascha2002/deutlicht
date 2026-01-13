@@ -21,9 +21,9 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <div className="text-center space-y-8 backdrop-blur-sm rounded-3xl p-8 md:p-12 opacity-95 border-solid border-accent px-[109px] bg-[#c88a04]/0">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 border border-accent/20 rounded-full px-4 py-2 text-primary-foreground bg-primary">
-            <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="text-sm text-accent font-medium">
+          <div className="inline-flex items-center gap-2 border border-accent/20 rounded-full px-4 py-2 bg-primary-foreground text-[#c88a04]">
+            <span className="w-2 h-2 rounded-full animate-pulse bg-[#c88a04]" />
+            <span className="text-sm font-medium text-[#c88a04]">
               Digitalisierung mit Klarheit
             </span>
           </div>
@@ -43,16 +43,16 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4" role="group" aria-label="Handlungsoptionen">
-            <Link to="/projektanfrage" onClick={() => trackCTAClick("Jetzt Projektanfrage starten", "hero")} className="group flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
+            <Link to="/projektanfrage" onClick={() => trackCTAClick("Jetzt Projektanfrage starten", "hero")} className="group flex items-center gap-2 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
               Jetzt Projektanfrage starten
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
-            <Link to="/leistungen" onClick={() => trackCTAClick("Mehr erfahren", "hero")} className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-accent px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+            <Link to="/leistungen" onClick={() => trackCTAClick("Mehr erfahren", "hero")} className="group flex items-center gap-2 px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-[#c88a04] bg-primary-foreground">
               Mehr erfahren
-              <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform bg-primary text-accent" />
+              <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform text-primary bg-inherit" />
             </Link>
             <Link to="/kontakt" onClick={() => trackCTAClick("Kostenlose Beratung", "hero")} className="group flex items-center gap-2 bg-card/50 hover:bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
-              <Play className="w-5 h-5 text-accent" aria-hidden="true" />
+              <Play aria-hidden="true" className="w-5 h-5 text-[#c88a04]" />
               Kostenlose Beratung
             </Link>
           </div>

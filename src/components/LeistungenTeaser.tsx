@@ -42,14 +42,14 @@ const LeistungenTeaser = () => {
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {leistungen.map(leistung => <Link key={leistung.title} to={leistung.href} className="group border border-border rounded-2xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-popover-foreground">
+          {leistungen.map(leistung => <Link key={leistung.title} to={leistung.href} className="group border border-border rounded-2xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-secondary">
               <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
                 <leistung.icon className="w-7 h-7 text-accent" />
               </div>
-              <h3 className="font-display text-xl font-semibold mb-3 text-accent">
+              <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
                 {leistung.title}
               </h3>
-              <p className="text-sm leading-relaxed mb-4 text-accent">
+              <p className="text-sm leading-relaxed mb-4 text-[#c88a04]">
                 {leistung.description}
               </p>
               <div className="flex items-center gap-2 text-accent font-medium text-sm group-hover:gap-3 transition-all">
@@ -66,7 +66,7 @@ const LeistungenTeaser = () => {
             <ArrowRight className="w-5 h-5" />
           </Link>
           <div className="pt-6">
-            <Link to="/projektanfrage" className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105">
+            <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 bg-[#c88a04]">
               Projektanfrage starten – Bedarf klären
               <ArrowRight className="w-5 h-5" />
             </Link>

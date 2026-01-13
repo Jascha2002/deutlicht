@@ -25,15 +25,15 @@ const KICheckCTA = () => {
 
               <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-foreground">
-                  <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 flex-shrink-0 text-[#c88a04]" />
                   <span>10 gezielte Fragen</span>
                 </li>
                 <li className="flex items-center gap-3 text-foreground">
-                  <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 flex-shrink-0 text-[#c88a04]" />
                   <span>Individuelle Auswertung</span>
                 </li>
                 <li className="flex items-center gap-3 text-foreground">
-                  <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 flex-shrink-0 text-[#c88a04]" />
                   <span>Konkrete Handlungsempfehlungen</span>
                 </li>
               </ul>
