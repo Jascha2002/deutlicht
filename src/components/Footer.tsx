@@ -132,7 +132,7 @@ Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 bg-gold-light opacity-100">
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 opacity-100 bg-primary-foreground">
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} DeutLicht®. Alle Rechte vorbehalten.
           </p>
