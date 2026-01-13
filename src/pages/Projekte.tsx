@@ -1,19 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { 
-  ArrowRight, 
-  Quote, 
-  TrendingUp, 
-  Users, 
-  Building2, 
-  ShoppingBag, 
-  Utensils,
-  Factory,
-  Heart,
-  Briefcase,
-  CheckCircle2,
-  Star
-} from "lucide-react";
+import { ArrowRight, Quote, TrendingUp, Users, Building2, ShoppingBag, Utensils, Factory, Heart, Briefcase, CheckCircle2, Star } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -25,117 +12,142 @@ import projektHandwerk from "@/assets/handwerk-option-2.jpg";
 import projektEinzelhandel from "@/assets/einzelhandel-option-3.jpg";
 import projektGastronomie from "@/assets/gastronomie-option-5.jpg";
 import projektGesundheit from "@/assets/gesundheit-option-4.jpg";
-
-const caseStudies = [
-  {
-    id: "handwerk",
-    icon: Factory,
-    image: projektHandwerk,
-    industry: "Handwerk & Produktion",
-    client: "Metallbauunternehmen aus der Region",
-    title: "Digitalisierung eines traditionellen Handwerksbetriebs",
-    challenge: "Veraltete Prozesse, manuelle Auftragserfassung und fehlende Übersicht über laufende Projekte führten zu Ineffizienzen und verpassten Chancen.",
-    solution: "Implementierung eines integrierten CRM- und ERP-Systems mit automatisierter Auftragserfassung, digitalem Projektmanagement und Echtzeit-Reporting.",
-    results: [
-      { metric: "40%", label: "Zeitersparnis bei der Auftragsbearbeitung" },
-      { metric: "25%", label: "Steigerung der Kundenzufriedenheit" },
-      { metric: "50%", label: "Förderung durch go-digital" }
-    ],
-    quote: "DeutLicht® hat uns geholfen, den Sprung ins digitale Zeitalter zu schaffen – ohne unsere bewährten Werte zu verlieren.",
-    author: "Geschäftsführer"
-  },
-  {
-    id: "einzelhandel",
-    icon: ShoppingBag,
-    image: projektEinzelhandel,
-    industry: "Einzelhandel",
-    client: "Traditionsreiches Modehaus",
-    title: "E-Commerce-Transformation mit CRM-Integration",
-    challenge: "Ein etabliertes Modehaus wollte seine Reichweite durch einen Onlineshop erweitern, ohne die persönliche Kundenbeziehung zu verlieren.",
-    solution: "Aufbau eines responsiven Shopsystems mit nahtloser CRM-Anbindung, automatisierten E-Mail-Kampagnen und Kundenbindungsprogramm.",
-    results: [
-      { metric: "120%", label: "Umsatzsteigerung im ersten Jahr" },
-      { metric: "3x", label: "Höhere Wiederkaufrate" },
-      { metric: "60%", label: "Automatisierte Kundenansprache" }
-    ],
-    quote: "Die Kombination aus Online-Shop und CRM hat unsere Kundenbindung auf ein neues Level gehoben.",
-    author: "Inhaberin"
-  },
-  {
-    id: "gastronomie",
-    icon: Utensils,
-    image: projektGastronomie,
-    industry: "Gastronomie",
-    client: "Restaurant-Gruppe mit mehreren Standorten",
-    title: "Multi-Location Management & Marketing",
-    challenge: "Drei Restaurants an verschiedenen Standorten mit unterschiedlichen Systemen, keine einheitliche Marketingstrategie und fehlende Datenauswertung.",
-    solution: "Zentrales CRM-System für alle Standorte, einheitliche Social-Media-Strategie mit lokalen Anpassungen und KI-gestütztes Performance-Tracking.",
-    results: [
-      { metric: "35%", label: "Mehr Reservierungen durch Online-Marketing" },
-      { metric: "200%", label: "Reichweitensteigerung auf Social Media" },
-      { metric: "1", label: "Zentrales Dashboard für alle Standorte" }
-    ],
-    quote: "Endlich haben wir den Überblick über alle drei Standorte – und unsere Online-Präsenz spricht unsere Gäste wirklich an.",
-    author: "Geschäftsführer"
-  },
-  {
-    id: "gesundheit",
-    icon: Heart,
-    image: projektGesundheit,
-    industry: "Gesundheitswesen",
-    client: "Praxisgemeinschaft im Gesundheitsbereich",
-    title: "Digitale Patientenreise optimieren",
-    challenge: "Hoher administrativer Aufwand bei Terminbuchungen, fehlende Patientenkommunikation zwischen den Terminen und manuelle Dokumentation.",
-    solution: "Online-Terminbuchungssystem, automatisierte Terminerinnerungen, digitale Patientenakte und Newsletter-Automatisierung.",
-    results: [
-      { metric: "70%", label: "Weniger No-Shows durch Erinnerungen" },
-      { metric: "50%", label: "Zeitersparnis bei Administration" },
-      { metric: "90%", label: "Positive Patientenbewertungen" }
-    ],
-    quote: "Unsere Patienten schätzen die digitalen Services und wir haben endlich mehr Zeit für das, was zählt.",
-    author: "Praxisleitung"
-  }
-];
-
-const industries = [
-  { icon: Factory, name: "Handwerk & Produktion" },
-  { icon: ShoppingBag, name: "Einzelhandel" },
-  { icon: Utensils, name: "Gastronomie" },
-  { icon: Heart, name: "Gesundheitswesen" },
-  { icon: Building2, name: "Immobilien" },
-  { icon: Briefcase, name: "Dienstleistungen" }
-];
-
-const stats = [
-  { value: "50+", label: "Erfolgreiche Projekte" },
-  { value: "30+", label: "Jahre Erfahrung" },
-  { value: "95%", label: "Kundenzufriedenheit" },
-  { value: "€2M+", label: "Eingeworbene Fördermittel" }
-];
-
+const caseStudies = [{
+  id: "handwerk",
+  icon: Factory,
+  image: projektHandwerk,
+  industry: "Handwerk & Produktion",
+  client: "Metallbauunternehmen aus der Region",
+  title: "Digitalisierung eines traditionellen Handwerksbetriebs",
+  challenge: "Veraltete Prozesse, manuelle Auftragserfassung und fehlende Übersicht über laufende Projekte führten zu Ineffizienzen und verpassten Chancen.",
+  solution: "Implementierung eines integrierten CRM- und ERP-Systems mit automatisierter Auftragserfassung, digitalem Projektmanagement und Echtzeit-Reporting.",
+  results: [{
+    metric: "40%",
+    label: "Zeitersparnis bei der Auftragsbearbeitung"
+  }, {
+    metric: "25%",
+    label: "Steigerung der Kundenzufriedenheit"
+  }, {
+    metric: "50%",
+    label: "Förderung durch go-digital"
+  }],
+  quote: "DeutLicht® hat uns geholfen, den Sprung ins digitale Zeitalter zu schaffen – ohne unsere bewährten Werte zu verlieren.",
+  author: "Geschäftsführer"
+}, {
+  id: "einzelhandel",
+  icon: ShoppingBag,
+  image: projektEinzelhandel,
+  industry: "Einzelhandel",
+  client: "Traditionsreiches Modehaus",
+  title: "E-Commerce-Transformation mit CRM-Integration",
+  challenge: "Ein etabliertes Modehaus wollte seine Reichweite durch einen Onlineshop erweitern, ohne die persönliche Kundenbeziehung zu verlieren.",
+  solution: "Aufbau eines responsiven Shopsystems mit nahtloser CRM-Anbindung, automatisierten E-Mail-Kampagnen und Kundenbindungsprogramm.",
+  results: [{
+    metric: "120%",
+    label: "Umsatzsteigerung im ersten Jahr"
+  }, {
+    metric: "3x",
+    label: "Höhere Wiederkaufrate"
+  }, {
+    metric: "60%",
+    label: "Automatisierte Kundenansprache"
+  }],
+  quote: "Die Kombination aus Online-Shop und CRM hat unsere Kundenbindung auf ein neues Level gehoben.",
+  author: "Inhaberin"
+}, {
+  id: "gastronomie",
+  icon: Utensils,
+  image: projektGastronomie,
+  industry: "Gastronomie",
+  client: "Restaurant-Gruppe mit mehreren Standorten",
+  title: "Multi-Location Management & Marketing",
+  challenge: "Drei Restaurants an verschiedenen Standorten mit unterschiedlichen Systemen, keine einheitliche Marketingstrategie und fehlende Datenauswertung.",
+  solution: "Zentrales CRM-System für alle Standorte, einheitliche Social-Media-Strategie mit lokalen Anpassungen und KI-gestütztes Performance-Tracking.",
+  results: [{
+    metric: "35%",
+    label: "Mehr Reservierungen durch Online-Marketing"
+  }, {
+    metric: "200%",
+    label: "Reichweitensteigerung auf Social Media"
+  }, {
+    metric: "1",
+    label: "Zentrales Dashboard für alle Standorte"
+  }],
+  quote: "Endlich haben wir den Überblick über alle drei Standorte – und unsere Online-Präsenz spricht unsere Gäste wirklich an.",
+  author: "Geschäftsführer"
+}, {
+  id: "gesundheit",
+  icon: Heart,
+  image: projektGesundheit,
+  industry: "Gesundheitswesen",
+  client: "Praxisgemeinschaft im Gesundheitsbereich",
+  title: "Digitale Patientenreise optimieren",
+  challenge: "Hoher administrativer Aufwand bei Terminbuchungen, fehlende Patientenkommunikation zwischen den Terminen und manuelle Dokumentation.",
+  solution: "Online-Terminbuchungssystem, automatisierte Terminerinnerungen, digitale Patientenakte und Newsletter-Automatisierung.",
+  results: [{
+    metric: "70%",
+    label: "Weniger No-Shows durch Erinnerungen"
+  }, {
+    metric: "50%",
+    label: "Zeitersparnis bei Administration"
+  }, {
+    metric: "90%",
+    label: "Positive Patientenbewertungen"
+  }],
+  quote: "Unsere Patienten schätzen die digitalen Services und wir haben endlich mehr Zeit für das, was zählt.",
+  author: "Praxisleitung"
+}];
+const industries = [{
+  icon: Factory,
+  name: "Handwerk & Produktion"
+}, {
+  icon: ShoppingBag,
+  name: "Einzelhandel"
+}, {
+  icon: Utensils,
+  name: "Gastronomie"
+}, {
+  icon: Heart,
+  name: "Gesundheitswesen"
+}, {
+  icon: Building2,
+  name: "Immobilien"
+}, {
+  icon: Briefcase,
+  name: "Dienstleistungen"
+}];
+const stats = [{
+  value: "50+",
+  label: "Erfolgreiche Projekte"
+}, {
+  value: "30+",
+  label: "Jahre Erfahrung"
+}, {
+  value: "95%",
+  label: "Kundenzufriedenheit"
+}, {
+  value: "€2M+",
+  label: "Eingeworbene Fördermittel"
+}];
 const Projekte = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Projekte & Referenzen | DeutLicht® - Erfolgsgeschichten unserer Kunden</title>
-        <meta
-          name="description"
-          content="Entdecken Sie unsere Erfolgsgeschichten: Fallstudien aus Handwerk, Einzelhandel, Gastronomie und mehr. Digitale Transformation mit messbaren Ergebnissen."
-        />
+        <meta name="description" content="Entdecken Sie unsere Erfolgsgeschichten: Fallstudien aus Handwerk, Einzelhandel, Gastronomie und mehr. Digitale Transformation mit messbaren Ergebnissen." />
       </Helmet>
 
       <Navigation />
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5">
-          <div className="container mx-auto px-4">
+        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/5 opacity-100 bg-[#344256] px-[215px] md:py-[25px]">
+          <div className="container mx-auto px-4 bg-[#344256]/[0.72] opacity-95">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-8 flex justify-center">
                 <AnimatedLogo size="md" />
               </div>
               
-              <span className="text-accent font-medium uppercase tracking-widest text-sm">
+              <span className="text-accent font-medium uppercase tracking-widest text-sm bg-primary px-[14px]">
                 Projekte & Referenzen
               </span>
               
@@ -153,17 +165,12 @@ const Projekte = () => {
         </section>
 
         {/* Video Section */}
-        <section className="py-12 md:py-16">
+        <section className="py-12 md:py-16 bg-[#2b3d50]/95 opacity-90">
           <div className="container mx-auto px-4">
             <ScrollReveal>
               <div className="max-w-3xl mx-auto">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                  <video
-                    autoPlay
-                    muted
-                    playsInline
-                    className="w-full aspect-video object-cover"
-                  >
+                  <video autoPlay muted playsInline className="w-full aspect-video object-cover px-[55px] bg-black/0">
                     <source src="/videos/deutlicht-vernetzt.mp4" type="video/mp4" />
                     Ihr Browser unterstützt keine Videos.
                   </video>
@@ -174,25 +181,23 @@ const Projekte = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="py-12 bg-card border-y border-border">
+        <section className="border-y border-accent border-solid border-4 py-[30px] bg-primary">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <ScrollReveal key={index} delay={index * 100}>
+              {stats.map((stat, index) => <ScrollReveal key={index} delay={index * 100}>
                   <div className="text-center">
                     <p className="font-display text-3xl md:text-4xl font-bold text-accent mb-2">
                       {stat.value}
                     </p>
-                    <p className="text-muted-foreground text-sm">{stat.label}</p>
+                    <p className="text-sm text-accent">{stat.label}</p>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
 
         {/* Industries */}
-        <section className="py-16 md:py-20">
+        <section className="py-16 md:py-20 bg-[#c88a04]/[0.26]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
@@ -207,20 +212,16 @@ const Projekte = () => {
               </ScrollReveal>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {industries.map((industry, index) => (
-                  <ScrollReveal key={index} delay={index * 50}>
-                    <div 
-                      className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300"
-                    >
-                      <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+                {industries.map((industry, index) => <ScrollReveal key={index} delay={index * 50}>
+                    <div className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300">
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center text-secondary bg-primary">
                         <industry.icon className="w-6 h-6 text-accent" />
                       </div>
                       <span className="text-sm font-medium text-foreground text-center">
                         {industry.name}
                       </span>
                     </div>
-                  </ScrollReveal>
-                ))}
+                  </ScrollReveal>)}
               </div>
             </div>
           </div>
@@ -242,13 +243,8 @@ const Projekte = () => {
               </ScrollReveal>
 
               <div className="space-y-16">
-                {caseStudies.map((study, index) => (
-                  <ScrollReveal key={study.id} delay={100}>
-                    <div 
-                      className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
-                        index % 2 === 1 ? "" : ""
-                      }`}
-                    >
+                {caseStudies.map((study, index) => <ScrollReveal key={study.id} delay={100}>
+                    <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${index % 2 === 1 ? "" : ""}`}>
                     {/* Content */}
                     <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                       <div className="flex items-center gap-3 mb-4">
@@ -291,12 +287,12 @@ const Projekte = () => {
                       </div>
 
                       {/* Quote */}
-                      <div className="bg-card rounded-xl p-6 border border-border">
+                      <div className="rounded-xl p-6 border border-border bg-primary">
                         <Quote className="w-8 h-8 text-accent/50 mb-3" />
-                        <p className="text-foreground italic leading-relaxed mb-4">
+                        <p className="italic leading-relaxed mb-4 text-accent">
                           "{study.quote}"
                         </p>
-                        <p className="text-muted-foreground text-sm font-medium">
+                        <p className="text-sm font-medium text-accent">
                           – {study.author}
                         </p>
                       </div>
@@ -306,12 +302,7 @@ const Projekte = () => {
                     <div className={index % 2 === 1 ? "lg:order-1" : ""}>
                       {/* Project Image */}
                       <div className="relative rounded-2xl overflow-hidden mb-6 shadow-lg">
-                        <img 
-                          src={study.image} 
-                          alt={`${study.client} - ${study.industry} Projekt`}
-                          className="w-full h-64 object-cover"
-                          loading="lazy"
-                        />
+                        <img src={study.image} alt={`${study.client} - ${study.industry} Projekt`} className="w-full h-64 object-cover" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                       </div>
                       
@@ -325,8 +316,7 @@ const Projekte = () => {
                         </div>
 
                         <div className="space-y-6">
-                          {study.results.map((result, i) => (
-                            <div key={i} className="flex items-start gap-4">
+                          {study.results.map((result, i) => <div key={i} className="flex items-start gap-4">
                               <div className="w-16 text-center">
                                 <span className="font-display text-2xl font-bold text-accent">
                                   {result.metric}
@@ -337,15 +327,12 @@ const Projekte = () => {
                                   {result.label}
                                 </p>
                               </div>
-                            </div>
-                          ))}
+                            </div>)}
                         </div>
 
                         <div className="mt-8 pt-6 border-t border-border">
                           <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                            ))}
+                            {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-accent text-accent" />)}
                           </div>
                           <p className="text-muted-foreground text-sm mt-2">
                             Kundenbewertung
@@ -354,42 +341,33 @@ const Projekte = () => {
                       </div>
                     </div>
                   </div>
-                  </ScrollReveal>
-                ))}
+                  </ScrollReveal>)}
               </div>
             </div>
           </div>
         </section>
 
         {/* Approach Section */}
-        <section className="py-16 md:py-20">
+        <section className="py-16 md:py-20 bg-primary">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-accent">
                       Unser Ansatz für Ihren Erfolg
                     </h2>
-                    <p className="text-muted-foreground leading-relaxed mb-8">
+                    <p className="leading-relaxed mb-8 text-accent">
                       Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. 
                       Gemeinsam entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie 
                       von der Planung bis zur erfolgreichen Umsetzung.
                     </p>
 
                     <div className="space-y-4">
-                      {[
-                        "Individuelle Bedarfsanalyse",
-                        "Maßgeschneiderte Lösungskonzepte",
-                        "Agile Umsetzung mit regelmäßigem Feedback",
-                        "Schulung und nachhaltiger Support",
-                        "Messbare Ergebnisse und Optimierung"
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
-                          <span className="text-foreground">{item}</span>
-                        </div>
-                      ))}
+                      {["Individuelle Bedarfsanalyse", "Maßgeschneiderte Lösungskonzepte", "Agile Umsetzung mit regelmäßigem Feedback", "Schulung und nachhaltiger Support", "Messbare Ergebnisse und Optimierung"].map((item, index) => <div key={index} className="flex items-center gap-3 text-accent">
+                          <CheckCircle2 className="w-5 h-5 flex-shrink-0 bg-primary text-white" />
+                          <span className="text-accent">{item}</span>
+                        </div>)}
                     </div>
                   </div>
                 </ScrollReveal>
@@ -417,7 +395,7 @@ const Projekte = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 md:py-24 bg-primary">
+        <section className="py-20 md:py-24 bg-[#2b3d50]/[0.63]">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
@@ -427,7 +405,7 @@ const Projekte = () => {
                 Kontaktieren Sie uns für ein unverbindliches Erstgespräch. 
                 Gemeinsam bringen wir Ihr Unternehmen digital nach vorne.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center px-0">
                 <Link to="/kontakt">
                   <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
                     Kontakt aufnehmen
@@ -446,8 +424,6 @@ const Projekte = () => {
       </main>
 
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default Projekte;
