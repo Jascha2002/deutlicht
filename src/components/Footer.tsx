@@ -155,7 +155,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t flex-col md:flex-row opacity-100 py-0 bg-inherit my-[18px] flex items-center justify-between gap-[20px] border-inherit">
+        <div className="mt-12 pt-8 border-t flex-col md:flex-row opacity-100 py-0 bg-inherit my-[18px] flex items-center justify-between gap-[20px] border-inherit border-0">
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} DeutLicht®. Alle Rechte vorbehalten.
           </p>
