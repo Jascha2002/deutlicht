@@ -19,7 +19,7 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="text-center space-y-8 backdrop-blur-sm rounded-3xl p-8 md:p-12 opacity-95 border-solid bg-primary border-primary">
+        <div className="text-center space-y-8 backdrop-blur-sm rounded-3xl p-8 md:p-12 opacity-95 border-solid border-accent px-[109px] bg-[#c88a04]/0">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 border border-accent/20 rounded-full px-4 py-2 text-primary-foreground bg-primary">
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
@@ -36,7 +36,7 @@ const Hero = () => {
           </h1>
 
           {/* Subheadline */}
-          <p className="max-w-2xl mx-auto text-lg leading-relaxed bg-primary sm:text-2xl font-semibold text-muted-foreground">
+          <p className="max-w-2xl mx-auto text-lg leading-relaxed sm:text-2xl font-semibold text-muted-foreground bg-[#c88a04]/[0.01]">
             Wir begleiten Ihr Unternehmen durch die digitale Transformation – 
             mit Strategie, Erfahrung und maßgeschneiderten Lösungen.
           </p>
@@ -58,23 +58,23 @@ const Hero = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="pt-12 border-t border-border/50 mt-12 bg-secondary opacity-100">
+          <div className="pt-12 border-t border-border/50 mt-12 opacity-100 bg-[#c88a04]/0">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="font-display text-3xl font-bold opacity-100 shadow-none text-primary">30+</div>
-                <div className="text-sm opacity-100 border-none shadow-none text-primary">Jahre Erfahrung</div>
+                <div className="font-display text-5xl font-bold opacity-100 shadow-none text-primary">30+</div>
+                <div className="font-display text-xl font-bold text-primary">Jahre Erfahrung</div>
               </div>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-primary">25+</div>
-                <div className="text-sm text-primary">Jahre Digitalisierung</div>
+                <div className="font-display text-5xl font-bold text-primary">25+</div>
+                <div className="font-display text-xl font-bold text-primary">Jahre Digitalisierung</div>
               </div>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-primary">100%</div>
-                <div className="text-sm text-primary">Individuelle Lösungen</div>
+                <div className="font-display text-5xl font-bold text-primary">100%</div>
+                <div className="font-display text-xl font-bold text-primary">Individuelle Lösungen</div>
               </div>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-primary">KMU</div>
-                <div className="text-sm text-primary">Fokus</div>
+                <div className="font-display text-5xl font-bold text-primary">KMU</div>
+                <div className="font-display text-xl font-bold text-primary">Fokus</div>
               </div>
             </div>
           </div>
