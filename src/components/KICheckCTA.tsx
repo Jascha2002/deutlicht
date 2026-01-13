@@ -8,8 +8,8 @@ const KICheckCTA = () => {
       location: "homepage_ki_check"
     });
   };
-  return <section className="w-full py-16 md:py-24 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 opacity-85 bg-background">
-      <div className="container mx-auto px-4">
+  return <section className="w-full py-16 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 opacity-85 bg-background md:py-[21px] mx-0 my-0">
+      <div className="container px-0 my-0 mx-0 py-0">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-[hsl(210,80%,97%)] to-[hsl(230,70%,95%)] dark:from-[hsl(220,50%,15%)] dark:to-[hsl(240,40%,20%)] rounded-2xl shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12 bg-secondary">
             {/* Left: Text + Button */}
@@ -57,7 +57,7 @@ const KICheckCTA = () => {
                 {/* Icon Grid */}
                 <div className="relative grid grid-cols-2 gap-4 p-6">
                   {/* Top Left */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  <div className="backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-inherit" style={{
                   animationDelay: "0.1s"
                 }}>
                     <Brain className="h-10 w-10 mb-3 text-[#c88a04]" />
@@ -66,7 +66,7 @@ const KICheckCTA = () => {
                   </div>
                   
                   {/* Top Right */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  <div className="backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-inherit" style={{
                   animationDelay: "0.2s"
                 }}>
                     <TrendingUp className="h-10 w-10 mb-3 text-[#c88a04]" />
@@ -75,7 +75,7 @@ const KICheckCTA = () => {
                   </div>
                   
                   {/* Bottom Left */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  <div className="backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-inherit" style={{
                   animationDelay: "0.3s"
                 }}>
                     <Zap className="h-10 w-10 mb-3 text-[#c88a04]" />
@@ -84,7 +84,7 @@ const KICheckCTA = () => {
                   </div>
                   
                   {/* Bottom Right */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  <div className="backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-inherit" style={{
                   animationDelay: "0.4s"
                 }}>
                     <Target className="h-10 w-10 mb-3 text-[#c88a04]" />
