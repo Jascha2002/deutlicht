@@ -46,7 +46,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/ki-check" className="transition-colors text-sm px-[9px] bg-[#c88a04] text-inherit">
+                <Link to="/ki-check" className="transition-colors text-sm px-[9px] bg-[#c88a04] text-inherit font-bold">
                   KI-Check
                 </Link>
               </li>
@@ -76,7 +76,7 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3" role="list">
               <li>
-                <Link to="/leistungen/ai-agenten" className="text-muted-foreground hover:text-accent transition-colors text-sm bg-[#c88a04]">
+                <Link to="/leistungen/ai-agenten" className="transition-colors text-sm bg-[#c88a04] text-inherit font-bold px-[12px]">
                   KI / AI-Agenten
                 </Link>
               </li>
