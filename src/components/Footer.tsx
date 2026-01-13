@@ -21,7 +21,7 @@ const Footer = () => {
 
           {/* Navigation */}
           <nav aria-label="Footer Navigation">
-            <h4 className="font-display font-semibold text-foreground mb-4 px-[65px]">
+            <h4 className="font-display font-semibold mb-4 px-0 text-inherit">
               Navigation
             </h4>
             <ul className="space-y-3" role="list">
