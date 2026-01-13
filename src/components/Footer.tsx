@@ -120,7 +120,7 @@ const Footer = () => {
 
           {/* Kontakt */}
           <div>
-            <h4 className="font-display font-semibold text-foreground mb-4 px-[65px]">
+            <h4 className="font-display font-semibold mb-4 text-inherit px-0">
               Kontakt
             </h4>
             <ul className="space-y-3">
