@@ -80,17 +80,48 @@ const Kontakt = () => {
           </div>
         </section>
 
-        {/* Video Section */}
-        <section className="py-12 md:py-16 bg-gray-600">
-          <div className="container mx-auto px-4 bg-gray-600">
+        {/* Video Section - Premium Introduction Video */}
+        <section className="py-12 md:py-16 bg-[#2b3d4f]">
+          <div className="container mx-auto px-4">
             <ScrollReveal>
-              <div className="max-w-4xl mx-auto">
-                <Card className="overflow-hidden border-border/50 shadow-xl">
-                  <video autoPlay playsInline className="w-full aspect-video object-cover">
-                    <source src="/videos/deutlicht-beratung.mp4" type="video/mp4" />
+              <div className="max-w-5xl mx-auto">
+                {/* Video Container with Premium Styling */}
+                <div className="relative rounded-xl overflow-hidden shadow-2xl border-2 border-[#c88a04]/30 bg-black">
+                  {/* Reduced Motion Fallback */}
+                  <video 
+                    autoPlay 
+                    playsInline 
+                    controls
+                    preload="metadata"
+                    poster="/videos/deutlicht-kontakt-intro.mp4#t=0.1"
+                    className="w-full h-auto object-contain motion-reduce:hidden"
+                    style={{ maxWidth: '100%' }}
+                    onLoadedMetadata={(e) => {
+                      // Check for reduced motion preference
+                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                      if (prefersReducedMotion) {
+                        (e.target as HTMLVideoElement).pause();
+                      }
+                    }}
+                  >
+                    <source src="/videos/deutlicht-kontakt-intro.mp4" type="video/mp4" />
                     Ihr Browser unterstützt keine Videos.
                   </video>
-                </Card>
+                  
+                  {/* Reduced Motion Fallback Overlay */}
+                  <noscript>
+                    <div className="w-full aspect-video bg-[#2b3d4f] flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <p className="text-white text-lg">Video: DeutLicht® Einführung</p>
+                      </div>
+                    </div>
+                  </noscript>
+                </div>
+                
+                {/* Video Caption */}
+                <p className="text-center text-white/70 text-sm mt-4">
+                  Wir bei DeutLicht® gehen weit über Beratung hinaus
+                </p>
               </div>
             </ScrollReveal>
           </div>
