@@ -88,22 +88,15 @@ const Kontakt = () => {
                 {/* Video Container with Premium Styling */}
                 <div className="relative rounded-xl overflow-hidden shadow-2xl border-2 border-[#c88a04]/30 bg-black">
                   {/* Reduced Motion Fallback */}
-                  <video 
-                    autoPlay 
-                    playsInline 
-                    controls
-                    preload="metadata"
-                    poster="/videos/deutlicht-kontakt-intro.mp4#t=0.1"
-                    className="w-full h-auto object-contain motion-reduce:hidden"
-                    style={{ maxWidth: '100%' }}
-                    onLoadedMetadata={(e) => {
-                      // Check for reduced motion preference
-                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                      if (prefersReducedMotion) {
-                        (e.target as HTMLVideoElement).pause();
-                      }
-                    }}
-                  >
+                  <video autoPlay playsInline controls preload="metadata" poster="/videos/deutlicht-kontakt-intro.mp4#t=0.1" className="w-full h-auto object-contain motion-reduce:hidden" style={{
+                  maxWidth: '100%'
+                }} onLoadedMetadata={e => {
+                  // Check for reduced motion preference
+                  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                  if (prefersReducedMotion) {
+                    (e.target as HTMLVideoElement).pause();
+                  }
+                }}>
                     <source src="/videos/deutlicht-kontakt-intro.mp4" type="video/mp4" />
                     Ihr Browser unterstützt keine Videos.
                   </video>
@@ -119,9 +112,7 @@ const Kontakt = () => {
                 </div>
                 
                 {/* Video Caption */}
-                <p className="text-center text-white/70 text-sm mt-4">
-                  Wir bei DeutLicht® gehen weit über Beratung hinaus
-                </p>
+                <p className="text-center text-white/70 text-sm mt-4">"Wir bei DeutLicht® gehen weit über Beratung hinaus" (Carsten van de Sand & Junior No. 1)</p>
               </div>
             </ScrollReveal>
           </div>
@@ -132,10 +123,8 @@ const Kontakt = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-1">
-                  Du möchtest schneller zu den Kosten?
-                </h3>
-                <p className="text-muted-foreground text-sm">
+                <h3 className="text-lg font-semibold mb-1 text-[#c88a04]">Sie möchten schneller die Kosten ermitteln?</h3>
+                <p className="text-sm text-[#c88a04]">
                   Nutze unsere Projektanfrage für sofortige Kostenabschätzung.
                 </p>
               </div>
@@ -150,7 +139,7 @@ const Kontakt = () => {
         </section>
 
         {/* Inquiry Form & Info Section */}
-        <section className="py-16 md:py-24 bg-primary-foreground">
+        <section className="py-16 bg-primary-foreground md:py-[12px]">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-12 bg-[#47596b]/0">
               {/* Inquiry Form */}
@@ -216,20 +205,20 @@ const Kontakt = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-16 md:py-24 text-primary bg-primary">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12 bg-accent">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <section className="py-16 text-primary bg-cyan-800 mx-0 px-0 md:py-[5px]">
+          <div className="container px-[21px] py-0 mx-0 my-[10px]">
+            <div className="text-center mb-12 bg-cyan-800">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary bg-cyan-800">
                 So finden Sie uns
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg max-w-2xl mx-auto text-primary">
                 Besuchen Sie uns in Gera oder vereinbaren Sie einen Termin für ein Online-Meeting.
               </p>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Map Placeholder */}
-              <div className="lg:col-span-2 bg-primary">
+              <div className="lg:col-span-2 bg-cyan-800">
                 <Card className="overflow-hidden border-border/50 h-[400px]">
                   <div className="w-full h-full bg-muted flex items-center justify-center">
                     <div className="text-center p-8">
@@ -251,10 +240,10 @@ const Kontakt = () => {
               </div>
 
               {/* Directions */}
-              <div className="space-y-6">
+              <div className="space-y-6 py-0 my-0 mx-0 bg-primary-foreground">
                 <Card className="border-border/50">
                   <CardContent className="p-6">
-                    <h3 className="font-semibold text-foreground mb-4 bg-accent">Anfahrt mit dem Auto</h3>
+                    <h3 className="font-semibold text-foreground mb-4 bg-primary-foreground">Anfahrt mit dem Auto</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       Über die A4, Ausfahrt Gera. Parkplätze sind in der Umgebung verfügbar.
                     </p>
@@ -263,7 +252,7 @@ const Kontakt = () => {
 
                 <Card className="border-border/50">
                   <CardContent className="p-6">
-                    <h3 className="font-semibold text-foreground mb-4 bg-accent">Öffentliche Verkehrsmittel</h3>
+                    <h3 className="font-semibold text-foreground mb-4 bg-primary-foreground">Öffentliche Verkehrsmittel</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       Busverbindungen ab Gera Hauptbahnhof in die Innenstadt verfügbar.
                     </p>
@@ -272,8 +261,8 @@ const Kontakt = () => {
 
                 <Card className="border-border/50 bg-primary/5">
                   <CardContent className="p-6">
-                    <h3 className="font-semibold mb-4 bg-accent px-0 text-accent">Online-Meeting</h3>
-                    <p className="text-sm leading-relaxed text-accent">
+                    <h3 className="font-semibold mb-4 px-0 bg-transparent text-[#c88a04]">Online-Meeting</h3>
+                    <p className="text-sm leading-relaxed text-[#c88a04]">
                       Kein Problem! Wir bieten auch virtuelle Beratungsgespräche per Video-Call an.
                     </p>
                   </CardContent>
