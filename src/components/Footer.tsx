@@ -43,7 +43,7 @@ Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz
                 </Link>
               </li>
               <li>
-                <Link to="/ki-check" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                <Link to="/ki-check" className="transition-colors text-sm px-[9px] text-accent bg-primary">
                   KI-Check
                 </Link>
               </li>
@@ -123,7 +123,7 @@ Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz
             
             {/* Quick CTA */}
             <div className="mt-6 pt-4 border-t border-border">
-              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors text-primary">
+              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors text-primary bg-accent">
                 Jetzt Projektanfrage starten
                 <ArrowRight className="w-4 h-4" />
               </Link>
