@@ -25,7 +25,7 @@ const UeberUns = () => {
                 <AnimatedLogo size="md" />
               </div>
 
-              <div className="inline-flex items-center gap-2 px-4 py-2 text-accent rounded-full text-sm font-medium mb-6 bg-primary">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-primary-foreground text-[#c88a04]">
                 <Clock className="w-4 h-4" />
                 Auf einen schnellen Blick
               </div>
@@ -39,7 +39,7 @@ const UeberUns = () => {
                 Wir stehen für Klarheit, Struktur und nachhaltige digitale Systeme.
               </p>
 
-              <p className="text-lg text-accent font-medium italic">
+              <p className="text-lg font-medium italic text-[#c88a04]">
                 "Technologie dient dem Menschen – nicht umgekehrt."
               </p>
             </div>
