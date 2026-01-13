@@ -384,13 +384,13 @@ const Leistungen = () => {
           </section>)}
 
         {/* CTA Section */}
-        <section className="py-20 opacity-100 bg-gray-500 md:py-[28px]">
+        <section className="py-20 opacity-100 md:py-[28px] bg-neutral-400">
           <div className="container mx-auto px-0 py-[2px]">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-primary">
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
                 Bereit für den nächsten Schritt?
               </h2>
-              <p className="text-lg mb-8 text-primary">
+              <p className="text-lg mb-8 text-inherit">
                 Unsere Projektanfrage liefert in wenigen Minuten nötige Informationen für ein personalisiertes Angebot für Sie.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
