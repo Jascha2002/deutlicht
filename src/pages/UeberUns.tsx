@@ -17,7 +17,7 @@ const UeberUns = () => {
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5 bg-primary">
+        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5 bg-secondary">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               {/* Animated Logo */}
