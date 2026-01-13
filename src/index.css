@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,14 +10,14 @@
 @layer base {
   :root {
     /* DeutLicht Brand Colors - Light Mode */
-    --background: 210 20% 98%;
-    --foreground: 210 29% 24%;
+    --background: 220 8.9362% 46.0784%;
+    --foreground: 229 84% 4.902%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 29% 24%;
+    --card-foreground: 217 32.5843% 17.451%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 29% 24%;
+    --popover-foreground: 215 25% 26.6667%;
 
     /* Primary: Marineblau */
     --primary: 210 29% 24%;
@@ -27,19 +28,19 @@
     --secondary-foreground: 210 29% 24%;
 
     /* Muted */
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 10% 50%;
+    --muted: 214 31.8182% 91.3725%;
+    --muted-foreground: 0 0% 3.9216%;
 
     /* Accent: Goldgelb */
-    --accent: 40 58% 56%;
+    --accent: 41 96% 40%;
     --accent-foreground: 210 29% 18%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 40 58% 56%;
+    --border: 217 32.5843% 17.451%;
+    --input: 214 31.8182% 91.3725%;
+    --ring: 210 40% 98.0392%;
 
     --radius: 0.5rem;
 
