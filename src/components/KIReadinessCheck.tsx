@@ -409,18 +409,18 @@ const KIReadinessCheck: React.FC = () => {
       <div className="max-w-2xl mx-auto">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-#2b3d4f to-indigo-600 p-6 text-white py-[74px] bg-primary px-[28px]">
+          <div className="bg-gradient-to-r from-#2b3d4f to-indigo-600 p-6 py-[74px] px-[28px] text-primary bg-primary">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold">KI-Readiness-Check</h1>
-              <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+              <h1 className="text-2xl font-bold bg-secondary-foreground text-accent">KI-Readiness-Check</h1>
+              <span className="px-3 py-1 rounded-full text-sm bg-accent font-bold">
                 Frage {currentQuestion + 1} von {questions.length}
               </span>
             </div>
             {/* Progress Bar */}
-            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-              <div className="h-full bg-white rounded-full transition-all duration-500" style={{
+            <div className="h-2 rounded-full overflow-hidden bg-primary">
+              <div style={{
               width: `${progress}%`
-            }} />
+            }} className="h-full rounded-full transition-all duration-500 bg-primary" />
             </div>
           </div>
 
