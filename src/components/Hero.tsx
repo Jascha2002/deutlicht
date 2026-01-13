@@ -49,7 +49,7 @@ const Hero = () => {
             </Link>
             <Link to="/leistungen" onClick={() => trackCTAClick("Mehr erfahren", "hero")} className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-accent px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
               Mehr erfahren
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform bg-primary text-accent" />
             </Link>
             <Link to="/kontakt" onClick={() => trackCTAClick("Kostenlose Beratung", "hero")} className="group flex items-center gap-2 bg-card/50 hover:bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
               <Play className="w-5 h-5 text-accent" aria-hidden="true" />
