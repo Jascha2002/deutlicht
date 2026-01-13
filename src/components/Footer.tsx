@@ -7,7 +7,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4 mx-0">
             <Link to="/" className="inline-block">
-              <span className="font-display font-bold text-foreground mx-0 text-5xl px-px">
+              <span className="font-display font-bold mx-0 text-5xl px-px text-inherit">
                 DeutLicht<span className="text-accent">®</span>
               </span>
             </Link>
