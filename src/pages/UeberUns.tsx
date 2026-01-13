@@ -6,23 +6,18 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-
 const UeberUns = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Über uns | DeutLicht® - Ihr Partner für digitale Transformation</title>
-        <meta
-          name="description"
-          content="Lernen Sie DeutLicht® kennen: Über 30 Jahre Erfahrung in Digitalisierung, Management und Förderberatung. Klarheit, Struktur und nachhaltige digitale Systeme."
-        />
+        <meta name="description" content="Lernen Sie DeutLicht® kennen: Über 30 Jahre Erfahrung in Digitalisierung, Management und Förderberatung. Klarheit, Struktur und nachhaltige digitale Systeme." />
       </Helmet>
 
       <Navigation />
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5">
+        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5 bg-primary">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               {/* Animated Logo */}
@@ -30,7 +25,7 @@ const UeberUns = () => {
                 <AnimatedLogo size="md" />
               </div>
 
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 text-accent rounded-full text-sm font-medium mb-6 bg-primary">
                 <Clock className="w-4 h-4" />
                 Auf einen schnellen Blick
               </div>
@@ -57,42 +52,42 @@ const UeberUns = () => {
             <div className="max-w-6xl mx-auto">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <ScrollReveal delay={0}>
-                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-accent">
                       <Award className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
                       30+ Jahre Erfahrung
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed text-accent">
                       Fundiertes unternehmerisches Know-how mit über 25 Jahren Expertise im Bereich Digitalisierung.
                     </p>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={100}>
-                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300">
+                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
                       <Users className="w-6 h-6 text-accent" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
                       Ganzheitliche Begleitung
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed text-accent">
                       Als Berater und Coach begleiten wir Sie von der strategischen Analyse bis zur erfolgreichen Umsetzung.
                     </p>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={200}>
-                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-accent">
                       <Target className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
                       Förderberatung
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed text-accent">
                       Wir unterstützen Sie bei förderfähigen Digitalisierungsprojekten zur Maximierung Ihrer Investitionen.
                     </p>
                   </div>
@@ -103,7 +98,7 @@ const UeberUns = () => {
         </section>
 
         {/* Leistungsspektrum */}
-        <section className="py-16 md:py-20 bg-muted/30">
+        <section className="py-16 md:py-20 bg-[#2b3d50]/[0.36]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
@@ -160,31 +155,24 @@ const UeberUns = () => {
         </section>
 
         {/* Prozesse */}
-        <section className="py-16 md:py-20">
+        <section className="py-16 md:py-20 bg-primary">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-accent">
                       Projekte & Prozesse
                     </h2>
-                    <p className="text-muted-foreground leading-relaxed mb-6">
+                    <p className="leading-relaxed mb-6 text-accent">
                       Unsere Projekte folgen klaren Strukturen: Analyse, Roadmap, Umsetzung. 
                       Alles integriert in unser CRM-/ERP-System – von Lead bis Abrechnung.
                     </p>
                     <ul className="space-y-3">
-                      {[
-                        "Automatisierte Lead-Erfassung",
-                        "Projektmanagement & Zeittracking",
-                        "SEO & Online-Marketing",
-                        "Förderfähige Digitalisierungsprojekte"
-                      ].map((item, index) => (
-                        <li key={index} className="flex items-center gap-3 text-muted-foreground">
-                          <span className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
+                      {["Automatisierte Lead-Erfassung", "Projektmanagement & Zeittracking", "SEO & Online-Marketing", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-accent">
+                          <span className="w-2 h-2 rounded-full flex-shrink-0 bg-secondary" />
                           {item}
-                        </li>
-                      ))}
+                        </li>)}
                     </ul>
                   </div>
                 </ScrollReveal>
@@ -233,8 +221,6 @@ const UeberUns = () => {
       </main>
 
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default UeberUns;
