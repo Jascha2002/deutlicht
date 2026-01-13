@@ -11,7 +11,7 @@ const AngebotsGeneratorPage = () => {
       
       <Navigation />
       
-      <main className="min-h-screen pt-24 pb-16 bg-primary">
+      <main className="min-h-screen pt-24 pb-16 bg-secondary">
         <div className="container mx-auto px-4">
           <AngebotsGenerator />
         </div>
