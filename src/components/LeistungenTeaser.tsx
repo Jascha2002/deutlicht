@@ -49,7 +49,7 @@ const LeistungenTeaser = () => {
               <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
                 {leistung.title}
               </h3>
-              <p className="text-sm leading-relaxed mb-4 text-[#c88a04]">
+              <p className="text-sm leading-relaxed mb-4 text-primary-foreground">
                 {leistung.description}
               </p>
               <div className="flex items-center gap-2 text-accent font-medium text-sm group-hover:gap-3 transition-all">
