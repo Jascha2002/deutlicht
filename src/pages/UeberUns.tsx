@@ -52,42 +52,42 @@ const UeberUns = () => {
             <div className="max-w-6xl mx-auto">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <ScrollReveal delay={0}>
-                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-accent">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
                       <Award className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
                       30+ Jahre Erfahrung
                     </h3>
-                    <p className="text-sm leading-relaxed text-accent">
+                    <p className="text-sm leading-relaxed text-[#c88a04]">
                       Fundiertes unternehmerisches Know-how mit über 25 Jahren Expertise im Bereich Digitalisierung.
                     </p>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={100}>
-                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
-                      <Users className="w-6 h-6 text-accent" />
+                      <Users className="w-6 h-6 text-[#c88a04]" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
                       Ganzheitliche Begleitung
                     </h3>
-                    <p className="text-sm leading-relaxed text-accent">
+                    <p className="text-sm leading-relaxed text-[#c88a04]">
                       Als Berater und Coach begleiten wir Sie von der strategischen Analyse bis zur erfolgreichen Umsetzung.
                     </p>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={200}>
-                  <div className="rounded-xl p-6 shadow-lg border border-border hover:border-accent/50 transition-all duration-300 bg-primary">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-accent">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
                       <Target className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-accent">
+                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
                       Förderberatung
                     </h3>
-                    <p className="text-sm leading-relaxed text-accent">
+                    <p className="text-sm leading-relaxed text-[#c88a04]">
                       Wir unterstützen Sie bei förderfähigen Digitalisierungsprojekten zur Maximierung Ihrer Investitionen.
                     </p>
                   </div>
@@ -117,7 +117,7 @@ const UeberUns = () => {
                   <div className="bg-card rounded-xl p-8 shadow-lg border border-border">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Workflow className="w-5 h-5 text-primary" />
+                        <Workflow className="w-5 h-5 text-[#c88a04]" />
                       </div>
                       <div>
                         <h3 className="font-display text-xl font-semibold text-foreground mb-2">
@@ -136,7 +136,7 @@ const UeberUns = () => {
                   <div className="bg-card rounded-xl p-8 shadow-lg border border-border">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Lightbulb className="w-5 h-5 text-accent" />
+                        <Lightbulb className="w-5 h-5 text-[#c88a04]" />
                       </div>
                       <div>
                         <h3 className="font-display text-xl font-semibold text-foreground mb-2">
@@ -155,22 +155,22 @@ const UeberUns = () => {
         </section>
 
         {/* Prozesse */}
-        <section className="py-16 md:py-20 bg-primary">
+        <section className="py-16 md:py-20 bg-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-accent">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-[#c88a04]">
                       Projekte & Prozesse
                     </h2>
-                    <p className="leading-relaxed mb-6 text-accent">
+                    <p className="leading-relaxed mb-6 text-[#c88a04]">
                       Unsere Projekte folgen klaren Strukturen: Analyse, Roadmap, Umsetzung. 
                       Alles integriert in unser CRM-/ERP-System – von Lead bis Abrechnung.
                     </p>
                     <ul className="space-y-3">
-                      {["Automatisierte Lead-Erfassung", "Projektmanagement & Zeittracking", "SEO & Online-Marketing", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-accent">
-                          <span className="w-2 h-2 rounded-full flex-shrink-0 bg-secondary" />
+                      {["Automatisierte Lead-Erfassung", "Projektmanagement & Zeittracking", "SEO & Online-Marketing", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-[#c88a04]">
+                          <span className="w-2 h-2 rounded-full flex-shrink-0 bg-primary" />
                           {item}
                         </li>)}
                     </ul>
@@ -200,13 +200,13 @@ const UeberUns = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-16 md:py-20 bg-primary">
+        <section className="py-16 md:py-20 bg-cyan-900">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-primary">
                 Bereit für Ihre digitale Transformation?
               </h2>
-              <p className="text-primary-foreground/80 text-lg mb-8">
+              <p className="text-lg mb-8 text-primary">
                 Lassen Sie uns gemeinsam Ihre Vision verwirklichen.
               </p>
               <Link to="/kontakt">
