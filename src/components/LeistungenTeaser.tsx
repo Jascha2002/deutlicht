@@ -42,7 +42,7 @@ const LeistungenTeaser = () => {
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 px-0 py-0 my-0 mx-0">
-          {leistungen.map(leistung => <Link key={leistung.title} to={leistung.href} className="group border border-border rounded-2xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-secondary">
+          {leistungen.map(leistung => <Link key={leistung.title} to={leistung.href} className="group border border-border rounded-2xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-primary">
               <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
                 <leistung.icon className="w-7 h-7 text-[#c88a04]" />
               </div>
