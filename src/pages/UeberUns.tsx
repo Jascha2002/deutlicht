@@ -169,7 +169,7 @@ const UeberUns = () => {
                       Alles integriert in unser CRM-/ERP-System – von Lead bis Abrechnung.
                     </p>
                     <ul className="space-y-3">
-                      {["Automatisierte Lead-Erfassung", "Projektmanagement & Zeittracking", "SEO & Online-Marketing", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-[#c88a04]">
+                      {["Automatisierte Lead-Erfassung", "Projektmanagement & Zeittracking", "SEO & Online-Marketing", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-[#c88a04] font-bold">
                           <span className="w-2 h-2 rounded-full flex-shrink-0 bg-primary" />
                           {item}
                         </li>)}
