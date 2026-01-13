@@ -11,10 +11,10 @@ const Footer = () => {
                 DeutLicht<span className="text-accent">®</span>
               </span>
             </Link>
-            <p className="text-muted-foreground leading-relaxed text-base font-light">
+            <p className="leading-relaxed text-base font-light text-primary">
               Ihr Partner für die digitale Zukunft. Mehr als 30 Jahre Erfahrung im Management und über 25 Jahre im Bereich Digitalisierung.
             </p>
-            <p className="text-muted-foreground/60 leading-relaxed text-xs mt-3">
+            <p className="leading-relaxed text-xs mt-3 text-primary">
               Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz UG (haftungsbeschränkt).
             </p>
           </div>
@@ -71,7 +71,7 @@ const Footer = () => {
 
           {/* Leistungen */}
           <nav aria-label="Leistungen Navigation">
-            <h4 className="font-display font-semibold text-foreground mb-4">
+            <h4 className="font-display font-semibold mb-4 text-primary">
               Leistungen
             </h4>
             <ul className="space-y-3" role="list">

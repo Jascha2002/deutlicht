@@ -295,7 +295,7 @@ const VoiceAgentDemo = () => {
     setTranscript([]);
     setIsLoading(false);
   };
-  return <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
+  return <div className="rounded-2xl p-6 md:p-8 shadow-lg border border-border bg-zinc-950">
       <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-3">
         <Phone className="w-5 h-5 text-accent" />
         Live Demo: KI-Sprachassistent
