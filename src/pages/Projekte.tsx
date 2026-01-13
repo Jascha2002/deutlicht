@@ -348,16 +348,16 @@ const Projekte = () => {
         </section>
 
         {/* Approach Section */}
-        <section className="py-16 md:py-20 bg-primary">
+        <section className="py-16 md:py-20 bg-inherit">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-accent">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-[#c88a04]">
                       Unser Ansatz für Ihren Erfolg
                     </h2>
-                    <p className="leading-relaxed mb-8 text-accent">
+                    <p className="leading-relaxed mb-8 text-[#c88a04]">
                       Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. 
                       Gemeinsam entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie 
                       von der Planung bis zur erfolgreichen Umsetzung.
@@ -365,8 +365,8 @@ const Projekte = () => {
 
                     <div className="space-y-4">
                       {["Individuelle Bedarfsanalyse", "Maßgeschneiderte Lösungskonzepte", "Agile Umsetzung mit regelmäßigem Feedback", "Schulung und nachhaltiger Support", "Messbare Ergebnisse und Optimierung"].map((item, index) => <div key={index} className="flex items-center gap-3 text-accent">
-                          <CheckCircle2 className="w-5 h-5 flex-shrink-0 bg-primary text-white" />
-                          <span className="text-accent">{item}</span>
+                          <CheckCircle2 className="w-5 h-5 flex-shrink-0 bg-inherit text-[#c88a04]" />
+                          <span className="text-[#c88a04]">{item}</span>
                         </div>)}
                     </div>
                   </div>
