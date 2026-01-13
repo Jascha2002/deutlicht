@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, FileText, ArrowRight } from "lucide-react";
 const Footer = () => {
-  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit my-0 opacity-100 mx-0 px-0 border-inherit py-[10px]">
+  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit my-0 opacity-100 mx-0 px-0 border-inherit py-0">
       <div className="max-w-7xl px-4 sm:px-6 py-0 bg-inherit lg:px-0 my-[7px] mx-[13px]">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-0 px-0">
           {/* Brand */}
-          <div className="space-y-4 mx-0">
+          <div className="space-y-4 mx-[7px] px-0 py-0 my-0">
             <Link to="/" className="inline-block">
               <span className="font-display font-bold mx-0 text-5xl px-px text-inherit">
                 DeutLicht<span className="text-accent">®</span>
@@ -155,7 +155,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center opacity-100 py-0 bg-inherit my-[18px] gap-[28px]">
+        <div className="mt-12 pt-8 border-t flex-col md:flex-row opacity-100 py-0 bg-inherit my-[18px] flex items-center justify-between gap-[20px] border-inherit">
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} DeutLicht®. Alle Rechte vorbehalten.
           </p>
