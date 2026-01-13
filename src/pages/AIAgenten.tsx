@@ -451,6 +451,55 @@ const AIAgenten = () => {
           </div>
         </section>
 
+        {/* Branchenlösungen Section */}
+        <section className="py-20 md:py-24 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <ScrollReveal className="text-center mb-16">
+              <span className="text-accent font-medium uppercase tracking-widest text-sm">
+                Branchenspezifisch
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
+                Branchenlösungen: Maßgeschneiderte AI-Agenten
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                Wir entwickeln maßgeschneiderte AI-Agenten für verschiedene Branchen wie 
+                <strong> Handwerk, Gesundheit, Gastronomie, Einzelhandel, Kanzleien </strong> 
+                und viele mehr. Jede Lösung wird individuell auf die spezifischen Anforderungen 
+                und Prozesse Ihrer Branche angepasst.
+              </p>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {[
+                { title: "Handwerk", description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation" },
+                { title: "Gesundheit", description: "CareBot für Patientenmanagement & Terminvergabe" },
+                { title: "Gastronomie", description: "Bestell- und Reservierungsassistenten" },
+                { title: "Einzelhandel", description: "ShopBot für Kundenberatung & Bestellstatus" }
+              ].map((branche, i) => (
+                <ScrollReveal key={i} delay={i * 100}>
+                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border h-full hover:shadow-xl transition-shadow">
+                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                      {branche.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      {branche.description}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Link to="/leistungen/branchen-loesungen">
+                <Button size="lg" variant="outline" className="group">
+                  Alle Branchenlösungen entdecken
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 md:py-24 bg-primary">
           <div className="container mx-auto px-4">

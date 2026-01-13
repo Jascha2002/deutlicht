@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, type LucideIcon } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -18,10 +18,68 @@ interface NavItem {
   badge?: string;
   badgeStyle?: 'inline' | 'below';
 }
+// Search data for all pages
+const searchablePages = [
+  { title: "Startseite", path: "/", keywords: ["home", "start", "übersicht"] },
+  { title: "Über uns", path: "/ueber-uns", keywords: ["team", "unternehmen", "wer wir sind"] },
+  { title: "Hintergrund", path: "/ueber-uns/hintergrund", keywords: ["geschichte", "erfahrung"] },
+  { title: "Leistungen", path: "/leistungen", keywords: ["services", "angebot", "dienstleistungen"] },
+  { title: "AI Agenten", path: "/leistungen/ai-agenten", keywords: ["ki", "künstliche intelligenz", "chatbot", "voice", "automatisierung"] },
+  { title: "Branchenlösungen", path: "/leistungen/branchen-loesungen", keywords: ["handwerk", "gesundheit", "gastronomie", "einzelhandel"] },
+  { title: "Self-Order & 24/7", path: "/leistungen/chayns-loesungen", keywords: ["selbstbedienung", "terminal", "kiosk"] },
+  { title: "Schlösser & Roboter", path: "/leistungen/chayns-hardware", keywords: ["smartlock", "roboter", "hardware"] },
+  { title: "CRM & ERP Systeme", path: "/leistungen#crm-erp", keywords: ["odoo", "kundenmanagement", "enterprise"] },
+  { title: "BIM Systeme", path: "/leistungen#bim", keywords: ["building", "information", "modellierung"] },
+  { title: "Digitalisierung", path: "/leistungen#digitalisierung", keywords: ["digital", "transformation"] },
+  { title: "Webentwicklung", path: "/leistungen#web", keywords: ["website", "webshop", "online"] },
+  { title: "Marketing & Social Media", path: "/leistungen#marketing", keywords: ["social", "werbung", "seo"] },
+  { title: "KI-Check", path: "/ki-check", keywords: ["readiness", "analyse", "bewertung", "kostenlos"] },
+  { title: "Projektanfrage", path: "/projektanfrage", keywords: ["anfrage", "projekt", "angebot"] },
+  { title: "Projekte", path: "/projekte", keywords: ["referenzen", "portfolio", "beispiele"] },
+  { title: "Kontakt", path: "/kontakt", keywords: ["email", "telefon", "nachricht"] },
+  { title: "Impressum", path: "/impressum", keywords: ["rechtlich", "angaben"] },
+  { title: "Datenschutz", path: "/datenschutz", keywords: ["dsgvo", "privacy"] },
+];
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ueberUnsOpen, setUeberUnsOpen] = useState(false);
   const [leistungenOpen, setLeistungenOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<typeof searchablePages>([]);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      const results = searchablePages.filter(page => 
+        page.title.toLowerCase().includes(query) ||
+        page.keywords.some(kw => kw.includes(query))
+      );
+      setSearchResults(results.slice(0, 6));
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery]);
+
+  const handleSearchSelect = (path: string) => {
+    setSearchOpen(false);
+    setSearchQuery("");
+    navigate(path);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setSearchQuery("");
+  };
   const navItems: NavItem[] = [{
     name: "Startseite",
     href: "/"
@@ -144,14 +202,69 @@ const Navigation = () => {
               </div>)}
           </div>
 
-          {/* CTA Button, Accessibility & Theme Toggle */}
+          {/* CTA Button, Accessibility, Search & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Search Button */}
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
+              aria-label="Suche öffnen"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <AccessibilityWidget />
             <ThemeToggle />
             <Link to="/kontakt" onClick={() => trackCTAClick("Beratung anfragen", "navigation")} className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
               Beratung anfragen
             </Link>
           </div>
+
+          {/* Search Overlay */}
+          {searchOpen && (
+            <div className="absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border shadow-lg z-50">
+              <div className="max-w-2xl mx-auto p-4">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Website durchsuchen..."
+                    className="w-full pl-12 pr-12 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                  <button
+                    onClick={closeSearch}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label="Suche schließen"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                {searchResults.length > 0 && (
+                  <div className="mt-3 space-y-1">
+                    {searchResults.map((result) => (
+                      <button
+                        key={result.path}
+                        onClick={() => handleSearchSelect(result.path)}
+                        className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted transition-colors flex items-center gap-3"
+                      >
+                        <Search className="w-4 h-4 text-accent" />
+                        <span className="text-foreground">{result.title}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                
+                {searchQuery && searchResults.length === 0 && (
+                  <p className="mt-3 text-center text-muted-foreground py-4">
+                    Keine Ergebnisse für "{searchQuery}"
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label={isOpen ? "Menü schließen" : "Menü öffnen"} aria-expanded={isOpen} aria-controls="mobile-menu">

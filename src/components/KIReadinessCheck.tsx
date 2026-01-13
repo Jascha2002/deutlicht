@@ -405,22 +405,23 @@ const KIReadinessCheck: React.FC = () => {
         </div>
       </div>;
   }
-  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 bg-secondary-foreground mx-0 my-[76px] text-accent">
-      <div className="max-w-2xl mx-auto">
+  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 mx-0 my-[76px]">
+      <div className="w-full max-w-4xl mx-auto px-4">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-#2b3d4f to-indigo-600 p-6 py-[74px] px-[28px] text-primary bg-primary">
+          <div className="p-6 py-[74px] px-[28px]" style={{ backgroundColor: '#2b3d4f' }}>
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold bg-secondary-foreground text-accent">KI-Readiness-Check</h1>
-              <span className="px-3 py-1 rounded-full text-sm bg-accent font-bold">
+              <h1 className="text-2xl font-bold text-white">KI-Readiness-Check</h1>
+              <span className="px-3 py-1 rounded-full text-sm font-bold text-[#2b3d4f]" style={{ backgroundColor: '#c88a04' }}>
                 Frage {currentQuestion + 1} von {questions.length}
               </span>
             </div>
             {/* Progress Bar */}
-            <div className="h-2 rounded-full overflow-hidden bg-primary">
+            <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: '#2b3d4f', border: '1px solid rgba(255,255,255,0.3)' }}>
               <div style={{
-              width: `${progress}%`
-            }} className="h-full rounded-full transition-all duration-500 bg-primary" />
+              width: `${progress}%`,
+              backgroundColor: '#c88a04'
+            }} className="h-full rounded-full transition-all duration-500" />
             </div>
           </div>
 
