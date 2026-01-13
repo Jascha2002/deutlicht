@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, FileText, ArrowRight } from "lucide-react";
 const Footer = () => {
   return <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit my-0 opacity-100 mx-0 px-0 border-inherit py-0">
       <div className="max-w-7xl px-4 sm:px-6 py-0 bg-inherit lg:px-0 my-[7px] mx-[13px]">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-px px-px">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-px px-0 py-[30px]">
           {/* Brand */}
           <div className="space-y-4 mx-[7px] px-0 py-0 my-0">
             <Link to="/" className="inline-block">
