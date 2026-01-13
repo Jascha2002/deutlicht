@@ -108,7 +108,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
-            <img alt="DeutLicht - Klare Vision, Starke Präsenz" className="h-14 w-auto rounded-lg" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" />
+            <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-14 w-auto rounded-xl shadow-sm object-cover" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -134,7 +134,7 @@ const Navigation = () => {
                     </div>
                   </div> : <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex flex-col items-center" role="menuitem">
                     <span>{item.name}</span>
-                    {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded bg-yellow-400 text-yellow-900 -mt-0.5">
+                    {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded -mt-0.5 text-primary bg-accent">
                         {item.badge}
                       </span>}
                     {item.badge && item.badgeStyle !== 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse ml-2">

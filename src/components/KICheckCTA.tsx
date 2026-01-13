@@ -2,14 +2,13 @@ import { Link } from "react-router-dom";
 import { Sparkles, TrendingUp, CheckCircle, Brain, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/lib/analytics";
-
 const KICheckCTA = () => {
   const handleCTAClick = () => {
-    trackEvent("ki_check_cta_click", { location: "homepage_ki_check" });
+    trackEvent("ki_check_cta_click", {
+      location: "homepage_ki_check"
+    });
   };
-
-  return (
-    <section className="w-full py-16 md:py-24 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20">
+  return <section className="w-full py-16 md:py-24 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-secondary-foreground">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-[hsl(210,80%,97%)] to-[hsl(230,70%,95%)] dark:from-[hsl(220,50%,15%)] dark:to-[hsl(240,40%,20%)] rounded-2xl shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12">
@@ -40,11 +39,7 @@ const KICheckCTA = () => {
               </ul>
 
               <div className="pt-2">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                >
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Link to="/ki-check" onClick={handleCTAClick}>
                     <Sparkles className="mr-2 h-5 w-5" />
                     Jetzt kostenlos testen
@@ -62,28 +57,36 @@ const KICheckCTA = () => {
                 {/* Icon Grid */}
                 <div className="relative grid grid-cols-2 gap-4 p-6">
                   {/* Top Left */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  animationDelay: "0.1s"
+                }}>
                     <Brain className="h-10 w-10 text-accent mb-3" />
                     <p className="text-sm font-medium text-foreground">KI-Potenzial</p>
                     <p className="text-xs text-muted-foreground">erkennen</p>
                   </div>
                   
                   {/* Top Right */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  animationDelay: "0.2s"
+                }}>
                     <TrendingUp className="h-10 w-10 text-primary mb-3" />
                     <p className="text-sm font-medium text-foreground">Wachstum</p>
                     <p className="text-xs text-muted-foreground">steigern</p>
                   </div>
                   
                   {/* Bottom Left */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  animationDelay: "0.3s"
+                }}>
                     <Zap className="h-10 w-10 text-gold mb-3" />
                     <p className="text-sm font-medium text-foreground">Prozesse</p>
                     <p className="text-xs text-muted-foreground">optimieren</p>
                   </div>
                   
                   {/* Bottom Right */}
-                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+                  <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
+                  animationDelay: "0.4s"
+                }}>
                     <Target className="h-10 w-10 text-accent mb-3" />
                     <p className="text-sm font-medium text-foreground">Strategie</p>
                     <p className="text-xs text-muted-foreground">entwickeln</p>
@@ -99,8 +102,6 @@ const KICheckCTA = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default KICheckCTA;
