@@ -209,7 +209,7 @@ const Leistungen = () => {
                 <span className="text-accent"> digitale Zukunft</span>
               </h1>
               
-              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500">
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500 font-bold">
                 DeutLicht® bietet umfassende Lösungen für digitale Transformation. 
                 Von CRM- und ERP-Systemen über Websites und Shops bis hin zu 
                 Social-Media-Strategien verbinden wir Technologie mit Mensch und Prozess.
