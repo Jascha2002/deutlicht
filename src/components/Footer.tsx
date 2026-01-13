@@ -11,9 +11,12 @@ const Footer = () => {
                 DeutLicht<span className="text-accent">®</span>
               </span>
             </Link>
-            <p className="text-muted-foreground leading-relaxed text-base font-light">Ihr Partner für die digitale Zukunft. Mehr als 30 Jahre Erfahrung im Management und über 25 Jahre im Bereich Digitalisierung.
-
-Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz UG (haftungsbeschränkt).</p>
+            <p className="text-muted-foreground leading-relaxed text-base font-light">
+              Ihr Partner für die digitale Zukunft. Mehr als 30 Jahre Erfahrung im Management und über 25 Jahre im Bereich Digitalisierung.
+            </p>
+            <p className="text-muted-foreground/60 leading-relaxed text-xs mt-3">
+              Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz UG (haftungsbeschränkt).
+            </p>
           </div>
 
           {/* Navigation */}
@@ -73,6 +76,16 @@ Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz
             </h4>
             <ul className="space-y-3" role="list">
               <li>
+                <Link to="/leistungen/ai-agenten" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  KI / AI-Agenten
+                </Link>
+              </li>
+              <li>
+                <Link to="/leistungen/branchen-loesungen" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  Branchenlösungen
+                </Link>
+              </li>
+              <li>
                 <Link to="/leistungen#digitalisierung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   Digitalisierung
                 </Link>
@@ -90,6 +103,16 @@ Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz
               <li>
                 <Link to="/leistungen#marketing" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   Marketing & Social Media
+                </Link>
+              </li>
+              <li>
+                <Link to="/kontakt" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  Schulungen & Beratung
+                </Link>
+              </li>
+              <li>
+                <Link to="/leistungen#marketing" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  SEO-Sichtbarkeit
                 </Link>
               </li>
             </ul>
