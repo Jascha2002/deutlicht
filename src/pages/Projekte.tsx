@@ -156,7 +156,7 @@ const Projekte = () => {
                 <span className="text-accent"> inspirieren</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500">
                 Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen 
                 verschiedener Branchen bei ihrer digitalen Transformation begleitet haben.
               </p>
