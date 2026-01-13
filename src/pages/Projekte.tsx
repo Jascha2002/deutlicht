@@ -140,9 +140,9 @@ const Projekte = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/5 opacity-100 bg-[#344256] px-[215px] md:py-[25px]">
-          <div className="container mx-auto px-4 bg-[#344256]/[0.72] opacity-95">
-            <div className="max-w-4xl mx-auto text-center">
+        <section className="relative py-20 bg-white px-0 md:py-[27px] shadow-none rounded-none opacity-100 text-secondary-foreground mx-0 my-0">
+          <div className="container mx-auto opacity-95 py-[5px] px-px shadow-none rounded-none bg-primary-foreground">
+            <div className="max-w-4xl mx-auto text-center bg-destructive-foreground">
               <div className="mb-8 flex justify-center">
                 <AnimatedLogo size="md" />
               </div>
@@ -151,7 +151,7 @@ const Projekte = () => {
                 Projekte & Referenzen
               </span>
               
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight">
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight px-0">
                 Erfolgsgeschichten, die
                 <span className="text-accent"> inspirieren</span>
               </h1>
