@@ -147,7 +147,7 @@ const Projekte = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <span className="text-accent font-medium uppercase tracking-widest text-sm bg-primary px-[14px]">
+              <span className="font-medium uppercase tracking-widest text-sm px-[14px] text-[#c88a04] bg-inherit">
                 Projekte & Referenzen
               </span>
               
@@ -395,13 +395,13 @@ const Projekte = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 md:py-24 bg-[#2b3d50]/[0.63]">
+        <section className="py-20 md:py-24 bg-cyan-800 text-inherit">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
                 Bereit für Ihre Erfolgsgeschichte?
               </h2>
-              <p className="text-primary-foreground/80 text-lg mb-8">
+              <p className="text-lg mb-8 text-inherit">
                 Kontaktieren Sie uns für ein unverbindliches Erstgespräch. 
                 Gemeinsam bringen wir Ihr Unternehmen digital nach vorne.
               </p>
