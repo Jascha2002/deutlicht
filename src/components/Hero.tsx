@@ -11,7 +11,7 @@ const Hero = () => {
       }} aria-hidden="true">
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background bg-accent border-dashed rounded-sm opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e]" />
       </div>
 
       {/* Branchen-Selector Button */}
@@ -36,7 +36,7 @@ const Hero = () => {
           </h1>
 
           {/* Subheadline */}
-          <p className="max-w-2xl mx-auto text-lg leading-relaxed sm:text-2xl font-semibold text-muted-foreground bg-[#c88a04]/[0.01]">
+          <p className="max-w-2xl mx-auto text-lg leading-relaxed sm:text-2xl font-semibold bg-[#c88a04]/[0.01] text-primary">
             Wir begleiten Ihr Unternehmen durch die digitale Transformation – 
             mit Strategie, Erfahrung und maßgeschneiderten Lösungen.
           </p>

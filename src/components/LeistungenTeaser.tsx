@@ -26,10 +26,10 @@ const LeistungenTeaser = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-accent font-medium uppercase tracking-widest text-sm">
+          <span className="text-accent font-medium uppercase tracking-widest text-xl">
             Unsere Leistungen
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mt-4">
+          <h2 className="font-display text-3xl font-bold text-foreground mt-4 sm:text-5xl">
             Ganzheitliche Lösungen für Ihre
             <br />
             <span className="text-accent">digitale Zukunft</span>

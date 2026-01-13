@@ -8,10 +8,10 @@ const KICheckCTA = () => {
       location: "homepage_ki_check"
     });
   };
-  return <section className="w-full py-16 md:py-24 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-secondary-foreground opacity-85">
+  return <section className="w-full py-16 md:py-24 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 opacity-85 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-[hsl(210,80%,97%)] to-[hsl(230,70%,95%)] dark:from-[hsl(220,50%,15%)] dark:to-[hsl(240,40%,20%)] rounded-2xl shadow-xl overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12 bg-secondary">
             {/* Left: Text + Button */}
             <div className="flex flex-col justify-center space-y-6">
               <div className="space-y-4">
