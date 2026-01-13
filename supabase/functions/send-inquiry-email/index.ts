@@ -340,8 +340,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     const requestData: InquiryFormRequest = await req.json();
     
-    // Handle Klarheitscheck submissions
-    if (requestData.type === 'klarheitscheck' && requestData.data) {
+    // Handle Klarheitscheck / Projektanfrage submissions
+    if ((requestData.type === 'klarheitscheck' || requestData.type === 'projektanfrage') && requestData.data) {
       const data = requestData.data;
       
       // Validate email
