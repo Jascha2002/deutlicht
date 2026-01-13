@@ -161,7 +161,7 @@ const UeberUns = () => {
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-[#c88a04]">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
                       Projekte & Prozesse
                     </h2>
                     <p className="leading-relaxed mb-6 text-[#c88a04]">
