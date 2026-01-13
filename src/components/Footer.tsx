@@ -146,7 +146,7 @@ const Footer = () => {
             
             {/* Quick CTA */}
             <div className="mt-6 pt-4 border-t border-border">
-              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors text-primary bg-accent">
+              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors bg-[#c88a04] text-primary-foreground px-[13px]">
                 Jetzt Projektanfrage starten
                 <ArrowRight className="w-4 h-4" />
               </Link>
