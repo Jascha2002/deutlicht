@@ -17,7 +17,7 @@ const UeberUns = () => {
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-accent/5 bg-secondary">
+        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/5 bg-secondary md:py-[6px]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               {/* Animated Logo */}
@@ -47,12 +47,12 @@ const UeberUns = () => {
         </section>
 
         {/* Quick Overview Cards */}
-        <section className="py-16 md:py-20">
+        <section className="py-16 md:py-[23px]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <ScrollReveal delay={0}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary">
                     <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
                       <Award className="w-6 h-6 text-primary" />
                     </div>
@@ -66,7 +66,7 @@ const UeberUns = () => {
                 </ScrollReveal>
 
                 <ScrollReveal delay={100}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary">
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
                       <Users className="w-6 h-6 text-[#c88a04]" />
                     </div>
@@ -80,7 +80,7 @@ const UeberUns = () => {
                 </ScrollReveal>
 
                 <ScrollReveal delay={200}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-secondary">
+                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary">
                     <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
                       <Target className="w-6 h-6 text-primary" />
                     </div>
@@ -98,7 +98,7 @@ const UeberUns = () => {
         </section>
 
         {/* Leistungsspektrum */}
-        <section className="py-16 md:py-20 bg-[#2b3d50]/[0.36]">
+        <section className="py-16 md:py-[29px] bg-inherit">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
@@ -200,7 +200,7 @@ const UeberUns = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-16 md:py-20 bg-cyan-900">
+        <section className="py-16 md:py-20 bg-accent">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-primary">
