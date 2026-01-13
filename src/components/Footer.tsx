@@ -46,7 +46,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/ki-check" className="transition-colors text-sm px-[9px] text-accent bg-primary">
+                <Link to="/ki-check" className="transition-colors text-sm px-[9px] bg-[#c88a04] text-inherit">
                   KI-Check
                 </Link>
               </li>
@@ -76,7 +76,7 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3" role="list">
               <li>
-                <Link to="/leistungen/ai-agenten" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                <Link to="/leistungen/ai-agenten" className="text-muted-foreground hover:text-accent transition-colors text-sm bg-[#c88a04]">
                   KI / AI-Agenten
                 </Link>
               </li>
@@ -146,7 +146,7 @@ const Footer = () => {
             
             {/* Quick CTA */}
             <div className="mt-6 pt-4 border-t border-border">
-              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors bg-[#c88a04] text-primary-foreground px-[13px]">
+              <Link to="/projektanfrage" className="inline-flex items-center gap-2 text-sm font-medium transition-colors bg-[#c88a04] px-[13px] text-inherit">
                 Jetzt Projektanfrage starten
                 <ArrowRight className="w-4 h-4" />
               </Link>
