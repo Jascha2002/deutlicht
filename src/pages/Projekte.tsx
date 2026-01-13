@@ -153,10 +153,10 @@ const Projekte = () => {
               
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight px-0">
                 Erfolgsgeschichten, die
-                <span className="text-accent"> inspirieren</span>
+                <span className="text-[#c88a04]"> inspirieren</span>
               </h1>
               
-              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500">
+              <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
                 Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen 
                 verschiedener Branchen bei ihrer digitalen Transformation begleitet haben.
               </p>
@@ -186,10 +186,10 @@ const Projekte = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => <ScrollReveal key={index} delay={index * 100}>
                   <div className="text-center">
-                    <p className="font-display text-3xl md:text-4xl font-bold text-accent mb-2">
+                    <p className="font-display text-3xl md:text-4xl font-bold mb-2 text-[#c88a04]">
                       {stat.value}
                     </p>
-                    <p className="text-sm text-accent">{stat.label}</p>
+                    <p className="text-sm text-[#c88a04]">{stat.label}</p>
                   </div>
                 </ScrollReveal>)}
             </div>
