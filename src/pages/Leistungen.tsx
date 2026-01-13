@@ -249,7 +249,7 @@ const Leistungen = () => {
                       </div>
                     </div>
 
-                    <p className="text-lg leading-relaxed mb-8 text-cyan-500">
+                    <p className="text-lg leading-relaxed mb-8 text-cyan-500 font-bold">
                       {service.description}
                     </p>
 
