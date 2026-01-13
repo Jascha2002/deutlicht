@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, FileText, ArrowRight } from "lucide-react";
 const Footer = () => {
-  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t border-border bg-inherit py-[29px] my-0 mx-0 px-0 opacity-100">
-      <div className="max-w-7xl px-4 sm:px-6 py-0 bg-inherit mx-0 my-0 lg:px-[88px]">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-[7px] px-[9px]">
+  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t border-border bg-inherit py-[29px] my-0 opacity-100 px-[25px] mx-[13px]">
+      <div className="max-w-7xl px-4 sm:px-6 py-0 bg-inherit lg:px-0 my-[7px] mx-[13px]">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-0 px-0">
           {/* Brand */}
           <div className="space-y-4 mx-0">
             <Link to="/" className="inline-block">
