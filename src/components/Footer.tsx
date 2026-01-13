@@ -71,7 +71,7 @@ const Footer = () => {
 
           {/* Leistungen */}
           <nav aria-label="Leistungen Navigation">
-            <h4 className="font-display font-semibold mb-4 text-primary px-[64px]">
+            <h4 className="font-display font-semibold mb-4 text-inherit px-0">
               Leistungen
             </h4>
             <ul className="space-y-3" role="list">
