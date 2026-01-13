@@ -19,181 +19,163 @@ interface NavItem {
   badgeStyle?: 'inline' | 'below';
 }
 // Full-text search data for all pages with content excerpts
-const searchablePages = [
-  { 
-    title: "Startseite", 
-    path: "/", 
-    keywords: ["home", "start", "übersicht"],
-    content: "DeutLicht digitale Klarheit Vision starke Präsenz Unternehmensberatung Digitalisierung KI-Lösungen Website Entwicklung Willkommen Partner digitale Zukunft"
-  },
-  { 
-    title: "Über uns", 
-    path: "/ueber-uns", 
-    keywords: ["team", "unternehmen", "wer wir sind"],
-    content: "Unser Team Erfahrung Management Digitalisierung 30 Jahre Expertise Carsten van de Sand Unternehmensberater Strategie Innovation Zusammenarbeit"
-  },
-  { 
-    title: "Hintergrund", 
-    path: "/ueber-uns/hintergrund", 
-    keywords: ["geschichte", "erfahrung"],
-    content: "Geschichte DeutLicht Entstehung Entwicklung Meilensteine Erfahrung Werdegang Kompetenz Hintergrund Historie"
-  },
-  { 
-    title: "Leistungen", 
-    path: "/leistungen", 
-    keywords: ["services", "angebot", "dienstleistungen"],
-    content: "Leistungen Digitalisierung CRM ERP BIM PIM Wissensmanagement Website Webshop Marketing Social Media SEO Förderberatung Beratung Schulungen"
-  },
-  { 
-    title: "AI Agenten", 
-    path: "/leistungen/ai-agenten", 
-    keywords: ["ki", "künstliche intelligenz", "chatbot", "voice", "automatisierung"],
-    content: "AI Agenten KI künstliche Intelligenz Chatbot Voicebot Sprachassistent Automatisierung Kundenservice 24/7 Erreichbarkeit Machine Learning NLP Branchenlösungen maßgeschneidert"
-  },
-  { 
-    title: "Branchenlösungen", 
-    path: "/leistungen/branchen-loesungen", 
-    keywords: ["handwerk", "gesundheit", "gastronomie", "einzelhandel"],
-    content: "Branchenlösungen Handwerk Gesundheit Gastronomie Einzelhandel maßgeschneidert branchenspezifisch Pakete Lösungen Anforderungen individuell"
-  },
-  { 
-    title: "Self-Order & 24/7", 
-    path: "/leistungen/chayns-loesungen", 
-    keywords: ["selbstbedienung", "terminal", "kiosk"],
-    content: "Self-Order Selbstbedienung Terminal Kiosk 24/7 Bestellung digital kontaktlos Gastronomie Handel Kundenerlebnis chayns"
-  },
-  { 
-    title: "Schlösser & Roboter", 
-    path: "/leistungen/chayns-hardware", 
-    keywords: ["smartlock", "roboter", "hardware"],
-    content: "Smartlock intelligente Schlösser Zutrittskontrolle Roboter Serviceroboter Butlerbot Hardware IoT Automatisierung Schließsystem"
-  },
-  { 
-    title: "CRM & ERP Systeme", 
-    path: "/leistungen#crm-erp", 
-    keywords: ["odoo", "kundenmanagement", "enterprise"],
-    content: "CRM Customer Relationship Management ERP Enterprise Resource Planning Odoo Kundenmanagement Geschäftsprozesse Integration Verwaltung"
-  },
-  { 
-    title: "BIM Systeme", 
-    path: "/leistungen#bim", 
-    keywords: ["building", "information", "modellierung"],
-    content: "BIM Building Information Modeling Bauwesen Architektur Planung 3D Modellierung Gebäudedaten Konstruktion"
-  },
-  { 
-    title: "Digitalisierung", 
-    path: "/leistungen#digitalisierung", 
-    keywords: ["digital", "transformation"],
-    content: "Digitalisierung digitale Transformation Prozesse automatisieren Effizienz steigern Modernisierung IT-Strategie Innovation"
-  },
-  { 
-    title: "Webentwicklung", 
-    path: "/leistungen#web", 
-    keywords: ["website", "webshop", "online"],
-    content: "Website Webentwicklung Webshop Online-Shop E-Commerce Responsive Design UX UI Programmierung"
-  },
-  { 
-    title: "Marketing & Social Media", 
-    path: "/leistungen#marketing", 
-    keywords: ["social", "werbung", "seo"],
-    content: "Marketing Social Media SEO Suchmaschinenoptimierung Werbung Online-Marketing Content Reichweite Sichtbarkeit Facebook Instagram LinkedIn"
-  },
-  { 
-    title: "KI-Check", 
-    path: "/ki-check", 
-    keywords: ["readiness", "analyse", "bewertung", "kostenlos"],
-    content: "KI-Check KI-Readiness Analyse Bewertung kostenlos Potenzial künstliche Intelligenz Einsatzmöglichkeiten Reife Unternehmen"
-  },
-  { 
-    title: "Projektanfrage", 
-    path: "/projektanfrage", 
-    keywords: ["anfrage", "projekt", "angebot"],
-    content: "Projektanfrage Angebot anfragen Projekt starten Kontakt aufnehmen Beratungsgespräch unverbindlich kostenlos"
-  },
-  { 
-    title: "Projekte", 
-    path: "/projekte", 
-    keywords: ["referenzen", "portfolio", "beispiele"],
-    content: "Projekte Referenzen Portfolio Beispiele Kundenprojekte Erfolge Case Studies Umsetzung"
-  },
-  { 
-    title: "Kontakt", 
-    path: "/kontakt", 
-    keywords: ["email", "telefon", "nachricht"],
-    content: "Kontakt Email Telefon Nachricht schreiben erreichen Adresse Ansprechpartner Beratung Termin"
-  },
-  { 
-    title: "Impressum", 
-    path: "/impressum", 
-    keywords: ["rechtlich", "angaben"],
-    content: "Impressum rechtliche Angaben Verantwortlicher Stadtnetz UG Geschäftsführer Handelsregister"
-  },
-  { 
-    title: "Datenschutz", 
-    path: "/datenschutz", 
-    keywords: ["dsgvo", "privacy"],
-    content: "Datenschutz DSGVO Privacy Datenschutzerklärung Cookies personenbezogene Daten Rechte Verarbeitung"
-  },
-];
-
+const searchablePages = [{
+  title: "Startseite",
+  path: "/",
+  keywords: ["home", "start", "übersicht"],
+  content: "DeutLicht digitale Klarheit Vision starke Präsenz Unternehmensberatung Digitalisierung KI-Lösungen Website Entwicklung Willkommen Partner digitale Zukunft"
+}, {
+  title: "Über uns",
+  path: "/ueber-uns",
+  keywords: ["team", "unternehmen", "wer wir sind"],
+  content: "Unser Team Erfahrung Management Digitalisierung 30 Jahre Expertise Carsten van de Sand Unternehmensberater Strategie Innovation Zusammenarbeit"
+}, {
+  title: "Hintergrund",
+  path: "/ueber-uns/hintergrund",
+  keywords: ["geschichte", "erfahrung"],
+  content: "Geschichte DeutLicht Entstehung Entwicklung Meilensteine Erfahrung Werdegang Kompetenz Hintergrund Historie"
+}, {
+  title: "Leistungen",
+  path: "/leistungen",
+  keywords: ["services", "angebot", "dienstleistungen"],
+  content: "Leistungen Digitalisierung CRM ERP BIM PIM Wissensmanagement Website Webshop Marketing Social Media SEO Förderberatung Beratung Schulungen"
+}, {
+  title: "AI Agenten",
+  path: "/leistungen/ai-agenten",
+  keywords: ["ki", "künstliche intelligenz", "chatbot", "voice", "automatisierung"],
+  content: "AI Agenten KI künstliche Intelligenz Chatbot Voicebot Sprachassistent Automatisierung Kundenservice 24/7 Erreichbarkeit Machine Learning NLP Branchenlösungen maßgeschneidert"
+}, {
+  title: "Branchenlösungen",
+  path: "/leistungen/branchen-loesungen",
+  keywords: ["handwerk", "gesundheit", "gastronomie", "einzelhandel"],
+  content: "Branchenlösungen Handwerk Gesundheit Gastronomie Einzelhandel maßgeschneidert branchenspezifisch Pakete Lösungen Anforderungen individuell"
+}, {
+  title: "Self-Order & 24/7",
+  path: "/leistungen/chayns-loesungen",
+  keywords: ["selbstbedienung", "terminal", "kiosk"],
+  content: "Self-Order Selbstbedienung Terminal Kiosk 24/7 Bestellung digital kontaktlos Gastronomie Handel Kundenerlebnis chayns"
+}, {
+  title: "Schlösser & Roboter",
+  path: "/leistungen/chayns-hardware",
+  keywords: ["smartlock", "roboter", "hardware"],
+  content: "Smartlock intelligente Schlösser Zutrittskontrolle Roboter Serviceroboter Butlerbot Hardware IoT Automatisierung Schließsystem"
+}, {
+  title: "CRM & ERP Systeme",
+  path: "/leistungen#crm-erp",
+  keywords: ["odoo", "kundenmanagement", "enterprise"],
+  content: "CRM Customer Relationship Management ERP Enterprise Resource Planning Odoo Kundenmanagement Geschäftsprozesse Integration Verwaltung"
+}, {
+  title: "BIM Systeme",
+  path: "/leistungen#bim",
+  keywords: ["building", "information", "modellierung"],
+  content: "BIM Building Information Modeling Bauwesen Architektur Planung 3D Modellierung Gebäudedaten Konstruktion"
+}, {
+  title: "Digitalisierung",
+  path: "/leistungen#digitalisierung",
+  keywords: ["digital", "transformation"],
+  content: "Digitalisierung digitale Transformation Prozesse automatisieren Effizienz steigern Modernisierung IT-Strategie Innovation"
+}, {
+  title: "Webentwicklung",
+  path: "/leistungen#web",
+  keywords: ["website", "webshop", "online"],
+  content: "Website Webentwicklung Webshop Online-Shop E-Commerce Responsive Design UX UI Programmierung"
+}, {
+  title: "Marketing & Social Media",
+  path: "/leistungen#marketing",
+  keywords: ["social", "werbung", "seo"],
+  content: "Marketing Social Media SEO Suchmaschinenoptimierung Werbung Online-Marketing Content Reichweite Sichtbarkeit Facebook Instagram LinkedIn"
+}, {
+  title: "KI-Check",
+  path: "/ki-check",
+  keywords: ["readiness", "analyse", "bewertung", "kostenlos"],
+  content: "KI-Check KI-Readiness Analyse Bewertung kostenlos Potenzial künstliche Intelligenz Einsatzmöglichkeiten Reife Unternehmen"
+}, {
+  title: "Projektanfrage",
+  path: "/projektanfrage",
+  keywords: ["anfrage", "projekt", "angebot"],
+  content: "Projektanfrage Angebot anfragen Projekt starten Kontakt aufnehmen Beratungsgespräch unverbindlich kostenlos"
+}, {
+  title: "Projekte",
+  path: "/projekte",
+  keywords: ["referenzen", "portfolio", "beispiele"],
+  content: "Projekte Referenzen Portfolio Beispiele Kundenprojekte Erfolge Case Studies Umsetzung"
+}, {
+  title: "Kontakt",
+  path: "/kontakt",
+  keywords: ["email", "telefon", "nachricht"],
+  content: "Kontakt Email Telefon Nachricht schreiben erreichen Adresse Ansprechpartner Beratung Termin"
+}, {
+  title: "Impressum",
+  path: "/impressum",
+  keywords: ["rechtlich", "angaben"],
+  content: "Impressum rechtliche Angaben Verantwortlicher Stadtnetz UG Geschäftsführer Handelsregister"
+}, {
+  title: "Datenschutz",
+  path: "/datenschutz",
+  keywords: ["dsgvo", "privacy"],
+  content: "Datenschutz DSGVO Privacy Datenschutzerklärung Cookies personenbezogene Daten Rechte Verarbeitung"
+}];
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ueberUnsOpen, setUeberUnsOpen] = useState(false);
   const [leistungenOpen, setLeistungenOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<Array<{ title: string; path: string; keywords: string[]; content: string; score: number; excerpt: string; matched: boolean }>>([]);
+  const [searchResults, setSearchResults] = useState<Array<{
+    title: string;
+    path: string;
+    keywords: string[];
+    content: string;
+    score: number;
+    excerpt: string;
+    matched: boolean;
+  }>>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [searchOpen]);
-
   useEffect(() => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      const results = searchablePages
-        .map(page => {
-          // Calculate relevance score
-          let score = 0;
-          const titleMatch = page.title.toLowerCase().includes(query);
-          const keywordMatch = page.keywords.some(kw => kw.includes(query));
-          const contentMatch = page.content.toLowerCase().includes(query);
-          
-          if (titleMatch) score += 10;
-          if (keywordMatch) score += 5;
-          if (contentMatch) score += 3;
-          
-          // Find matching excerpt from content
-          let excerpt = "";
-          if (contentMatch) {
-            const contentLower = page.content.toLowerCase();
-            const matchIndex = contentLower.indexOf(query);
-            const start = Math.max(0, matchIndex - 20);
-            const end = Math.min(page.content.length, matchIndex + query.length + 40);
-            excerpt = (start > 0 ? "..." : "") + page.content.slice(start, end) + (end < page.content.length ? "..." : "");
-          }
-          
-          return { ...page, score, excerpt, matched: score > 0 };
-        })
-        .filter(page => page.matched)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 6);
+      const results = searchablePages.map(page => {
+        // Calculate relevance score
+        let score = 0;
+        const titleMatch = page.title.toLowerCase().includes(query);
+        const keywordMatch = page.keywords.some(kw => kw.includes(query));
+        const contentMatch = page.content.toLowerCase().includes(query);
+        if (titleMatch) score += 10;
+        if (keywordMatch) score += 5;
+        if (contentMatch) score += 3;
+
+        // Find matching excerpt from content
+        let excerpt = "";
+        if (contentMatch) {
+          const contentLower = page.content.toLowerCase();
+          const matchIndex = contentLower.indexOf(query);
+          const start = Math.max(0, matchIndex - 20);
+          const end = Math.min(page.content.length, matchIndex + query.length + 40);
+          excerpt = (start > 0 ? "..." : "") + page.content.slice(start, end) + (end < page.content.length ? "..." : "");
+        }
+        return {
+          ...page,
+          score,
+          excerpt,
+          matched: score > 0
+        };
+      }).filter(page => page.matched).sort((a, b) => b.score - a.score).slice(0, 6);
       setSearchResults(results);
     } else {
       setSearchResults([]);
     }
   }, [searchQuery]);
-
   const handleSearchSelect = (path: string) => {
     setSearchOpen(false);
     setSearchQuery("");
     navigate(path);
   };
-
   const closeSearch = () => {
     setSearchOpen(false);
     setSearchQuery("");
@@ -310,7 +292,7 @@ const Navigation = () => {
                     </div>
                   </div> : <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex flex-col items-center" role="menuitem">
                     <span>{item.name}</span>
-                    {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded -mt-0.5 text-primary bg-accent">
+                    {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded -mt-0.5 text-primary bg-[#c88a04]">
                         {item.badge}
                       </span>}
                     {item.badge && item.badgeStyle !== 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse ml-2">
@@ -323,73 +305,44 @@ const Navigation = () => {
           {/* CTA Button, Accessibility, Search & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-2">
             {/* Search Button */}
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md"
-              aria-label="Suche öffnen"
-            >
+            <button onClick={() => setSearchOpen(!searchOpen)} className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="Suche öffnen">
               <Search className="w-5 h-5" />
             </button>
             <AccessibilityWidget />
             <ThemeToggle />
-            <Link to="/kontakt" onClick={() => trackCTAClick("Beratung anfragen", "navigation")} className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
+            <Link to="/kontakt" onClick={() => trackCTAClick("Beratung anfragen", "navigation")} className="text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
               Beratung anfragen
             </Link>
           </div>
 
           {/* Search Overlay */}
-          {searchOpen && (
-            <div className="absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border shadow-lg z-50">
+          {searchOpen && <div className="absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border shadow-lg z-50">
               <div className="max-w-2xl mx-auto p-4">
                 <div className="relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Website durchsuchen..."
-                    className="w-full pl-12 pr-12 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                  />
-                  <button
-                    onClick={closeSearch}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label="Suche schließen"
-                  >
+                  <input ref={searchInputRef} type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Website durchsuchen..." className="w-full pl-12 pr-12 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                  <button onClick={closeSearch} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" aria-label="Suche schließen">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
                 
-                {searchResults.length > 0 && (
-                  <div className="mt-3 space-y-1">
-                    {searchResults.map((result) => (
-                      <button
-                        key={result.path}
-                        onClick={() => handleSearchSelect(result.path)}
-                        className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted transition-colors"
-                      >
+                {searchResults.length > 0 && <div className="mt-3 space-y-1">
+                    {searchResults.map(result => <button key={result.path} onClick={() => handleSearchSelect(result.path)} className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted transition-colors">
                         <div className="flex items-center gap-3">
                           <Search className="w-4 h-4 text-accent flex-shrink-0" />
                           <span className="text-foreground font-medium">{result.title}</span>
                         </div>
-                        {result.excerpt && (
-                          <p className="text-sm text-muted-foreground mt-1 ml-7 line-clamp-1">
+                        {result.excerpt && <p className="text-sm text-muted-foreground mt-1 ml-7 line-clamp-1">
                             {result.excerpt}
-                          </p>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                          </p>}
+                      </button>)}
+                  </div>}
                 
-                {searchQuery && searchResults.length === 0 && (
-                  <p className="mt-3 text-center text-muted-foreground py-4">
+                {searchQuery && searchResults.length === 0 && <p className="mt-3 text-center text-muted-foreground py-4">
                     Keine Ergebnisse für "{searchQuery}"
-                  </p>
-                )}
+                  </p>}
               </div>
-            </div>
-          )}
+            </div>}
 
           {/* Mobile Menu Button */}
           <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label={isOpen ? "Menü schließen" : "Menü öffnen"} aria-expanded={isOpen} aria-controls="mobile-menu">

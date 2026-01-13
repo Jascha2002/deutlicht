@@ -32,7 +32,7 @@ const Hero = () => {
           <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
             Von der Idee zur
             <br />
-            <span className="text-accent">intelligenten Lösung</span>
+            <span className="text-[#c88a04]">intelligenten Lösung</span>
           </h1>
 
           {/* Subheadline */}
