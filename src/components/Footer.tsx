@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, FileText, ArrowRight } from "lucide-react";
 const Footer = () => {
-  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t border-border opacity-95 bg-inherit px-0 py-[29px] mx-0 my-0">
+  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t border-border bg-inherit py-[29px] my-0 mx-0 px-0 opacity-100">
       <div className="max-w-7xl px-4 sm:px-6 py-0 bg-inherit mx-0 my-0 lg:px-[88px]">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 opacity-100 mx-[7px] px-[9px]">
           {/* Brand */}
           <div className="space-y-4 mx-0">
             <Link to="/" className="inline-block">
@@ -21,7 +21,7 @@ const Footer = () => {
 
           {/* Navigation */}
           <nav aria-label="Footer Navigation">
-            <h4 className="font-display font-semibold text-foreground mb-4">
+            <h4 className="font-display font-semibold text-foreground mb-4 px-[65px]">
               Navigation
             </h4>
             <ul className="space-y-3" role="list">
@@ -71,7 +71,7 @@ const Footer = () => {
 
           {/* Leistungen */}
           <nav aria-label="Leistungen Navigation">
-            <h4 className="font-display font-semibold mb-4 text-primary">
+            <h4 className="font-display font-semibold mb-4 text-primary px-[64px]">
               Leistungen
             </h4>
             <ul className="space-y-3" role="list">
@@ -120,7 +120,7 @@ const Footer = () => {
 
           {/* Kontakt */}
           <div>
-            <h4 className="font-display font-semibold text-foreground mb-4">
+            <h4 className="font-display font-semibold text-foreground mb-4 px-[65px]">
               Kontakt
             </h4>
             <ul className="space-y-3">
