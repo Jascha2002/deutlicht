@@ -141,7 +141,7 @@ const Projekte = () => {
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
         <section className="relative py-20 bg-white px-0 shadow-none rounded-none opacity-100 text-secondary-foreground mx-0 my-0 md:py-0">
-          <div className="container mx-auto py-[5px] px-px shadow-none rounded-none bg-primary-foreground opacity-100">
+          <div className="container mx-auto py-[5px] px-px shadow-none rounded-none opacity-100 bg-primary-foreground">
             <div className="max-w-4xl mx-auto text-center bg-primary-foreground">
               <div className="mb-8 flex justify-center py-0 bg-primary-foreground">
                 <AnimatedLogo size="md" />
