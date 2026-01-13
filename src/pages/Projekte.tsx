@@ -140,8 +140,8 @@ const Projekte = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 bg-white px-0 shadow-none rounded-none opacity-100 text-secondary-foreground mx-0 my-0 md:py-0">
-          <div className="container mx-auto py-[5px] px-px shadow-none rounded-none opacity-100 bg-primary-foreground">
+        <section className="relative py-20 px-0 shadow-none rounded-none opacity-100 text-secondary-foreground mx-0 my-0 md:py-0 bg-primary-foreground">
+          <div className="container py-[5px] px-px shadow-none rounded-none opacity-100 bg-primary-foreground mx-[126px]">
             <div className="max-w-4xl mx-auto text-center bg-primary-foreground">
               <div className="mb-8 flex justify-center py-0 bg-primary-foreground">
                 <AnimatedLogo size="md" />
@@ -156,7 +156,7 @@ const Projekte = () => {
                 <span className="text-[#c88a04]"> inspirieren</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500">
                 Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen 
                 verschiedener Branchen bei ihrer digitalen Transformation begleitet haben.
               </p>
