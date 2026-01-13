@@ -249,7 +249,7 @@ const Leistungen = () => {
                       </div>
                     </div>
 
-                    <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                    <p className="text-lg leading-relaxed mb-8 text-cyan-500">
                       {service.description}
                     </p>
 
@@ -296,7 +296,7 @@ const Leistungen = () => {
 
                   {/* Benefits Card */}
                   <ScrollReveal direction={index % 2 === 0 ? "right" : "left"} delay={200} className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                    <div className="rounded-2xl p-8 shadow-lg border border-border bg-slate-400">
+                    <div className="rounded-2xl p-8 shadow-lg border border-border bg-inherit">
                       <h3 className="font-display text-xl font-semibold text-foreground mb-6">
                         Ihre Vorteile
                       </h3>
