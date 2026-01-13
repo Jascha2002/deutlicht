@@ -142,8 +142,8 @@ const Projekte = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-white px-0 shadow-none rounded-none opacity-100 text-secondary-foreground mx-0 my-0 md:py-0">
           <div className="container mx-auto opacity-95 py-[5px] px-px shadow-none rounded-none bg-primary-foreground">
-            <div className="max-w-4xl mx-auto text-center bg-destructive-foreground">
-              <div className="mb-8 flex justify-center py-0">
+            <div className="max-w-4xl mx-auto text-center bg-primary-foreground">
+              <div className="mb-8 flex justify-center py-0 bg-primary-foreground">
                 <AnimatedLogo size="md" />
               </div>
               
@@ -181,7 +181,7 @@ const Projekte = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="border-y border-accent border-solid border-4 py-[30px] bg-primary">
+        <section className="border-y border-solid border-4 py-[30px] border-[#c88a04] bg-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => <ScrollReveal key={index} delay={index * 100}>
@@ -197,7 +197,7 @@ const Projekte = () => {
         </section>
 
         {/* Industries */}
-        <section className="py-16 md:py-20 bg-[#c88a04]/[0.26]">
+        <section className="py-16 md:py-20 bg-secondary">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
@@ -214,10 +214,10 @@ const Projekte = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {industries.map((industry, index) => <ScrollReveal key={index} delay={index * 50}>
                     <div className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center text-secondary bg-primary">
-                        <industry.icon className="w-6 h-6 text-accent" />
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center text-[#c88a04] bg-muted">
+                        <industry.icon className="w-6 h-6 text-[#c88a04]" />
                       </div>
-                      <span className="text-sm font-medium text-foreground text-center">
+                      <span className="text-sm font-medium text-center text-[#c88a04]">
                         {industry.name}
                       </span>
                     </div>
@@ -248,10 +248,10 @@ const Projekte = () => {
                     {/* Content */}
                     <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
-                          <study.icon className="w-5 h-5 text-accent" />
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#c88a04]">
+                          <study.icon className="w-5 h-5 bg-inherit text-inherit" />
                         </div>
-                        <span className="text-accent font-medium text-sm">
+                        <span className="font-medium text-sm text-[#c88a04]">
                           {study.industry}
                         </span>
                       </div>
@@ -287,12 +287,12 @@ const Projekte = () => {
                       </div>
 
                       {/* Quote */}
-                      <div className="rounded-xl p-6 border border-border bg-primary">
-                        <Quote className="w-8 h-8 text-accent/50 mb-3" />
-                        <p className="italic leading-relaxed mb-4 text-accent">
+                      <div className="rounded-xl p-6 border border-border bg-gray-800">
+                        <Quote className="w-8 h-8 mb-3 text-[#c88a04]" />
+                        <p className="italic leading-relaxed mb-4 text-[#c88a04]">
                           "{study.quote}"
                         </p>
-                        <p className="text-sm font-medium text-accent">
+                        <p className="text-sm font-medium text-[#c88a04]">
                           – {study.author}
                         </p>
                       </div>
@@ -309,7 +309,7 @@ const Projekte = () => {
                       {/* Results Card */}
                       <div className="bg-card rounded-2xl p-8 shadow-lg border border-border">
                         <div className="flex items-center gap-2 mb-6">
-                          <TrendingUp className="w-5 h-5 text-accent" />
+                          <TrendingUp className="w-5 h-5 text-[#c88a04]" />
                           <h4 className="font-display text-lg font-semibold text-foreground">
                             Ergebnisse
                           </h4>
@@ -318,7 +318,7 @@ const Projekte = () => {
                         <div className="space-y-6">
                           {study.results.map((result, i) => <div key={i} className="flex items-start gap-4">
                               <div className="w-16 text-center">
-                                <span className="font-display text-2xl font-bold text-accent">
+                                <span className="font-display text-2xl font-bold text-[#c88a04]">
                                   {result.metric}
                                 </span>
                               </div>
