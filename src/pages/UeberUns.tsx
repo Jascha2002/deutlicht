@@ -164,7 +164,7 @@ const UeberUns = () => {
                     <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
                       Projekte & Prozesse
                     </h2>
-                    <p className="leading-relaxed mb-6 text-[#c88a04]">
+                    <p className="leading-relaxed mb-6 text-inherit">
                       Unsere Projekte folgen klaren Strukturen: Analyse, Roadmap, Umsetzung. 
                       Alles integriert in unser CRM-/ERP-System – von Lead bis Abrechnung.
                     </p>
