@@ -222,7 +222,7 @@ const Leistungen = () => {
         <section className="py-8 border-y border-border sticky top-20 z-40 bg-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center gap-4">
-              {services.map(service => <a key={service.id} href={`#${service.id}`} className="flex items-center gap-2 px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all text-sm font-medium bg-[#c88a04] text-primary-foreground">
+              {services.map(service => <a key={service.id} href={`#${service.id}`} className="flex items-center gap-2 px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all text-sm font-medium bg-[#c88a04] text-inherit">
                   <service.icon className="w-4 h-4" />
                   {service.title}
                 </a>)}
