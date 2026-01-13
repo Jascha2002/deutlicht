@@ -60,7 +60,7 @@ const KICheckCTA = () => {
                   <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
                   animationDelay: "0.1s"
                 }}>
-                    <Brain className="h-10 w-10 text-accent mb-3" />
+                    <Brain className="h-10 w-10 mb-3 text-[#c88a04]" />
                     <p className="text-sm font-medium text-foreground">KI-Potenzial</p>
                     <p className="text-xs text-muted-foreground">erkennen</p>
                   </div>
@@ -69,7 +69,7 @@ const KICheckCTA = () => {
                   <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
                   animationDelay: "0.2s"
                 }}>
-                    <TrendingUp className="h-10 w-10 text-primary mb-3" />
+                    <TrendingUp className="h-10 w-10 mb-3 text-[#c88a04]" />
                     <p className="text-sm font-medium text-foreground">Wachstum</p>
                     <p className="text-xs text-muted-foreground">steigern</p>
                   </div>
@@ -78,7 +78,7 @@ const KICheckCTA = () => {
                   <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
                   animationDelay: "0.3s"
                 }}>
-                    <Zap className="h-10 w-10 text-gold mb-3" />
+                    <Zap className="h-10 w-10 mb-3 text-[#c88a04]" />
                     <p className="text-sm font-medium text-foreground">Prozesse</p>
                     <p className="text-xs text-muted-foreground">optimieren</p>
                   </div>
@@ -87,14 +87,14 @@ const KICheckCTA = () => {
                   <div className="bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{
                   animationDelay: "0.4s"
                 }}>
-                    <Target className="h-10 w-10 text-accent mb-3" />
+                    <Target className="h-10 w-10 mb-3 text-[#c88a04]" />
                     <p className="text-sm font-medium text-foreground">Strategie</p>
                     <p className="text-xs text-muted-foreground">entwickeln</p>
                   </div>
                 </div>
 
                 {/* Floating badge */}
-                <div className="absolute -top-2 -right-2 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold shadow-lg animate-pulse">
+                <div className="absolute -top-2 -right-2 text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold shadow-lg animate-pulse bg-[#c88a04]">
                   Kostenlos
                 </div>
               </div>
