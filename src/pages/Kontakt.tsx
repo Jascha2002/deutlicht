@@ -9,6 +9,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { trackExternalLink } from "@/lib/analytics";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import InquiryForm from "@/components/InquiryForm";
+import kontaktHeroBg from "@/assets/kontakt-hero-bg.jpg";
 const Kontakt = () => {
   const contactInfo = [{
     icon: Building2,
@@ -52,11 +53,13 @@ const Kontakt = () => {
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="relative py-24 md:py-32 overflow-hidden">
-          {/* Background Video */}
+          {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <video autoPlay muted loop playsInline className="w-full h-full object-cover">
-              <source src="/videos/hintergrund-video.mp4" type="video/mp4" />
-            </video>
+            <img 
+              src={kontaktHeroBg} 
+              alt="Digitale Transformation" 
+              className="w-full h-full object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
           </div>
           <div className="container mx-auto px-4 relative z-10">
