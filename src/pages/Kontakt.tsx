@@ -80,28 +80,35 @@ const Kontakt = () => {
           </div>
         </section>
 
-        {/* Video Section - Premium Introduction Video */}
-        <section className="py-12 md:py-16 bg-[#2b3d4f]">
+        {/* Video Section - Centered Premium Introduction Video */}
+        <section className="py-12 md:py-20 bg-[#2b3d4f]">
           <div className="container mx-auto px-4">
             <ScrollReveal>
-              <div className="max-w-5xl mx-auto">
+              <div className="max-w-[900px] w-[90%] md:w-[80%] mx-auto">
                 {/* Video Container with Premium Styling */}
-                <div className="relative rounded-xl overflow-hidden shadow-2xl border-2 border-[#c88a04]/30 bg-black">
-                  {/* Reduced Motion Fallback */}
-                  <video autoPlay playsInline controls preload="metadata" poster="/videos/deutlicht-kontakt-intro.mp4#t=0.1" className="w-full h-auto object-contain motion-reduce:hidden" style={{
-                  maxWidth: '100%'
-                }} onLoadedMetadata={e => {
-                  // Check for reduced motion preference
-                  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                  if (prefersReducedMotion) {
-                    (e.target as HTMLVideoElement).pause();
-                  }
-                }}>
-                    <source src="/videos/deutlicht-kontakt-intro.mp4" type="video/mp4" />
+                <div className="relative rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)] border-2 border-[#c88a04]/40 bg-black">
+                  <video 
+                    autoPlay 
+                    playsInline 
+                    controls 
+                    preload="metadata"
+                    className="w-full h-auto block"
+                    style={{
+                      objectFit: 'contain',
+                      maxWidth: '100%'
+                    }}
+                    onLoadedMetadata={(e) => {
+                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                      if (prefersReducedMotion) {
+                        (e.target as HTMLVideoElement).pause();
+                      }
+                    }}
+                  >
+                    <source src="/videos/deutlicht-kontakt-video.mp4" type="video/mp4" />
                     Ihr Browser unterstützt keine Videos.
                   </video>
                   
-                  {/* Reduced Motion Fallback Overlay */}
+                  {/* Reduced Motion Fallback */}
                   <noscript>
                     <div className="w-full aspect-video bg-[#2b3d4f] flex items-center justify-center">
                       <div className="text-center p-8">
@@ -112,7 +119,9 @@ const Kontakt = () => {
                 </div>
                 
                 {/* Video Caption */}
-                <p className="text-center text-white/70 text-sm mt-4">"Wir bei DeutLicht® gehen weit über Beratung hinaus" (Carsten van de Sand & Junior No. 1)</p>
+                <p className="text-center text-white/70 text-sm mt-6">
+                  "Wir bei DeutLicht® gehen weit über Beratung hinaus" – Carsten van de Sand & Junior No. 1
+                </p>
               </div>
             </ScrollReveal>
           </div>
