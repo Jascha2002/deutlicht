@@ -80,49 +80,40 @@ const Kontakt = () => {
           </div>
         </section>
 
-        {/* Video Section - Centered Premium Introduction Video */}
+        {/* Video Section - Premium Teaser Video */}
         <section className="py-12 md:py-20 bg-[#2b3d4f]">
           <div className="container mx-auto px-4">
             <ScrollReveal>
-              <div className="max-w-[900px] w-[90%] md:w-[80%] mx-auto">
-                {/* Video Container with Premium Styling */}
-                <div className="relative rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)] border-2 border-[#c88a04]/40 bg-black">
-                  <video 
-                    autoPlay 
-                    playsInline 
-                    controls 
-                    preload="metadata"
-                    className="w-full h-auto block"
-                    style={{
-                      objectFit: 'contain',
-                      maxWidth: '100%'
-                    }}
-                    onLoadedMetadata={(e) => {
-                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                      if (prefersReducedMotion) {
-                        (e.target as HTMLVideoElement).pause();
-                      }
-                    }}
-                  >
-                    <source src="/videos/deutlicht-kontakt-video.mp4" type="video/mp4" />
-                    Ihr Browser unterstützt keine Videos.
-                  </video>
-                  
-                  {/* Reduced Motion Fallback */}
-                  <noscript>
-                    <div className="w-full aspect-video bg-[#2b3d4f] flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <p className="text-white text-lg">Video: DeutLicht® Einführung</p>
-                      </div>
-                    </div>
-                  </noscript>
-                </div>
-                
-                {/* Video Caption */}
-                <p className="text-center text-white/70 text-sm mt-6">
-                  "Wir bei DeutLicht® gehen weit über Beratung hinaus" – Carsten van de Sand & Junior No. 1
-                </p>
+              {/* Video Wrapper - max-width 1200px, 16:9 aspect ratio */}
+              <div 
+                className="mx-auto overflow-hidden rounded-xl md:rounded-[12px] bg-[#111]"
+                style={{
+                  maxWidth: '1200px',
+                  aspectRatio: '16 / 9'
+                }}
+              >
+                <video 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  poster="/images/kontakt-poster.png"
+                  className="w-full h-full"
+                  style={{
+                    objectFit: 'cover',
+                    opacity: 0.92
+                  }}
+                >
+                  <source src="/videos/deutlicht-kontakt-video.mov" type="video/mp4" />
+                  <source src="/videos/deutlicht-kontakt-video.mp4" type="video/mp4" />
+                  Ihr Browser unterstützt keine Videos.
+                </video>
               </div>
+              
+              {/* Video Caption */}
+              <p className="text-center text-white/70 text-sm mt-6">
+                "Wir bei DeutLicht® gehen weit über Beratung hinaus" – Carsten van de Sand & Junior No. 1
+              </p>
             </ScrollReveal>
           </div>
         </section>
