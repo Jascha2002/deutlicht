@@ -84,19 +84,18 @@ const Kontakt = () => {
         <section className="py-12 md:py-20 bg-[#2b3d4f]">
           <div className="container mx-auto px-4">
             <ScrollReveal>
-              {/* Video Wrapper - max-width 1200px, 16:9 aspect ratio */}
+              {/* Video Wrapper - kleinere Maße: max-width 800px */}
               <div 
-                className="mx-auto overflow-hidden rounded-xl md:rounded-[12px] bg-[#111]"
+                className="mx-auto overflow-hidden rounded-xl md:rounded-[12px] bg-[#111] shadow-2xl"
                 style={{
-                  maxWidth: '1200px',
+                  maxWidth: '800px',
                   aspectRatio: '16 / 9'
                 }}
               >
                 <video 
                   autoPlay 
-                  muted 
-                  loop 
                   playsInline
+                  controls
                   poster="/images/kontakt-poster.png"
                   className="w-full h-full"
                   style={{
