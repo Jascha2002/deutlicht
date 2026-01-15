@@ -274,6 +274,10 @@ export interface KlarheitsCheckData extends OfferFormData {
   services_needed?: string[];
   existing_website?: string;
   website_url?: string;
+  existing_cms?: string;
+  existing_cms_other?: string;
+  website_takeover_needed?: string;
+  additional_pages_count?: string;
   website_goals?: string[];
   content_creation?: string;
   required_features?: string[];
