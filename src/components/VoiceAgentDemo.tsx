@@ -16,9 +16,75 @@ import { voicebotScenarios, voicebotCategories, type VoicebotScenario } from "@/
 
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
 
-// Voice IDs for ElevenLabs
-const AGENT_VOICE_ID = "MbbPUteESkJWr4IAaW35"; // Agent voice
-const USER_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah - natural female voice for caller simulation
+// Voice IDs for ElevenLabs - Male and Female options
+const MALE_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"; // George - male voice
+const FEMALE_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah - female voice
+
+// Determine gender based on scenario conversation
+// Checks if agent is addressed as "Herr" (male) or "Frau" (female)
+const detectAgentGender = (scenario: VoicebotScenario): "male" | "female" => {
+  const fullText = scenario.conversation.map(c => c.text).join(" ");
+  
+  // Check for outbound scenarios where agent introduces themselves
+  // "Spreche ich mit Herrn X" means the CUSTOMER is male, agent could be either
+  // We need to check if the agent says something like "Ich bin Herr/Frau X"
+  
+  // Check first agent message for self-introduction patterns
+  const firstAgentMsg = scenario.conversation.find(c => c.role === "agent")?.text || "";
+  
+  // Common patterns: "Praxis Dr. Müller" (male doctor), "Therapeutin Sandra Koch" (female)
+  if (firstAgentMsg.includes("Therapeutin") || firstAgentMsg.includes("Ärztin")) {
+    return "female";
+  }
+  if (firstAgentMsg.includes("Dr. Müller") || firstAgentMsg.includes("Autohaus Schmidt")) {
+    return "male";
+  }
+  
+  // Default: use female voice for most service scenarios (more neutral/friendly)
+  return "female";
+};
+
+// Determine customer gender based on how they are addressed in outbound calls
+const detectCustomerGender = (scenario: VoicebotScenario): "male" | "female" => {
+  const fullText = scenario.conversation.map(c => c.text).join(" ");
+  
+  // Check if customer is addressed as "Herr" or "Frau"
+  if (fullText.includes("Spreche ich mit Herrn") || 
+      fullText.includes("mit Herrn") ||
+      fullText.includes("Herr Schmidt") ||
+      fullText.includes("Herr Müller") ||
+      fullText.includes("Herr Bergmann") ||
+      fullText.includes("Herr Schulz") ||
+      fullText.includes("Herr Fischer")) {
+    return "male";
+  }
+  if (fullText.includes("Spreche ich mit Frau") || 
+      fullText.includes("mit Frau") ||
+      fullText.includes("Frau Bauer") ||
+      fullText.includes("Frau Weber") ||
+      fullText.includes("Frau Meier") ||
+      fullText.includes("Frau Wagner") ||
+      fullText.includes("Frau Klein")) {
+    return "female";
+  }
+  
+  // For inbound calls, check how customer introduces themselves
+  const customerMsgs = scenario.conversation.filter(c => c.role === "user").map(c => c.text).join(" ");
+  if (customerMsgs.includes("Thomas Schmidt") || 
+      customerMsgs.includes("Michael Bergmann") ||
+      customerMsgs.includes("mein Name ist") && customerMsgs.match(/Name ist [A-Z][a-z]+ [A-Z]/)) {
+    // Check for male first names
+    if (customerMsgs.match(/(Thomas|Michael|Peter|Hans|Klaus|Stefan|Andreas|Martin|Frank)/)) {
+      return "male";
+    }
+  }
+  if (customerMsgs.includes("Lisa Bauer") || customerMsgs.match(/(Lisa|Anna|Maria|Sandra|Petra|Claudia)/)) {
+    return "female";
+  }
+  
+  // Default to male for generic customer
+  return "male";
+};
 
 const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
@@ -138,9 +204,17 @@ const VoiceAgentDemo = () => {
     });
   }, []);
 
-  // Main speak function that tries ElevenLabs first, falls back to browser
-  const speak = useCallback(async (text: string, role: "agent" | "user"): Promise<void> => {
-    const voiceId = role === "agent" ? AGENT_VOICE_ID : USER_VOICE_ID;
+  // Main speak function that uses gender-appropriate voices based on scenario
+  const speak = useCallback(async (text: string, role: "agent" | "user", scenario: VoicebotScenario): Promise<void> => {
+    // Determine voice based on role and detected gender
+    let voiceId: string;
+    if (role === "agent") {
+      voiceId = FEMALE_VOICE_ID; // Agent always uses female voice (service representative)
+    } else {
+      // Customer voice based on how they're addressed in the scenario
+      const customerGender = detectCustomerGender(scenario);
+      voiceId = customerGender === "male" ? MALE_VOICE_ID : FEMALE_VOICE_ID;
+    }
     const isAgent = role === "agent";
     
     if (useElevenLabs) {
@@ -170,7 +244,7 @@ const VoiceAgentDemo = () => {
           setAgentState("speaking");
           setTranscript(prev => [...prev, `🤖 Agent: ${item.text}`]);
           try {
-            await speak(item.text, "agent");
+            await speak(item.text, "agent", selectedScenario);
           } catch (error) {
             console.error('Speech error:', error);
             await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
@@ -179,7 +253,7 @@ const VoiceAgentDemo = () => {
           setAgentState("listening");
           setTranscript(prev => [...prev, `👤 Kunde: ${item.text}`]);
           try {
-            await speak(item.text, "user");
+            await speak(item.text, "user", selectedScenario);
           } catch (error) {
             console.error('Speech error:', error);
             await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
