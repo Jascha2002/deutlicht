@@ -1,6 +1,6 @@
 import FormField from "../FormField";
 import { Input } from "@/components/ui/input";
-import { KlarheitsCheckData, WEBSITE_GOALS, WEBSITE_FEATURES } from "../types";
+import { KlarheitsCheckData, WEBSITE_GOALS, WEBSITE_FEATURES, CMS_SYSTEMS } from "../types";
 
 interface ConditionalWebsiteProps {
   data: KlarheitsCheckData;
@@ -33,16 +33,70 @@ const ConditionalWebsite = ({ data, onChange }: ConditionalWebsiteProps) => {
       />
 
       {data.existing_website === 'ja' && (
-        <div className="pl-4 border-l-2 border-primary/30">
-          <label className="text-sm font-medium block mb-2">
-            Aktuelle Website-URL
-          </label>
-          <Input
-            value={data.website_url}
-            onChange={(e) => onChange('website_url', e.target.value)}
-            placeholder="https://www.ihre-website.de"
-            className="bg-background"
+        <div className="pl-4 border-l-2 border-primary/30 space-y-4">
+          <div>
+            <label className="text-sm font-medium block mb-2">
+              Aktuelle Website-URL
+            </label>
+            <Input
+              value={data.website_url}
+              onChange={(e) => onChange('website_url', e.target.value)}
+              placeholder="https://www.ihre-website.de"
+              className="bg-background"
+            />
+          </div>
+
+          <FormField
+            type="radio"
+            name="existing_cms"
+            label="Welches CMS-System wird aktuell verwendet?"
+            value={data.existing_cms}
+            onChange={(v) => onChange('existing_cms', v)}
+            options={CMS_SYSTEMS.map(cms => ({ value: cms.toLowerCase(), label: cms }))}
           />
+
+          {data.existing_cms === 'andere' && (
+            <div>
+              <label className="text-sm font-medium block mb-2">
+                Welches CMS-System?
+              </label>
+              <Input
+                value={data.existing_cms_other}
+                onChange={(e) => onChange('existing_cms_other', e.target.value)}
+                placeholder="z.B. Contao, Joomla, ..."
+                className="bg-background"
+              />
+            </div>
+          )}
+
+          <FormField
+            type="radio"
+            name="website_takeover_needed"
+            label="Sollen wir die bestehende Website übernehmen und pflegen?"
+            value={data.website_takeover_needed}
+            onChange={(v) => onChange('website_takeover_needed', v)}
+            options={[
+              { value: 'ja', label: 'Ja, Übernahme & Pflege gewünscht' },
+              { value: 'nein', label: 'Nein, nur neue Seiten/Inhalte' },
+            ]}
+          />
+
+          <div>
+            <label className="text-sm font-medium block mb-2">
+              Anzahl gewünschter Zusatzseiten (falls neue Seiten benötigt)
+            </label>
+            <Input
+              type="number"
+              min="0"
+              value={data.additional_pages_count || ''}
+              onChange={(e) => onChange('additional_pages_count', e.target.value)}
+              placeholder="z.B. 5"
+              className="bg-background w-32"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Leer lassen, falls keine neuen Seiten benötigt werden
+            </p>
+          </div>
         </div>
       )}
 

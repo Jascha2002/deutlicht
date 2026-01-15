@@ -69,24 +69,44 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
     const timeFactor = calculateTimeFactor();
     let basePrice = 0;
     
-    if (formData.website_type === 'onepager') basePrice = 1200;
-    else if (formData.website_type === 'landingpage') basePrice = 1500;
-    else if (formData.website_type === 'landingpage_starter') basePrice = 299;
-    else if (formData.website_type === '5-10') {
-      const pages = parseInt(formData.website_pages_count) || 5;
-      basePrice = 1900 + (pages - 5) * 300;
-    } else if (formData.website_type === '10-20') {
-      const pages = parseInt(formData.website_pages_count) || 10;
-      basePrice = 3400 + (pages - 10) * 250;
-    } else if (formData.website_type === '20-30') {
-      const pages = parseInt(formData.website_pages_count) || 20;
-      basePrice = 5900 + (pages - 20) * 200;
-    } else if (formData.website_type === '>30') {
-      const pages = parseInt(formData.website_pages_count) || 30;
-      basePrice = 7900 + (pages - 30) * 180;
+    // Check for existing website takeover (intern: +400€)
+    const existingWebsite = (formData as any).existing_website === 'ja';
+    const takeoverNeeded = (formData as any).website_takeover_needed === 'ja';
+    
+    if (existingWebsite && takeoverNeeded) {
+      // Website-Übernahme: +400€ Setup-Gebühr
+      basePrice += 400;
     }
     
-    // Migration costs
+    // Additional pages for existing website (intern: 340€/Seite)
+    if (existingWebsite) {
+      const additionalPages = parseInt((formData as any).additional_pages_count) || 0;
+      if (additionalPages > 0) {
+        basePrice += additionalPages * 340;
+      }
+    }
+    
+    // New website pricing (only if NOT using existing website for just maintenance/pages)
+    if (!existingWebsite || (existingWebsite && !takeoverNeeded && parseInt((formData as any).additional_pages_count || '0') === 0)) {
+      if (formData.website_type === 'onepager') basePrice += 1200;
+      else if (formData.website_type === 'landingpage') basePrice += 1500;
+      else if (formData.website_type === 'landingpage_starter') basePrice += 299;
+      else if (formData.website_type === '5-10') {
+        const pages = parseInt(formData.website_pages_count) || 5;
+        basePrice += 1900 + (pages - 5) * 300;
+      } else if (formData.website_type === '10-20') {
+        const pages = parseInt(formData.website_pages_count) || 10;
+        basePrice += 3400 + (pages - 10) * 250;
+      } else if (formData.website_type === '20-30') {
+        const pages = parseInt(formData.website_pages_count) || 20;
+        basePrice += 5900 + (pages - 20) * 200;
+      } else if (formData.website_type === '>30') {
+        const pages = parseInt(formData.website_pages_count) || 30;
+        basePrice += 7900 + (pages - 30) * 180;
+      }
+    }
+    
+    // Migration costs (legacy - keeping for backwards compatibility)
     if (formData.website_migration_needed === 'ja') {
       const migPages = parseInt(formData.website_migration_pages) || 1;
       if (migPages <= 1) basePrice += 400;
