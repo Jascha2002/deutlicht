@@ -194,30 +194,30 @@ const Kontakt = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-16 text-primary bg-cyan-800 mx-0 px-0 md:py-[5px]">
-          <div className="container px-[21px] py-0 mx-0 my-[10px]">
-            <div className="text-center mb-12 bg-cyan-800">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary bg-cyan-800">
+        <section className="py-16 bg-[#1a5a5a] mx-0 px-0 md:py-12">
+          <div className="container px-4 py-0 mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
                 So finden Sie uns
               </h2>
-              <p className="text-lg max-w-2xl mx-auto text-primary">
+              <p className="text-lg max-w-2xl mx-auto text-white/80">
                 Besuchen Sie uns in Gera oder vereinbaren Sie einen Termin für ein Online-Meeting.
               </p>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-8 items-stretch">
               {/* Map Placeholder */}
-              <Card className="overflow-hidden border-border/50 h-full min-h-[400px]">
-                <div className="w-full h-full bg-muted flex items-center justify-center">
+              <Card className="overflow-hidden border-white/20 bg-white/10 backdrop-blur-sm h-full min-h-[400px]">
+                <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center p-8">
-                    <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-foreground mb-2">
+                    <MapPin className="w-16 h-16 text-white mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-white mb-2">
                       Interaktive Karte
                     </h3>
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-white/70 mb-4">
                       Gemeindeweg 4, 07546 Gera
                     </p>
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
                       <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" onClick={() => trackExternalLink("google_maps")}>
                         In Google Maps öffnen
                       </a>
@@ -228,28 +228,28 @@ const Kontakt = () => {
 
               {/* Directions - 3 cards stacked */}
               <div className="flex flex-col gap-4 h-full">
-                <Card className="border-border/50 flex-1">
+                <Card className="border-white/20 bg-white/10 backdrop-blur-sm flex-1">
                   <CardContent className="p-6 h-full flex flex-col justify-center">
-                    <h3 className="font-semibold text-foreground mb-2">Anfahrt mit dem Auto</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <h3 className="font-semibold text-white mb-2">Anfahrt mit dem Auto</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">
                       Über die A4, Ausfahrt Gera. Parkplätze sind in der Umgebung verfügbar.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50 flex-1">
+                <Card className="border-white/20 bg-white/10 backdrop-blur-sm flex-1">
                   <CardContent className="p-6 h-full flex flex-col justify-center">
-                    <h3 className="font-semibold text-foreground mb-2">Öffentliche Verkehrsmittel</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <h3 className="font-semibold text-white mb-2">Öffentliche Verkehrsmittel</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">
                       Busverbindungen ab Gera Hauptbahnhof in die Innenstadt verfügbar.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50 bg-accent/10 flex-1">
+                <Card className="border-white/20 bg-[#0d4545] flex-1">
                   <CardContent className="p-6 h-full flex flex-col justify-center">
                     <h3 className="text-accent mb-2 font-bold text-xl">Online-Meeting</h3>
-                    <p className="text-accent/80 leading-relaxed font-semibold text-base">
+                    <p className="text-white/80 leading-relaxed font-semibold text-base">
                       Kein Problem! Wir bieten auch virtuelle Beratungsgespräche per Video-Call an.
                     </p>
                   </CardContent>
