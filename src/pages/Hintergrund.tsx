@@ -1,9 +1,18 @@
 import { Helmet } from "react-helmet-async";
+import { useState } from "react";
+import { Play } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedLogo from "@/components/AnimatedLogo";
+import heroHintergrund from "@/assets/hero-hintergrund.jpg";
 
 const Hintergrund = () => {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
+  const handlePlayClick = () => {
+    setIsVideoPlaying(true);
+  };
+
   return (
     <>
       <Helmet>
@@ -17,19 +26,48 @@ const Hintergrund = () => {
       <Navigation />
 
       <main className="min-h-screen bg-background pt-20">
-        {/* Hero Section with Video */}
+        {/* Hero Section with Background Image */}
         <section className="relative py-16 lg:py-24">
-          <div className="container max-w-6xl mx-auto px-4">
-            {/* Video */}
-            <div className="mb-12 rounded-lg overflow-hidden shadow-2xl">
-              <video
-                className="w-full aspect-video object-cover"
-                controls
-                poster="/videos/hintergrund-poster.jpg"
-              >
-                <source src="/videos/hintergrund-video.mp4" type="video/mp4" />
-                Ihr Browser unterstützt keine Videos.
-              </video>
+          {/* Hero Background */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={heroHintergrund} 
+              alt="DeutLicht Hintergrund" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+          </div>
+
+          <div className="container max-w-6xl mx-auto px-4 relative z-10">
+            {/* Video with Poster and Play Button */}
+            <div className="mb-12 rounded-lg overflow-hidden shadow-2xl relative">
+              {!isVideoPlaying ? (
+                <div className="relative cursor-pointer group" onClick={handlePlayClick}>
+                  <img 
+                    src={heroHintergrund}
+                    alt="Video Vorschau"
+                    className="w-full aspect-video object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
+                    <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                      <Play className="w-10 h-10 text-primary fill-primary ml-1" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <p className="text-sm font-medium">Video abspielen</p>
+                  </div>
+                </div>
+              ) : (
+                <video
+                  className="w-full aspect-video object-cover"
+                  controls
+                  autoPlay
+                  poster={heroHintergrund}
+                >
+                  <source src="/videos/hintergrund-video.mp4" type="video/mp4" />
+                  Ihr Browser unterstützt keine Videos.
+                </video>
+              )}
             </div>
 
             {/* Content */}
