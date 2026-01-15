@@ -25,7 +25,7 @@ const AnimatedLogo = ({
         muted
         loop={loop}
         playsInline
-        className="w-full h-full object-cover scale-110"
+        className="w-full h-full object-contain scale-105"
       >
         <source src="/videos/deutlicht-logo-animation.mp4" type="video/mp4" />
       </video>
