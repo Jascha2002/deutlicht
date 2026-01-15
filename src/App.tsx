@@ -18,11 +18,13 @@ import Projekte from "./pages/Projekte";
 import Kontakt from "./pages/Kontakt";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
+import AGB from "./pages/AGB";
 import Schnelluebersicht from "./pages/Schnelluebersicht";
 import ChaynsLoesungen from "./pages/ChaynsLoesungen";
 import ChaynsHardware from "./pages/ChaynsHardware";
 import AIAgenten from "./pages/AIAgenten";
 import AngebotsGenerator from "./pages/AngebotsGenerator";
+import AngebotsAnnahme from "./pages/AngebotsAnnahme";
 import KICheck from "./pages/KICheck";
 import BranchenLoesungen from "./pages/BranchenLoesungen";
 import VoicebotDemos from "./pages/VoicebotDemos";
@@ -47,6 +49,8 @@ const App = () => (
               <Route path="/kontakt" element={<Kontakt />} />
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/datenschutz" element={<Datenschutz />} />
+              <Route path="/agb" element={<AGB />} />
+              <Route path="/angebot-annehmen" element={<AngebotsAnnahme />} />
               <Route path="/schnelluebersicht" element={<Schnelluebersicht />} />
               <Route path="/leistungen/chayns-loesungen" element={<ChaynsLoesungen />} />
               <Route path="/leistungen/chayns-hardware" element={<ChaynsHardware />} />
