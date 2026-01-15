@@ -57,6 +57,8 @@ const App = () => (
               <Route path="/ki-check" element={<KICheck />} />
               <Route path="/leistungen/branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/branchen-loesungen" element={<BranchenLoesungen />} />
+              <Route path="/leistungen/voicebot-demos" element={<VoicebotDemos />} />
+              <Route path="/voicebot-demos" element={<VoicebotDemos />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
