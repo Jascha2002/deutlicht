@@ -151,7 +151,7 @@ const AIAgenten = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 overflow-hidden">
+        <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0">
             <img 
               src={aiAgentHero} 

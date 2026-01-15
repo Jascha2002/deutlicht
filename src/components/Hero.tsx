@@ -21,7 +21,7 @@ const Hero = () => {
       <BranchenSelectorButton />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 opacity-95 border-solid border-accent bg-[#c88a04]/0">
           
           {/* Logo on the left - double size, no loop */}

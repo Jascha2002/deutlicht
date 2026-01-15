@@ -169,7 +169,7 @@ const ChaynsHardware = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-28 bg-gradient-to-br from-accent/10 via-background to-primary/5">
+        <section className="relative pt-32 pb-20 bg-gradient-to-br from-accent/10 via-background to-primary/5">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <ScrollReveal>
