@@ -405,7 +405,7 @@ const KIReadinessCheck: React.FC = () => {
         </div>
       </div>;
   }
-  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 mx-0 my-[76px]">
+  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4 mx-0 -mt-4">
       <div className="w-full max-w-4xl mx-auto px-4">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
