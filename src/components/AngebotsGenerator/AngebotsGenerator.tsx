@@ -658,6 +658,133 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
           </div>
         </div>
 
+        {/* Bestehende Website Abfrage */}
+        <div className="space-y-6 mb-8">
+          <h3 className="text-lg font-semibold border-b pb-2">Bestehende Website</h3>
+          
+          <div className="p-4 bg-muted/30 rounded-lg border border-border">
+            <Label className="text-base font-medium mb-3 block">Haben Sie bereits eine Website?</Label>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="existing_website"
+                  value="ja"
+                  checked={formData.existing_website === 'ja'}
+                  onChange={(e) => setFormData(prev => ({ ...prev, existing_website: e.target.value }))}
+                  className="w-4 h-4"
+                />
+                <span>Ja, ich habe bereits eine Website</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="existing_website"
+                  value="nein"
+                  checked={formData.existing_website === 'nein'}
+                  onChange={(e) => setFormData(prev => ({ ...prev, existing_website: e.target.value }))}
+                  className="w-4 h-4"
+                />
+                <span>Nein, ich benötige eine neue Website</span>
+              </label>
+            </div>
+          </div>
+
+          {formData.existing_website === 'ja' && (
+            <div className="pl-4 border-l-2 border-primary/30 space-y-4">
+              <div>
+                <Label htmlFor="website_url">Ihre aktuelle Website-URL</Label>
+                <Input
+                  id="website_url"
+                  name="website_url"
+                  value={formData.website_url}
+                  onChange={handleInputChange}
+                  placeholder="https://www.ihre-website.de"
+                />
+              </div>
+
+              <div>
+                <Label>Welches CMS-System wird aktuell verwendet?</Label>
+                <select
+                  name="existing_cms"
+                  value={formData.existing_cms}
+                  onChange={handleInputChange}
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                >
+                  <option value="">Bitte wählen</option>
+                  <option value="wordpress">WordPress</option>
+                  <option value="typo3">TYPO3</option>
+                  <option value="shopify">Shopify</option>
+                  <option value="wix">Wix</option>
+                  <option value="squarespace">Squarespace</option>
+                  <option value="webflow">Webflow</option>
+                  <option value="jimdo">Jimdo</option>
+                  <option value="andere">Andere</option>
+                  <option value="unbekannt">Unbekannt</option>
+                </select>
+              </div>
+
+              {formData.existing_cms === 'andere' && (
+                <div>
+                  <Label htmlFor="existing_cms_other">Welches CMS-System?</Label>
+                  <Input
+                    id="existing_cms_other"
+                    name="existing_cms_other"
+                    value={formData.existing_cms_other}
+                    onChange={handleInputChange}
+                    placeholder="z.B. Contao, Joomla, ..."
+                  />
+                </div>
+              )}
+
+              <div>
+                <Label>Sollen wir die bestehende Website übernehmen und pflegen?</Label>
+                <div className="flex flex-col sm:flex-row gap-3 mt-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="website_takeover_needed"
+                      value="ja"
+                      checked={formData.website_takeover_needed === 'ja'}
+                      onChange={(e) => setFormData(prev => ({ ...prev, website_takeover_needed: e.target.value }))}
+                      className="w-4 h-4"
+                    />
+                    <span>Ja, Übernahme & Pflege gewünscht</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="website_takeover_needed"
+                      value="nein"
+                      checked={formData.website_takeover_needed === 'nein'}
+                      onChange={(e) => setFormData(prev => ({ ...prev, website_takeover_needed: e.target.value }))}
+                      className="w-4 h-4"
+                    />
+                    <span>Nein, nur neue Seiten/Inhalte</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="additional_pages_count">Anzahl gewünschter Zusatzseiten (falls neue Seiten benötigt)</Label>
+                <Input
+                  id="additional_pages_count"
+                  name="additional_pages_count"
+                  type="number"
+                  min="0"
+                  value={formData.additional_pages_count || ''}
+                  onChange={handleInputChange}
+                  placeholder="z.B. 5"
+                  className="w-32"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Leer lassen, falls keine neuen Seiten benötigt werden
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Leistungsmodule */}
         <div className="space-y-6 mb-8">
           <h3 className="text-lg font-semibold border-b pb-2">Leistungsmodule</h3>

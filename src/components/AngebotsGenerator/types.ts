@@ -18,6 +18,14 @@ export interface OfferFormData {
   project_start_timing: string;
   project_deadline: string;
 
+  // Bestehende Website
+  existing_website: string;
+  website_url: string;
+  existing_cms: string;
+  existing_cms_other: string;
+  website_takeover_needed: string;
+  additional_pages_count: string;
+
   // Website & Digitale Plattformen
   website_type: string;
   website_pages_count: string;
@@ -79,6 +87,12 @@ export const initialFormData: OfferFormData = {
   beratung_topics: [],
   project_start_timing: '',
   project_deadline: '',
+  existing_website: '',
+  website_url: '',
+  existing_cms: '',
+  existing_cms_other: '',
+  website_takeover_needed: '',
+  additional_pages_count: '',
   website_type: '',
   website_pages_count: '',
   website_cms: '',
@@ -272,12 +286,6 @@ export interface KlarheitsCheckData extends OfferFormData {
   fixed_deadline?: string;
   budget_range?: string;
   services_needed?: string[];
-  existing_website?: string;
-  website_url?: string;
-  existing_cms?: string;
-  existing_cms_other?: string;
-  website_takeover_needed?: string;
-  additional_pages_count?: string;
   website_goals?: string[];
   content_creation?: string;
   required_features?: string[];
