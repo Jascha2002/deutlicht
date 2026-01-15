@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { trackCTAClick } from "@/lib/analytics";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const BranchenLoesungen = () => {
   const [selectedBranche, setSelectedBranche] = useState<string>("alle");
@@ -39,10 +40,13 @@ const BranchenLoesungen = () => {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent" />
           
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center mb-8">
+              <AnimatedLogo size="md" />
+            </div>
             <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-2">
-                <Bot className="w-4 h-4 text-accent" />
-                <span className="text-sm text-accent font-medium">
+              <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground border border-accent/30 rounded-full px-4 py-2">
+                <Bot className="w-4 h-4" />
+                <span className="text-sm font-medium">
                   Branchenspezifische KI-Lösungen
                 </span>
               </div>

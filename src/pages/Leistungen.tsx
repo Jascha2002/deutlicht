@@ -193,23 +193,24 @@ const Leistungen = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/5 md:py-[18px] bg-primary-foreground">
+        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/5 md:py-24 bg-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-8 flex justify-center">
                 <AnimatedLogo size="md" />
               </div>
               
-              <span className="text-accent font-xl uppercase tracking-widest text-sm font-extrabold px-[16px] bg-primary-foreground">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium mb-6 border border-accent/30">
+                <Cog className="w-4 h-4" />
                 Unsere Dienstleistungen
-              </span>
+              </div>
               
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight">
                 Ganzheitliche Lösungen für Ihre
                 <span className="text-accent"> digitale Zukunft</span>
               </h1>
               
-              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500 font-bold">
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-muted-foreground">
                 DeutLicht® bietet umfassende Lösungen für digitale Transformation. 
                 Von CRM- und ERP-Systemen über Websites und Shops bis hin zu 
                 Social-Media-Strategien verbinden wir Technologie mit Mensch und Prozess.
@@ -249,7 +250,7 @@ const Leistungen = () => {
                       </div>
                     </div>
 
-                    <p className="text-lg leading-relaxed mb-8 text-cyan-500 font-bold">
+                    <p className="text-lg leading-relaxed mb-8 text-muted-foreground">
                       {service.description}
                     </p>
 
