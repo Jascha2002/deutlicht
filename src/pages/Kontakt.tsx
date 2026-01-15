@@ -194,7 +194,7 @@ const Kontakt = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-16 bg-[#1a5a5a] mx-0 px-0 md:py-12">
+        <section className="py-16 bg-[#155f75] mx-0 px-0 md:py-12">
           <div className="container px-4 py-0 mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
