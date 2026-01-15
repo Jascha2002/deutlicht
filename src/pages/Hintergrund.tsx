@@ -4,7 +4,7 @@ import { Play } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import heroHintergrund from "@/assets/hero-hintergrund.jpg";
+import hintergrundHeroBg from "@/assets/hintergrund-hero-bg.jpg";
 
 const Hintergrund = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -31,7 +31,7 @@ const Hintergrund = () => {
           {/* Hero Background */}
           <div className="absolute inset-0 z-0">
             <img 
-              src={heroHintergrund} 
+              src={hintergrundHeroBg} 
               alt="DeutLicht Hintergrund" 
               className="w-full h-full object-cover"
             />
@@ -44,7 +44,7 @@ const Hintergrund = () => {
               {!isVideoPlaying ? (
                 <div className="relative cursor-pointer group" onClick={handlePlayClick}>
                   <img 
-                    src={heroHintergrund}
+                    src={hintergrundHeroBg}
                     alt="Video Vorschau"
                     className="w-full aspect-video object-cover"
                   />
@@ -62,7 +62,7 @@ const Hintergrund = () => {
                   className="w-full aspect-video object-cover"
                   controls
                   autoPlay
-                  poster={heroHintergrund}
+                  poster={hintergrundHeroBg}
                 >
                   <source src="/videos/hintergrund-video.mp4" type="video/mp4" />
                   Ihr Browser unterstützt keine Videos.

@@ -176,6 +176,37 @@ const Navigation = () => {
     setSearchQuery("");
     navigate(path);
   };
+
+  const handleNavigation = (href: string) => {
+    trackNavClick(href);
+    
+    // Check if it's a hash link for /leistungen page
+    if (href.includes('#')) {
+      const [path, hash] = href.split('#');
+      const currentPath = window.location.pathname;
+      
+      // If we're already on the target page, just scroll
+      if (currentPath === path || (currentPath === '/leistungen' && path === '/leistungen')) {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+      }
+      
+      // Navigate to the page first, then scroll
+      navigate(path);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    } else {
+      navigate(href);
+    }
+  };
+
   const closeSearch = () => {
     setSearchOpen(false);
     setSearchQuery("");
@@ -283,10 +314,29 @@ const Navigation = () => {
                       <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
                         {item.submenu.map(subItem => {
                     const IconComponent = subItem.icon;
-                    return <Link key={subItem.name} to={subItem.href} onClick={() => trackNavClick(subItem.href)} className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" role="menuitem">
-                              {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
-                              {subItem.name}
-                            </Link>;
+                    const isHashLink = subItem.href.includes('#');
+                    return isHashLink ? (
+                      <button 
+                        key={subItem.name} 
+                        onClick={() => handleNavigation(subItem.href)} 
+                        className="flex items-center gap-3 px-4 py-2 w-full text-left text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
+                        role="menuitem"
+                      >
+                        {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
+                        {subItem.name}
+                      </button>
+                    ) : (
+                      <Link 
+                        key={subItem.name} 
+                        to={subItem.href} 
+                        onClick={() => trackNavClick(subItem.href)} 
+                        className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
+                        role="menuitem"
+                      >
+                        {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
+                        {subItem.name}
+                      </Link>
+                    );
                   })}
                       </div>
                     </div>
@@ -369,13 +419,33 @@ const Navigation = () => {
                   <div className={cn("pl-4 space-y-1 overflow-hidden transition-all", (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) ? "max-h-[400px]" : "max-h-0")}>
                     {item.submenu.map(subItem => {
                 const IconComponent = subItem.icon;
-                return <Link key={subItem.name} to={subItem.href} onClick={() => {
-                  trackNavClick(subItem.href);
-                  setIsOpen(false);
-                }} className="flex items-center gap-3 py-2 text-foreground/60 hover:text-accent text-sm">
-                          {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
-                          {subItem.name}
-                        </Link>;
+                const isHashLink = subItem.href.includes('#');
+                return isHashLink ? (
+                  <button 
+                    key={subItem.name} 
+                    onClick={() => {
+                      handleNavigation(subItem.href);
+                      setIsOpen(false);
+                    }} 
+                    className="flex items-center gap-3 py-2 w-full text-left text-foreground/60 hover:text-accent text-sm"
+                  >
+                    {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
+                    {subItem.name}
+                  </button>
+                ) : (
+                  <Link 
+                    key={subItem.name} 
+                    to={subItem.href} 
+                    onClick={() => {
+                      trackNavClick(subItem.href);
+                      setIsOpen(false);
+                    }} 
+                    className="flex items-center gap-3 py-2 text-foreground/60 hover:text-accent text-sm"
+                  >
+                    {IconComponent && <IconComponent className="w-4 h-4 text-accent" />}
+                    {subItem.name}
+                  </Link>
+                );
               })}
                   </div>
                 </div> : <Link to={item.href} onClick={() => {

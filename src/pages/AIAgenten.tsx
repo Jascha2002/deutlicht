@@ -32,6 +32,7 @@ import aiAgentHero from "@/assets/ai-agent-hero.jpg";
 import aiAgentChatbot from "@/assets/ai-agent-chatbot.jpg";
 import aiAgentWorkflow from "@/assets/ai-agent-workflow.jpg";
 import aiAgentAnalytics from "@/assets/ai-agent-analytics.jpg";
+import aiAgentenHeroBg from "@/assets/ai-agenten-hero-bg.jpg";
 
 const agentTypes = [
   {
@@ -154,11 +155,11 @@ const AIAgenten = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0">
             <img 
-              src={aiAgentHero} 
+              src={aiAgentenHeroBg} 
               alt="AI Agenten Technologie" 
-              className="w-full h-full object-cover opacity-20"
+              className="w-full h-full object-cover opacity-40"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/80 to-primary/30" />
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
