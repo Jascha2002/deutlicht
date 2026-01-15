@@ -238,7 +238,7 @@ const AIAgenten = () => {
             <div className="space-y-20">
               {agentTypes.map((agent, index) => (
                 <ScrollReveal key={agent.id} direction={index % 2 === 0 ? "left" : "right"}>
-                  <div className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
+                  <div className={`grid lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
                     {/* Content */}
                     <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                       <div className="flex items-center gap-4 mb-6">
