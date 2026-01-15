@@ -21,9 +21,9 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <div className="text-center space-y-8 backdrop-blur-sm rounded-3xl p-8 md:p-12 opacity-95 border-solid border-accent px-[109px] bg-[#c88a04]/0">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 border border-accent/20 rounded-full px-4 py-2 bg-primary-foreground text-[#c88a04]">
-            <span className="w-2 h-2 rounded-full animate-pulse bg-[#c88a04]" />
-            <span className="text-sm font-medium text-[#c88a04]">
+          <div className="inline-flex items-center gap-2 border border-accent/30 rounded-full px-4 py-2 bg-primary text-primary-foreground">
+            <span className="w-2 h-2 rounded-full animate-pulse bg-accent" />
+            <span className="text-sm font-medium">
               Digitalisierung mit Klarheit
             </span>
           </div>

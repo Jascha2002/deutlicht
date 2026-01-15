@@ -68,9 +68,9 @@ const Kontakt = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-primary text-primary-foreground border border-accent/30">
                 Kontakt aufnehmen
-              </span>
+              </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
                 Lassen Sie uns
                 <span className="block mt-2 text-accent">ins Gespräch kommen</span>

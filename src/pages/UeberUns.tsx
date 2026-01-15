@@ -25,7 +25,7 @@ const UeberUns = () => {
                 <AnimatedLogo size="md" />
               </div>
 
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-primary-foreground text-[#c88a04]">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-primary text-primary-foreground border border-accent/30">
                 <Clock className="w-4 h-4" />
                 Auf einen schnellen Blick
               </div>
