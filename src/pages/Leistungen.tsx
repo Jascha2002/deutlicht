@@ -9,6 +9,8 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import VoiceAgentDemo from "@/components/VoiceAgentDemo";
 import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
 import heroLeistungen from "@/assets/hero-leistungen.jpg";
+import aiAgentenAnwendung1 from "@/assets/ai-agenten-anwendung-1.jpg";
+import aiAgentenAnwendung2 from "@/assets/ai-agenten-anwendung-2.jpg";
 const services = [{
   id: "digitalisierung",
   icon: Monitor,
@@ -339,20 +341,87 @@ const Leistungen = () => {
                       </div>}
 
                     {/* Voice Agent Demo */}
-                    {(service as any).hasVoiceDemo && <div className="mt-6">
+                    {(service as any).hasVoiceDemo && <div className="mt-6 space-y-8">
                         <VoiceAgentDemo />
                         
+                        {/* KI Agenten Teaser Videos */}
+                        <div className="bg-gradient-to-br from-accent/10 via-card to-primary/5 rounded-2xl p-6 border border-accent/20">
+                          <h4 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                            <Bot className="w-5 h-5 text-accent" />
+                            KI-Agenten in Aktion
+                          </h4>
+                          <p className="text-muted-foreground text-sm mb-6">
+                            Erleben Sie, wie unsere KI-Sprachassistenten komplexe Aufgaben meistern und für Klarheit sorgen.
+                          </p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
+                              <video 
+                                autoPlay 
+                                muted 
+                                loop 
+                                playsInline 
+                                className="w-full aspect-video object-cover"
+                              >
+                                <source src="/videos/ki-agenten-teaser-1.mp4" type="video/mp4" />
+                              </video>
+                              <div className="p-3 bg-card">
+                                <p className="text-xs text-muted-foreground">Klarheit schaffen – Wirkung erzielen</p>
+                              </div>
+                            </div>
+                            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
+                              <video 
+                                autoPlay 
+                                muted 
+                                loop 
+                                playsInline 
+                                className="w-full aspect-video object-cover"
+                              >
+                                <source src="/videos/ki-agenten-teaser-2.mp4" type="video/mp4" />
+                              </video>
+                              <div className="p-3 bg-card">
+                                <p className="text-xs text-muted-foreground">Komplexes wird klarer</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Anwendungsbilder */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="rounded-xl overflow-hidden shadow-lg border border-border group">
+                            <img 
+                              src={aiAgentenAnwendung1} 
+                              alt="KI-Agenten Netzwerk - Vernetzte Intelligenz" 
+                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+                            />
+                            <div className="p-4 bg-card">
+                              <p className="text-sm font-medium text-foreground">Vernetzte KI-Intelligenz</p>
+                              <p className="text-xs text-muted-foreground mt-1">Multiple Agenten arbeiten zusammen</p>
+                            </div>
+                          </div>
+                          <div className="rounded-xl overflow-hidden shadow-lg border border-border group">
+                            <img 
+                              src={aiAgentenAnwendung2} 
+                              alt="Voice AI im Büroumfeld" 
+                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+                            />
+                            <div className="p-4 bg-card">
+                              <p className="text-sm font-medium text-foreground">Sprachgesteuerte Automatisierung</p>
+                              <p className="text-xs text-muted-foreground mt-1">Nahtlose Integration im Arbeitsalltag</p>
+                            </div>
+                          </div>
+                        </div>
+                        
                         {/* Voice Agent Hero Image */}
-                        <div className="mt-6 rounded-xl overflow-hidden shadow-lg border border-border">
+                        <div className="rounded-xl overflow-hidden shadow-lg border border-border">
                           <img src={voiceAgentHero} alt="KI Voice Agent Technologie" className="w-full h-48 object-cover" />
                         </div>
                         
-                        {/* Use Cases */}
-                        <div className="mt-6 bg-muted/30 rounded-xl p-6">
+                        {/* Branchenlösungen & Anwendungsfälle */}
+                        <div className="bg-muted/30 rounded-xl p-6">
                           <h4 className="font-display text-lg font-semibold text-foreground mb-4">
-                            Typische Anwendungsfälle
+                            Typische Anwendungsfälle & Branchenlösungen
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
                             <div className="flex items-center gap-2 text-sm">
                               <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
                               <span>Bestellstatus-Abfragen</span>
@@ -369,6 +438,47 @@ const Leistungen = () => {
                               <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
                               <span>Kundenidentifikation</span>
                             </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
+                              <span>Arztpraxis & Gesundheit</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
+                              <span>KFZ-Werkstätten</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
+                              <span>Immobilienverwaltung</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
+                              <span>Versicherungen</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
+                              <span>Energieversorger</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-wrap gap-3">
+                            <Link to="/leistungen/ai-agenten">
+                              <Button size="sm" className="group">
+                                Alle KI-Agenten entdecken
+                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                            <Link to="/branchen">
+                              <Button size="sm" variant="outline" className="group">
+                                Branchenlösungen ansehen
+                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                            <Link to="/leistungen/voicebot-demos">
+                              <Button size="sm" variant="ghost" className="group text-accent">
+                                Live-Demos testen
+                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>}
