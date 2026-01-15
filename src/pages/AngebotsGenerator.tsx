@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { FileText } from "lucide-react";
+import heroProjektanfrage from "@/assets/hero-projektanfrage.jpg";
 
 const AngebotsGeneratorPage = () => {
   return <>
@@ -18,7 +19,12 @@ const AngebotsGeneratorPage = () => {
         {/* Hero Section */}
         <section className="relative flex items-center justify-center overflow-hidden pt-32 pb-12">
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-secondary" />
+            <img 
+              src={heroProjektanfrage} 
+              alt="Projektanfrage Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-secondary" />
           </div>
           
           <div className="container mx-auto px-4 relative z-10">

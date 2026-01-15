@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import KIReadinessCheck from "@/components/KIReadinessCheck";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { Brain } from "lucide-react";
+import heroKiCheck from "@/assets/hero-ki-check.jpg";
 
 const KICheck = () => {
   return (
@@ -20,7 +21,12 @@ const KICheck = () => {
         {/* Hero Section */}
         <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-32 pb-20">
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+            <img 
+              src={heroKiCheck} 
+              alt="KI-Check Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
           </div>
           
           <div className="container mx-auto px-4 relative z-10">

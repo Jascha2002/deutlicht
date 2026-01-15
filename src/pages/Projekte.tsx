@@ -12,6 +12,7 @@ import projektHandwerk from "@/assets/handwerk-option-2.jpg";
 import projektEinzelhandel from "@/assets/einzelhandel-option-3.jpg";
 import projektGastronomie from "@/assets/gastronomie-option-5.jpg";
 import projektGesundheit from "@/assets/gesundheit-option-4.jpg";
+import heroProjekte from "@/assets/hero-projekte.jpg";
 const caseStudies = [{
   id: "handwerk",
   icon: Factory,
@@ -140,10 +141,20 @@ const Projekte = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 shadow-none rounded-none opacity-100 text-secondary-foreground bg-primary-foreground">
-          <div className="container mx-auto px-4 shadow-none rounded-none opacity-100 bg-primary-foreground">
-            <div className="max-w-4xl mx-auto text-center bg-primary-foreground">
-              <div className="mb-8 flex justify-center py-0 bg-primary-foreground">
+        <section className="relative pt-32 pb-20 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={heroProjekte} 
+              alt="Projekte Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 flex justify-center py-0">
                 <AnimatedLogo size="md" />
               </div>
               
