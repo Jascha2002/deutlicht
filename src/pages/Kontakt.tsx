@@ -219,53 +219,51 @@ const Kontakt = () => {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
               {/* Map Placeholder */}
-              <div className="lg:col-span-2 bg-cyan-800">
-                <Card className="overflow-hidden border-border/50 h-[400px]">
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-foreground mb-2">
-                        Interaktive Karte
-                      </h3>
-                      <p className="text-muted-foreground mb-4">
-                        Gemeindeweg 4, 07546 Gera
-                      </p>
-                      <Button variant="outline" asChild>
-                        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" onClick={() => trackExternalLink("google_maps")}>
-                          In Google Maps öffnen
-                        </a>
-                      </Button>
-                    </div>
+              <Card className="overflow-hidden border-border/50 h-full min-h-[400px]">
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-foreground mb-2">
+                      Interaktive Karte
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      Gemeindeweg 4, 07546 Gera
+                    </p>
+                    <Button variant="outline" asChild>
+                      <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" onClick={() => trackExternalLink("google_maps")}>
+                        In Google Maps öffnen
+                      </a>
+                    </Button>
                   </div>
-                </Card>
-              </div>
+                </div>
+              </Card>
 
-              {/* Directions */}
-              <div className="space-y-6 py-0 my-0 mx-0 bg-primary-foreground">
-                <Card className="border-border/50">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold text-foreground mb-4 bg-primary-foreground">Anfahrt mit dem Auto</h3>
+              {/* Directions - 3 cards stacked */}
+              <div className="flex flex-col gap-4 h-full">
+                <Card className="border-border/50 flex-1">
+                  <CardContent className="p-6 h-full flex flex-col justify-center">
+                    <h3 className="font-semibold text-foreground mb-2">Anfahrt mit dem Auto</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       Über die A4, Ausfahrt Gera. Parkplätze sind in der Umgebung verfügbar.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold text-foreground mb-4 bg-primary-foreground">Öffentliche Verkehrsmittel</h3>
+                <Card className="border-border/50 flex-1">
+                  <CardContent className="p-6 h-full flex flex-col justify-center">
+                    <h3 className="font-semibold text-foreground mb-2">Öffentliche Verkehrsmittel</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       Busverbindungen ab Gera Hauptbahnhof in die Innenstadt verfügbar.
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50 bg-primary/5">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold mb-4 px-0 bg-transparent text-[#c88a04]">Online-Meeting</h3>
-                    <p className="text-sm leading-relaxed text-[#c88a04]">
+                <Card className="border-border/50 bg-accent/10 flex-1">
+                  <CardContent className="p-6 h-full flex flex-col justify-center">
+                    <h3 className="font-semibold text-accent mb-2">Online-Meeting</h3>
+                    <p className="text-accent/80 text-sm leading-relaxed">
                       Kein Problem! Wir bieten auch virtuelle Beratungsgespräche per Video-Call an.
                     </p>
                   </CardContent>
