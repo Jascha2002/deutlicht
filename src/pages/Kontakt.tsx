@@ -52,14 +52,10 @@ const Kontakt = () => {
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-24 overflow-hidden">
+        <section className="relative py-24 md:py-32 overflow-hidden">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <img 
-              src={kontaktHeroBg} 
-              alt="Digitale Transformation" 
-              className="w-full h-full object-cover"
-            />
+            <img src={kontaktHeroBg} alt="Digitale Transformation" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
           </div>
           <div className="container mx-auto px-4 relative z-10">
@@ -89,24 +85,14 @@ const Kontakt = () => {
           <div className="container mx-auto px-4">
             <ScrollReveal>
               {/* Video Wrapper - kleinere Maße: max-width 800px */}
-              <div 
-                className="mx-auto overflow-hidden rounded-xl md:rounded-[12px] bg-[#111] shadow-2xl"
-                style={{
-                  maxWidth: '800px',
-                  aspectRatio: '16 / 9'
-                }}
-              >
-                <video 
-                  autoPlay 
-                  playsInline
-                  controls
-                  poster="/images/kontakt-poster.png"
-                  className="w-full h-full"
-                  style={{
-                    objectFit: 'cover',
-                    opacity: 0.92
-                  }}
-                >
+              <div className="mx-auto overflow-hidden rounded-xl md:rounded-[12px] bg-[#111] shadow-2xl" style={{
+              maxWidth: '800px',
+              aspectRatio: '16 / 9'
+            }}>
+                <video autoPlay playsInline controls poster="/images/kontakt-poster.png" className="w-full h-full" style={{
+                objectFit: 'cover',
+                opacity: 0.92
+              }}>
                   <source src="/videos/deutlicht-kontakt-video.mov" type="video/mp4" />
                   <source src="/videos/deutlicht-kontakt-video.mp4" type="video/mp4" />
                   Ihr Browser unterstützt keine Videos.
@@ -262,8 +248,8 @@ const Kontakt = () => {
 
                 <Card className="border-border/50 bg-accent/10 flex-1">
                   <CardContent className="p-6 h-full flex flex-col justify-center">
-                    <h3 className="font-semibold text-accent mb-2">Online-Meeting</h3>
-                    <p className="text-accent/80 text-sm leading-relaxed">
+                    <h3 className="text-accent mb-2 font-bold text-xl">Online-Meeting</h3>
+                    <p className="text-accent/80 leading-relaxed font-semibold text-base">
                       Kein Problem! Wir bieten auch virtuelle Beratungsgespräche per Video-Call an.
                     </p>
                   </CardContent>
