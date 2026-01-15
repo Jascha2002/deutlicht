@@ -253,7 +253,7 @@ const VoiceAgentDemo = () => {
       {/* Category Dropdown Menu */}
       <div className="mb-6">
         <p className="text-sm text-muted-foreground mb-3">Wählen Sie eine Kategorie:</p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           {voicebotCategories.map(category => {
             const categoryScenarios = getScenariosByCategory(category.id);
             const isOpen = openCategory === category.id;
@@ -268,7 +268,7 @@ const VoiceAgentDemo = () => {
               >
                 <button
                   disabled={agentState !== "idle"}
-                  className={`w-full flex items-center justify-between gap-2 p-3 rounded-lg text-left text-sm transition-all ${
+                  className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-lg text-left text-sm transition-all min-h-[52px] ${
                     hasSelectedInCategory 
                       ? "bg-accent/20 border-accent border-2 text-foreground" 
                       : "bg-muted/50 border border-border hover:bg-muted text-muted-foreground"
