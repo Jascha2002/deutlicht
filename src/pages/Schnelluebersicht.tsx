@@ -43,6 +43,11 @@ const Schnelluebersicht = () => {
                 <AnimatedLogo size="md" />
               </div>
               
+              <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground border border-accent/30 rounded-full px-4 py-2 mb-6">
+                <Lightbulb className="w-4 h-4" />
+                <span className="text-sm font-medium">Schnellübersicht</span>
+              </div>
+              
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
                 DeutLicht®
               </h1>

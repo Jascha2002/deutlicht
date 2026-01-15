@@ -69,6 +69,7 @@ const Kontakt = () => {
               </div>
               
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-primary text-primary-foreground border border-accent/30">
+                <Mail className="w-4 h-4" />
                 Kontakt aufnehmen
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">

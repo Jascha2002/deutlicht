@@ -167,7 +167,7 @@ const AIAgenten = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium mb-6 border border-accent/30">
                 <Sparkles className="w-4 h-4" />
                 Künstliche Intelligenz für Ihr Unternehmen
               </div>

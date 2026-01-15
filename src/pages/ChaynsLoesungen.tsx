@@ -22,6 +22,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const useCases = [
   {
@@ -135,9 +136,14 @@ const ChaynsLoesungen = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <ScrollReveal>
-                <span className="text-accent font-medium uppercase tracking-widest text-sm">
-                  Self-Order & 24/7 Lösungen
-                </span>
+                <div className="mb-8 flex justify-center">
+                  <AnimatedLogo size="md" />
+                </div>
+                
+                <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground border border-accent/30 rounded-full px-4 py-2 mb-6">
+                  <Smartphone className="w-4 h-4" />
+                  <span className="text-sm font-medium">Self-Order & 24/7 Lösungen</span>
+                </div>
                 
                 <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight">
                   Digitale Bestell- und Bezahlsysteme mit

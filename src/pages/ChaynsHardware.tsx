@@ -20,6 +20,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 import smartlockImage from "@/assets/chayns-smartlock.jpg";
 import servicerobotImage from "@/assets/chayns-servicerobot.jpg";
@@ -172,9 +173,14 @@ const ChaynsHardware = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <ScrollReveal>
-                <span className="text-accent font-medium uppercase tracking-widest text-sm">
-                  chayns® Hardware
-                </span>
+                <div className="mb-8 flex justify-center">
+                  <AnimatedLogo size="md" />
+                </div>
+                
+                <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground border border-accent/30 rounded-full px-4 py-2 mb-6">
+                  <Lock className="w-4 h-4" />
+                  <span className="text-sm font-medium">chayns® Hardware</span>
+                </div>
                 
                 <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight">
                   Smarte Schlösser &
@@ -244,7 +250,7 @@ const ChaynsHardware = () => {
           <div className="container mx-auto px-4">
             <ScrollReveal>
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full mb-4 border border-accent/30">
                   <Lock className="w-5 h-5" />
                   <span className="font-medium">Smarte Schließsysteme</span>
                 </div>
@@ -307,7 +313,7 @@ const ChaynsHardware = () => {
           <div className="container mx-auto px-4">
             <ScrollReveal>
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full mb-4 border border-accent/30">
                   <Bot className="w-5 h-5" />
                   <span className="font-medium">Service-Roboter</span>
                 </div>

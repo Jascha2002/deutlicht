@@ -148,6 +148,7 @@ const Projekte = () => {
               </div>
               
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4 bg-primary text-primary-foreground border border-accent/30">
+                <Briefcase className="w-4 h-4" />
                 Projekte & Referenzen
               </div>
               
@@ -156,7 +157,7 @@ const Projekte = () => {
                 <span className="text-[#c88a04]"> inspirieren</span>
               </h1>
               
-              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-cyan-500">
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-muted-foreground">
                 Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen 
                 verschiedener Branchen bei ihrer digitalen Transformation begleitet haben.
               </p>
