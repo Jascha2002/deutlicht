@@ -100,8 +100,9 @@ const demoScenarios: DemoScenario[] = [{
   }]
 }];
 
-// Voice ID for "Grim Indian Leopard" - custom ElevenLabs voice
-const ELEVENLABS_VOICE_ID = "MbbPUteESkJWr4IAaW35";
+// Voice IDs for ElevenLabs
+const AGENT_VOICE_ID = "MbbPUteESkJWr4IAaW35"; // Agent voice
+const USER_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah - natural female voice for caller simulation
 const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
   const [transcript, setTranscript] = useState<string[]>([]);
@@ -125,8 +126,8 @@ const VoiceAgentDemo = () => {
     };
   }, []);
 
-  // ElevenLabs TTS function
-  const speakWithElevenLabs = useCallback(async (text: string): Promise<void> => {
+  // ElevenLabs TTS function with voice selection
+  const speakWithElevenLabs = useCallback(async (text: string, voiceId: string): Promise<void> => {
     if (abortRef.current) return;
     try {
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`, {
@@ -138,7 +139,7 @@ const VoiceAgentDemo = () => {
         },
         body: JSON.stringify({
           text,
-          voiceId: ELEVENLABS_VOICE_ID
+          voiceId
         })
       });
       if (!response.ok) {
@@ -191,8 +192,8 @@ const VoiceAgentDemo = () => {
     }
   }, []);
 
-  // Browser TTS fallback
-  const speakWithBrowser = useCallback((text: string): Promise<void> => {
+  // Browser TTS fallback with pitch variation for different speakers
+  const speakWithBrowser = useCallback((text: string, isAgent: boolean): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (abortRef.current) {
         resolve();
@@ -207,7 +208,8 @@ const VoiceAgentDemo = () => {
       }
       utterance.lang = 'de-DE';
       utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      // Different pitch for agent vs user to distinguish speakers
+      utterance.pitch = isAgent ? 0.9 : 1.2;
       utterance.onend = () => resolve();
       utterance.onerror = e => {
         if (e.error === 'interrupted' || e.error === 'canceled') {
@@ -221,10 +223,13 @@ const VoiceAgentDemo = () => {
   }, []);
 
   // Main speak function that tries ElevenLabs first, falls back to browser
-  const speak = useCallback(async (text: string): Promise<void> => {
+  const speak = useCallback(async (text: string, role: "agent" | "user"): Promise<void> => {
+    const voiceId = role === "agent" ? AGENT_VOICE_ID : USER_VOICE_ID;
+    const isAgent = role === "agent";
+    
     if (useElevenLabs) {
       try {
-        await speakWithElevenLabs(text);
+        await speakWithElevenLabs(text, voiceId);
         return;
       } catch (error) {
         console.warn('ElevenLabs failed, falling back to browser TTS:', error);
@@ -233,7 +238,7 @@ const VoiceAgentDemo = () => {
     }
 
     // Fallback to browser TTS
-    await speakWithBrowser(text);
+    await speakWithBrowser(text, isAgent);
   }, [useElevenLabs, speakWithElevenLabs, speakWithBrowser]);
   const startDemo = async () => {
     setAgentState("connecting");
@@ -249,7 +254,7 @@ const VoiceAgentDemo = () => {
           setAgentState("speaking");
           setTranscript(prev => [...prev, `🤖 Agent: ${item.text}`]);
           try {
-            await speak(item.text);
+            await speak(item.text, "agent");
           } catch (error) {
             console.error('Speech error:', error);
             // Fallback: just wait based on text length
@@ -258,7 +263,13 @@ const VoiceAgentDemo = () => {
         } else {
           setAgentState("listening");
           setTranscript(prev => [...prev, `👤 Kunde: ${item.text}`]);
-          await new Promise(resolve => setTimeout(resolve, item.text.length * 25));
+          try {
+            await speak(item.text, "user");
+          } catch (error) {
+            console.error('Speech error:', error);
+            // Fallback: just wait based on text length
+            await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
+          }
         }
         if (i < selectedScenario.conversation.length - 1 && !abortRef.current) {
           setAgentState("thinking");
