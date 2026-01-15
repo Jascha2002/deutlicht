@@ -132,11 +132,11 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="tel:+4917684215054"
+                  href="tel:+4917855492216"
                   className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4 flex-shrink-0" />
-                  +49 176 8421 5054
+                  +49 178 55 49 216
                 </a>
               </li>
               <li>
@@ -144,8 +144,8 @@ const Footer = () => {
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>
                     Stadtnetz UG (haftungsbeschränkt)<br />
-                    Güterhallenstraße 4<br />
-                    51084 Köln
+                    Gemeindeweg 4 (Mäuseturm)<br />
+                    07546 Gera (Deutschland)
                   </span>
                 </div>
               </li>
