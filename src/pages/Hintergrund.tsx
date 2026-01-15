@@ -72,9 +72,11 @@ const Hintergrund = () => {
 
             {/* Content */}
             <article className="prose prose-lg max-w-none">
-              <div className="flex items-center gap-6 mb-8">
-                <AnimatedLogo size="sm" />
-                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight m-0">
+              <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+                <div className="flex-shrink-0">
+                  <AnimatedLogo size="lg" />
+                </div>
+                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight m-0 text-center md:text-left">
                   Die Geschichte und Vision von DeutLicht®
                 </h1>
               </div>
