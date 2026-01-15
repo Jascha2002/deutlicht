@@ -1,195 +1,365 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { Monitor, Cog, TrendingUp, Megaphone, ArrowRight, CheckCircle2, Zap, Database, ShoppingCart, Globe, BarChart3, Users, Bot, FileText, Coins, Building2, BookOpen, Package, Smartphone, Phone, Headphones, Clock } from "lucide-react";
+import { 
+  Monitor, Cog, TrendingUp, Megaphone, ArrowRight, CheckCircle2, 
+  Zap, Database, ShoppingCart, Globe, BarChart3, Users, Bot, 
+  FileText, Coins, Building2, BookOpen, Package, Smartphone, 
+  Phone, Headphones, Clock, Search, GraduationCap, Lock, 
+  Sparkles, Target, Eye, MessageSquare, Layers
+} from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import VoiceAgentDemo from "@/components/VoiceAgentDemo";
-import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
+
+// Import service images
 import heroLeistungen from "@/assets/hero-leistungen.jpg";
-import aiAgentenAnwendung1 from "@/assets/ai-agenten-anwendung-1.jpg";
-import aiAgentenAnwendung2 from "@/assets/ai-agenten-anwendung-2.jpg";
-const services = [{
-  id: "digitalisierung",
-  icon: Monitor,
-  title: "Digitalisierung",
-  subtitle: "Strategische Transformation für Ihr Unternehmen",
-  description: "Wir begleiten Sie bei der digitalen Transformation – von der Analyse bestehender Prozesse bis zur Implementierung moderner Lösungen. Mit über 25 Jahren Erfahrung verstehen wir die Herausforderungen und Chancen der Digitalisierung.",
-  features: ["Prozessanalyse und Optimierung", "Digitalisierungsstrategie entwickeln", "Change Management begleiten", "Förderfähige Projekte identifizieren", "Schulung und Wissenstransfer"],
-  benefits: [{
-    icon: Zap,
-    text: "Effizienzsteigerung um bis zu 40%"
-  }, {
-    icon: Coins,
-    text: "Fördermittel bis zu 50% nutzen"
-  }, {
-    icon: Users,
-    text: "Mitarbeiter erfolgreich einbinden"
-  }]
-}, {
-  id: "crm-erp",
-  icon: Cog,
-  title: "CRM & ERP Systeme",
-  subtitle: "Kundenmanagement und Unternehmenssteuerung",
-  description: "Von der Auswahl über die Einführung bis zur Optimierung – wir implementieren CRM- und ERP-Systeme, die Ihre Geschäftsprozesse nahtlos unterstützen und messbare Ergebnisse liefern.",
-  features: ["Bedarfsanalyse und Systemauswahl", "Individuelle Anpassung und Konfiguration", "Datenmigration und Integration", "Automatisierung von Workflows", "Training und Support"],
-  benefits: [{
-    icon: Database,
-    text: "360° Kundenübersicht"
-  }, {
-    icon: Zap,
-    text: "Automatisierte Prozesse"
-  }, {
-    icon: BarChart3,
-    text: "Echtzeit-Reporting"
-  }]
-}, {
-  id: "bim",
-  icon: Building2,
-  title: "BIM Systeme",
-  subtitle: "Building Information Management für Bau & Immobilien",
-  description: "Building Information Management (BIM) revolutioniert die Bau- und Immobilienbranche. Wir implementieren und integrieren BIM-Systeme, die alle Projektbeteiligten vernetzen und den gesamten Lebenszyklus eines Gebäudes digital abbilden.",
-  features: ["BIM-Strategieberatung und Einführung", "3D-Modellierung und Datenmanagement", "Kollaborationsplattformen einrichten", "Integration mit ERP und Projektmanagement", "Schulung für alle Projektbeteiligten"],
-  benefits: [{
-    icon: Building2,
-    text: "Transparente Projektabwicklung"
-  }, {
-    icon: Database,
-    text: "Zentrale Datenhaltung"
-  }, {
-    icon: Zap,
-    text: "Weniger Planungsfehler"
-  }]
-}, {
-  id: "pim",
-  icon: Package,
-  title: "PIM Systeme",
-  subtitle: "Product Information Management für den Handel",
-  description: "Product Information Management (PIM) zentralisiert alle Produktdaten und sorgt für konsistente Informationen über alle Verkaufskanäle. Wir helfen bei der Auswahl, Implementierung und Integration von PIM-Systemen.",
-  features: ["Anforderungsanalyse und Systemauswahl", "Produktdatenmodellierung", "Multi-Channel-Publishing", "Integration mit Webshop und ERP", "Automatisierte Datenqualitätsprüfung"],
-  benefits: [{
-    icon: Package,
-    text: "Konsistente Produktdaten"
-  }, {
+import leistungKiAgenten from "@/assets/leistung-ki-agenten.jpg";
+import leistungSeo from "@/assets/leistung-seo.jpg";
+import leistungSchulung from "@/assets/leistung-schulung.jpg";
+import leistungSchloesserRoboter from "@/assets/leistung-schloesser-roboter.jpg";
+import leistungBranchenloesungenKi from "@/assets/leistung-branchenloesungen-ki.jpg";
+import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
+
+// Service data with new order and structure
+const services = [
+  {
+    id: "digitalisierung",
+    icon: Monitor,
+    title: "Digitalisierung",
+    subtitle: "Strategische Transformation für Ihr Unternehmen",
+    image: heroLeistungen,
+    description: "Wir begleiten Sie bei der digitalen Transformation – von der Analyse bestehender Prozesse bis zur Implementierung moderner Lösungen.",
+    features: [
+      "Prozessanalyse und Optimierung",
+      "Digitalisierungsstrategie entwickeln",
+      "Change Management begleiten",
+      "Förderfähige Projekte identifizieren"
+    ],
+    benefits: [
+      { icon: Zap, text: "Effizienzsteigerung bis zu 40%" },
+      { icon: Coins, text: "Fördermittel bis 50% nutzen" },
+      { icon: Users, text: "Mitarbeiter erfolgreich einbinden" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "websites",
     icon: Globe,
-    text: "Multi-Channel-fähig"
-  }, {
-    icon: Zap,
-    text: "Schnellere Time-to-Market"
-  }]
-}, {
-  id: "wissensmanagement",
-  icon: BookOpen,
-  title: "Wissensmanagement",
-  subtitle: "Unternehmenswissen systematisch erfassen und nutzen",
-  description: "Wissen ist der wichtigste Rohstoff moderner Unternehmen. Wir implementieren Wissensmanagement-Systeme, die Erfahrungen, Prozesse und Know-how strukturiert erfassen, teilen und für die Zukunft sichern.",
-  features: ["Wissensdatenbanken aufbauen", "Dokumentenmanagement-Systeme", "Onboarding- und Schulungsplattformen", "KI-gestützte Wissenssuche", "Prozessdokumentation"],
-  benefits: [{
-    icon: BookOpen,
-    text: "Wissen nachhaltig sichern"
-  }, {
-    icon: Users,
-    text: "Schnelleres Onboarding"
-  }, {
-    icon: Zap,
-    text: "Effizientere Zusammenarbeit"
-  }]
-}, {
-  id: "voice-agents",
-  icon: Phone,
-  title: "KI Voice Agents",
-  subtitle: "Sprachgesteuerte Kundenservice-Automatisierung",
-  description: "KI-gestützte Sprachassistenten revolutionieren Ihren Kundenservice. Unsere Voice Agents verstehen natürliche Sprache, beantworten Anfragen automatisch und sind rund um die Uhr erreichbar – mit Automatisierungsraten von bis zu 70%.",
-  features: ["Natural Language Understanding (NLU)", "24/7 Erreichbarkeit ohne Wartezeiten", "Automatische Kundenidentifikation", "Nahtlose CRM-Integration", "Übergabe an Mitarbeiter bei Bedarf"],
-  benefits: [{
-    icon: Clock,
-    text: "24/7 Verfügbarkeit"
-  }, {
-    icon: Headphones,
-    text: "Bis zu 70% Automatisierung"
-  }, {
-    icon: Users,
-    text: "98% Kundenzufriedenheit"
-  }],
-  hasVoiceDemo: true,
-  hasAIAgentPage: true
-}, {
-  id: "selforder",
-  icon: Smartphone,
-  title: "Self-Order & 24/7 Lösungen",
-  subtitle: "Digitale Bestell- und Bezahlsysteme mit chayns®",
-  description: "Mit chayns® von Tobit bieten wir innovative Self-Order-Systeme für Gastronomie, Einzelhandel und 24/7-Geschäftsmodelle. Digitale Bestellung, kontaktlose Bezahlung und automatisierte Abläufe – alles aus einer Hand.",
-  features: ["Self-Order-Terminals und Mobile Ordering", "Kontaktlose Bezahlung (Google Pay, etc.)", "24/7 Zugangssysteme via Bluetooth", "Reservierungs- und Ticketsysteme", "Integration in bestehende Systeme"],
-  benefits: [{
-    icon: Smartphone,
-    text: "Moderne Kundenerfahrung"
-  }, {
-    icon: ShoppingCart,
-    text: "Höhere Umsätze"
-  }, {
-    icon: Zap,
-    text: "Automatisierte Abläufe"
-  }],
-  hasDetailPage: true
-}, {
-  id: "web",
-  icon: Globe,
-  title: "Websites & Shopsysteme",
-  subtitle: "Responsive, skalierbare Weblösungen",
-  description: "Professionelle Websites und E-Commerce-Lösungen, die nicht nur gut aussehen, sondern auch konvertieren. Mit direkter Anbindung an CRM-, ERP- und PIM-Systeme für maximale Effizienz.",
-  features: ["Responsive Webdesign", "E-Commerce & Shopsysteme", "CMS-Implementierung", "API-Integrationen", "SEO-Optimierung"],
-  benefits: [{
-    icon: ShoppingCart,
-    text: "Höhere Conversion-Rates"
-  }, {
-    icon: TrendingUp,
-    text: "Messbare Ergebnisse"
-  }, {
-    icon: Cog,
-    text: "Nahtlose Systemintegration"
-  }]
-}, {
-  id: "marketing",
-  icon: Megaphone,
-  title: "Marketing & Social Media",
-  subtitle: "KI-gestützte Kampagnen und Content-Strategien",
-  description: "Nachhaltige Marketingstrategien, die Ihre Zielgruppe erreichen. Von Content-Planung über Performance-Tracking bis zur Leadgenerierung – alles aus einer Hand.",
-  features: ["Social-Media-Strategie", "Content-Marketing & Planung", "Performance-Kampagnen", "KI-gestützte Optimierung", "Leadgenerierung"],
-  benefits: [{
+    title: "Websites & Shopsysteme",
+    subtitle: "Responsive, skalierbare Weblösungen",
+    image: null, // Will use icon-style card
+    description: "Professionelle Websites und E-Commerce-Lösungen, die konvertieren. Mit direkter Anbindung an CRM-, ERP- und PIM-Systeme.",
+    features: [
+      "Responsive Webdesign",
+      "E-Commerce & Shopsysteme",
+      "CMS-Implementierung",
+      "API-Integrationen"
+    ],
+    benefits: [
+      { icon: ShoppingCart, text: "Höhere Conversion-Rates" },
+      { icon: TrendingUp, text: "Messbare Ergebnisse" },
+      { icon: Cog, text: "Nahtlose Systemintegration" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "marketing",
+    icon: Megaphone,
+    title: "Marketing & Social Media",
+    subtitle: "KI-gestützte Kampagnen und Content",
+    image: null,
+    description: "Nachhaltige Marketingstrategien, die Ihre Zielgruppe erreichen. Von Content-Planung über Performance-Tracking bis zur Leadgenerierung.",
+    features: [
+      "Social-Media-Strategie",
+      "Content-Marketing & Planung",
+      "Performance-Kampagnen",
+      "KI-gestützte Optimierung"
+    ],
+    benefits: [
+      { icon: Bot, text: "KI-unterstützte Inhalte" },
+      { icon: Users, text: "Nachhaltige Reichweite" },
+      { icon: BarChart3, text: "Datengetriebene Entscheidungen" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "branchenloesungen-ki",
+    icon: Layers,
+    title: "Branchenlösungen mit KI",
+    subtitle: "Maßgeschneiderte KI für Ihre Branche",
+    image: leistungBranchenloesungenKi,
+    description: "Individuelle KI-Lösungen für Handel, Handwerk, Gastronomie, Gesundheit und mehr. Optimiert für Ihre spezifischen Anforderungen.",
+    features: [
+      "Branchenspezifische KI-Modelle",
+      "Automatisierte Workflows",
+      "Predictive Analytics",
+      "Intelligente Empfehlungen"
+    ],
+    benefits: [
+      { icon: Target, text: "Passgenaue Lösungen" },
+      { icon: Sparkles, text: "Wettbewerbsvorteile" },
+      { icon: Zap, text: "Schnelle Implementierung" }
+    ],
+    link: "/branchen",
+    detailLink: "/branchen"
+  },
+  {
+    id: "ki-agenten",
     icon: Bot,
-    text: "KI-unterstützte Inhalte"
-  }, {
-    icon: Users,
-    text: "Nachhaltige Reichweite"
-  }, {
-    icon: BarChart3,
-    text: "Datengetriebene Entscheidungen"
-  }]
-}, {
-  id: "foerderung",
-  icon: FileText,
-  title: "Förderberatung",
-  subtitle: "Maximieren Sie Ihre Investitionen",
-  description: "Als zertifizierte Berater unterstützen wir Sie bei der Identifikation und Beantragung von Fördermitteln für Ihre Digitalisierungsprojekte. So reduzieren Sie Ihre Investitionskosten erheblich.",
-  features: ["Fördermittel-Check", "Antragsunterstützung", "Projektdokumentation", "Verwendungsnachweis", "Begleitung bis zur Auszahlung"],
-  benefits: [{
-    icon: Coins,
-    text: "Bis zu 50% Förderung"
-  }, {
+    title: "KI-Agenten",
+    subtitle: "Intelligente Automatisierung & Assistenten",
+    image: leistungKiAgenten,
+    description: "Autonome KI-Agenten, die komplexe Aufgaben selbstständig erledigen, von Datenanalyse bis Kundeninteraktion.",
+    features: [
+      "Autonome Aufgabenbearbeitung",
+      "Multimodale Interaktion",
+      "Kontinuierliches Lernen",
+      "Nahtlose Systemintegration"
+    ],
+    benefits: [
+      { icon: Bot, text: "24/7 verfügbare Assistenten" },
+      { icon: Zap, text: "Automatisierung bis 80%" },
+      { icon: Target, text: "Präzise Ergebnisse" }
+    ],
+    link: "/leistungen/ai-agenten",
+    detailLink: "/leistungen/ai-agenten"
+  },
+  {
+    id: "voice-agents",
+    icon: Phone,
+    title: "KI Voice Agents",
+    subtitle: "Sprachgesteuerte Kundenservice-Automatisierung",
+    image: voiceAgentHero,
+    description: "KI-gestützte Sprachassistenten, die natürliche Sprache verstehen, Anfragen automatisch beantworten und 24/7 erreichbar sind.",
+    features: [
+      "Natural Language Understanding",
+      "24/7 ohne Wartezeiten",
+      "Automatische Kundenidentifikation",
+      "CRM-Integration"
+    ],
+    benefits: [
+      { icon: Clock, text: "24/7 Verfügbarkeit" },
+      { icon: Headphones, text: "Bis zu 70% Automatisierung" },
+      { icon: Users, text: "98% Kundenzufriedenheit" }
+    ],
+    link: "/leistungen/voicebot-demos",
+    detailLink: "/leistungen/ai-agenten"
+  },
+  {
+    id: "seo",
+    icon: Search,
+    title: "SEO & Sichtbarkeit",
+    subtitle: "Gefunden werden, wenn es zählt",
+    image: leistungSeo,
+    description: "Nachhaltige Suchmaschinenoptimierung für mehr organische Reichweite, bessere Rankings und qualifizierte Besucher.",
+    features: [
+      "Technische SEO-Optimierung",
+      "Content-Strategie & Keywords",
+      "Lokale SEO für regionale Sichtbarkeit",
+      "Performance-Monitoring"
+    ],
+    benefits: [
+      { icon: Eye, text: "Mehr organische Reichweite" },
+      { icon: TrendingUp, text: "Bessere Rankings" },
+      { icon: Target, text: "Qualifizierte Besucher" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "schulung",
+    icon: GraduationCap,
+    title: "Schulung & Beratung",
+    subtitle: "Wissen vermitteln, Kompetenz aufbauen",
+    image: leistungSchulung,
+    description: "Praxisnahe Schulungen und strategische Beratung für Ihr Team. Von Digitalisierung über KI bis hin zu spezifischen Tools.",
+    features: [
+      "Individuelle Schulungskonzepte",
+      "Workshops & Trainings",
+      "Strategieberatung",
+      "Change-Begleitung"
+    ],
+    benefits: [
+      { icon: Users, text: "Kompetente Mitarbeiter" },
+      { icon: Zap, text: "Schnelle Umsetzung" },
+      { icon: Target, text: "Nachhaltige Ergebnisse" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "wissensmanagement",
+    icon: BookOpen,
+    title: "Wissensmanagement",
+    subtitle: "Unternehmenswissen systematisch nutzen",
+    image: null,
+    description: "Wissensdatenbanken, Dokumentenmanagement und KI-gestützte Suche für effizientes Wissensmanagement.",
+    features: [
+      "Wissensdatenbanken aufbauen",
+      "Dokumentenmanagement",
+      "KI-gestützte Wissenssuche",
+      "Onboarding-Plattformen"
+    ],
+    benefits: [
+      { icon: BookOpen, text: "Wissen nachhaltig sichern" },
+      { icon: Users, text: "Schnelleres Onboarding" },
+      { icon: Zap, text: "Effizientere Zusammenarbeit" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "selforder",
+    icon: Smartphone,
+    title: "Self-Order & 24/7 Lösungen",
+    subtitle: "Digitale Bestell- und Bezahlsysteme",
+    image: null,
+    description: "Self-Order-Systeme für Gastronomie, Einzelhandel und 24/7-Geschäftsmodelle mit chayns® von Tobit.",
+    features: [
+      "Self-Order-Terminals & Mobile Ordering",
+      "Kontaktlose Bezahlung",
+      "24/7 Zugangssysteme via Bluetooth",
+      "Reservierungs- und Ticketsysteme"
+    ],
+    benefits: [
+      { icon: Smartphone, text: "Moderne Kundenerfahrung" },
+      { icon: ShoppingCart, text: "Höhere Umsätze" },
+      { icon: Zap, text: "Automatisierte Abläufe" }
+    ],
+    link: "/leistungen/chayns-loesungen",
+    detailLink: "/leistungen/chayns-loesungen"
+  },
+  {
+    id: "schloesser-roboter",
+    icon: Lock,
+    title: "Schlösser & Roboter",
+    subtitle: "Smarte Zugangslösungen & Serviceroboter",
+    image: leistungSchloesserRoboter,
+    description: "Bluetooth-Schlösser, digitale Zugangssysteme und Serviceroboter für Hotels, Büros und 24/7-Konzepte.",
+    features: [
+      "Bluetooth-Schlösser & Smart Locks",
+      "Digitale Zugangskontrolle",
+      "Serviceroboter-Integration",
+      "Automatisierte Check-in/Check-out"
+    ],
+    benefits: [
+      { icon: Lock, text: "Sichere Zugangskontrolle" },
+      { icon: Bot, text: "Automatisierter Service" },
+      { icon: Clock, text: "24/7 Betrieb" }
+    ],
+    link: "/leistungen/chayns-hardware",
+    detailLink: "/leistungen/chayns-hardware"
+  },
+  {
+    id: "crm-erp",
+    icon: Cog,
+    title: "CRM & ERP Systeme",
+    subtitle: "Kundenmanagement & Unternehmenssteuerung",
+    image: null,
+    description: "Auswahl, Einführung und Optimierung von CRM- und ERP-Systemen für nahtlose Geschäftsprozesse.",
+    features: [
+      "Bedarfsanalyse & Systemauswahl",
+      "Individuelle Anpassung",
+      "Datenmigration & Integration",
+      "Workflow-Automatisierung"
+    ],
+    benefits: [
+      { icon: Database, text: "360° Kundenübersicht" },
+      { icon: Zap, text: "Automatisierte Prozesse" },
+      { icon: BarChart3, text: "Echtzeit-Reporting" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "bim",
+    icon: Building2,
+    title: "BIM Systeme",
+    subtitle: "Building Information Management",
+    image: null,
+    description: "BIM-Systeme für die Bau- und Immobilienbranche, die alle Projektbeteiligten vernetzen.",
+    features: [
+      "BIM-Strategieberatung",
+      "3D-Modellierung & Datenmanagement",
+      "Kollaborationsplattformen",
+      "ERP-Integration"
+    ],
+    benefits: [
+      { icon: Building2, text: "Transparente Projektabwicklung" },
+      { icon: Database, text: "Zentrale Datenhaltung" },
+      { icon: Zap, text: "Weniger Planungsfehler" }
+    ],
+    link: "/kontakt",
+    detailLink: null,
+    hasVideo: true,
+    videoSrc: "/videos/deutlicht-bim.mp4"
+  },
+  {
+    id: "pim",
+    icon: Package,
+    title: "PIM Systeme",
+    subtitle: "Product Information Management",
+    image: null,
+    description: "PIM-Systeme für konsistente Produktdaten über alle Verkaufskanäle hinweg.",
+    features: [
+      "Systemauswahl & Modellierung",
+      "Multi-Channel-Publishing",
+      "Webshop & ERP-Integration",
+      "Automatisierte Datenqualitätsprüfung"
+    ],
+    benefits: [
+      { icon: Package, text: "Konsistente Produktdaten" },
+      { icon: Globe, text: "Multi-Channel-fähig" },
+      { icon: Zap, text: "Schnellere Time-to-Market" }
+    ],
+    link: "/kontakt",
+    detailLink: null
+  },
+  {
+    id: "foerderung",
     icon: FileText,
-    text: "Professionelle Anträge"
-  }, {
-    icon: CheckCircle2,
-    text: "Hohe Erfolgsquote"
-  }]
-}];
+    title: "Förderberatung",
+    subtitle: "Maximieren Sie Ihre Investitionen",
+    image: null,
+    description: "Zertifizierte Beratung für Fördermittel Ihrer Digitalisierungsprojekte. Bis zu 50% Förderung möglich.",
+    features: [
+      "Fördermittel-Check",
+      "Antragsunterstützung",
+      "Projektdokumentation",
+      "Begleitung bis Auszahlung"
+    ],
+    benefits: [
+      { icon: Coins, text: "Bis zu 50% Förderung" },
+      { icon: FileText, text: "Professionelle Anträge" },
+      { icon: CheckCircle2, text: "Hohe Erfolgsquote" }
+    ],
+    link: "/kontakt",
+    detailLink: null,
+    isHighlighted: true
+  }
+];
+
+// Quick access buttons for prominent services
+const quickAccessButtons = [
+  { label: "AI-Agenten", link: "/leistungen/ai-agenten", icon: Bot },
+  { label: "SEO & Sichtbarkeit", link: "/kontakt#seo", icon: Search },
+  { label: "Schulung & Beratung", link: "/kontakt#schulung", icon: GraduationCap }
+];
+
 const Leistungen = () => {
-  return <>
+  return (
+    <>
       <Helmet>
-        <title>Leistungen | DeutLicht® - Digitalisierung, CRM, Web & Marketing</title>
-        <meta name="description" content="Ganzheitliche Lösungen für digitale Transformation: Digitalisierung, CRM & ERP Systeme, Webentwicklung, Marketing und Förderberatung. Jetzt informieren!" />
+        <title>Unsere Leistungen | DeutLicht® - Ihr Weg in die digitale Zukunft</title>
+        <meta 
+          name="description" 
+          content="Von Websites über KI-Agenten bis hin zu Förderberatung – maßgeschneiderte Digitalisierungslösungen für Ihren Erfolg. Jetzt beraten lassen!" 
+        />
       </Helmet>
 
       <Navigation />
@@ -204,7 +374,7 @@ const Leistungen = () => {
               alt="Leistungen Hero" 
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
@@ -213,318 +383,273 @@ const Leistungen = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium mb-6 border border-accent/30">
-                <Cog className="w-4 h-4" />
-                Unsere Dienstleistungen
-              </div>
-              
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight">
-                Ganzheitliche Lösungen für Ihre
+                Unsere Leistungen – Ihr Weg in die
                 <span className="text-accent"> digitale Zukunft</span>
               </h1>
               
-              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-muted-foreground">
-                DeutLicht® bietet umfassende Lösungen für digitale Transformation. 
-                Von CRM- und ERP-Systemen über Websites und Shops bis hin zu 
-                Social-Media-Strategien verbinden wir Technologie mit Mensch und Prozess.
+              <p className="text-xl leading-relaxed max-w-3xl mx-auto text-muted-foreground mb-10">
+                Von Websites über KI-Agenten bis hin zu Förderberatung – 
+                maßgeschneidert für Ihren Erfolg
               </p>
+
+              <Link to="/kontakt">
+                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+                  Jetzt beraten lassen
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Quick Navigation */}
-        <section className="py-8 border-y border-border sticky top-20 z-40 bg-primary-foreground">
+        {/* Main Services Grid */}
+        <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              {services.map(service => <a key={service.id} href={`#${service.id}`} className="flex items-center gap-2 px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all text-sm font-medium bg-[#c88a04] text-inherit">
-                  <service.icon className="w-4 h-4" />
-                  {service.title}
-                </a>)}
-            </div>
-          </div>
-        </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {services.map((service, index) => (
+                <ScrollReveal key={service.id} delay={index * 50}>
+                  <div 
+                    className={`group h-full rounded-2xl overflow-hidden shadow-lg border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                      index % 2 === 0 
+                        ? 'bg-card border-border' 
+                        : 'bg-muted/30 border-border/50'
+                    } ${service.isHighlighted ? 'ring-2 ring-accent' : ''}`}
+                  >
+                    {/* Image or Icon Header */}
+                    <div className="relative h-48 overflow-hidden">
+                      {service.image ? (
+                        <img 
+                          src={service.image} 
+                          alt={service.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 via-accent/10 to-primary/5 flex items-center justify-center">
+                          <service.icon className="w-20 h-20 text-accent/60 group-hover:scale-110 transition-transform duration-300" />
+                        </div>
+                      )}
+                      {/* BIM Video overlay */}
+                      {service.hasVideo && (
+                        <div className="absolute inset-0">
+                          <video 
+                            autoPlay 
+                            muted 
+                            loop 
+                            playsInline 
+                            className="w-full h-full object-cover"
+                          >
+                            <source src={service.videoSrc} type="video/mp4" />
+                          </video>
+                        </div>
+                      )}
+                    </div>
 
-        {/* Services Detail Sections */}
-        {services.map((service, index) => <section key={service.id} id={service.id} className={`py-20 md:py-24 ${index % 2 === 1 ? "bg-muted/30" : ""}`}>
-            <div className="container mx-auto px-4 bg-primary-foreground">
-              <div className="max-w-6xl mx-auto">
-                <div className={`grid lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
-                  {/* Content */}
-                  <ScrollReveal direction={index % 2 === 0 ? "left" : "right"} className={index % 2 === 1 ? "lg:order-2" : ""}>
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center">
-                        <service.icon className="w-7 h-7 text-[#c88a04]" />
+                    {/* Content */}
+                    <div className="p-6">
+                      {/* Title with Icon */}
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                          <service.icon className="w-5 h-5 text-accent" />
+                        </div>
+                        <div>
+                          <h3 className="font-display text-lg font-bold text-foreground leading-tight">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm text-accent font-medium">{service.subtitle}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
-                          {service.title}
-                        </h2>
-                        <p className="font-medium text-[#c88a04]">{service.subtitle}</p>
+
+                      {/* Description */}
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                        {service.description}
+                      </p>
+
+                      {/* Features (compact) */}
+                      <div className="space-y-1.5 mb-4">
+                        {service.features.slice(0, 3).map((feature, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+                            <span className="text-foreground/80">{feature}</span>
+                          </div>
+                        ))}
                       </div>
-                    </div>
 
-                    <p className="text-lg leading-relaxed mb-8 text-muted-foreground">
-                      {service.description}
-                    </p>
-
-                    {/* Features List */}
-                    <div className="space-y-3 mb-8">
-                      {service.features.map((feature, i) => <div key={i} className="flex items-center gap-3">
-                          <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-[#c88a04]" />
-                          <span className="text-foreground">{feature}</span>
-                        </div>)}
-                    </div>
-
-                    {/* Hint text */}
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Kosten für Ihre Situation? → Jetzt Angebot erstellen
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-3">
-                      <Link to="/kontakt">
-                        <Button variant="outline" className="group">
-                          Beratung anfragen
-                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
-                      <Link to="/projektanfrage">
-                        <Button className="group">
-                          Projektanfrage stellen
-                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
-                      {(service as any).hasDetailPage && <Link to="/leistungen/chayns-loesungen">
-                          <Button variant="ghost" className="group text-accent">
-                            Mehr erfahren
-                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                        </Link>}
-                      {(service as any).hasAIAgentPage && <Link to="/leistungen/ai-agenten">
-                          <Button variant="ghost" className="group text-accent">
-                            Alle AI Agenten entdecken
-                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                        </Link>}
-                    </div>
-                  </ScrollReveal>
-
-                  {/* Benefits Card */}
-                  <ScrollReveal direction={index % 2 === 0 ? "right" : "left"} delay={200} className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                    <div className="rounded-2xl p-8 shadow-lg border border-border bg-inherit">
-                      <h3 className="font-display text-xl font-semibold text-foreground mb-6">
-                        Ihre Vorteile
-                      </h3>
-                      <div className="space-y-6">
-                        {service.benefits.map((benefit, i) => <div key={i} className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 bg-accent">
-                              <benefit.icon className="w-6 h-6 text-primary" />
+                      {/* Benefits Box */}
+                      <div className="bg-muted/50 rounded-lg p-3 mb-4">
+                        <p className="text-xs font-semibold text-foreground mb-2">Ihre Vorteile:</p>
+                        <div className="space-y-1.5">
+                          {service.benefits.map((benefit, i) => (
+                            <div key={i} className="flex items-center gap-2">
+                              <benefit.icon className="w-3.5 h-3.5 text-accent" />
+                              <span className="text-xs text-foreground/80">{benefit.text}</span>
                             </div>
-                            <div className="pt-3">
-                              <p className="text-foreground font-medium">{benefit.text}</p>
-                            </div>
-                          </div>)}
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* BIM Video */}
-                    {service.id === "bim" && <div className="mt-6 rounded-xl overflow-hidden shadow-lg border border-border">
-                        <video autoPlay muted playsInline className="w-full max-h-48 object-cover" onEnded={e => {
-                    const video = e.currentTarget;
-                    const playCount = parseInt(video.dataset.playCount || "1");
-                    if (playCount < 5) {
-                      video.dataset.playCount = (playCount + 1).toString();
-                      video.play();
-                    }
-                  }}>
-                          <source src="/videos/deutlicht-bim.mp4" type="video/mp4" />
-                        </video>
-                      </div>}
-
-                    {/* Voice Agent Demo */}
-                    {(service as any).hasVoiceDemo && <div className="mt-6 space-y-8">
-                        <VoiceAgentDemo />
-                        
-                        {/* KI Agenten Teaser Videos */}
-                        <div className="bg-gradient-to-br from-accent/10 via-card to-primary/5 rounded-2xl p-6 border border-accent/20">
-                          <h4 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                            <Bot className="w-5 h-5 text-accent" />
-                            KI-Agenten in Aktion
-                          </h4>
-                          <p className="text-muted-foreground text-sm mb-6">
-                            Erleben Sie, wie unsere KI-Sprachassistenten komplexe Aufgaben meistern und für Klarheit sorgen.
-                          </p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                              <video 
-                                autoPlay 
-                                muted 
-                                loop 
-                                playsInline 
-                                className="w-full aspect-video object-cover"
-                              >
-                                <source src="/videos/ki-agenten-teaser-1.mp4" type="video/mp4" />
-                              </video>
-                              <div className="p-3 bg-card">
-                                <p className="text-xs text-muted-foreground">Klarheit schaffen – Wirkung erzielen</p>
-                              </div>
-                            </div>
-                            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                              <video 
-                                autoPlay 
-                                muted 
-                                loop 
-                                playsInline 
-                                className="w-full aspect-video object-cover"
-                              >
-                                <source src="/videos/ki-agenten-teaser-2.mp4" type="video/mp4" />
-                              </video>
-                              <div className="p-3 bg-card">
-                                <p className="text-xs text-muted-foreground">Komplexes wird klarer</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Anwendungsbilder */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="rounded-xl overflow-hidden shadow-lg border border-border group">
-                            <img 
-                              src={aiAgentenAnwendung1} 
-                              alt="KI-Agenten Netzwerk - Vernetzte Intelligenz" 
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
-                            />
-                            <div className="p-4 bg-card">
-                              <p className="text-sm font-medium text-foreground">Vernetzte KI-Intelligenz</p>
-                              <p className="text-xs text-muted-foreground mt-1">Multiple Agenten arbeiten zusammen</p>
-                            </div>
-                          </div>
-                          <div className="rounded-xl overflow-hidden shadow-lg border border-border group">
-                            <img 
-                              src={aiAgentenAnwendung2} 
-                              alt="Voice AI im Büroumfeld" 
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
-                            />
-                            <div className="p-4 bg-card">
-                              <p className="text-sm font-medium text-foreground">Sprachgesteuerte Automatisierung</p>
-                              <p className="text-xs text-muted-foreground mt-1">Nahtlose Integration im Arbeitsalltag</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Voice Agent Hero Image */}
-                        <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                          <img src={voiceAgentHero} alt="KI Voice Agent Technologie" className="w-full h-48 object-cover" />
-                        </div>
-                        
-                        {/* Branchenlösungen & Anwendungsfälle */}
-                        <div className="bg-muted/30 rounded-xl p-6">
-                          <h4 className="font-display text-lg font-semibold text-foreground mb-4">
-                            Typische Anwendungsfälle & Branchenlösungen
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Bestellstatus-Abfragen</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Terminvereinbarungen</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>FAQ-Beantwortung</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Kundenidentifikation</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Arztpraxis & Gesundheit</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>KFZ-Werkstätten</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Immobilienverwaltung</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Versicherungen</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle2 className="w-4 h-4 text-[#c88a04]" />
-                              <span>Energieversorger</span>
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-3">
-                            <Link to="/leistungen/ai-agenten">
-                              <Button size="sm" className="group">
-                                Alle KI-Agenten entdecken
-                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                              </Button>
-                            </Link>
-                            <Link to="/branchen">
-                              <Button size="sm" variant="outline" className="group">
-                                Branchenlösungen ansehen
-                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                              </Button>
-                            </Link>
-                            <Link to="/leistungen/voicebot-demos">
-                              <Button size="sm" variant="ghost" className="group text-accent">
-                                Live-Demos testen
-                                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                              </Button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>}
-
-                    {/* Additional Info Card for some services */}
-                    {service.id === "foerderung" && <div className="gradient-gold rounded-2xl p-8 shadow-xl mt-6">
-                        <h4 className="font-display text-xl font-semibold text-accent-foreground mb-3">
-                          Kostenloser Fördermittel-Check
-                        </h4>
-                        <p className="text-accent-foreground/90 text-sm leading-relaxed mb-4">
-                          Prüfen Sie jetzt, welche Förderprogramme für Ihr Unternehmen in Frage kommen. 
-                          Unverbindlich und kostenlos.
-                        </p>
-                        <Link to="/kontakt#anfrage-formular">
-                          <Button variant="secondary" className="group">
-                            Jetzt Anfrage stellen
-                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      {/* CTA Buttons */}
+                      <div className="flex flex-col gap-2">
+                        {service.detailLink ? (
+                          <Link to={service.detailLink} className="w-full">
+                            <Button 
+                              className="w-full group bg-accent hover:bg-accent/90 text-accent-foreground"
+                              size="sm"
+                            >
+                              Mehr erfahren
+                              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Link to={service.link} className="w-full">
+                            <Button 
+                              className="w-full group bg-accent hover:bg-accent/90 text-accent-foreground"
+                              size="sm"
+                            >
+                              Details anfragen
+                              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                          </Link>
+                        )}
+                        <Link to="/kontakt" className="w-full">
+                          <Button variant="outline" size="sm" className="w-full">
+                            Kontakt aufnehmen
                           </Button>
                         </Link>
-                      </div>}
-                  </ScrollReveal>
-                </div>
-              </div>
+                      </div>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
-          </section>)}
+          </div>
+        </section>
 
-        {/* CTA Section */}
-        <section className="py-20 opacity-100 md:py-[28px] bg-neutral-400">
-          <div className="container mx-auto px-0 py-[2px]">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
-                Bereit für den nächsten Schritt?
+        {/* Quick Access Buttons Section */}
+        <section className="py-12 bg-muted/30 border-y border-border">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
+                Schnellzugriff auf Top-Leistungen
               </h2>
-              <p className="text-lg mb-8 text-inherit">
-                Unsere Projektanfrage liefert in wenigen Minuten nötige Informationen für ein personalisiertes Angebot für Sie.
+              <p className="text-muted-foreground">
+                Entdecken Sie unsere gefragtesten Services
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/projektanfrage">
-                  <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
-                    Projektanfrage starten
+            </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              {quickAccessButtons.map((btn) => (
+                <Link key={btn.label} to={btn.link}>
+                  <Button 
+                    size="lg" 
+                    className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <btn.icon className="w-5 h-5 mr-2" />
+                    {btn.label}
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Teaser Videos Section */}
+        <section className="py-16 md:py-20">
+          <div className="container mx-auto px-4">
+            <ScrollReveal>
+              <div className="max-w-4xl mx-auto text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
+                  <Bot className="w-4 h-4" />
+                  KI in Aktion
+                </div>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  Erleben Sie unsere KI-Agenten
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  Komplexes wird klarer – Klarheit schaffen, Wirkung erzielen
+                </p>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <ScrollReveal direction="left">
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-border group">
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="w-full aspect-video object-cover"
+                  >
+                    <source src="/videos/ki-agenten-teaser-1.mp4" type="video/mp4" />
+                  </video>
+                  <div className="p-4 bg-card">
+                    <p className="text-sm font-medium text-foreground">Klarheit schaffen – Wirkung erzielen</p>
+                    <p className="text-xs text-muted-foreground mt-1">DeutLicht® KI-Agenten im Einsatz</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal direction="right">
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-border group">
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="w-full aspect-video object-cover"
+                  >
+                    <source src="/videos/ki-agenten-teaser-2.mp4" type="video/mp4" />
+                  </video>
+                  <div className="p-4 bg-card">
+                    <p className="text-sm font-medium text-foreground">Komplexes wird klarer</p>
+                    <p className="text-xs text-muted-foreground mt-1">Intelligente Automatisierung</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            <div className="text-center mt-8">
+              <Link to="/leistungen/ai-agenten">
+                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground">
+                  Alle KI-Agenten entdecken
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA Section */}
+        <section className="py-20 md:py-24 bg-primary">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-primary-foreground">
+                Welche Leistung passt zu Ihnen?
+              </h2>
+              <p className="text-xl mb-4 text-primary-foreground/90">
+                Lassen Sie uns sprechen!
+              </p>
+              <p className="text-lg mb-8 text-primary-foreground/80">
+                In einem kostenlosen Beratungsgespräch finden wir gemeinsam die optimale Lösung für Ihr Unternehmen.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/kontakt">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                    Direkt Kontakt aufnehmen
+                  <Button 
+                    size="lg" 
+                    className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground px-8"
+                  >
+                    Kostenloses Beratungsgespräch vereinbaren
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link to="/projektanfrage">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="w-full sm:w-auto bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                  >
+                    Projektanfrage starten
                   </Button>
                 </Link>
               </div>
@@ -534,6 +659,8 @@ const Leistungen = () => {
       </main>
 
       <Footer />
-    </>;
+    </>
+  );
 };
+
 export default Leistungen;
