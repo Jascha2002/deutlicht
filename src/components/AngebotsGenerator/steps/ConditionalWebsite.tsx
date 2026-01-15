@@ -20,17 +20,19 @@ const ConditionalWebsite = ({ data, onChange }: ConditionalWebsiteProps) => {
         </div>
       </div>
 
-      <FormField
-        type="radio"
-        name="existing_website"
-        label="Haben Sie bereits eine Website?"
-        value={data.existing_website}
-        onChange={(v) => onChange('existing_website', v)}
-        options={[
-          { value: 'ja', label: 'Ja, bestehende Website' },
-          { value: 'nein', label: 'Nein, Neuentwicklung' },
-        ]}
-      />
+      <div className="p-4 bg-muted/30 rounded-lg border border-border">
+        <FormField
+          type="radio"
+          name="existing_website"
+          label="Website vorhanden?"
+          value={data.existing_website}
+          onChange={(v) => onChange('existing_website', v)}
+          options={[
+            { value: 'ja', label: 'Ja, ich habe bereits eine Website' },
+            { value: 'nein', label: 'Nein, ich benötige eine neue Website' },
+          ]}
+        />
+      </div>
 
       {data.existing_website === 'ja' && (
         <div className="pl-4 border-l-2 border-primary/30 space-y-4">
