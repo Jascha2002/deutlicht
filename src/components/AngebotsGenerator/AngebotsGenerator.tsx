@@ -692,36 +692,38 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
 
           {formData.existing_website === 'ja' && (
             <div className="pl-4 border-l-2 border-primary/30 space-y-4">
-              <div>
-                <Label htmlFor="website_url">Ihre aktuelle Website-URL</Label>
-                <Input
-                  id="website_url"
-                  name="website_url"
-                  value={formData.website_url}
-                  onChange={handleInputChange}
-                  placeholder="https://www.ihre-website.de"
-                />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="website_url">Ihre aktuelle Website-URL</Label>
+                  <Input
+                    id="website_url"
+                    name="website_url"
+                    value={formData.website_url}
+                    onChange={handleInputChange}
+                    placeholder="https://www.ihre-website.de"
+                  />
+                </div>
 
-              <div>
-                <Label>Welches CMS-System wird aktuell verwendet?</Label>
-                <select
-                  name="existing_cms"
-                  value={formData.existing_cms}
-                  onChange={handleInputChange}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
-                >
-                  <option value="">Bitte wählen</option>
-                  <option value="wordpress">WordPress</option>
-                  <option value="typo3">TYPO3</option>
-                  <option value="shopify">Shopify</option>
-                  <option value="wix">Wix</option>
-                  <option value="squarespace">Squarespace</option>
-                  <option value="webflow">Webflow</option>
-                  <option value="jimdo">Jimdo</option>
-                  <option value="andere">Andere</option>
-                  <option value="unbekannt">Unbekannt</option>
-                </select>
+                <div>
+                  <Label>CMS-System der bestehenden Website</Label>
+                  <select
+                    name="existing_cms"
+                    value={formData.existing_cms}
+                    onChange={handleInputChange}
+                    className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  >
+                    <option value="">Bitte wählen</option>
+                    <option value="wordpress">WordPress</option>
+                    <option value="typo3">TYPO3</option>
+                    <option value="shopify">Shopify</option>
+                    <option value="wix">Wix</option>
+                    <option value="squarespace">Squarespace</option>
+                    <option value="webflow">Webflow</option>
+                    <option value="jimdo">Jimdo</option>
+                    <option value="andere">Andere</option>
+                    <option value="unbekannt">Unbekannt</option>
+                  </select>
+                </div>
               </div>
 
               {formData.existing_cms === 'andere' && (
