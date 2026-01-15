@@ -39,6 +39,7 @@ import {
   roundPrice,
   formatCurrency
 } from '@/data/branchenPakete';
+import { websitePakete, getWebsitePaketById } from '@/data/websitePakete';
 import OfferPreview from './OfferPreview';
 
 interface AngebotsGeneratorProps {
@@ -667,29 +668,35 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
                         className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
                       >
                         <option value="">Bitte wählen</option>
-                        <option value="onepager">Onepager - Alles auf einer Seite, kompakt & übersichtlich</option>
-                        <option value="landingpage_starter">🎯 Landingpage Starter - Perfekt für erste Schritte (299€)</option>
-                        <option value="landingpage">Landingpage Professional - Mehr Funktionen, mehr Wirkung</option>
+                        <option value="landingpage_starter">🎯 Landingpage Starter - Digitale Visitenkarte für schnellen Start</option>
+                        <option value="landingpage">Landingpage Professional - Erweiterte Features & Interaktivität</option>
+                        <option value="onepager">Onepager - Kompakt & übersichtlich auf einer Seite</option>
                         <option value="5-10">Website 5-10 Seiten - Ideal für kleine Unternehmen & Start-ups</option>
-                        <option value="10-20">Website 10-20 Seiten - Perfekt für mehrere Leistungen</option>
+                        <option value="10-20">Website 10-20 Seiten - Für wachsende Unternehmen mit Portfolio</option>
                         <option value="20-30">Website 20-30 Seiten - Umfangreiche Unternehmensdarstellung</option>
-                        <option value=">30">Website über 30 Seiten - Für komplexe Unternehmen (Gespräch empfohlen)</option>
+                        <option value=">30">Website 20+ Seiten (Enterprise) - Für komplexe Projekte & Portale</option>
                       </select>
                     </div>
 
-                    {formData.website_type === 'landingpage_starter' && (
-                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                        <p className="font-medium text-green-800 dark:text-green-200">✅ Landingpage Starter inkl.:</p>
-                        <ul className="text-sm text-green-700 dark:text-green-300 mt-2 space-y-1">
-                          <li>• Responsive Design (mobil/desktop)</li>
-                          <li>• 5-7 Sections (Hero, Vorteile, Referenzen, CTA, Kontakt, Footer)</li>
-                          <li>• Kontaktformular + Telefon/Email</li>
-                          <li>• SEO-Grundlagen (Meta-Tags, schnelle Ladezeit)</li>
-                          <li>• Impressum/Datenschutz (rechtssicher)</li>
-                        </ul>
-                        <p className="text-xs text-green-600 dark:text-green-400 mt-3">
-                          Nicht enthalten: Custom Animationen, komplexe Integrationen, E-Commerce, Mehrsprachigkeit (optional buchbar)
+                    {/* Dynamische Paketbeschreibung */}
+                    {formData.website_type && getWebsitePaketById(formData.website_type) && (
+                      <div className="bg-accent/5 border border-accent/20 p-4 rounded-lg">
+                        <p className="font-medium text-foreground mb-2">
+                          ✅ {getWebsitePaketById(formData.website_type)?.name} - Leistungsumfang:
                         </p>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {getWebsitePaketById(formData.website_type)?.beschreibung}
+                        </p>
+                        <ul className="text-sm text-foreground space-y-1">
+                          {getWebsitePaketById(formData.website_type)?.leistungen.map((leistung, idx) => (
+                            <li key={idx}>• {leistung}</li>
+                          ))}
+                        </ul>
+                        {getWebsitePaketById(formData.website_type)?.hinweis && (
+                          <p className="text-xs text-muted-foreground mt-3 italic">
+                            {getWebsitePaketById(formData.website_type)?.hinweis}
+                          </p>
+                        )}
                       </div>
                     )}
                     
@@ -1090,35 +1097,62 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
           </div>
         </div>
 
-        {/* Price Summary */}
-        {formData.services_selected.length > 0 && totals.setup > 0 && (
-          <Card className="p-6 mb-8 bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
-            <h3 className="text-lg font-semibold mb-4">Investitionsübersicht:</h3>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b border-border/50">
-                <span className="text-muted-foreground">Einmalige Einrichtung:</span>
-                <span className="text-xl font-bold">{formatCurrency(totals.setup)} netto</span>
+        {/* Hinweis zur Preisgestaltung */}
+        {formData.services_selected.length > 0 && (
+          <Card className="p-6 mb-8 bg-muted/30 border-border">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-semibold mb-2">Ihr individuelles Angebot</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Die Preise für Website-Entwicklung, Social Media, SEO, KI-Agenten, Voicebots und Prozessoptimierung 
+                  werden individuell kalkuliert und nicht öffentlich angezeigt. Sie erhalten ein <strong>personalisiertes 
+                  PDF-Angebot per E-Mail</strong> mit allen Details und Preisen.
+                </p>
+                
+                {/* Transparente Preise für Hosting, Service, Beratung */}
+                {(formData.hosting_needed === 'ja' || formData.service_contract === 'ja' || formData.beratung_model) && (
+                  <div className="bg-background/50 rounded-lg p-4 mt-4">
+                    <p className="text-sm font-medium mb-3">Transparente Festpreise (ohne Faktoren):</p>
+                    <div className="space-y-2 text-sm">
+                      
+                      {formData.hosting_needed === 'ja' && formData.hosting_type && (
+                        <div className="flex justify-between items-center py-1 border-b border-border/30">
+                          <span>Hosting:</span>
+                          <span className="font-medium">
+                            {hostingPakete.find(h => h.id === formData.hosting_type)?.monatlich || 
+                             proHostingPakete.find(h => h.id === formData.hosting_type)?.monatlich || 0}€/Monat
+                          </span>
+                        </div>
+                      )}
+                      
+                      {formData.service_contract === 'ja' && formData.service_minutes && (
+                        <div className="flex justify-between items-center py-1 border-b border-border/30">
+                          <span>Service/Wartung ({formData.service_minutes} Min):</span>
+                          <span className="font-medium">
+                            {serviceVertraege.find(s => s.minuten.toString() === formData.service_minutes)?.monatlich || 0}€/Monat
+                          </span>
+                        </div>
+                      )}
+                      
+                      {formData.beratung_model && (
+                        <div className="flex justify-between items-center py-1 border-b border-border/30">
+                          <span>Beratung & Schulung:</span>
+                          <span className="font-medium">
+                            {formData.beratung_model === 'kontingent' && '3.500€ (3,5 Tage Kontingent)'}
+                            {formData.beratung_model === 'einzelstunden' && `${Math.round((parseFloat(formData.beratung_hours) || 0) * 199)}€ (199€/Stunde)`}
+                            {formData.beratung_model === 'beides' && `${3500 + Math.round((parseFloat(formData.beratung_hours) || 0) * 199)}€`}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3">
+                      Diese Preise sind Festpreise und werden nicht durch Branche, Unternehmensgröße oder Zeitplan beeinflusst.
+                      Bestandskunden erhalten 5% Rabatt auf den Jahrespreis beim Hosting.
+                    </p>
+                  </div>
+                )}
               </div>
-              
-              {totals.monthly > 0 && (
-                <div className="flex justify-between items-center py-2 border-b border-border/50">
-                  <span className="text-muted-foreground">Monatliche Kosten:</span>
-                  <span className="text-xl font-bold text-accent">{formatCurrency(totals.monthly)} netto</span>
-                </div>
-              )}
-            </div>
-            
-            <p className="text-xs text-muted-foreground mt-4">zzgl. gesetzlicher MwSt.</p>
-            
-            <div className="mt-4 p-3 bg-muted/50 rounded-lg text-sm">
-              <p className="flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong>Hinweis:</strong> Die Hosting-Preise sind Festpreise und werden nicht durch Faktoren beeinflusst. 
-                  Bestandskunden erhalten 5% Rabatt auf den Jahrespreis.
-                </span>
-              </p>
             </div>
           </Card>
         )}
