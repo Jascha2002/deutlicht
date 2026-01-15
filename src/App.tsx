@@ -28,6 +28,8 @@ import AngebotsAnnahme from "./pages/AngebotsAnnahme";
 import KICheck from "./pages/KICheck";
 import BranchenLoesungen from "./pages/BranchenLoesungen";
 import VoicebotDemos from "./pages/VoicebotDemos";
+import SEO from "./pages/SEO";
+import Schulung from "./pages/Schulung";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -63,6 +65,8 @@ const App = () => (
               <Route path="/branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/leistungen/voicebot-demos" element={<VoicebotDemos />} />
               <Route path="/voicebot-demos" element={<VoicebotDemos />} />
+              <Route path="/leistungen/seo" element={<SEO />} />
+              <Route path="/leistungen/schulung" element={<Schulung />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
