@@ -47,7 +47,7 @@ interface AngebotsGeneratorProps {
 }
 
 const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(true); // Form direkt sichtbar
   const [formData, setFormData] = useState<OfferFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
