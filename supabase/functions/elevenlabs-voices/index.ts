@@ -25,8 +25,16 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('ElevenLabs API error:', errorText);
-      throw new Error(`ElevenLabs API error: ${response.status}`);
+      // Log detailed error server-side only
+      console.error('ElevenLabs API error:', response.status, errorText);
+      // Return generic error - no internal details exposed
+      return new Response(
+        JSON.stringify({ error: 'Voice listing service temporarily unavailable' }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     const data = await response.json();
@@ -45,9 +53,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error:', errorMessage);
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    // Log detailed error server-side only
+    console.error('Error in elevenlabs-voices function:', error instanceof Error ? error.message : 'Unknown error');
+    // Return generic error message to client
+    return new Response(JSON.stringify({ error: 'Voice listing service temporarily unavailable' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

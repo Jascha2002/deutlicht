@@ -50,16 +50,16 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
+      // Log detailed error server-side only
       console.error("ElevenLabs API error:", response.status, errorText);
 
-      // Pass-through the provider error (common causes: invalid key, missing permission, blocked free tier)
+      // Return generic error message to client - no internal details exposed
       return new Response(
         JSON.stringify({
-          error: `ElevenLabs API error: ${response.status}`,
-          details: errorText,
+          error: "Text-to-speech service temporarily unavailable",
         }),
         {
-          status: response.status,
+          status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         },
       );
@@ -77,10 +77,11 @@ serve(async (req) => {
       }
     );
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error in elevenlabs-tts function:', errorMessage);
+    // Log detailed error server-side only
+    console.error('Error in elevenlabs-tts function:', error instanceof Error ? error.message : 'Unknown error');
+    // Return generic error message to client
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: 'Text-to-speech service temporarily unavailable' }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
