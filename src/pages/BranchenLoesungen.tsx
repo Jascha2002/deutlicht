@@ -36,7 +36,7 @@ const BranchenLoesungen = () => {
       
       <main id="main-content" className="pt-20">
         {/* Hero Section */}
-        <section className="relative py-20 lg:py-32 bg-gradient-to-b from-accent/5 via-background to-background overflow-hidden">
+        <section className="relative pt-32 pb-20 bg-gradient-to-b from-accent/5 via-background to-background overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent" />
           
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
