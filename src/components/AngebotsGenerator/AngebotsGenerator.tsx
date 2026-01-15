@@ -1109,49 +1109,6 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
                   werden individuell kalkuliert und nicht öffentlich angezeigt. Sie erhalten ein <strong>personalisiertes 
                   PDF-Angebot per E-Mail</strong> mit allen Details und Preisen.
                 </p>
-                
-                {/* Transparente Preise für Hosting, Service, Beratung */}
-                {(formData.hosting_needed === 'ja' || formData.service_contract === 'ja' || formData.beratung_model) && (
-                  <div className="bg-background/50 rounded-lg p-4 mt-4">
-                    <p className="text-sm font-medium mb-3">Transparente Festpreise (ohne Faktoren):</p>
-                    <div className="space-y-2 text-sm">
-                      
-                      {formData.hosting_needed === 'ja' && formData.hosting_type && (
-                        <div className="flex justify-between items-center py-1 border-b border-border/30">
-                          <span>Hosting:</span>
-                          <span className="font-medium">
-                            {hostingPakete.find(h => h.id === formData.hosting_type)?.monatlich || 
-                             proHostingPakete.find(h => h.id === formData.hosting_type)?.monatlich || 0}€/Monat
-                          </span>
-                        </div>
-                      )}
-                      
-                      {formData.service_contract === 'ja' && formData.service_minutes && (
-                        <div className="flex justify-between items-center py-1 border-b border-border/30">
-                          <span>Service/Wartung ({formData.service_minutes} Min):</span>
-                          <span className="font-medium">
-                            {serviceVertraege.find(s => s.minuten.toString() === formData.service_minutes)?.monatlich || 0}€/Monat
-                          </span>
-                        </div>
-                      )}
-                      
-                      {formData.beratung_model && (
-                        <div className="flex justify-between items-center py-1 border-b border-border/30">
-                          <span>Beratung & Schulung:</span>
-                          <span className="font-medium">
-                            {formData.beratung_model === 'kontingent' && '3.500€ (3,5 Tage Kontingent)'}
-                            {formData.beratung_model === 'einzelstunden' && `${Math.round((parseFloat(formData.beratung_hours) || 0) * 199)}€ (199€/Stunde)`}
-                            {formData.beratung_model === 'beides' && `${3500 + Math.round((parseFloat(formData.beratung_hours) || 0) * 199)}€`}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-3">
-                      Diese Preise sind Festpreise und werden nicht durch Branche, Unternehmensgröße oder Zeitplan beeinflusst.
-                      Bestandskunden erhalten 5% Rabatt auf den Jahrespreis beim Hosting.
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           </Card>
