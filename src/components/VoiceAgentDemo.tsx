@@ -1,119 +1,36 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Phone, PhoneOff, Mic, Volume2, Package, Calendar, AlertCircle, HelpCircle, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { 
+  Phone, 
+  PhoneOff, 
+  Mic, 
+  Volume2, 
+  Loader2, 
+  ChevronDown,
+  PhoneIncoming,
+  PhoneOutgoing
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { voicebotScenarios, voicebotCategories, type VoicebotScenario } from "@/data/voicebotScenarios";
+
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
-type DemoScenario = {
-  id: string;
-  title: string;
-  icon: typeof Package;
-  conversation: {
-    role: "agent" | "user";
-    text: string;
-  }[];
-};
-const demoScenarios: DemoScenario[] = [{
-  id: "bestellung",
-  title: "Bestellstatus",
-  icon: Package,
-  conversation: [{
-    role: "agent",
-    text: "Guten Tag! Wie kann ich Ihnen heute helfen?"
-  }, {
-    role: "user",
-    text: "Ich möchte den Status meiner Bestellung abfragen."
-  }, {
-    role: "agent",
-    text: "Natürlich! Können Sie mir bitte Ihre Bestellnummer nennen?"
-  }, {
-    role: "user",
-    text: "Meine Bestellnummer ist 12345."
-  }, {
-    role: "agent",
-    text: "Vielen Dank. Ihre Bestellung wurde heute versendet und wird morgen bei Ihnen eintreffen."
-  }]
-}, {
-  id: "termin",
-  title: "Terminvereinbarung",
-  icon: Calendar,
-  conversation: [{
-    role: "agent",
-    text: "Willkommen bei der Terminvereinbarung. Wie kann ich Ihnen helfen?"
-  }, {
-    role: "user",
-    text: "Ich möchte gerne einen Beratungstermin vereinbaren."
-  }, {
-    role: "agent",
-    text: "Sehr gerne! Für welchen Service benötigen Sie die Beratung?"
-  }, {
-    role: "user",
-    text: "Es geht um die Einführung eines CRM-Systems."
-  }, {
-    role: "agent",
-    text: "Perfekt. Ich habe freie Termine am Mittwoch um 10 Uhr oder Donnerstag um 14 Uhr."
-  }, {
-    role: "user",
-    text: "Donnerstag um 14 Uhr wäre ideal."
-  }, {
-    role: "agent",
-    text: "Hervorragend! Ich habe Ihren Termin eingetragen. Sie erhalten eine Bestätigung per E-Mail."
-  }]
-}, {
-  id: "reklamation",
-  title: "Reklamation",
-  icon: AlertCircle,
-  conversation: [{
-    role: "agent",
-    text: "Guten Tag! Wie kann ich Ihnen behilflich sein?"
-  }, {
-    role: "user",
-    text: "Ich habe ein defektes Produkt erhalten und möchte reklamieren."
-  }, {
-    role: "agent",
-    text: "Das tut mir sehr leid. Können Sie mir bitte Ihre Bestellnummer nennen?"
-  }, {
-    role: "user",
-    text: "Die Bestellnummer ist 78901."
-  }, {
-    role: "agent",
-    text: "Ich habe einen Rücksendeschein erstellt. Sobald wir das Gerät erhalten, senden wir Ersatz."
-  }]
-}, {
-  id: "faq",
-  title: "FAQ & Support",
-  icon: HelpCircle,
-  conversation: [{
-    role: "agent",
-    text: "Herzlich willkommen beim Support! Was kann ich für Sie tun?"
-  }, {
-    role: "user",
-    text: "Wie kann ich mein Passwort zurücksetzen?"
-  }, {
-    role: "agent",
-    text: "Klicken Sie auf Passwort vergessen. Sie erhalten dann eine E-Mail mit einem Link."
-  }, {
-    role: "user",
-    text: "Ja, das wäre super."
-  }, {
-    role: "agent",
-    text: "Ich habe eine E-Mail gesendet. Der Link ist 24 Stunden gültig."
-  }]
-}];
 
 // Voice IDs for ElevenLabs
 const AGENT_VOICE_ID = "MbbPUteESkJWr4IAaW35"; // Agent voice
 const USER_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah - natural female voice for caller simulation
+
 const VoiceAgentDemo = () => {
   const [agentState, setAgentState] = useState<AgentState>("idle");
   const [transcript, setTranscript] = useState<string[]>([]);
-  const [selectedScenario, setSelectedScenario] = useState<DemoScenario>(demoScenarios[0]);
+  const [selectedScenario, setSelectedScenario] = useState<VoicebotScenario>(voicebotScenarios[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [useElevenLabs, setUseElevenLabs] = useState(true);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const abortRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const {
-    toast
-  } = useToast();
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { toast } = useToast();
 
   // Cleanup audio on unmount
   useEffect(() => {
@@ -148,7 +65,6 @@ const VoiceAgentDemo = () => {
           const errJson = await response.json();
           if (errJson?.error) serverMessage = errJson.error;
           if (errJson?.details) {
-            // keep details for console only
             console.warn("TTS details:", errJson.details);
           }
         } catch {
@@ -156,7 +72,7 @@ const VoiceAgentDemo = () => {
         }
         toast({
           title: "ElevenLabs TTS nicht verfügbar",
-          description: "Der API-Key wird von ElevenLabs abgelehnt (z.B. keine Berechtigung, ungültig oder Free-Tier gesperrt).",
+          description: "Der API-Key wird von ElevenLabs abgelehnt.",
           variant: "destructive"
         });
         throw new Error(serverMessage);
@@ -190,7 +106,7 @@ const VoiceAgentDemo = () => {
       console.error('ElevenLabs TTS error:', error);
       throw error;
     }
-  }, []);
+  }, [toast]);
 
   // Browser TTS fallback with pitch variation for different speakers
   const speakWithBrowser = useCallback((text: string, isAgent: boolean): Promise<void> => {
@@ -233,13 +149,13 @@ const VoiceAgentDemo = () => {
         return;
       } catch (error) {
         console.warn('ElevenLabs failed, falling back to browser TTS:', error);
-        // Don't disable ElevenLabs permanently, just use fallback for this utterance
       }
     }
 
     // Fallback to browser TTS
     await speakWithBrowser(text, isAgent);
   }, [useElevenLabs, speakWithElevenLabs, speakWithBrowser]);
+
   const startDemo = async () => {
     setAgentState("connecting");
     setTranscript([]);
@@ -257,7 +173,6 @@ const VoiceAgentDemo = () => {
             await speak(item.text, "agent");
           } catch (error) {
             console.error('Speech error:', error);
-            // Fallback: just wait based on text length
             await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
           }
         } else {
@@ -267,7 +182,6 @@ const VoiceAgentDemo = () => {
             await speak(item.text, "user");
           } catch (error) {
             console.error('Speech error:', error);
-            // Fallback: just wait based on text length
             await new Promise(resolve => setTimeout(resolve, item.text.length * 30));
           }
         }
@@ -291,89 +205,213 @@ const VoiceAgentDemo = () => {
       setIsLoading(false);
     }
   };
+
   const stopDemo = () => {
     abortRef.current = true;
-
-    // Stop ElevenLabs audio
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
-
-    // Stop browser TTS
     window.speechSynthesis.cancel();
     setAgentState("idle");
     setTranscript([]);
     setIsLoading(false);
   };
-  return <div className="rounded-2xl p-6 md:p-8 shadow-lg border border-border bg-inherit">
+
+  const handleCategoryHover = (categoryId: string) => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
+    setOpenCategory(categoryId);
+  };
+
+  const handleCategoryLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setOpenCategory(null);
+    }, 150);
+  };
+
+  const handleScenarioSelect = (scenario: VoicebotScenario) => {
+    if (agentState === "idle") {
+      setSelectedScenario(scenario);
+      setTranscript([]);
+      setOpenCategory(null);
+    }
+  };
+
+  const getScenariosByCategory = (categoryId: string) => 
+    voicebotScenarios.filter(s => s.category === categoryId);
+
+  return (
+    <div className="rounded-2xl p-6 md:p-8 shadow-lg border border-border bg-inherit">
       <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-3">
         <Phone className="w-5 h-5 text-accent" />
         Live Demo: KI-Sprachassistent
-        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full"> TTS</span>
+        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">TTS</span>
       </h3>
       
-      {/* Scenario Selection */}
+      {/* Category Dropdown Menu */}
       <div className="mb-6">
-        <p className="text-sm text-muted-foreground mb-3">Wählen Sie ein Szenario:</p>
-        <div className="grid grid-cols-2 gap-2">
-          {demoScenarios.map(scenario => <button key={scenario.id} onClick={() => {
-          if (agentState === "idle") {
-            setSelectedScenario(scenario);
-            setTranscript([]);
-          }
-        }} disabled={agentState !== "idle"} className={`flex items-center gap-2 p-3 rounded-lg text-left text-sm transition-all ${selectedScenario.id === scenario.id ? "bg-accent/20 border-accent border-2 text-foreground" : "bg-muted/50 border border-border hover:bg-muted text-muted-foreground"} ${agentState !== "idle" ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
-              <scenario.icon className={`w-4 h-4 ${selectedScenario.id === scenario.id ? "text-accent" : ""}`} />
-              <span>{scenario.title}</span>
-            </button>)}
+        <p className="text-sm text-muted-foreground mb-3">Wählen Sie eine Kategorie:</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          {voicebotCategories.map(category => {
+            const categoryScenarios = getScenariosByCategory(category.id);
+            const isOpen = openCategory === category.id;
+            const hasSelectedInCategory = categoryScenarios.some(s => s.id === selectedScenario.id);
+            
+            return (
+              <div 
+                key={category.id}
+                className="relative"
+                onMouseEnter={() => handleCategoryHover(category.id)}
+                onMouseLeave={handleCategoryLeave}
+              >
+                <button
+                  disabled={agentState !== "idle"}
+                  className={`w-full flex items-center justify-between gap-2 p-3 rounded-lg text-left text-sm transition-all ${
+                    hasSelectedInCategory 
+                      ? "bg-accent/20 border-accent border-2 text-foreground" 
+                      : "bg-muted/50 border border-border hover:bg-muted text-muted-foreground"
+                  } ${agentState !== "idle" ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <category.icon className={`w-4 h-4 ${hasSelectedInCategory ? "text-accent" : ""}`} />
+                    <span className="truncate">{category.title}</span>
+                  </div>
+                  <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                </button>
+                
+                {/* Dropdown */}
+                {isOpen && agentState === "idle" && (
+                  <div 
+                    className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg z-50 py-1 min-w-[200px]"
+                    onMouseEnter={() => handleCategoryHover(category.id)}
+                    onMouseLeave={handleCategoryLeave}
+                  >
+                    {categoryScenarios.map(scenario => (
+                      <button
+                        key={scenario.id}
+                        onClick={() => handleScenarioSelect(scenario)}
+                        className={`w-full flex items-center gap-2 px-3 py-2 text-left text-sm transition-colors ${
+                          selectedScenario.id === scenario.id 
+                            ? "bg-accent/20 text-accent" 
+                            : "hover:bg-muted text-foreground"
+                        }`}
+                      >
+                        {scenario.type === "inbound" ? (
+                          <PhoneIncoming className="w-3 h-3 text-green-500" />
+                        ) : (
+                          <PhoneOutgoing className="w-3 h-3 text-blue-500" />
+                        )}
+                        <span>{scenario.shortTitle}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
+      </div>
+
+      {/* Selected Scenario Info */}
+      <div className="mb-4 p-4 bg-muted/30 rounded-lg">
+        <div className="flex items-center gap-2 mb-2">
+          <selectedScenario.icon className="w-5 h-5 text-accent" />
+          <h4 className="font-semibold text-foreground">{selectedScenario.title}</h4>
+          <span className={`text-xs px-2 py-0.5 rounded-full ${
+            selectedScenario.type === "inbound" 
+              ? "bg-green-500/20 text-green-600" 
+              : "bg-blue-500/20 text-blue-600"
+          }`}>
+            {selectedScenario.type === "inbound" ? "Eingehend" : "Ausgehend"}
+          </span>
+        </div>
+        <p className="text-sm text-muted-foreground">{selectedScenario.description}</p>
       </div>
       
       {/* Voice Visualizer */}
       <div className="relative h-28 bg-muted/50 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
-        {agentState === "idle" ? <p className="text-muted-foreground text-sm text-center px-4">
-            Klicken Sie auf "Demo starten" für: <strong>{selectedScenario.title}</strong>
-          </p> : <div className="flex items-center gap-1">
-            {Array.from({
-          length: 20
-        }).map((_, i) => <div key={i} className={`w-1 rounded-full transition-all duration-150 ${agentState === "speaking" ? "bg-accent animate-pulse" : agentState === "listening" ? "bg-primary animate-pulse" : agentState === "thinking" ? "bg-muted-foreground" : "bg-muted-foreground/50"}`} style={{
-          height: agentState === "speaking" || agentState === "listening" ? `${Math.random() * 50 + 15}px` : agentState === "thinking" ? "8px" : "4px",
-          animationDelay: `${i * 50}ms`,
-          animationDuration: `${300 + Math.random() * 200}ms`
-        }} />)}
-          </div>}
+        {agentState === "idle" ? (
+          <p className="text-muted-foreground text-sm text-center px-4">
+            Klicken Sie auf "Demo starten" für: <strong>{selectedScenario.shortTitle}</strong>
+          </p>
+        ) : (
+          <div className="flex items-center gap-1">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div
+                key={i}
+                className={`w-1 rounded-full transition-all duration-150 ${
+                  agentState === "speaking" ? "bg-accent animate-pulse" 
+                  : agentState === "listening" ? "bg-primary animate-pulse" 
+                  : agentState === "thinking" ? "bg-muted-foreground" 
+                  : "bg-muted-foreground/50"
+                }`}
+                style={{
+                  height: agentState === "speaking" || agentState === "listening" 
+                    ? `${Math.random() * 50 + 15}px` 
+                    : agentState === "thinking" ? "8px" : "4px",
+                  animationDelay: `${i * 50}ms`,
+                  animationDuration: `${300 + Math.random() * 200}ms`
+                }}
+              />
+            ))}
+          </div>
+        )}
         
         {/* Status indicator */}
         <div className="absolute bottom-3 left-3 flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${agentState === "idle" ? "bg-muted-foreground" : agentState === "connecting" ? "bg-yellow-500 animate-pulse" : agentState === "speaking" ? "bg-accent animate-pulse" : agentState === "listening" ? "bg-primary animate-pulse" : "bg-orange-500 animate-pulse"}`} />
+          <div className={`w-2 h-2 rounded-full ${
+            agentState === "idle" ? "bg-muted-foreground" 
+            : agentState === "connecting" ? "bg-yellow-500 animate-pulse" 
+            : agentState === "speaking" ? "bg-accent animate-pulse" 
+            : agentState === "listening" ? "bg-primary animate-pulse" 
+            : "bg-orange-500 animate-pulse"
+          }`} />
           <span className="text-xs text-muted-foreground capitalize">
-            {agentState === "idle" ? "Bereit" : agentState === "connecting" ? "Verbinde..." : agentState === "speaking" ? "Agent spricht" : agentState === "listening" ? "Hört zu" : "Verarbeitet..."}
+            {agentState === "idle" ? "Bereit" 
+              : agentState === "connecting" ? "Verbinde..." 
+              : agentState === "speaking" ? "Agent spricht" 
+              : agentState === "listening" ? "Kunde spricht" 
+              : "Verarbeitet..."}
           </span>
         </div>
 
         {/* Volume indicator when speaking */}
-        {agentState === "speaking" && <div className="absolute top-3 right-3">
-            <Volume2 className="w-5 h-5 text-accent animate-pulse" />
-          </div>}
+        {(agentState === "speaking" || agentState === "listening") && (
+          <div className="absolute top-3 right-3">
+            <Volume2 className={`w-5 h-5 animate-pulse ${
+              agentState === "speaking" ? "text-accent" : "text-primary"
+            }`} />
+          </div>
+        )}
       </div>
       
       {/* Transcript */}
-      {transcript.length > 0 && <div className="bg-muted/30 rounded-lg p-4 mb-6 max-h-48 overflow-y-auto">
+      {transcript.length > 0 && (
+        <div className="bg-muted/30 rounded-lg p-4 mb-6 max-h-48 overflow-y-auto">
           <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">Gesprächsverlauf</p>
           <div className="space-y-2">
-            {transcript.map((line, i) => <p key={i} className="text-sm text-foreground">{line}</p>)}
+            {transcript.map((line, i) => (
+              <p key={i} className="text-sm text-foreground">{line}</p>
+            ))}
           </div>
-        </div>}
+        </div>
+      )}
       
       {/* Controls */}
       <div className="flex gap-3">
-        {agentState === "idle" ? <Button onClick={startDemo} className="flex-1 group" disabled={isLoading}>
+        {agentState === "idle" ? (
+          <Button onClick={startDemo} className="flex-1 group" disabled={isLoading}>
             {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Phone className="w-4 h-4 mr-2" />}
             Demo starten
-          </Button> : <Button onClick={stopDemo} variant="destructive" className="flex-1">
+          </Button>
+        ) : (
+          <Button onClick={stopDemo} variant="destructive" className="flex-1">
             <PhoneOff className="w-4 h-4 mr-2" />
             Beenden
-          </Button>}
+          </Button>
+        )}
       </div>
       
       {/* Features */}
@@ -387,10 +425,22 @@ const VoiceAgentDemo = () => {
           <span>DeutLicht Stimme</span>
         </div>
       </div>
+
+      {/* Link to all demos */}
+      <div className="mt-4 pt-4 border-t border-border text-center">
+        <Link 
+          to="/leistungen/voicebot-demos" 
+          className="text-sm text-accent hover:underline inline-flex items-center gap-1"
+        >
+          Alle Voicebot-Demos & Anwendungsbeispiele →
+        </Link>
+      </div>
       
       <p className="text-xs text-muted-foreground mt-4 text-center">
         🔊 Stellen Sie sicher, dass Ihr Lautsprecher eingeschaltet ist
       </p>
-    </div>;
+    </div>
+  );
 };
+
 export default VoiceAgentDemo;

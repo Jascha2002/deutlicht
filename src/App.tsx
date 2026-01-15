@@ -25,6 +25,7 @@ import AIAgenten from "./pages/AIAgenten";
 import AngebotsGenerator from "./pages/AngebotsGenerator";
 import KICheck from "./pages/KICheck";
 import BranchenLoesungen from "./pages/BranchenLoesungen";
+import VoicebotDemos from "./pages/VoicebotDemos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
