@@ -5,10 +5,10 @@ interface AnimatedLogoProps {
 }
 
 const sizeClasses = {
-  sm: "w-32 h-32 md:w-36 md:h-36",
-  md: "w-44 h-44 md:w-52 md:h-52",
-  lg: "w-52 h-52 md:w-64 md:h-64",
-  xl: "w-64 h-64 md:w-80 md:h-80"
+  sm: "w-32 h-32 md:w-40 md:h-40",
+  md: "w-44 h-44 md:w-56 md:h-56",
+  lg: "w-52 h-52 md:w-72 md:h-72",
+  xl: "w-64 h-64 md:w-88 md:h-88"
 };
 
 const AnimatedLogo = ({
@@ -17,13 +17,15 @@ const AnimatedLogo = ({
   loop = true
 }: AnimatedLogoProps) => {
   return (
-    <div className={`rounded-full overflow-hidden shadow-xl border-2 border-accent/30 ${sizeClasses[size]} ${className}`}>
-      <video 
-        autoPlay 
-        muted 
-        loop={loop} 
-        playsInline 
-        className="w-full h-full object-contain scale-95"
+    <div
+      className={`rounded-full overflow-hidden shadow-xl border-2 border-accent/30 ${sizeClasses[size]} ${className}`}
+    >
+      <video
+        autoPlay
+        muted
+        loop={loop}
+        playsInline
+        className="w-full h-full object-cover scale-110"
       >
         <source src="/videos/deutlicht-logo-animation.mp4" type="video/mp4" />
       </video>
