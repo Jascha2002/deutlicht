@@ -1,105 +1,163 @@
-export interface KlarheitsCheckData {
-  // Step 1: Unternehmensgrundlagen
+// Angebotsgenerator Types v4.0
+
+export interface OfferFormData {
+  // Unternehmensdaten
   company_name: string;
-  contact_person: string;
-  role: string;
-  email: string;
-  phone: string;
   industry: string;
   company_size: string;
+  project_goal: string;
+  contact_person: string;
+  email: string;
+  phone: string;
 
-  // Step 2: Projektanlass
-  project_goals: string[];
-  project_goal_other: string;
-  main_challenge: string;
+  // Leistungsmodule
+  services_selected: string[];
+  beratung_topics: string[];
 
-  // Step 3: Zeit & Rahmen
-  project_start: string;
-  project_end: string;
-  fixed_deadline: string;
-  budget_range: string;
+  // Timing
+  project_start_timing: string;
+  project_deadline: string;
 
-  // Step 4: Leistungsbereiche
-  services_needed: string[];
+  // Website & Digitale Plattformen
+  website_type: string;
+  website_pages_count: string;
+  website_cms: string;
+  website_cms_other: string;
+  website_migration_needed: string;
+  website_migration_pages: string;
+  domain_needed: string;
+  hosting_needed: string;
+  hosting_type: string;
+  service_contract: string;
+  service_minutes: string;
+  website_features: string[];
 
-  // Conditional: Website
-  existing_website: string;
-  website_url: string;
-  website_goals: string[];
-  content_creation: string;
-  required_features: string[];
+  // Shop
+  shop_needed: string;
+  shop_products: string;
+  shop_system: string;
 
-  // Conditional: Social Media
-  platforms: string[];
-  social_goals: string[];
-  posting_frequency: string;
-  posting_frequency_other: string;
-  content_provider: string;
+  // Social Media
+  social_platforms: string[];
+  social_frequency: string;
+  social_content: string;
+  social_vor_ort: string;
 
-  // Conditional: KI-Agenten
-  ai_use_cases: string[];
-  existing_systems: string[];
-  ai_goals: string[];
-  gdpr_status: string;
+  // SEO
+  seo_package: string;
 
-  // Conditional: Voicebots
-  voicebot_use_cases: string[];
-  voicebot_languages: string;
-  automation_level: string;
+  // KI-Agenten
+  ki_type: string;
+  ki_branche: string;
 
-  // Conditional: Prozessoptimierung
-  current_issues: string[];
-  documentation_available: string;
-  optimization_goals: string[];
+  // Voicebots
+  voice_type: string;
+  voice_channel: string;
+  voice_anwendungen: string[];
 
-  // Final Step: Zusammenarbeit
-  decision_maker: string;
-  stakeholders: string;
-  communication_preference: string;
+  // Prozessoptimierung
+  prozess_type: string;
+
+  // Beratung
+  beratung_model: string;
+  beratung_hours: string;
+  foerder_check: string;
+
+  // Zusätzliche Notizen
   additional_notes: string;
 }
 
-export const initialFormData: KlarheitsCheckData = {
+export const initialFormData: OfferFormData = {
   company_name: '',
+  industry: '',
+  company_size: '1-10',
+  project_goal: '',
   contact_person: '',
-  role: '',
   email: '',
   phone: '',
-  industry: '',
-  company_size: '',
-  project_goals: [],
-  project_goal_other: '',
-  main_challenge: '',
-  project_start: '',
-  project_end: '',
-  fixed_deadline: '',
-  budget_range: '',
-  services_needed: [],
-  existing_website: '',
-  website_url: '',
-  website_goals: [],
-  content_creation: '',
-  required_features: [],
-  platforms: [],
-  social_goals: [],
-  posting_frequency: '',
-  posting_frequency_other: '',
-  content_provider: '',
-  ai_use_cases: [],
-  existing_systems: [],
-  ai_goals: [],
-  gdpr_status: '',
-  voicebot_use_cases: [],
-  voicebot_languages: '',
-  automation_level: '',
-  current_issues: [],
-  documentation_available: '',
-  optimization_goals: [],
-  decision_maker: '',
-  stakeholders: '',
-  communication_preference: '',
-  additional_notes: '',
+  services_selected: [],
+  beratung_topics: [],
+  project_start_timing: '',
+  project_deadline: '',
+  website_type: '',
+  website_pages_count: '',
+  website_cms: '',
+  website_cms_other: '',
+  website_migration_needed: '',
+  website_migration_pages: '',
+  domain_needed: '',
+  hosting_needed: '',
+  hosting_type: '',
+  service_contract: '',
+  service_minutes: '',
+  website_features: [],
+  shop_needed: '',
+  shop_products: '',
+  shop_system: '',
+  social_platforms: [],
+  social_frequency: '',
+  social_content: '',
+  social_vor_ort: '',
+  seo_package: '',
+  ki_type: '',
+  ki_branche: '',
+  voice_type: '',
+  voice_channel: '',
+  voice_anwendungen: [],
+  prozess_type: '',
+  beratung_model: '',
+  beratung_hours: '',
+  foerder_check: '',
+  additional_notes: ''
 };
+
+// Konstanten für Auswahloptionen
+export const SERVICE_OPTIONS = [
+  'Website & Digitale Plattformen',
+  'Social Media Marketing',
+  'SEO & Sichtbarkeit',
+  'KI-Agenten & Automation',
+  'Voicebots / Sprachassistenz',
+  'Prozessoptimierung & Digitalstrategie',
+  'Beratung & Schulung'
+];
+
+export const WEBSITE_FEATURES = [
+  'Lead-/Vertriebsfokus',
+  'Konfigurator',
+  'ERP-Anbindung',
+  'Blog/News-Bereich',
+  'Mehrsprachigkeit',
+  'Online-Terminbuchung',
+  'Mitgliederbereich'
+];
+
+export const SOCIAL_PLATFORMS = ['LinkedIn', 'Facebook', 'Instagram', 'TikTok', 'X'];
+
+export const CMS_SYSTEMS = ['WordPress', 'Jimdo', 'Wix', 'Webflow', 'Typo3', 'Squarespace', 'Duda', 'Shopify', 'Andere'];
+
+export const VOICEBOT_ANWENDUNGEN = [
+  'Mieteranfragen (Hausverwaltung)',
+  'Besichtigungstermine (Immobilienbüros)',
+  'Schadensmeldungen (Versicherungen)',
+  'Zählerablesung (Ablesedienste)',
+  'Vorsorgeuntersuchungen (Arztpraxen)',
+  'Terminerinnerungen (Werkstatt, Therapeuten)',
+  'Abholbenachrichtigungen (Retail, Services)',
+  'Bestellstatus',
+  'Terminvereinbarung',
+  'Reklamation',
+  'FAQ & Support'
+];
+
+export const BERATUNG_TOPICS = [
+  'Digitalstrategie',
+  'KI-Einsatz & Automatisierung',
+  'Prozessanalyse',
+  'Tool- & Anbieterbewertung',
+  'Schulungen Mitarbeiter',
+  'Schulungen Kunden'
+];
 
 export const INDUSTRIES = [
   'Handwerk',
@@ -117,12 +175,14 @@ export const INDUSTRIES = [
 ];
 
 export const COMPANY_SIZES = [
-  { value: '1-10', label: '1–10 Mitarbeiter' },
-  { value: '11-50', label: '11–50 Mitarbeiter' },
-  { value: '51-250', label: '51–250 Mitarbeiter' },
-  { value: '>250', label: 'Mehr als 250 Mitarbeiter' },
+  { value: '1-10', label: '1-10 Mitarbeitende' },
+  { value: '11-50', label: '11-50 Mitarbeitende' },
+  { value: '51-250', label: '51-250 Mitarbeitende' },
+  { value: '>250', label: '>250 Mitarbeitende' },
 ];
 
+// Legacy exports for backwards compatibility
+// Legacy constants for backwards compatibility
 export const PROJECT_GOALS = [
   'Wachstum',
   'Effizienzsteigerung',
@@ -147,23 +207,6 @@ export const WEBSITE_GOALS = [
   'Information',
   'Recruiting',
   'Verkauf',
-];
-
-export const WEBSITE_FEATURES = [
-  'Kontaktformular',
-  'Terminbuchung',
-  'Mehrsprachigkeit',
-  'CRM-Anbindung',
-  'ERP-Anbindung',
-  'Konfigurator',
-];
-
-export const SOCIAL_PLATFORMS = [
-  'LinkedIn',
-  'Facebook',
-  'Instagram',
-  'X',
-  'TikTok',
 ];
 
 export const SOCIAL_GOALS = [
@@ -218,3 +261,38 @@ export const OPTIMIZATION_GOALS = [
   'Transparenz',
   'Skalierbarkeit',
 ];
+
+export interface KlarheitsCheckData extends OfferFormData {
+  role?: string;
+  project_goals?: string[];
+  project_goal_other?: string;
+  main_challenge?: string;
+  project_start?: string;
+  project_end?: string;
+  fixed_deadline?: string;
+  budget_range?: string;
+  services_needed?: string[];
+  existing_website?: string;
+  website_url?: string;
+  website_goals?: string[];
+  content_creation?: string;
+  required_features?: string[];
+  platforms?: string[];
+  social_goals?: string[];
+  posting_frequency?: string;
+  posting_frequency_other?: string;
+  content_provider?: string;
+  ai_use_cases?: string[];
+  existing_systems?: string[];
+  ai_goals?: string[];
+  gdpr_status?: string;
+  voicebot_use_cases?: string[];
+  voicebot_languages?: string;
+  automation_level?: string;
+  current_issues?: string[];
+  documentation_available?: string;
+  optimization_goals?: string[];
+  decision_maker?: string;
+  stakeholders?: string;
+  communication_preference?: string;
+}
