@@ -429,9 +429,9 @@ const VoicebotDemos = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium mb-6 border border-accent/30">
                 <Bot className="w-4 h-4" />
-                KI-Sprachassistenten der naechsten Generation
+                KI-Sprachassistenten der nächsten Generation
               </div>
               
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
@@ -912,7 +912,7 @@ const VoicebotDemos = () => {
                   </Button>
                 </Link>
                 <Link to="/kontakt">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                  <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-white/30 text-white hover:bg-white/10 hover:text-white">
                     <Phone className="w-5 h-5 mr-2" />
                     Kostenlose Beratung
                   </Button>

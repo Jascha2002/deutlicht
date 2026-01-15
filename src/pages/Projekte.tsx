@@ -147,9 +147,9 @@ const Projekte = () => {
                 <AnimatedLogo size="md" />
               </div>
               
-              <span className="font-medium uppercase tracking-widest text-sm px-[14px] text-[#c88a04] bg-inherit">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4 bg-primary text-primary-foreground border border-accent/30">
                 Projekte & Referenzen
-              </span>
+              </div>
               
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight px-0">
                 Erfolgsgeschichten, die
