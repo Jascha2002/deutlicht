@@ -308,7 +308,7 @@ const AIAgenten = () => {
               <span className="text-accent font-medium uppercase tracking-widest text-sm">
                 Ihre Vorteile
               </span>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6 py-0">
                 Warum KI-Agenten?
               </h2>
             </ScrollReveal>
@@ -317,7 +317,7 @@ const AIAgenten = () => {
               {benefits.map((benefit, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="w-6 h-6 text-primary" />
+                      <benefit.icon className="opacity-100 w-[30px] h-[30px] bg-inherit text-inherit" />
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-2">
