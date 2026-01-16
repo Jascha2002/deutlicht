@@ -963,13 +963,13 @@ const VoicebotDemos = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/projektanfrage">
-                  <Button size="lg" variant="secondary" className="group w-full sm:w-auto text-lg px-8">
+                  <Button size="lg" className="group w-full sm:w-auto text-lg px-8 bg-accent hover:bg-accent/90 text-white">
                     Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link to="/kontakt">
-                  <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-white/30 text-white hover:bg-white/10 hover:text-white">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 border-white text-white hover:bg-white/10">
                     <Phone className="w-5 h-5 mr-2" />
                     Kostenlose Beratung
                   </Button>
