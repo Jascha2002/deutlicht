@@ -39,7 +39,7 @@ const KICheckCTA = () => {
               </ul>
 
               <div className="pt-2">
-                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-white font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Link to="/ki-check" onClick={handleCTAClick}>
                     <Sparkles className="mr-2 h-5 w-5" />
                     Jetzt kostenlos testen
@@ -94,7 +94,7 @@ const KICheckCTA = () => {
                 </div>
 
                 {/* Floating badge */}
-                <div className="absolute -top-2 -right-2 text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold shadow-lg animate-pulse bg-[#c88a04]">
+                <div className="absolute -top-2 -right-2 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg animate-pulse bg-accent">
                   Kostenlos
                 </div>
               </div>

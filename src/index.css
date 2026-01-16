@@ -33,7 +33,7 @@
 
     /* Accent: Goldgelb */
     --accent: 41 96% 40%;
-    --accent-foreground: 210 29% 18%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -76,7 +76,7 @@
 
     /* Accent: Goldgelb - stays consistent */
     --accent: 40 58% 56%;
-    --accent-foreground: 210 29% 10%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 35%;
     --destructive-foreground: 0 0% 100%;

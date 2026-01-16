@@ -100,7 +100,7 @@ const Foerderberatung = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/kontakt">
-                  <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+                  <Button size="lg" className="group bg-accent hover:bg-accent/90 text-white px-8">
                     Kostenlosen Förder-Check
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
@@ -233,7 +233,7 @@ const Foerderberatung = () => {
                 ].map((item, index) => (
                   <ScrollReveal key={item.step} delay={index * 100}>
                     <div className="flex gap-4">
-                      <div className="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-accent text-white flex items-center justify-center font-bold flex-shrink-0">
                         {item.step}
                       </div>
                       <div>
@@ -261,13 +261,13 @@ const Foerderberatung = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/kontakt">
-                  <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+                  <Button size="lg" className="bg-accent hover:bg-accent/90 text-white px-8">
                     Kostenloser Förder-Check
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link to="/leistungen">
-                  <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 px-8">
+                  <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 px-8">
                     Alle Leistungen
                   </Button>
                 </Link>

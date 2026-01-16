@@ -383,7 +383,7 @@ const AIAgenten = () => {
                   {implementationSteps.map((step, i) => (
                     <ScrollReveal key={i} delay={i * 100}>
                       <div className="flex gap-6 items-start">
-                        <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-accent-foreground font-display text-2xl font-bold relative z-10">
+                        <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-display text-2xl font-bold relative z-10">
                           {step.step}
                         </div>
                         <div className="pt-3">
