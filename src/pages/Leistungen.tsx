@@ -16,11 +16,19 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 // Import service images
 import heroLeistungen from "@/assets/hero-leistungen.jpg";
 import leistungKiAgenten from "@/assets/leistung-ki-agenten.jpg";
-import leistungSeo from "@/assets/leistung-seo.jpg";
+import leistungSeoNew from "@/assets/leistung-seo-new.jpg";
 import leistungSchulung from "@/assets/leistung-schulung.jpg";
 import leistungSchloesserRoboter from "@/assets/leistung-schloesser-roboter.jpg";
 import leistungBranchenloesungenKi from "@/assets/leistung-branchenloesungen-ki.jpg";
 import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
+import leistungWebsites from "@/assets/leistung-websites.jpg";
+import leistungMarketing from "@/assets/leistung-marketing.jpg";
+import leistungWissensmanagement from "@/assets/leistung-wissensmanagement.jpg";
+import leistungSelforder from "@/assets/leistung-selforder.jpg";
+import leistungCrmErp from "@/assets/leistung-crm-erp.jpg";
+import leistungBim from "@/assets/leistung-bim.jpg";
+import leistungPim from "@/assets/leistung-pim.jpg";
+import leistungFoerderung from "@/assets/leistung-foerderung.jpg";
 
 // Service data with new order and structure
 const services = [
@@ -50,7 +58,7 @@ const services = [
     icon: Globe,
     title: "Websites & Shopsysteme",
     subtitle: "Responsive, skalierbare Weblösungen",
-    image: null, // Will use icon-style card
+    image: leistungWebsites,
     description: "Professionelle Websites und E-Commerce-Lösungen, die konvertieren. Mit direkter Anbindung an CRM-, ERP- und PIM-Systeme.",
     features: [
       "Responsive Webdesign",
@@ -63,15 +71,15 @@ const services = [
       { icon: TrendingUp, text: "Messbare Ergebnisse" },
       { icon: Cog, text: "Nahtlose Systemintegration" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/websites",
+    detailLink: "/leistungen/websites"
   },
   {
     id: "marketing",
     icon: Megaphone,
     title: "Marketing & Social Media",
     subtitle: "KI-gestützte Kampagnen und Content",
-    image: null,
+    image: leistungMarketing,
     description: "Nachhaltige Marketingstrategien, die Ihre Zielgruppe erreichen. Von Content-Planung über Performance-Tracking bis zur Leadgenerierung.",
     features: [
       "Social-Media-Strategie",
@@ -84,8 +92,8 @@ const services = [
       { icon: Users, text: "Nachhaltige Reichweite" },
       { icon: BarChart3, text: "Datengetriebene Entscheidungen" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/marketing",
+    detailLink: "/leistungen/marketing"
   },
   {
     id: "branchenloesungen-ki",
@@ -155,7 +163,7 @@ const services = [
     icon: Search,
     title: "SEO & Sichtbarkeit",
     subtitle: "Gefunden werden, wenn es zählt",
-    image: leistungSeo,
+    image: leistungSeoNew,
     description: "Nachhaltige Suchmaschinenoptimierung für mehr organische Reichweite, bessere Rankings und qualifizierte Besucher.",
     features: [
       "Technische SEO-Optimierung",
@@ -168,8 +176,8 @@ const services = [
       { icon: TrendingUp, text: "Bessere Rankings" },
       { icon: Target, text: "Qualifizierte Besucher" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/seo",
+    detailLink: "/leistungen/seo"
   },
   {
     id: "schulung",
@@ -189,15 +197,15 @@ const services = [
       { icon: Zap, text: "Schnelle Umsetzung" },
       { icon: Target, text: "Nachhaltige Ergebnisse" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/schulung",
+    detailLink: "/leistungen/schulung"
   },
   {
     id: "wissensmanagement",
     icon: BookOpen,
     title: "Wissensmanagement",
     subtitle: "Unternehmenswissen systematisch nutzen",
-    image: null,
+    image: leistungWissensmanagement,
     description: "Wissensdatenbanken, Dokumentenmanagement und KI-gestützte Suche für effizientes Wissensmanagement.",
     features: [
       "Wissensdatenbanken aufbauen",
@@ -210,15 +218,15 @@ const services = [
       { icon: Users, text: "Schnelleres Onboarding" },
       { icon: Zap, text: "Effizientere Zusammenarbeit" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/wissensmanagement",
+    detailLink: "/leistungen/wissensmanagement"
   },
   {
     id: "selforder",
     icon: Smartphone,
     title: "Self-Order & 24/7 Lösungen",
     subtitle: "Digitale Bestell- und Bezahlsysteme",
-    image: null,
+    image: leistungSelforder,
     description: "Self-Order-Systeme für Gastronomie, Einzelhandel und 24/7-Geschäftsmodelle mit chayns® von Tobit.",
     features: [
       "Self-Order-Terminals & Mobile Ordering",
@@ -260,7 +268,7 @@ const services = [
     icon: Cog,
     title: "CRM & ERP Systeme",
     subtitle: "Kundenmanagement & Unternehmenssteuerung",
-    image: null,
+    image: leistungCrmErp,
     description: "Auswahl, Einführung und Optimierung von CRM- und ERP-Systemen für nahtlose Geschäftsprozesse.",
     features: [
       "Bedarfsanalyse & Systemauswahl",
@@ -273,15 +281,15 @@ const services = [
       { icon: Zap, text: "Automatisierte Prozesse" },
       { icon: BarChart3, text: "Echtzeit-Reporting" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/crm-erp",
+    detailLink: "/leistungen/crm-erp"
   },
   {
     id: "bim",
     icon: Building2,
     title: "BIM Systeme",
     subtitle: "Building Information Management",
-    image: null,
+    image: leistungBim,
     description: "BIM-Systeme für die Bau- und Immobilienbranche, die alle Projektbeteiligten vernetzen.",
     features: [
       "BIM-Strategieberatung",
@@ -294,8 +302,8 @@ const services = [
       { icon: Database, text: "Zentrale Datenhaltung" },
       { icon: Zap, text: "Weniger Planungsfehler" }
     ],
-    link: "/kontakt",
-    detailLink: null,
+    link: "/leistungen/bim",
+    detailLink: "/leistungen/bim",
     hasVideo: true,
     videoSrc: "/videos/deutlicht-bim.mp4"
   },
@@ -304,7 +312,7 @@ const services = [
     icon: Package,
     title: "PIM Systeme",
     subtitle: "Product Information Management",
-    image: null,
+    image: leistungPim,
     description: "PIM-Systeme für konsistente Produktdaten über alle Verkaufskanäle hinweg.",
     features: [
       "Systemauswahl & Modellierung",
@@ -317,15 +325,15 @@ const services = [
       { icon: Globe, text: "Multi-Channel-fähig" },
       { icon: Zap, text: "Schnellere Time-to-Market" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/pim",
+    detailLink: "/leistungen/pim"
   },
   {
     id: "foerderung",
     icon: FileText,
     title: "Förderberatung",
     subtitle: "Maximieren Sie Ihre Investitionen",
-    image: null,
+    image: leistungFoerderung,
     description: "Zertifizierte Beratung für Fördermittel Ihrer Digitalisierungsprojekte. Bis zu 50% Förderung möglich.",
     features: [
       "Fördermittel-Check",
@@ -338,8 +346,8 @@ const services = [
       { icon: FileText, text: "Professionelle Anträge" },
       { icon: CheckCircle2, text: "Hohe Erfolgsquote" }
     ],
-    link: "/kontakt",
-    detailLink: null,
+    link: "/leistungen/foerderberatung",
+    detailLink: "/leistungen/foerderberatung",
     isHighlighted: true
   }
 ];
@@ -347,8 +355,8 @@ const services = [
 // Quick access buttons for prominent services
 const quickAccessButtons = [
   { label: "AI-Agenten", link: "/leistungen/ai-agenten", icon: Bot },
-  { label: "SEO & Sichtbarkeit", link: "/kontakt#seo", icon: Search },
-  { label: "Schulung & Beratung", link: "/kontakt#schulung", icon: GraduationCap }
+  { label: "SEO & Sichtbarkeit", link: "/leistungen/seo", icon: Search },
+  { label: "Schulung & Beratung", link: "/leistungen/schulung", icon: GraduationCap }
 ];
 
 const Leistungen = () => {
