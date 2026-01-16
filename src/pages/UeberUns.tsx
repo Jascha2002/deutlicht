@@ -10,6 +10,8 @@ import heroUeberUns from "@/assets/hero-ueber-uns.jpg";
 import kiPionierImg from "@/assets/ki-pionier-gera.jpg";
 import projekteProzesseImg from "@/assets/projekte-prozesse.jpg";
 import leistungWebsitesMarketingImg from "@/assets/leistung-websites-marketing.jpg";
+import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
+import marketingImg from "@/assets/ueber-uns-marketing.jpg";
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -234,8 +236,8 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={100}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                      <Bot className="w-20 h-20 text-[#c88a04]" />
+                    <div className="h-48 overflow-hidden">
+                      <img src={kiVoicebotsImg} alt="KI-Agenten und Voicebots" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
@@ -259,8 +261,8 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={200}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden bg-gradient-to-br from-[#c88a04]/20 to-primary/50 flex items-center justify-center">
-                      <TrendingUp className="w-20 h-20 text-[#c88a04]" />
+                    <div className="h-48 overflow-hidden">
+                      <img src={marketingImg} alt="Marketing und Sichtbarkeit" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
