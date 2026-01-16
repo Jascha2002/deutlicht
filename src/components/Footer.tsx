@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, FileText, ArrowRight } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit">
+  return <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit">
       <div className="w-full px-6 sm:px-8 lg:px-12 xl:px-16 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.2fr] gap-8 lg:gap-12">
           {/* Brand - Breitere Spalte */}
@@ -13,10 +11,10 @@ const Footer = () => {
                 DeutLicht<span className="text-accent">®</span>
               </span>
             </Link>
-            <p className="leading-relaxed text-base font-light text-primary max-w-md">
+            <p className="leading-relaxed text-base font-light max-w-md text-inherit">
               Ihr Partner für die digitale Zukunft. Mehr als 30 Jahre Erfahrung im Management und über 25 Jahre im Bereich Digitalisierung.
             </p>
-            <p className="leading-relaxed text-xs mt-3 text-primary max-w-md">
+            <p className="leading-relaxed text-xs mt-3 max-w-md text-inherit">
               Die Marke DeutLicht® ist eine eingetragene bzw. angemeldete Marke der Stadtnetz UG (haftungsbeschränkt).
             </p>
           </div>
@@ -122,19 +120,13 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3" role="list">
               <li>
-                <a
-                  href="mailto:info@deutlicht.de"
-                  className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-2"
-                >
+                <a href="mailto:info@deutlicht.de" className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-2">
                   <Mail className="w-4 h-4 flex-shrink-0" />
                   info@deutlicht.de
                 </a>
               </li>
               <li>
-                <a
-                  href="tel:+4917855492216"
-                  className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-2"
-                >
+                <a href="tel:+4917855492216" className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-2">
                   <Phone className="w-4 h-4 flex-shrink-0" />
                   +49 178 55 49 216
                 </a>
@@ -153,10 +145,7 @@ const Footer = () => {
             
             {/* Quick CTA */}
             <div className="mt-6 pt-4 border-t border-border">
-              <Link
-                to="/kontakt"
-                className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium text-sm"
-              >
+              <Link to="/kontakt" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium text-sm">
                 Projekt anfragen
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -171,30 +160,19 @@ const Footer = () => {
               © {new Date().getFullYear()} DeutLicht® – Alle Rechte vorbehalten
             </p>
             <nav aria-label="Rechtliche Links" className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <Link
-                to="/impressum"
-                className="text-muted-foreground hover:text-accent transition-colors text-sm"
-              >
+              <Link to="/impressum" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                 Impressum
               </Link>
-              <Link
-                to="/datenschutz"
-                className="text-muted-foreground hover:text-accent transition-colors text-sm"
-              >
+              <Link to="/datenschutz" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                 Datenschutz
               </Link>
-              <Link
-                to="/datenschutz#barrierefreiheit"
-                className="text-muted-foreground hover:text-accent transition-colors text-sm"
-              >
+              <Link to="/datenschutz#barrierefreiheit" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                 Barrierefreiheit
               </Link>
             </nav>
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
