@@ -8,7 +8,10 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
-import leistungFoerderung from "@/assets/leistung-foerderung.jpg";
+import AnimatedLogo from "@/components/AnimatedLogo";
+import foerderberatungHeroBg from "@/assets/foerderberatung-hero-bg.jpg";
+import foerderungSymbol1 from "@/assets/foerderung-symbol-1.jpg";
+import foerderungSymbol2 from "@/assets/foerderung-symbol-2.jpg";
 
 const features = [
   {
@@ -68,7 +71,7 @@ const Foerderberatung = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={leistungFoerderung} 
+              src={foerderberatungHeroBg} 
               alt="Förderberatung" 
               className="w-full h-full object-cover"
             />
@@ -77,6 +80,10 @@ const Foerderberatung = () => {
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 flex justify-center">
+                <AnimatedLogo size="md" />
+              </div>
+              
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent mb-6">
                 <Coins className="w-5 h-5" />
                 <span className="font-medium">Fördermittel</span>
@@ -141,6 +148,15 @@ const Foerderberatung = () => {
 
               <ScrollReveal delay={100}>
                 <div className="bg-card rounded-2xl p-8 border border-border space-y-6">
+                  <div className="grid md:grid-cols-2 gap-8 items-center mb-6">
+                    <div>
+                      <img src={foerderungSymbol1} alt="Förderung Wachstum" className="w-full rounded-xl shadow-lg" />
+                    </div>
+                    <div>
+                      <img src={foerderungSymbol2} alt="Antragsunterstützung" className="w-full rounded-xl shadow-lg" />
+                    </div>
+                  </div>
+                  
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     In Deutschland und Europa gibt es eine Vielzahl attraktiver Förderprogramme, die Unternehmen bei der Digitalisierung, der Einführung von ERP- und CRM-Systemen, Beratungsleistungen oder innovativen Softwarelösungen unterstützen. Viele dieser Programme bieten nicht rückzahlbare Zuschüsse (also echte Fördergelder, die nicht zurückgezahlt werden müssen) oder günstige Darlehen mit niedrigen Zinsen – je nach Projektgröße, Region und Unternehmensgröße.
                   </p>

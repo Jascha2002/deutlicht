@@ -9,6 +9,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedLogo from "@/components/AnimatedLogo";
 import digitalisierungHero from "@/assets/digitalisierung-hero.jpg";
 import digitalisierungProzesse from "@/assets/digitalisierung-prozesse.jpg";
 
@@ -128,6 +129,10 @@ const Digitalisierung = () => {
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 flex justify-center">
+                <AnimatedLogo size="md" />
+              </div>
+              
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent mb-6">
                 <Monitor className="w-5 h-5" />
                 <span className="font-medium">Digitale Transformation</span>
