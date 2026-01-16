@@ -9,7 +9,6 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
-import leistungCrmErp from "@/assets/leistung-crm-erp.jpg";
 import crmErpDashboard from "@/assets/crm-erp-dashboard.jpg";
 
 const features = [
@@ -83,7 +82,7 @@ const CrmErp = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={leistungCrmErp} 
+              src={crmErpDashboard}
               alt="CRM & ERP Systeme" 
               className="w-full h-full object-cover"
             />

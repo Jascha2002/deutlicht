@@ -25,7 +25,7 @@ import leistungWebsites from "@/assets/leistung-websites.jpg";
 import leistungMarketing from "@/assets/leistung-marketing.jpg";
 import leistungWissensmanagement from "@/assets/leistung-wissensmanagement.jpg";
 import leistungSelforder from "@/assets/leistung-selforder.jpg";
-import leistungCrmErp from "@/assets/leistung-crm-erp.jpg";
+import leistungCrmErp from "@/assets/crm-erp-dashboard.jpg";
 import leistungBim from "@/assets/leistung-bim.jpg";
 import leistungPim from "@/assets/leistung-pim.jpg";
 import leistungFoerderung from "@/assets/leistung-foerderung.jpg";
