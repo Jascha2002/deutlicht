@@ -316,8 +316,8 @@ const AIAgenten = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {benefits.map((benefit, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 bg-inherit text-inherit">
-                      <benefit.icon className="w-6 h-6 bg-orange-400 text-inherit" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <benefit.icon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-2">
@@ -391,7 +391,7 @@ const AIAgenten = () => {
               <ScrollReveal delay={0}>
                 <div className="bg-muted/30 rounded-xl p-8 text-center">
                   <Brain className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="font-display text-lg font-semibold text-foreground mb-2">LLM-Kern</h3>
+                  <h3 className="font-display text-lg font-semibold text-foreground mb-2 py-[10px]">LLM-Kern</h3>
                   <p className="text-muted-foreground text-sm">
                     GPT-4, Claude, Gemini und Open-Source-Modelle als intelligentes Herzstück
                   </p>
