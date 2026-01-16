@@ -432,13 +432,13 @@ const ChaynsHardware = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/projektanfrage">
-                  <Button size="lg" variant="secondary" className="group w-full sm:w-auto">
+                  <Button size="lg" className="group w-full sm:w-auto bg-primary hover:bg-primary/90 text-white">
                     Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link to="/leistungen/chayns-loesungen">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-accent-foreground/30 text-accent-foreground hover:bg-accent-foreground/10">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10">
                     Zur Plattform-Übersicht
                   </Button>
                 </Link>
