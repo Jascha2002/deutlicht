@@ -10,9 +10,6 @@ import heroUeberUns from "@/assets/hero-ueber-uns.jpg";
 import kiPionierImg from "@/assets/ki-pionier-gera.jpg";
 import projekteProzesseImg from "@/assets/projekte-prozesse.jpg";
 import leistungWebsitesMarketingImg from "@/assets/leistung-websites-marketing.jpg";
-import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
-import marketingImg from "@/assets/ueber-uns-marketing.jpg";
-import leistungsspektrumBg from "@/assets/leistungsspektrum-bg.jpg";
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -161,15 +158,15 @@ const UeberUns = () => {
 
                 <ScrollReveal direction="right" delay={200}>
                   <div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 text-[#c88a04] border border-[#c88a04]/30 bg-primary-foreground">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-[#c88a04]/20 text-[#c88a04] border border-[#c88a04]/30">
                       <Sparkles className="w-4 h-4" />
-                      Innovatives aus Ostthüringen
+                      Innovation aus Ostthüringen
                     </div>
                     <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-foreground">
                       Pionier der KI in Gera
                     </h2>
-                    <p className="leading-relaxed mb-6 text-primary font-bold">
-                      Als <strong className="text-[#c88a04] bg-primary-foreground">erste KI-Agentur in Gera</strong> verbinden wir 
+                    <p className="text-muted-foreground leading-relaxed mb-6">
+                      Als <strong className="text-[#c88a04]">erste KI-Agentur in Gera</strong> verbinden wir 
                       über 25 Jahre Digitalisierungserfahrung mit modernster Künstlicher Intelligenz. 
                       Wir sind Vorreiter für innovative KI-Lösungen in der Region Ostthüringen.
                     </p>
@@ -195,13 +192,8 @@ const UeberUns = () => {
         </section>
 
         {/* Leistungsspektrum - Überarbeitet */}
-        <section className="py-16 md:py-20 relative overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0">
-            <img src={leistungsspektrumBg} alt="Leistungsspektrum Hintergrund" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/85 to-background/90" />
-          </div>
-          <div className="container mx-auto px-4 relative z-10">
+        <section className="py-16 md:py-20 bg-inherit">
+          <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
                 <div className="text-center mb-12">
@@ -242,8 +234,8 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={100}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden">
-                      <img src={kiVoicebotsImg} alt="KI-Agenten und Voicebots" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <div className="h-48 overflow-hidden bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                      <Bot className="w-20 h-20 text-[#c88a04]" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
@@ -267,8 +259,8 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={200}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden">
-                      <img src={marketingImg} alt="Marketing und Sichtbarkeit" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <div className="h-48 overflow-hidden bg-gradient-to-br from-[#c88a04]/20 to-primary/50 flex items-center justify-center">
+                      <TrendingUp className="w-20 h-20 text-[#c88a04]" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
@@ -294,7 +286,7 @@ const UeberUns = () => {
               <ScrollReveal delay={300}>
                 <div className="text-center mt-10">
                   <Link to="/leistungen">
-                    <Button variant="outline" className="group border-[#c88a04] text-[#c88a04] hover:bg-[#c88a04] hover:text-primary">
+                    <Button variant="outline" className="group border-[#c88a04] text-[#c88a04] hover:text-primary bg-secondary py-0">
                       Alle Leistungen entdecken
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
