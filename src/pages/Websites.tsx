@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import leistungWebsites from "@/assets/leistung-websites.jpg";
+import websitesHeroBg from "@/assets/leistung-websites-new.jpg";
 
 const features = [
   {
@@ -80,7 +80,7 @@ const Websites = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={leistungWebsites} 
+              src={websitesHeroBg} 
               alt="Websites & Shopsysteme" 
               className="w-full h-full object-cover"
             />

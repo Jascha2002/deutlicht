@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
-import heroSeo from "@/assets/leistung-seo.jpg";
+import seoHeroBg from "@/assets/seo-hero-bg.jpg";
 
 const seoServices = [
   {
@@ -115,7 +115,7 @@ const SEO = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0">
             <img 
-              src={heroSeo} 
+              src={seoHeroBg} 
               alt="SEO & Sichtbarkeit" 
               className="w-full h-full object-cover opacity-40"
             />

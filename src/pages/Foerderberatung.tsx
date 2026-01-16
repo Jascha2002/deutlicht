@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import foerderberatungHeroBg from "@/assets/foerderberatung-hero-bg.jpg";
+import foerderberatungHeroBg from "@/assets/leistung-foerderung-new.jpg";
 import foerderungSymbol1 from "@/assets/foerderung-symbol-1.jpg";
 import foerderungSymbol2 from "@/assets/foerderung-symbol-2.jpg";
 const features = [{

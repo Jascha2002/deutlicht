@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import leistungWissensmanagement from "@/assets/leistung-wissensmanagement.jpg";
+import wissensmanagementHeroBg from "@/assets/wissensmanagement-hero-bg.jpg";
 
 const features = [
   {
@@ -94,7 +94,7 @@ const Wissensmanagement = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={leistungWissensmanagement} 
+              src={wissensmanagementHeroBg} 
               alt="Wissensmanagement" 
               className="w-full h-full object-cover"
             />
