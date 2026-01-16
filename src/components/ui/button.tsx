@@ -9,9 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent text-white hover:bg-accent/90",
-        destructive: "bg-destructive text-white hover:bg-destructive/90",
-        outline: "border border-input bg-background text-foreground hover:bg-accent hover:text-white",
+        default: "bg-accent text-accent-foreground hover:bg-accent/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        // Transparent by default so it works on dark AND light sections. Use custom classes when you explicitly want a filled outline.
+        outline: "border border-input bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent/10 hover:text-accent",
         link: "text-accent underline-offset-4 hover:underline",
