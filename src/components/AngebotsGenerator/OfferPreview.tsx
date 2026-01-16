@@ -35,6 +35,46 @@ const OfferPreview = ({ data, onDownload }: OfferPreviewProps) => {
 
   const paket = getBranchenPaketByIndustry(data.industry || "Sonstiges");
 
+  // Validate and sanitize HTML response from server
+  const validateAndSanitizeHtml = (html: unknown): string => {
+    // Validate response structure
+    if (!html || typeof html !== 'string') {
+      throw new Error('Invalid response format: HTML must be a string');
+    }
+
+    // Check for potentially dangerous content patterns
+    const dangerousPatterns = [
+      /<script[\s\S]*?>/i,
+      /javascript:/i,
+      /on\w+\s*=/i, // onclick, onerror, onload, etc.
+      /<iframe[\s\S]*?>/i,
+      /<object[\s\S]*?>/i,
+      /<embed[\s\S]*?>/i,
+      /<link[\s\S]*?>/i,
+      /<meta[\s\S]*?>/i,
+      /data:/i,
+      /vbscript:/i,
+    ];
+
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(html)) {
+        throw new Error('Invalid HTML content detected');
+      }
+    }
+
+    // Use DOMParser for safer parsing and validation
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Check for parsing errors
+    const parserError = doc.querySelector('parsererror');
+    if (parserError) {
+      throw new Error('Invalid HTML structure');
+    }
+
+    return html;
+  };
+
   const generatePdf = async () => {
     setIsGenerating(true);
     
@@ -46,13 +86,22 @@ const OfferPreview = ({ data, onDownload }: OfferPreviewProps) => {
       if (error) throw error;
 
       if (response?.html) {
-        setPdfHtml(response.html);
+        // Validate and sanitize HTML before use
+        const sanitizedHtml = validateAndSanitizeHtml(response.html);
+        setPdfHtml(sanitizedHtml);
         
         // Use html2pdf.js to generate PDF
         const html2pdf = (await import('html2pdf.js')).default;
         
+        // Use DOMParser for safer DOM manipulation instead of innerHTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(sanitizedHtml, 'text/html');
         const element = document.createElement('div');
-        element.innerHTML = response.html;
+        
+        // Safely append parsed content
+        while (doc.body.firstChild) {
+          element.appendChild(doc.body.firstChild);
+        }
         document.body.appendChild(element);
 
         const opt = {
@@ -98,7 +147,9 @@ const OfferPreview = ({ data, onDownload }: OfferPreviewProps) => {
       if (error) throw error;
 
       if (response?.html) {
-        setPdfHtml(response.html);
+        // Validate and sanitize HTML before use in preview
+        const sanitizedHtml = validateAndSanitizeHtml(response.html);
+        setPdfHtml(sanitizedHtml);
         setShowPreview(true);
       }
     } catch (error) {
