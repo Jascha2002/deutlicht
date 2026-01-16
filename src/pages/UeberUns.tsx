@@ -195,7 +195,7 @@ const UeberUns = () => {
         </section>
 
         {/* Leistungsspektrum - Überarbeitet */}
-        <section className="py-16 md:py-20 bg-inherit">
+        <section className="py-16 bg-inherit md:py-[24px]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
@@ -322,13 +322,13 @@ const UeberUns = () => {
         </section>
 
         {/* Prozesse mit Bild */}
-        <section className="py-16 md:py-20 bg-secondary">
+        <section className="py-16 bg-secondary md:py-[27px]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="grid lg:grid-cols-2 gap-12 items-center my-0">
                 <ScrollReveal direction="left">
                   <div>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-inherit py-0 my-[18px]">
                       Projekte & Prozesse
                     </h2>
                     <p className="leading-relaxed mb-4 text-inherit">
@@ -378,11 +378,11 @@ const UeberUns = () => {
         </section>
 
         {/* Ganzheitliche Begleitung */}
-        <section className="py-16 md:py-20">
-          <div className="container mx-auto px-4">
+        <section className="py-16 md:py-20 px-[54px]">
+          <div className="container mx-auto px-4 py-0 my-0">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
-                <div className="text-center mb-12">
+                <div className="text-center mb-12 py-0">
                   <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
                     Ganzheitliche Begleitung
                   </h2>
