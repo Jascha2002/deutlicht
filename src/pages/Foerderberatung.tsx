@@ -1,9 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { 
-  FileText, ArrowRight, Coins, CheckCircle2, 
-  ClipboardCheck, Calendar, Shield, TrendingUp, Award
-} from "lucide-react";
+import { FileText, ArrowRight, Coins, CheckCircle2, ClipboardCheck, Calendar, Shield, TrendingUp, Award } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -12,56 +9,53 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import foerderberatungHeroBg from "@/assets/foerderberatung-hero-bg.jpg";
 import foerderungSymbol1 from "@/assets/foerderung-symbol-1.jpg";
 import foerderungSymbol2 from "@/assets/foerderung-symbol-2.jpg";
-
-const features = [
-  {
-    icon: ClipboardCheck,
-    title: "Fördermittel-Check",
-    description: "Kostenlose Analyse, welche Förderprogramme für Ihr Projekt in Frage kommen."
-  },
-  {
-    icon: FileText,
-    title: "Antragsunterstützung",
-    description: "Professionelle Erstellung und Einreichung Ihrer Förderanträge."
-  },
-  {
-    icon: Calendar,
-    title: "Projektplanung",
-    description: "Strukturierung Ihres Projekts nach Fördervorgaben und Meilensteinen."
-  },
-  {
-    icon: Shield,
-    title: "Compliance",
-    description: "Sicherstellung aller formalen Anforderungen und Nachweispflichten."
-  },
-  {
-    icon: TrendingUp,
-    title: "Projektdokumentation",
-    description: "Laufende Dokumentation für Verwendungsnachweise und Prüfungen."
-  },
-  {
-    icon: Award,
-    title: "Begleitung bis Auszahlung",
-    description: "Vollständige Betreuung bis zur erfolgreichen Auszahlung der Fördermittel."
-  }
-];
-
-const stats = [
-  { value: "bis 80%", label: "der Beratungskosten", description: "können gefördert werden" },
-  { value: "bis 50%", label: "der Projektkosten", description: "als Zuschuss möglich" },
-  { value: "95%", label: "Erfolgsquote", description: "unserer Anträge" },
-  { value: "100+", label: "Projekte", description: "erfolgreich gefördert" }
-];
-
+const features = [{
+  icon: ClipboardCheck,
+  title: "Fördermittel-Check",
+  description: "Kostenlose Analyse, welche Förderprogramme für Ihr Projekt in Frage kommen."
+}, {
+  icon: FileText,
+  title: "Antragsunterstützung",
+  description: "Professionelle Erstellung und Einreichung Ihrer Förderanträge."
+}, {
+  icon: Calendar,
+  title: "Projektplanung",
+  description: "Strukturierung Ihres Projekts nach Fördervorgaben und Meilensteinen."
+}, {
+  icon: Shield,
+  title: "Compliance",
+  description: "Sicherstellung aller formalen Anforderungen und Nachweispflichten."
+}, {
+  icon: TrendingUp,
+  title: "Projektdokumentation",
+  description: "Laufende Dokumentation für Verwendungsnachweise und Prüfungen."
+}, {
+  icon: Award,
+  title: "Begleitung bis Auszahlung",
+  description: "Vollständige Betreuung bis zur erfolgreichen Auszahlung der Fördermittel."
+}];
+const stats = [{
+  value: "bis 80%",
+  label: "der Beratungskosten",
+  description: "können gefördert werden"
+}, {
+  value: "bis 50%",
+  label: "der Projektkosten",
+  description: "als Zuschuss möglich"
+}, {
+  value: "95%",
+  label: "Erfolgsquote",
+  description: "unserer Anträge"
+}, {
+  value: "100+",
+  label: "Projekte",
+  description: "erfolgreich gefördert"
+}];
 const Foerderberatung = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Förderberatung | DeutLicht® - Bis zu 80% der Beratungskosten gefördert</title>
-        <meta 
-          name="description" 
-          content="Förderberatung für Digitalisierungsprojekte. Bis zu 80% der Beratungskosten und 50% der Projektkosten möglich. Wir finden das passende Förderprogramm für Sie." 
-        />
+        <meta name="description" content="Förderberatung für Digitalisierungsprojekte. Bis zu 80% der Beratungskosten und 50% der Projektkosten möglich. Wir finden das passende Förderprogramm für Sie." />
       </Helmet>
 
       <Navigation />
@@ -70,11 +64,7 @@ const Foerderberatung = () => {
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img 
-              src={foerderberatungHeroBg} 
-              alt="Förderberatung" 
-              className="w-full h-full object-cover"
-            />
+            <img src={foerderberatungHeroBg} alt="Förderberatung" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
           </div>
 
@@ -119,8 +109,7 @@ const Foerderberatung = () => {
         <section className="py-16 bg-accent">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <ScrollReveal key={index} delay={index * 100}>
+              {stats.map((stat, index) => <ScrollReveal key={index} delay={index * 100}>
                   <div className="text-center">
                     <div className="text-4xl md:text-5xl font-bold text-accent-foreground mb-2">
                       {stat.value}
@@ -128,8 +117,7 @@ const Foerderberatung = () => {
                     <div className="font-semibold text-accent-foreground">{stat.label}</div>
                     <div className="text-sm text-accent-foreground/80">{stat.description}</div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
@@ -192,8 +180,7 @@ const Foerderberatung = () => {
             </ScrollReveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <ScrollReveal key={feature.title} delay={index * 100}>
+              {features.map((feature, index) => <ScrollReveal key={feature.title} delay={index * 100}>
                   <div className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow">
                     <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
                       <feature.icon className="w-6 h-6 text-accent" />
@@ -205,8 +192,7 @@ const Foerderberatung = () => {
                       {feature.description}
                     </p>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
@@ -224,14 +210,27 @@ const Foerderberatung = () => {
 
             <div className="max-w-3xl mx-auto">
               <div className="space-y-6">
-                {[
-                  { step: "1", title: "Kostenloser Förder-Check", description: "Wir analysieren Ihr Vorhaben und identifizieren passende Förderprogramme." },
-                  { step: "2", title: "Strategie & Planung", description: "Gemeinsam strukturieren wir Ihr Projekt nach Fördervorgaben." },
-                  { step: "3", title: "Antragstellung", description: "Wir erstellen und reichen Ihren Förderantrag professionell ein." },
-                  { step: "4", title: "Projektumsetzung", description: "Sie setzen Ihr Projekt um – wir dokumentieren förderkonfom." },
-                  { step: "5", title: "Auszahlung", description: "Nach Prüfung erhalten Sie Ihre Fördermittel ausgezahlt." }
-                ].map((item, index) => (
-                  <ScrollReveal key={item.step} delay={index * 100}>
+                {[{
+                step: "1",
+                title: "Kostenloser Förder-Check",
+                description: "Wir analysieren Ihr Vorhaben und identifizieren passende Förderprogramme."
+              }, {
+                step: "2",
+                title: "Strategie & Planung",
+                description: "Gemeinsam strukturieren wir Ihr Projekt nach Fördervorgaben."
+              }, {
+                step: "3",
+                title: "Antragstellung",
+                description: "Wir erstellen und reichen Ihren Förderantrag professionell ein."
+              }, {
+                step: "4",
+                title: "Projektumsetzung",
+                description: "Sie setzen Ihr Projekt um – wir dokumentieren förderkonfom."
+              }, {
+                step: "5",
+                title: "Auszahlung",
+                description: "Nach Prüfung erhalten Sie Ihre Fördermittel ausgezahlt."
+              }].map((item, index) => <ScrollReveal key={item.step} delay={index * 100}>
                     <div className="flex gap-4">
                       <div className="w-12 h-12 rounded-full bg-accent text-white flex items-center justify-center font-bold flex-shrink-0">
                         {item.step}
@@ -241,8 +240,7 @@ const Foerderberatung = () => {
                         <p className="text-muted-foreground">{item.description}</p>
                       </div>
                     </div>
-                  </ScrollReveal>
-                ))}
+                  </ScrollReveal>)}
               </div>
             </div>
           </div>
@@ -259,7 +257,7 @@ const Foerderberatung = () => {
                 Vereinbaren Sie Ihren kostenlosen Förder-Check und erfahren Sie, 
                 wie viel Förderung für Ihr Projekt möglich ist.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center bg-primary-foreground">
                 <Link to="/kontakt">
                   <Button size="lg" className="bg-accent hover:bg-accent/90 text-white px-8">
                     Kostenloser Förder-Check
@@ -278,8 +276,6 @@ const Foerderberatung = () => {
       </main>
 
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default Foerderberatung;
