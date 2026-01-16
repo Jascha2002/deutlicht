@@ -3,15 +3,13 @@ import { ArrowRight, Play, Zap } from "lucide-react";
 import { trackCTAClick } from "@/lib/analytics";
 import BranchenSelectorButton from "@/components/BranchenSelectorButton";
 import AnimatedLogo from "@/components/AnimatedLogo";
-
 const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
       {/* Background Video */}
       <div className="absolute inset-0 z-0" aria-hidden="true">
         <video autoPlay muted loop playsInline className="w-full h-full object-cover contrast-110 saturate-110" style={{
-          objectPosition: 'center 0%'
-        }} aria-hidden="true">
+        objectPosition: 'center 0%'
+      }} aria-hidden="true">
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e]" />
@@ -47,7 +45,7 @@ const Hero = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="max-w-2xl text-lg leading-relaxed sm:text-2xl font-semibold bg-[#c88a04]/[0.01] text-primary">
+            <p className="max-w-2xl text-lg leading-relaxed sm:text-2xl font-semibold bg-[#c88a04]/[0.01] text-primary-foreground">
               Wir begleiten Ihr Unternehmen durch die digitale Transformation – 
               mit Strategie, Erfahrung und maßgeschneiderten Lösungen.
             </p>
@@ -95,8 +93,6 @@ const Hero = () => {
 
       {/* Scroll Indicator */}
       
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
