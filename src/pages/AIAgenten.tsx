@@ -132,7 +132,7 @@ const benefits = [
 const implementationSteps = [
   { step: 1, title: "Analyse", description: "Wir analysieren Ihre Prozesse und identifizieren Automatisierungspotenziale" },
   { step: 2, title: "Konzept", description: "Gemeinsam entwickeln wir eine maßgeschneiderte KI-Strategie" },
-  { step: 3, title: "Entwicklung", description: "Wir implementieren und trainieren Ihre AI Agents" },
+  { step: 3, title: "Entwicklung", description: "Wir implementieren und trainieren Ihre KI-Agenten" },
   { step: 4, title: "Integration", description: "Nahtlose Anbindung an Ihre bestehenden Systeme (CRM, ERP, etc.)" },
   { step: 5, title: "Optimierung", description: "Kontinuierliche Verbesserung durch Monitoring und Feedback" }
 ];
@@ -141,7 +141,7 @@ const AIAgenten = () => {
   return (
     <>
       <Helmet>
-        <title>AI Agenten | DeutLicht® - Intelligente Automatisierung für Ihr Unternehmen</title>
+        <title>KI-Agenten (AI-Agents) | DeutLicht® - Intelligente Automatisierung für Ihr Unternehmen</title>
         <meta
           name="description"
           content="KI-gestützte Agenten für Kundenservice, Prozessautomatisierung und Business Intelligence. Chatbots, Voice Agents und Workflow-Automatisierung von DeutLicht®."
@@ -174,7 +174,7 @@ const AIAgenten = () => {
               </div>
               
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-                AI Agenten: Ihre digitalen
+                KI-Agenten (AI-Agents): Ihre digitalen
                 <span className="text-accent"> Mitarbeiter</span>
               </h1>
               
@@ -228,7 +228,7 @@ const AIAgenten = () => {
                 Unsere Lösungen
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
-                Typen von AI Agenten
+                Typen von KI-Agenten (AI-Agents)
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                 Je nach Anwendungsfall setzen wir unterschiedliche Arten von KI-Agenten ein – 
@@ -301,7 +301,7 @@ const AIAgenten = () => {
                 Anwendungsbereiche
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
-                Wo AI Agenten Mehrwert schaffen
+                Wo KI-Agenten Mehrwert schaffen
               </h2>
             </ScrollReveal>
 
@@ -336,7 +336,7 @@ const AIAgenten = () => {
                 Ihre Vorteile
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
-                Warum AI Agenten?
+                Warum KI-Agenten?
               </h2>
             </ScrollReveal>
 
@@ -414,7 +414,7 @@ const AIAgenten = () => {
                 Moderne KI-Architektur
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Unsere AI Agents basieren auf modernsten Large Language Models und bewährten Frameworks.
+                Unsere KI-Agenten basieren auf modernsten Large Language Models und bewährten Frameworks.
               </p>
             </ScrollReveal>
 
@@ -460,10 +460,10 @@ const AIAgenten = () => {
                 Branchenspezifisch
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
-                Branchenlösungen: Maßgeschneiderte AI-Agenten
+                Branchenlösungen: Maßgeschneiderte KI-Agenten
               </h2>
               <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                Wir entwickeln maßgeschneiderte AI-Agenten für verschiedene Branchen wie 
+                Wir entwickeln maßgeschneiderte KI-Agenten (AI-Agents) für verschiedene Branchen wie 
                 <strong> Handwerk, Gesundheit, Gastronomie, Einzelhandel, Kanzleien </strong> 
                 und viele mehr. Jede Lösung wird individuell auf die spezifischen Anforderungen 
                 und Prozesse Ihrer Branche angepasst.
@@ -510,7 +510,7 @@ const AIAgenten = () => {
                 Bereit für Ihre digitalen Mitarbeiter?
               </h2>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Unsere Projektanfrage hilft Ihnen herauszufinden, welche AI-Lösung zu Ihnen passt.
+                Unsere Projektanfrage hilft Ihnen herauszufinden, welche KI-Lösung zu Ihnen passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/projektanfrage">

@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import crmErpDashboard from "@/assets/crm-erp-dashboard.jpg";
+import crmSymbolIcon from "@/assets/crm-symbol-icon.jpg";
+import erpSymbolIcon from "@/assets/erp-symbol-icon.jpg";
 
 const features = [
   {
@@ -123,25 +125,6 @@ const CrmErp = () => {
           </div>
         </section>
 
-        {/* Dashboard Image Section */}
-        <section className="py-16 bg-muted/20">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="max-w-5xl mx-auto">
-                <div className="rounded-2xl overflow-hidden shadow-2xl border border-border">
-                  <img 
-                    src={crmErpDashboard} 
-                    alt="CRM & ERP Dashboard Übersicht" 
-                    className="w-full h-auto"
-                  />
-                </div>
-                <p className="text-center mt-4 text-muted-foreground">
-                  Zentrale Steuerung aller Geschäftsprozesse in einem modernen Dashboard
-                </p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
 
         {/* Features Grid */}
         <section className="py-20 bg-muted/30">
@@ -173,6 +156,48 @@ const CrmErp = () => {
                   </div>
                 </ScrollReveal>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CRM & ERP Visual Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <ScrollReveal>
+                <div className="text-center">
+                  <div className="rounded-2xl overflow-hidden shadow-lg border border-border mb-4">
+                    <img 
+                      src={crmSymbolIcon} 
+                      alt="CRM Kundenbeziehungsmanagement" 
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <h3 className="font-display text-xl font-bold text-foreground mb-2">
+                    CRM – Kundenbeziehungen
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    Zentrale Kundendaten, Vertriebspipeline und Kommunikationshistorie
+                  </p>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal delay={100}>
+                <div className="text-center">
+                  <div className="rounded-2xl overflow-hidden shadow-lg border border-border mb-4">
+                    <img 
+                      src={erpSymbolIcon} 
+                      alt="ERP Unternehmensressourcenplanung" 
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <h3 className="font-display text-xl font-bold text-foreground mb-2">
+                    ERP – Geschäftsprozesse
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    Vernetzte Abläufe von Einkauf bis Buchhaltung in einem System
+                  </p>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>
