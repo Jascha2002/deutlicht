@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import leistungBim from "@/assets/leistung-bim.jpg";
+import bimHeroBg from "@/assets/bim-hero-bg.jpg";
 
 const features = [
   {
@@ -78,7 +78,7 @@ const BIM = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={leistungBim} 
+              src={bimHeroBg} 
               alt="BIM Systeme" 
               className="w-full h-full object-cover"
             />

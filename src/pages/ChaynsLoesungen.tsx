@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import chaynsHeroBg from "@/assets/chayns-hero-bg.jpg";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
@@ -132,8 +133,16 @@ const ChaynsLoesungen = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 bg-gradient-to-br from-primary/10 via-background to-accent/5">
-          <div className="container mx-auto px-4">
+        <section className="relative pt-32 pb-20 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={chaynsHeroBg} 
+              alt="chayns Self-Order Lösungen" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/80 to-primary/30" />
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <ScrollReveal>
                 <div className="mb-8 flex justify-center">

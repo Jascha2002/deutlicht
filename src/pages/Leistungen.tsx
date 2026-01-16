@@ -21,14 +21,14 @@ import leistungSchulung from "@/assets/leistung-schulung.jpg";
 import leistungSchloesserRoboter from "@/assets/leistung-schloesser-roboter.jpg";
 import leistungBranchenloesungenKi from "@/assets/leistung-branchenloesungen-ki.jpg";
 import voiceAgentHero from "@/assets/voice-agent-hero.jpg";
-import leistungWebsites from "@/assets/leistung-websites.jpg";
-import leistungMarketing from "@/assets/leistung-marketing.jpg";
+import leistungWebsites from "@/assets/leistung-websites-new.jpg";
+import leistungMarketing from "@/assets/leistung-marketing-new.jpg";
 import leistungWissensmanagement from "@/assets/leistung-wissensmanagement.jpg";
 import leistungSelforder from "@/assets/leistung-selforder.jpg";
 import leistungCrmErp from "@/assets/crm-erp-dashboard.jpg";
 import leistungBim from "@/assets/leistung-bim.jpg";
 import leistungPim from "@/assets/leistung-pim.jpg";
-import leistungFoerderung from "@/assets/leistung-foerderung.jpg";
+import leistungFoerderung from "@/assets/leistung-foerderung-new.jpg";
 
 // Service data with new order and structure
 const services = [

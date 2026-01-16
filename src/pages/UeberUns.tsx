@@ -9,10 +9,10 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import heroUeberUns from "@/assets/hero-ueber-uns.jpg";
 import kiPionierImg from "@/assets/ki-pionier-gera.jpg";
 import projekteProzesseImg from "@/assets/projekte-prozesse.jpg";
-import websitesImg from "@/assets/ueber-uns-websites.jpg";
+import websitesImg from "@/assets/leistung-websites-new.jpg";
 import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
-import marketingImg from "@/assets/ueber-uns-marketing-new.jpg";
-import foerderungImg from "@/assets/ueber-uns-foerderung.jpg";
+import marketingImg from "@/assets/leistung-marketing-new.jpg";
+import foerderungImg from "@/assets/leistung-foerderung-new.jpg";
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -209,24 +209,23 @@ const UeberUns = () => {
                 </div>
               </ScrollReveal>
 
-              <div className="grid lg:grid-cols-3 gap-8">
+              <div className="grid lg:grid-cols-4 gap-6">
                 <ScrollReveal delay={0}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden">
+                    <div className="h-40 overflow-hidden">
                       <img src={websitesImg} alt="Websites und E-Commerce" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Globe className="w-5 h-5 text-[#c88a04]" />
+                    <div className="p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Globe className="w-4 h-4 text-[#c88a04]" />
                         </div>
-                        <h3 className="font-display text-xl font-semibold text-foreground">
-                          Websites & E-Commerce
+                        <h3 className="font-display text-lg font-semibold text-foreground">
+                          Websites & Shopsysteme
                         </h3>
                       </div>
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                        Moderne, conversion-optimierte Weblösungen mit KI-Integration. 
-                        Responsive Design, Shopsysteme und nahtlose CRM/ERP-Anbindung für maximalen Geschäftserfolg.
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                        Conversion-optimierte Weblösungen mit KI-Integration und CRM/ERP-Anbindung.
                       </p>
                       <Link to="/leistungen/websites" className="text-[#c88a04] text-sm font-medium hover:underline inline-flex items-center gap-1">
                         Mehr erfahren <ArrowRight className="w-3 h-3" />
@@ -237,21 +236,20 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={100}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden">
+                    <div className="h-40 overflow-hidden">
                       <img src={kiVoicebotsImg} alt="KI-Agenten und Voicebots" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Brain className="w-5 h-5 text-[#c88a04]" />
+                    <div className="p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Brain className="w-4 h-4 text-[#c88a04]" />
                         </div>
-                        <h3 className="font-display text-xl font-semibold text-foreground">
+                        <h3 className="font-display text-lg font-semibold text-foreground">
                           KI-Agenten & Voicebots
                         </h3>
                       </div>
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                        Als KI-Pionier entwickeln wir intelligente Chatbots, Voice Agents und 
-                        Automatisierungslösungen. 24/7 Kundenservice und Prozessoptimierung durch KI.
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                        Intelligente Chatbots, Voice Agents und 24/7 Automatisierungslösungen.
                       </p>
                       <Link to="/leistungen/ki-agenten" className="text-[#c88a04] text-sm font-medium hover:underline inline-flex items-center gap-1">
                         Mehr erfahren <ArrowRight className="w-3 h-3" />
@@ -262,23 +260,46 @@ const UeberUns = () => {
 
                 <ScrollReveal delay={200}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
-                    <div className="h-48 overflow-hidden">
+                    <div className="h-40 overflow-hidden">
                       <img src={marketingImg} alt="Marketing und Sichtbarkeit" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Lightbulb className="w-5 h-5 text-[#c88a04]" />
+                    <div className="p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Lightbulb className="w-4 h-4 text-[#c88a04]" />
                         </div>
-                        <h3 className="font-display text-xl font-semibold text-foreground">
+                        <h3 className="font-display text-lg font-semibold text-foreground">
                           Marketing & Sichtbarkeit
                         </h3>
                       </div>
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                        KI-gestützte Kampagnen, SEO-Optimierung und Content-Strategien. 
-                        Datenbasiertes Performance-Marketing für nachhaltige Leadgenerierung.
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                        KI-gestützte Kampagnen, SEO-Optimierung und datenbasiertes Performance-Marketing.
                       </p>
                       <Link to="/leistungen/marketing" className="text-[#c88a04] text-sm font-medium hover:underline inline-flex items-center gap-1">
+                        Mehr erfahren <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                </ScrollReveal>
+
+                <ScrollReveal delay={300}>
+                  <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
+                    <div className="h-40 overflow-hidden">
+                      <img src={foerderungImg} alt="Förderberatung" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div className="p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 bg-[#c88a04]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Award className="w-4 h-4 text-[#c88a04]" />
+                        </div>
+                        <h3 className="font-display text-lg font-semibold text-foreground">
+                          Förderberatung
+                        </h3>
+                      </div>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                        Bis zu 80% der Beratungskosten und 50% Projektzuschuss möglich.
+                      </p>
+                      <Link to="/leistungen/foerderberatung" className="text-[#c88a04] text-sm font-medium hover:underline inline-flex items-center gap-1">
                         Mehr erfahren <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>

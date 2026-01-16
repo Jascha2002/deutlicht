@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
-import heroSchulung from "@/assets/leistung-schulung.jpg";
+import schulungHeroBg from "@/assets/schulung-hero-bg.jpg";
 
 const trainingTopics = [
   {
@@ -142,7 +142,7 @@ const Schulung = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0">
             <img 
-              src={heroSchulung} 
+              src={schulungHeroBg} 
               alt="Schulung & Beratung" 
               className="w-full h-full object-cover opacity-40"
             />
