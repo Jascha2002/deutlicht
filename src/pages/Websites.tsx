@@ -110,7 +110,7 @@ const Websites = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/kontakt">
-                  <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+                  <Button size="lg" className="group bg-accent hover:bg-accent/90 text-white px-8">
                     Projekt starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>

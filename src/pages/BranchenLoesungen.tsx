@@ -196,7 +196,7 @@ const BranchenLoesungen = () => {
               <Link
                 to="/projektanfrage"
                 onClick={() => trackCTAClick("Projektanfrage starten", "branchen-loesungen")}
-                className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-medium transition-all hover:scale-105"
               >
                 Projektanfrage starten
                 <ArrowRight className="w-5 h-5" />

@@ -402,7 +402,7 @@ const Leistungen = () => {
               </p>
 
               <Link to="/kontakt">
-                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-white px-8">
                   Jetzt beraten lassen
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -501,7 +501,7 @@ const Leistungen = () => {
                         {service.detailLink ? (
                           <Link to={service.detailLink} className="w-full">
                             <Button 
-                              className="w-full group bg-accent hover:bg-accent/90 text-accent-foreground"
+                              className="w-full group bg-accent hover:bg-accent/90 text-white"
                               size="sm"
                             >
                               Mehr erfahren
@@ -511,7 +511,7 @@ const Leistungen = () => {
                         ) : (
                           <Link to={service.link} className="w-full">
                             <Button 
-                              className="w-full group bg-accent hover:bg-accent/90 text-accent-foreground"
+                              className="w-full group bg-accent hover:bg-accent/90 text-white"
                               size="sm"
                             >
                               Details anfragen
@@ -549,7 +549,7 @@ const Leistungen = () => {
                 <Link key={btn.label} to={btn.link}>
                   <Button 
                     size="lg" 
-                    className="group bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+                    className="group bg-accent hover:bg-accent/90 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
                   >
                     <btn.icon className="w-5 h-5 mr-2" />
                     {btn.label}
@@ -619,7 +619,7 @@ const Leistungen = () => {
 
             <div className="text-center mt-8">
               <Link to="/leistungen/ki-agenten">
-                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button size="lg" className="group bg-accent hover:bg-accent/90 text-white">
                   Alle KI-Agenten entdecken
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -645,7 +645,7 @@ const Leistungen = () => {
                 <Link to="/kontakt">
                   <Button 
                     size="lg" 
-                    className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground px-8"
+                    className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-white px-8"
                   >
                     Kostenloses Beratungsgespräch vereinbaren
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

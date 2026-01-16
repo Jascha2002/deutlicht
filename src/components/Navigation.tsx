@@ -476,7 +476,7 @@ submenu: [{
             <Link to="/kontakt" onClick={() => {
             trackCTAClick("Beratung anfragen", "mobile_navigation");
             setIsOpen(false);
-          }} className="flex-1 text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium">
+          }} className="flex-1 text-center bg-accent text-white py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors">
               Beratung anfragen
             </Link>
           </div>
