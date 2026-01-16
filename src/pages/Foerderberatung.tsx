@@ -257,7 +257,7 @@ const Foerderberatung = () => {
                 Vereinbaren Sie Ihren kostenlosen Förder-Check und erfahren Sie, 
                 wie viel Förderung für Ihr Projekt möglich ist.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center bg-primary-foreground">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center bg-inherit">
                 <Link to="/kontakt">
                   <Button size="lg" className="bg-accent hover:bg-accent/90 text-white px-8">
                     Kostenloser Förder-Check
