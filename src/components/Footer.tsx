@@ -78,8 +78,8 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3" role="list">
               <li>
-                <Link to="/leistungen/ai-agenten" className="transition-colors text-sm bg-accent text-accent-foreground font-bold px-2 py-0.5 rounded">
-                  KI / AI-Agenten
+                <Link to="/leistungen/ki-agenten" className="transition-colors text-sm bg-accent text-accent-foreground font-bold px-2 py-0.5 rounded">
+                  KI-Agenten
                 </Link>
               </li>
               <li>
@@ -93,23 +93,23 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen#crm-erp" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                <Link to="/leistungen/crm-erp" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   CRM & ERP Systeme
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen#webentwicklung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  Webentwicklung
+                <Link to="/leistungen/websites" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  Websites & Shops
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen#beratung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                <Link to="/leistungen/schulung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   Schulungen & Beratung
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen#seo" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  SEO-Sichtbarkeit
+                <Link to="/leistungen/seo" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  SEO & Sichtbarkeit
                 </Link>
               </li>
             </ul>
