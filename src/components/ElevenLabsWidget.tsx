@@ -6,7 +6,7 @@ const SAFE_GREETINGS: Record<string, string> = {
   '/': 'Willkommen bei DeutLicht®. Wobei kann ich Ihnen heute Klarheit verschaffen?',
   '/index': 'Willkommen bei DeutLicht®. Wobei kann ich Ihnen heute Klarheit verschaffen?',
   '/leistungen': 'Haben Sie Fragen zu digitalen Prozessen oder Systemen? Ich unterstütze Sie gern bei der Einordnung.',
-  '/leistungen/ai-agenten': 'Haben Sie Fragen zu KI-Agenten oder Automatisierung? Ich helfe Ihnen gern weiter.',
+  '/leistungen/ki-agenten': 'Haben Sie Fragen zu KI-Agenten oder Automatisierung? Ich helfe Ihnen gern weiter.',
   '/leistungen/seo': 'Haben Sie Fragen zur Suchmaschinenoptimierung? Ich unterstütze Sie gern.',
   '/leistungen/schulung': 'Haben Sie Fragen zu Schulungen oder Beratung? Ich helfe Ihnen gern weiter.',
   '/leistungen/websites': 'Haben Sie Fragen zu Websites oder Shopsystemen? Ich unterstütze Sie gern.',

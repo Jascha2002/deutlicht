@@ -134,8 +134,8 @@ const services = [
       { icon: Zap, text: "Automatisierung bis 80%" },
       { icon: Target, text: "Präzise Ergebnisse" }
     ],
-    link: "/leistungen/ai-agenten",
-    detailLink: "/leistungen/ai-agenten"
+    link: "/leistungen/ki-agenten",
+    detailLink: "/leistungen/ki-agenten"
   },
   {
     id: "voice-agents",
@@ -156,7 +156,7 @@ const services = [
       { icon: Users, text: "98% Kundenzufriedenheit" }
     ],
     link: "/leistungen/voicebot-demos",
-    detailLink: "/leistungen/ai-agenten"
+    detailLink: "/leistungen/ki-agenten"
   },
   {
     id: "seo",
@@ -354,7 +354,7 @@ const services = [
 
 // Quick access buttons for prominent services
 const quickAccessButtons = [
-  { label: "AI-Agenten", link: "/leistungen/ai-agenten", icon: Bot },
+  { label: "KI-Agenten", link: "/leistungen/ki-agenten", icon: Bot },
   { label: "SEO & Sichtbarkeit", link: "/leistungen/seo", icon: Search },
   { label: "Schulung & Beratung", link: "/leistungen/schulung", icon: GraduationCap }
 ];
@@ -618,7 +618,7 @@ const Leistungen = () => {
             </div>
 
             <div className="text-center mt-8">
-              <Link to="/leistungen/ai-agenten">
+              <Link to="/leistungen/ki-agenten">
                 <Button size="lg" className="group bg-accent hover:bg-accent/90 text-accent-foreground">
                   Alle KI-Agenten entdecken
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

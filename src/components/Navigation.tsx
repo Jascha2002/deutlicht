@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, type LucideIcon } from "lucide-react";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -40,10 +40,10 @@ const searchablePages = [{
   keywords: ["services", "angebot", "dienstleistungen"],
   content: "Leistungen Digitalisierung CRM ERP BIM PIM Wissensmanagement Website Webshop Marketing Social Media SEO Förderberatung Beratung Schulungen"
 }, {
-  title: "AI Agenten",
-  path: "/leistungen/ai-agenten",
+  title: "KI Agenten",
+  path: "/leistungen/ki-agenten",
   keywords: ["ki", "künstliche intelligenz", "chatbot", "voice", "automatisierung"],
-  content: "AI Agenten KI künstliche Intelligenz Chatbot Voicebot Sprachassistent Automatisierung Kundenservice 24/7 Erreichbarkeit Machine Learning NLP Branchenlösungen maßgeschneidert"
+  content: "KI Agenten künstliche Intelligenz Chatbot Voicebot Sprachassistent Automatisierung Kundenservice 24/7 Erreichbarkeit Machine Learning NLP Branchenlösungen maßgeschneidert"
 }, {
   title: "Branchenlösungen",
   path: "/leistungen/branchen-loesungen",
@@ -61,12 +61,12 @@ const searchablePages = [{
   content: "Smartlock intelligente Schlösser Zutrittskontrolle Roboter Serviceroboter Butlerbot Hardware IoT Automatisierung Schließsystem"
 }, {
   title: "CRM & ERP Systeme",
-  path: "/leistungen#crm-erp",
+  path: "/leistungen/crm-erp",
   keywords: ["odoo", "kundenmanagement", "enterprise"],
   content: "CRM Customer Relationship Management ERP Enterprise Resource Planning Odoo Kundenmanagement Geschäftsprozesse Integration Verwaltung"
 }, {
   title: "BIM Systeme",
-  path: "/leistungen#bim",
+  path: "/leistungen/bim",
   keywords: ["building", "information", "modellierung"],
   content: "BIM Building Information Modeling Bauwesen Architektur Planung 3D Modellierung Gebäudedaten Konstruktion"
 }, {
@@ -75,13 +75,13 @@ const searchablePages = [{
   keywords: ["digital", "transformation"],
   content: "Digitalisierung digitale Transformation Prozesse automatisieren Effizienz steigern Modernisierung IT-Strategie Innovation"
 }, {
-  title: "Webentwicklung",
-  path: "/leistungen#web",
+  title: "Websites & Shops",
+  path: "/leistungen/websites",
   keywords: ["website", "webshop", "online"],
   content: "Website Webentwicklung Webshop Online-Shop E-Commerce Responsive Design UX UI Programmierung"
 }, {
   title: "Marketing & Social Media",
-  path: "/leistungen#marketing",
+  path: "/leistungen/marketing",
   keywords: ["social", "werbung", "seo"],
   content: "Marketing Social Media SEO Suchmaschinenoptimierung Werbung Online-Marketing Content Reichweite Sichtbarkeit Facebook Instagram LinkedIn"
 }, {
@@ -231,23 +231,23 @@ const Navigation = () => {
       icon: Monitor
     }, {
       name: "CRM & ERP Systeme",
-      href: "/leistungen#crm-erp",
+      href: "/leistungen/crm-erp",
       icon: Cog
     }, {
       name: "BIM Systeme",
-      href: "/leistungen#bim",
+      href: "/leistungen/bim",
       icon: Building2
     }, {
       name: "PIM Systeme",
-      href: "/leistungen#pim",
+      href: "/leistungen/pim",
       icon: Package
     }, {
       name: "Wissensmanagement",
-      href: "/leistungen#wissensmanagement",
+      href: "/leistungen/wissensmanagement",
       icon: BookOpen
     }, {
-      name: "AI Agenten",
-      href: "/leistungen/ai-agenten",
+      name: "KI Agenten",
+      href: "/leistungen/ki-agenten",
       icon: Bot
     }, {
       name: "Branchen-Lösungen",
@@ -263,15 +263,23 @@ const Navigation = () => {
       icon: Lock
     }, {
       name: "Websites & Shops",
-      href: "/leistungen#web",
+      href: "/leistungen/websites",
       icon: Globe
     }, {
       name: "Marketing & Social Media",
-      href: "/leistungen#marketing",
+      href: "/leistungen/marketing",
       icon: Megaphone
     }, {
+      name: "SEO & Sichtbarkeit",
+      href: "/leistungen/seo",
+      icon: Search
+    }, {
+      name: "Schulung & Beratung",
+      href: "/leistungen/schulung",
+      icon: GraduationCap
+    }, {
       name: "Förderberatung",
-      href: "/leistungen#foerderung",
+      href: "/leistungen/foerderberatung",
       icon: FileText
     }]
   }, {
