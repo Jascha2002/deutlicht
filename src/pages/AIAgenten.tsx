@@ -1,25 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { 
-  Bot, 
-  Brain, 
-  MessageSquare, 
-  Workflow, 
-  BarChart3, 
-  Phone, 
-  Users, 
-  Zap, 
-  CheckCircle2, 
-  ArrowRight,
-  Sparkles,
-  Clock,
-  Shield,
-  Database,
-  TrendingUp,
-  Headphones,
-  FileSearch,
-  Settings
-} from "lucide-react";
+import { Bot, Brain, MessageSquare, Workflow, BarChart3, Phone, Users, Zap, CheckCircle2, ArrowRight, Sparkles, Clock, Shield, Database, TrendingUp, Headphones, FileSearch, Settings } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -33,119 +14,124 @@ import aiAgentChatbot from "@/assets/ai-agent-chatbot.jpg";
 import aiAgentWorkflow from "@/assets/ai-agent-workflow.jpg";
 import aiAgentAnalytics from "@/assets/ai-agent-analytics.jpg";
 import aiAgentenHeroBg from "@/assets/ai-agenten-hero-bg.jpg";
-
-const agentTypes = [
-  {
-    id: "chatbot",
-    icon: MessageSquare,
-    title: "Intelligente Chatbots",
-    description: "KI-gestützte Chatbots für Website, App und Social Media. Beantworten Kundenanfragen rund um die Uhr mit natürlicher Sprache.",
-    image: aiAgentChatbot,
-    features: [
-      "Natural Language Processing (NLP)",
-      "Kontextverständnis über mehrere Nachrichten",
-      "Nahtlose Übergabe an Mitarbeiter",
-      "Multi-Channel-Einsatz (Web, WhatsApp, etc.)"
-    ],
-    stats: { value: "80%", label: "der Anfragen automatisch beantwortet" }
-  },
-  {
-    id: "voice",
-    icon: Phone,
-    title: "Voice Agents",
-    description: "Sprachgesteuerte KI-Assistenten für Telefon und Call Center. Natürliche Gespräche mit modernster Spracherkennung.",
-    image: null, // Will show VoiceAgentDemo instead
-    features: [
-      "Natürliche Sprachausgabe (Text-to-Speech)",
-      "Echtzeit-Spracherkennung",
-      "Emotionserkennung und Anpassung",
-      "Integration in Telefonanlagen"
-    ],
-    stats: { value: "24/7", label: "Erreichbarkeit ohne Wartezeiten" }
-  },
-  {
-    id: "workflow",
-    icon: Workflow,
-    title: "Workflow-Automatisierung",
-    description: "Autonome Agenten, die komplexe Geschäftsprozesse über verschiedene Systeme hinweg automatisieren.",
-    image: aiAgentWorkflow,
-    features: [
-      "Multi-Step Workflow-Ausführung",
-      "System-übergreifende Integration",
-      "Fehlerbehandlung und Eskalation",
-      "Lernfähige Prozessoptimierung"
-    ],
-    stats: { value: "70%", label: "Zeitersparnis bei Routineaufgaben" }
-  },
-  {
-    id: "analytics",
-    icon: BarChart3,
-    title: "Analyse & Insights Agents",
-    description: "KI-Agenten für Datenanalyse, Reporting und Business Intelligence. Verwandeln Daten in actionable Insights.",
-    image: aiAgentAnalytics,
-    features: [
-      "Automatisierte Datenanalyse",
-      "Natürlichsprachliche Abfragen",
-      "Predictive Analytics",
-      "Automatische Report-Generierung"
-    ],
-    stats: { value: "10x", label: "schnellere Datenauswertung" }
+const agentTypes = [{
+  id: "chatbot",
+  icon: MessageSquare,
+  title: "Intelligente Chatbots",
+  description: "KI-gestützte Chatbots für Website, App und Social Media. Beantworten Kundenanfragen rund um die Uhr mit natürlicher Sprache.",
+  image: aiAgentChatbot,
+  features: ["Natural Language Processing (NLP)", "Kontextverständnis über mehrere Nachrichten", "Nahtlose Übergabe an Mitarbeiter", "Multi-Channel-Einsatz (Web, WhatsApp, etc.)"],
+  stats: {
+    value: "80%",
+    label: "der Anfragen automatisch beantwortet"
   }
-];
-
-const useCases = [
-  {
-    icon: Headphones,
-    title: "Kundenservice",
-    description: "Automatisierte Beantwortung von FAQs, Bestellstatus, Reklamationen",
-    result: "Bis zu 80% weniger Support-Tickets"
-  },
-  {
-    icon: TrendingUp,
-    title: "Vertrieb & Marketing",
-    description: "Lead-Qualifizierung, personalisierte Kampagnen, Marktanalysen",
-    result: "35% höhere Conversion-Rate"
-  },
-  {
-    icon: FileSearch,
-    title: "Wissensmanagement",
-    description: "Intelligente Dokumentensuche, automatische Zusammenfassungen",
-    result: "90% schnellerer Informationszugriff"
-  },
-  {
-    icon: Settings,
-    title: "Prozessautomatisierung",
-    description: "Rechnungsverarbeitung, Dateneingabe, Berichterstellung",
-    result: "70% Zeitersparnis bei Routineaufgaben"
+}, {
+  id: "voice",
+  icon: Phone,
+  title: "Voice Agents",
+  description: "Sprachgesteuerte KI-Assistenten für Telefon und Call Center. Natürliche Gespräche mit modernster Spracherkennung.",
+  image: null,
+  // Will show VoiceAgentDemo instead
+  features: ["Natürliche Sprachausgabe (Text-to-Speech)", "Echtzeit-Spracherkennung", "Emotionserkennung und Anpassung", "Integration in Telefonanlagen"],
+  stats: {
+    value: "24/7",
+    label: "Erreichbarkeit ohne Wartezeiten"
   }
-];
-
-const benefits = [
-  { icon: Clock, title: "24/7 Verfügbarkeit", description: "Ihre KI-Agenten arbeiten rund um die Uhr ohne Pause" },
-  { icon: Zap, title: "Sofortige Reaktion", description: "Antworten in Millisekunden statt Minuten oder Stunden" },
-  { icon: Shield, title: "Konsistente Qualität", description: "Immer die gleiche hohe Servicequalität" },
-  { icon: TrendingUp, title: "Skalierbar", description: "Von 10 bis 10.000 gleichzeitige Anfragen" },
-  { icon: Database, title: "Lernfähig", description: "Verbessert sich kontinuierlich durch Machine Learning" },
-  { icon: Users, title: "Entlastet Mitarbeiter", description: "Mehr Zeit für komplexe und wertschöpfende Aufgaben" }
-];
-
-const implementationSteps = [
-  { step: 1, title: "Analyse", description: "Wir analysieren Ihre Prozesse und identifizieren Automatisierungspotenziale" },
-  { step: 2, title: "Konzept", description: "Gemeinsam entwickeln wir eine maßgeschneiderte KI-Strategie" },
-  { step: 3, title: "Entwicklung", description: "Wir implementieren und trainieren Ihre KI-Agenten" },
-  { step: 4, title: "Integration", description: "Nahtlose Anbindung an Ihre bestehenden Systeme (CRM, ERP, etc.)" },
-  { step: 5, title: "Optimierung", description: "Kontinuierliche Verbesserung durch Monitoring und Feedback" }
-];
-
+}, {
+  id: "workflow",
+  icon: Workflow,
+  title: "Workflow-Automatisierung",
+  description: "Autonome Agenten, die komplexe Geschäftsprozesse über verschiedene Systeme hinweg automatisieren.",
+  image: aiAgentWorkflow,
+  features: ["Multi-Step Workflow-Ausführung", "System-übergreifende Integration", "Fehlerbehandlung und Eskalation", "Lernfähige Prozessoptimierung"],
+  stats: {
+    value: "70%",
+    label: "Zeitersparnis bei Routineaufgaben"
+  }
+}, {
+  id: "analytics",
+  icon: BarChart3,
+  title: "Analyse & Insights Agents",
+  description: "KI-Agenten für Datenanalyse, Reporting und Business Intelligence. Verwandeln Daten in actionable Insights.",
+  image: aiAgentAnalytics,
+  features: ["Automatisierte Datenanalyse", "Natürlichsprachliche Abfragen", "Predictive Analytics", "Automatische Report-Generierung"],
+  stats: {
+    value: "10x",
+    label: "schnellere Datenauswertung"
+  }
+}];
+const useCases = [{
+  icon: Headphones,
+  title: "Kundenservice",
+  description: "Automatisierte Beantwortung von FAQs, Bestellstatus, Reklamationen",
+  result: "Bis zu 80% weniger Support-Tickets"
+}, {
+  icon: TrendingUp,
+  title: "Vertrieb & Marketing",
+  description: "Lead-Qualifizierung, personalisierte Kampagnen, Marktanalysen",
+  result: "35% höhere Conversion-Rate"
+}, {
+  icon: FileSearch,
+  title: "Wissensmanagement",
+  description: "Intelligente Dokumentensuche, automatische Zusammenfassungen",
+  result: "90% schnellerer Informationszugriff"
+}, {
+  icon: Settings,
+  title: "Prozessautomatisierung",
+  description: "Rechnungsverarbeitung, Dateneingabe, Berichterstellung",
+  result: "70% Zeitersparnis bei Routineaufgaben"
+}];
+const benefits = [{
+  icon: Clock,
+  title: "24/7 Verfügbarkeit",
+  description: "Ihre KI-Agenten arbeiten rund um die Uhr ohne Pause"
+}, {
+  icon: Zap,
+  title: "Sofortige Reaktion",
+  description: "Antworten in Millisekunden statt Minuten oder Stunden"
+}, {
+  icon: Shield,
+  title: "Konsistente Qualität",
+  description: "Immer die gleiche hohe Servicequalität"
+}, {
+  icon: TrendingUp,
+  title: "Skalierbar",
+  description: "Von 10 bis 10.000 gleichzeitige Anfragen"
+}, {
+  icon: Database,
+  title: "Lernfähig",
+  description: "Verbessert sich kontinuierlich durch Machine Learning"
+}, {
+  icon: Users,
+  title: "Entlastet Mitarbeiter",
+  description: "Mehr Zeit für komplexe und wertschöpfende Aufgaben"
+}];
+const implementationSteps = [{
+  step: 1,
+  title: "Analyse",
+  description: "Wir analysieren Ihre Prozesse und identifizieren Automatisierungspotenziale"
+}, {
+  step: 2,
+  title: "Konzept",
+  description: "Gemeinsam entwickeln wir eine maßgeschneiderte KI-Strategie"
+}, {
+  step: 3,
+  title: "Entwicklung",
+  description: "Wir implementieren und trainieren Ihre KI-Agenten"
+}, {
+  step: 4,
+  title: "Integration",
+  description: "Nahtlose Anbindung an Ihre bestehenden Systeme (CRM, ERP, etc.)"
+}, {
+  step: 5,
+  title: "Optimierung",
+  description: "Kontinuierliche Verbesserung durch Monitoring und Feedback"
+}];
 const AIAgenten = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>KI-Agenten (AI-Agents) | DeutLicht® - Intelligente Automatisierung für Ihr Unternehmen</title>
-        <meta
-          name="description"
-          content="KI-gestützte Agenten für Kundenservice, Prozessautomatisierung und Business Intelligence. Chatbots, Voice Agents und Workflow-Automatisierung von DeutLicht®."
-        />
+        <meta name="description" content="KI-gestützte Agenten für Kundenservice, Prozessautomatisierung und Business Intelligence. Chatbots, Voice Agents und Workflow-Automatisierung von DeutLicht®." />
       </Helmet>
 
       <Navigation />
@@ -154,11 +140,7 @@ const AIAgenten = () => {
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0">
-            <img 
-              src={aiAgentenHeroBg} 
-              alt="AI Agenten Technologie" 
-              className="w-full h-full object-cover opacity-40"
-            />
+            <img src={aiAgentenHeroBg} alt="AI Agenten Technologie" className="w-full h-full object-cover opacity-40" />
             <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/80 to-primary/30" />
           </div>
           
@@ -205,17 +187,22 @@ const AIAgenten = () => {
         <section className="py-12 bg-primary">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                { value: "80%", label: "Automatisierung möglich" },
-                { value: "24/7", label: "Verfügbarkeit" },
-                { value: "98%", label: "Kundenzufriedenheit" },
-                { value: "14%", label: "Kostenreduktion (Klarna)" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
+              {[{
+              value: "80%",
+              label: "Automatisierung möglich"
+            }, {
+              value: "24/7",
+              label: "Verfügbarkeit"
+            }, {
+              value: "98%",
+              label: "Kundenzufriedenheit"
+            }, {
+              value: "14%",
+              label: "Kostenreduktion (Klarna)"
+            }].map((stat, i) => <div key={i} className="text-center">
                   <p className="font-display text-3xl md:text-4xl font-bold text-primary-foreground">{stat.value}</p>
                   <p className="text-primary-foreground/80 text-sm mt-1">{stat.label}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </section>
@@ -237,8 +224,7 @@ const AIAgenten = () => {
             </ScrollReveal>
 
             <div className="space-y-20">
-              {agentTypes.map((agent, index) => (
-                <ScrollReveal key={agent.id} direction={index % 2 === 0 ? "left" : "right"}>
+              {agentTypes.map((agent, index) => <ScrollReveal key={agent.id} direction={index % 2 === 0 ? "left" : "right"}>
                   <div className={`grid lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
                     {/* Content */}
                     <div className={index % 2 === 1 ? "lg:order-2" : ""}>
@@ -258,12 +244,10 @@ const AIAgenten = () => {
                       </p>
 
                       <div className="space-y-3 mb-8">
-                        {agent.features.map((feature, i) => (
-                          <div key={i} className="flex items-center gap-3">
+                        {agent.features.map((feature, i) => <div key={i} className="flex items-center gap-3">
                             <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
                             <span className="text-foreground">{feature}</span>
-                          </div>
-                        ))}
+                          </div>)}
                       </div>
 
                       <div className="bg-muted/50 rounded-xl p-6 inline-block">
@@ -274,21 +258,12 @@ const AIAgenten = () => {
 
                     {/* Image or Demo */}
                     <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                      {agent.id === "voice" ? (
-                        <VoiceAgentDemo />
-                      ) : (
-                        <div className="rounded-2xl overflow-hidden shadow-lg border border-border">
-                          <img 
-                            src={agent.image!} 
-                            alt={agent.title} 
-                            className="w-full h-80 object-cover"
-                          />
-                        </div>
-                      )}
+                      {agent.id === "voice" ? <VoiceAgentDemo /> : <div className="rounded-2xl overflow-hidden shadow-lg border border-border">
+                          <img src={agent.image!} alt={agent.title} className="w-full h-80 object-cover" />
+                        </div>}
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
@@ -306,8 +281,7 @@ const AIAgenten = () => {
             </ScrollReveal>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {useCases.map((useCase, i) => (
-                <ScrollReveal key={i} delay={i * 100}>
+              {useCases.map((useCase, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="bg-card rounded-xl p-6 shadow-lg border border-border h-full hover:shadow-xl transition-shadow">
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
                       <useCase.icon className="w-6 h-6 text-accent" />
@@ -322,8 +296,7 @@ const AIAgenten = () => {
                       <p className="text-accent font-medium text-sm">{useCase.result}</p>
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
@@ -341,11 +314,10 @@ const AIAgenten = () => {
             </ScrollReveal>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {benefits.map((benefit, i) => (
-                <ScrollReveal key={i} delay={i * 100}>
+              {benefits.map((benefit, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="w-6 h-6 text-primary" />
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 bg-inherit text-inherit">
+                      <benefit.icon className="w-6 h-6 bg-orange-400 text-inherit" />
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-2">
@@ -356,8 +328,7 @@ const AIAgenten = () => {
                       </p>
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
           </div>
         </section>
@@ -380,8 +351,7 @@ const AIAgenten = () => {
                 <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
                 
                 <div className="space-y-8">
-                  {implementationSteps.map((step, i) => (
-                    <ScrollReveal key={i} delay={i * 100}>
+                  {implementationSteps.map((step, i) => <ScrollReveal key={i} delay={i * 100}>
                       <div className="flex gap-6 items-start">
                         <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-display text-2xl font-bold relative z-10">
                           {step.step}
@@ -395,8 +365,7 @@ const AIAgenten = () => {
                           </p>
                         </div>
                       </div>
-                    </ScrollReveal>
-                  ))}
+                    </ScrollReveal>)}
                 </div>
               </div>
             </div>
@@ -471,13 +440,19 @@ const AIAgenten = () => {
             </ScrollReveal>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {[
-                { title: "Handwerk", description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation" },
-                { title: "Gesundheit", description: "CareBot für Patientenmanagement & Terminvergabe" },
-                { title: "Gastronomie", description: "Bestell- und Reservierungsassistenten" },
-                { title: "Einzelhandel", description: "ShopBot für Kundenberatung & Bestellstatus" }
-              ].map((branche, i) => (
-                <ScrollReveal key={i} delay={i * 100}>
+              {[{
+              title: "Handwerk",
+              description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation"
+            }, {
+              title: "Gesundheit",
+              description: "CareBot für Patientenmanagement & Terminvergabe"
+            }, {
+              title: "Gastronomie",
+              description: "Bestell- und Reservierungsassistenten"
+            }, {
+              title: "Einzelhandel",
+              description: "ShopBot für Kundenberatung & Bestellstatus"
+            }].map((branche, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="bg-card rounded-xl p-6 shadow-lg border border-border h-full hover:shadow-xl transition-shadow">
                     <h3 className="font-display text-xl font-semibold text-foreground mb-3">
                       {branche.title}
@@ -486,8 +461,7 @@ const AIAgenten = () => {
                       {branche.description}
                     </p>
                   </div>
-                </ScrollReveal>
-              ))}
+                </ScrollReveal>)}
             </div>
 
             <div className="text-center">
@@ -531,8 +505,6 @@ const AIAgenten = () => {
       </main>
 
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default AIAgenten;
