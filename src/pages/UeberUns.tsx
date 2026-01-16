@@ -343,7 +343,7 @@ const UeberUns = () => {
                     </p>
                     <ul className="space-y-3">
                       {["Automatisierte Lead-Erfassung mit KI-Qualifizierung", "Projektmanagement & Zeittracking", "SEO & datenbasiertes Online-Marketing", "KI-gestützte Prozessautomatisierung", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-[#c88a04] font-bold">
-                          <span className="w-2 h-2 rounded-full flex-shrink-0 text-inherit bg-inherit" />
+                          <span className="w-2 h-2 rounded-full flex-shrink-0 text-secondary-foreground bg-secondary-foreground" />
                           {item}
                         </li>)}
                     </ul>
