@@ -10,7 +10,6 @@ import heroUeberUns from "@/assets/hero-ueber-uns.jpg";
 import kiPionierImg from "@/assets/ki-pionier-gera.jpg";
 import projekteProzesseImg from "@/assets/projekte-prozesse.jpg";
 import leistungWebsitesMarketingImg from "@/assets/leistung-websites-marketing.jpg";
-
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -25,11 +24,7 @@ const UeberUns = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <img 
-              src={heroUeberUns} 
-              alt="Über uns Hero" 
-              className="w-full h-full object-cover"
-            />
+            <img src={heroUeberUns} alt="Über uns Hero" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
           </div>
           <div className="container mx-auto px-4 relative z-10">
@@ -151,11 +146,7 @@ const UeberUns = () => {
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <ScrollReveal direction="left">
                   <div className="relative">
-                    <img 
-                      src={kiPionierImg} 
-                      alt="KI-Pionier in Gera - Künstliche Intelligenz Netzwerk" 
-                      className="rounded-xl shadow-2xl w-full h-auto"
-                    />
+                    <img src={kiPionierImg} alt="KI-Pionier in Gera - Künstliche Intelligenz Netzwerk" className="rounded-xl shadow-2xl w-full h-auto" />
                     <div className="absolute -bottom-4 -right-4 bg-[#c88a04] text-primary px-6 py-3 rounded-lg font-bold shadow-lg">
                       <div className="flex items-center gap-2">
                         <Brain className="w-5 h-5" />
@@ -167,32 +158,25 @@ const UeberUns = () => {
 
                 <ScrollReveal direction="right" delay={200}>
                   <div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-[#c88a04]/20 text-[#c88a04] border border-[#c88a04]/30">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 text-[#c88a04] border border-[#c88a04]/30 bg-primary-foreground">
                       <Sparkles className="w-4 h-4" />
-                      Innovation aus Ostthüringen
+                      Innovatives aus Ostthüringen
                     </div>
                     <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-foreground">
                       Pionier der KI in Gera
                     </h2>
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      Als <strong className="text-[#c88a04]">erste KI-Agentur in Gera</strong> verbinden wir 
+                    <p className="leading-relaxed mb-6 text-primary font-bold">
+                      Als <strong className="text-[#c88a04] bg-primary-foreground">erste KI-Agentur in Gera</strong> verbinden wir 
                       über 25 Jahre Digitalisierungserfahrung mit modernster Künstlicher Intelligenz. 
                       Wir sind Vorreiter für innovative KI-Lösungen in der Region Ostthüringen.
                     </p>
                     <ul className="space-y-3 mb-8">
-                      {[
-                        "KI-gestützte Automatisierung & Chatbots",
-                        "Voice Agents für Kundenservice",
-                        "Intelligente Datenanalyse & Prozessoptimierung",
-                        "Individuelle KI-Lösungen für Ihr Unternehmen"
-                      ].map((item, index) => (
-                        <li key={index} className="flex items-center gap-3">
+                      {["KI-gestützte Automatisierung & Chatbots", "Voice Agents für Kundenservice", "Intelligente Datenanalyse & Prozessoptimierung", "Individuelle KI-Lösungen für Ihr Unternehmen"].map((item, index) => <li key={index} className="flex items-center gap-3">
                           <span className="w-6 h-6 rounded-full bg-[#c88a04] flex items-center justify-center flex-shrink-0">
                             <Zap className="w-3 h-3 text-primary" />
                           </span>
                           <span className="text-foreground">{item}</span>
-                        </li>
-                      ))}
+                        </li>)}
                     </ul>
                     <Link to="/leistungen/ki-agenten">
                       <Button className="group bg-[#c88a04] hover:bg-[#a87304] text-primary">
@@ -226,11 +210,7 @@ const UeberUns = () => {
                 <ScrollReveal delay={0}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
                     <div className="h-48 overflow-hidden">
-                      <img 
-                        src={leistungWebsitesMarketingImg} 
-                        alt="Websites und E-Commerce" 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      />
+                      <img src={leistungWebsitesMarketingImg} alt="Websites und E-Commerce" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
@@ -338,18 +318,10 @@ const UeberUns = () => {
                       Als KI-Agentur setzen wir modernste Technologien für effiziente Workflows ein.
                     </p>
                     <ul className="space-y-3">
-                      {[
-                        "Automatisierte Lead-Erfassung mit KI-Qualifizierung",
-                        "Projektmanagement & Zeittracking",
-                        "SEO & datenbasiertes Online-Marketing",
-                        "KI-gestützte Prozessautomatisierung",
-                        "Förderfähige Digitalisierungsprojekte"
-                      ].map((item, index) => (
-                        <li key={index} className="flex items-center gap-3 text-[#c88a04] font-bold">
+                      {["Automatisierte Lead-Erfassung mit KI-Qualifizierung", "Projektmanagement & Zeittracking", "SEO & datenbasiertes Online-Marketing", "KI-gestützte Prozessautomatisierung", "Förderfähige Digitalisierungsprojekte"].map((item, index) => <li key={index} className="flex items-center gap-3 text-[#c88a04] font-bold">
                           <span className="w-2 h-2 rounded-full flex-shrink-0 bg-primary" />
                           {item}
-                        </li>
-                      ))}
+                        </li>)}
                     </ul>
                   </div>
                 </ScrollReveal>
@@ -357,11 +329,7 @@ const UeberUns = () => {
                 <ScrollReveal direction="right" delay={200}>
                   <div className="space-y-6">
                     <div className="relative">
-                      <img 
-                        src={projekteProzesseImg} 
-                        alt="Projektmanagement und Prozessautomatisierung" 
-                        className="rounded-xl shadow-2xl w-full h-auto"
-                      />
+                      <img src={projekteProzesseImg} alt="Projektmanagement und Prozessautomatisierung" className="rounded-xl shadow-2xl w-full h-auto" />
                     </div>
                     <div className="gradient-gold rounded-xl p-8 shadow-xl">
                       <h3 className="font-display text-2xl font-semibold text-accent-foreground mb-4">
