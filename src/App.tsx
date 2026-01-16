@@ -37,6 +37,7 @@ import CrmErp from "./pages/CrmErp";
 import BIM from "./pages/BIM";
 import PIM from "./pages/PIM";
 import Foerderberatung from "./pages/Foerderberatung";
+import Digitalisierung from "./pages/Digitalisierung";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -81,6 +82,7 @@ const App = () => (
               <Route path="/leistungen/bim" element={<BIM />} />
               <Route path="/leistungen/pim" element={<PIM />} />
               <Route path="/leistungen/foerderberatung" element={<Foerderberatung />} />
+              <Route path="/leistungen/digitalisierung" element={<Digitalisierung />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

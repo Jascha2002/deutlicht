@@ -47,11 +47,11 @@ const services = [
     ],
     benefits: [
       { icon: Zap, text: "Effizienzsteigerung bis zu 40%" },
-      { icon: Coins, text: "Fördermittel bis 50% nutzen" },
+      { icon: Coins, text: "Fördermittel bis 80% nutzen" },
       { icon: Users, text: "Mitarbeiter erfolgreich einbinden" }
     ],
-    link: "/kontakt",
-    detailLink: null
+    link: "/leistungen/digitalisierung",
+    detailLink: "/leistungen/digitalisierung"
   },
   {
     id: "websites",

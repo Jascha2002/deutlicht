@@ -2,13 +2,15 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { 
   Cog, ArrowRight, Database, Zap, BarChart3, 
-  Users, Settings, RefreshCw, Cloud, Shield
+  Users, Settings, RefreshCw, Cloud, Shield,
+  CheckCircle2, Layers, Globe, ExternalLink
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import leistungCrmErp from "@/assets/leistung-crm-erp.jpg";
+import crmErpDashboard from "@/assets/crm-erp-dashboard.jpg";
 
 const features = [
   {
@@ -52,15 +54,15 @@ const benefits = [
   { text: "Nahtlose Integration mit bestehenden Tools", icon: Cog }
 ];
 
-const systems = [
-  { name: "Salesforce", category: "CRM" },
-  { name: "HubSpot", category: "CRM/Marketing" },
-  { name: "Microsoft Dynamics", category: "CRM/ERP" },
-  { name: "SAP Business One", category: "ERP" },
-  { name: "Odoo", category: "ERP/CRM" },
-  { name: "Pipedrive", category: "CRM" },
-  { name: "Zoho", category: "CRM/Suite" },
-  { name: "lexoffice/sevDesk", category: "Buchhaltung" }
+const odooFeatures = [
+  "Integrierte Buchhaltung und Finanzen",
+  "Vertrieb und CRM in einer Lösung",
+  "Lagerverwaltung und Logistik",
+  "E-Commerce und Point of Sale",
+  "Projektmanagement und Zeiterfassung",
+  "HR und Personalverwaltung",
+  "Marketing-Automatisierung",
+  "Über 30.000 Apps im Marketplace"
 ];
 
 const CrmErp = () => {
@@ -122,6 +124,26 @@ const CrmErp = () => {
           </div>
         </section>
 
+        {/* Dashboard Image Section */}
+        <section className="py-16 bg-muted/20">
+          <div className="container mx-auto px-4">
+            <ScrollReveal>
+              <div className="max-w-5xl mx-auto">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border border-border">
+                  <img 
+                    src={crmErpDashboard} 
+                    alt="CRM & ERP Dashboard Übersicht" 
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-center mt-4 text-muted-foreground">
+                  Zentrale Steuerung aller Geschäftsprozesse in einem modernen Dashboard
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
         {/* Features Grid */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
@@ -156,26 +178,93 @@ const CrmErp = () => {
           </div>
         </section>
 
-        {/* Systems */}
+        {/* Expertise Section (replaces Systems) */}
         <section className="py-20">
           <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="text-center mb-12">
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  Systeme, mit denen wir arbeiten
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              {systems.map((system, index) => (
-                <ScrollReveal key={system.name} delay={index * 50}>
-                  <div className="px-6 py-3 bg-card rounded-full border border-border">
-                    <span className="font-semibold text-foreground">{system.name}</span>
-                    <span className="text-muted-foreground ml-2 text-sm">({system.category})</span>
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <ScrollReveal>
+                <div>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent mb-6">
+                    <Layers className="w-5 h-5" />
+                    <span className="font-medium">Unsere Expertise</span>
                   </div>
-                </ScrollReveal>
-              ))}
+                  
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+                    Das passende System für
+                    <span className="text-accent"> Ihre Anforderungen</span>
+                  </h2>
+                  
+                  <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                    Durch unsere langjährige Erfahrung kennen wir die Stärken und Schwächen verschiedenster 
+                    CRM- und ERP-Lösungen. Ob Branchensoftware, Open-Source-Lösung oder etablierter 
+                    Marktführer – wir finden gemeinsam mit Ihnen das System, das zu Ihren Prozessen, 
+                    Ihrem Budget und Ihren Wachstumszielen passt.
+                  </p>
+                  
+                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    <strong className="text-foreground">Unser Ansatz:</strong> Wir beraten herstellerunabhängig 
+                    und stellen Ihre Anforderungen in den Mittelpunkt. Dabei unterstützen wir Sie von der 
+                    Bedarfsanalyse über die Implementierung bis hin zur Schulung Ihrer Mitarbeiter.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-foreground">
+                      Open Source
+                    </div>
+                    <div className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-foreground">
+                      Cloud-native
+                    </div>
+                    <div className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-foreground">
+                      On-Premise
+                    </div>
+                    <div className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-foreground">
+                      Hybrid
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={200}>
+                <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 rounded-2xl p-8 border border-border">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center">
+                      <Globe className="w-8 h-8 text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-2xl font-bold text-foreground">
+                        Odoo – All-in-One Business Suite
+                      </h3>
+                      <p className="text-muted-foreground">Open Source ERP & CRM</p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Odoo ist eine der führenden Open-Source-Lösungen für Unternehmen jeder Größe. 
+                    Mit über 12 Millionen Nutzern weltweit bietet Odoo eine vollständig integrierte 
+                    Suite aus mehr als 80 Geschäftsanwendungen – von CRM über ERP bis hin zu 
+                    E-Commerce und Marketing.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    {odooFeatures.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                        <span className="text-sm text-foreground">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <a 
+                    href="https://www.odoo.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                  >
+                    Mehr über Odoo erfahren
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>
