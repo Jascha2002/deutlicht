@@ -161,7 +161,7 @@ const UeberUns = () => {
 
                 <ScrollReveal direction="right" delay={200}>
                   <div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-[#c88a04]/20 text-[#c88a04] border border-[#c88a04]/30">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-[#c88a04]/30 opacity-100 bg-secondary-foreground text-[#c88a04]">
                       <Sparkles className="w-4 h-4" />
                       Innovation aus Ostthüringen
                     </div>
@@ -169,7 +169,7 @@ const UeberUns = () => {
                       Pionier der KI in Gera
                     </h2>
                     <p className="text-muted-foreground leading-relaxed mb-6">
-                      Als <strong className="text-[#c88a04]">erste KI-Agentur in Gera</strong> verbinden wir 
+                      Als <strong className="text-[#c88a04] bg-white">erste KI-Agentur in Gera</strong> verbinden wir 
                       über 25 Jahre Digitalisierungserfahrung mit modernster Künstlicher Intelligenz. 
                       Wir sind Vorreiter für innovative KI-Lösungen in der Region Ostthüringen.
                     </p>
