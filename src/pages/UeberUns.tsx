@@ -9,9 +9,10 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import heroUeberUns from "@/assets/hero-ueber-uns.jpg";
 import kiPionierImg from "@/assets/ki-pionier-gera.jpg";
 import projekteProzesseImg from "@/assets/projekte-prozesse.jpg";
-import leistungWebsitesMarketingImg from "@/assets/leistung-websites-marketing.jpg";
+import websitesImg from "@/assets/ueber-uns-websites.jpg";
 import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
-import marketingImg from "@/assets/ueber-uns-marketing.jpg";
+import marketingImg from "@/assets/ueber-uns-marketing-new.jpg";
+import foerderungImg from "@/assets/ueber-uns-foerderung.jpg";
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -212,7 +213,7 @@ const UeberUns = () => {
                 <ScrollReveal delay={0}>
                   <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden h-full hover:shadow-xl transition-shadow">
                     <div className="h-48 overflow-hidden">
-                      <img src={leistungWebsitesMarketingImg} alt="Websites und E-Commerce" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                      <img src={websitesImg} alt="Websites und E-Commerce" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-4">
