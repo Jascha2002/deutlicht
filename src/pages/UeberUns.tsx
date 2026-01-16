@@ -118,7 +118,7 @@ const UeberUns = () => {
                       Erste KI-Agentur
                     </h3>
                     <p className="text-sm leading-relaxed text-[#c88a04]/90">
-                      Pionier für Künstliche Intelligenz in Gera und Ostthüringen. Modernste KI-Lösungen für Ihr Unternehmen.
+                      Pionier für Künstliche Intelligenz in Ostthüringen, erste KI-Agentur in Gera. Modernste KI-Lösungen für Ihr Unternehmen.
                     </p>
                   </div>
                 </ScrollReveal>
