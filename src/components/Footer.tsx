@@ -88,7 +88,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen#digitalisierung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                <Link to="/leistungen/digitalisierung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   Digitalisierung
                 </Link>
               </li>

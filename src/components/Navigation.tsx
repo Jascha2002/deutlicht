@@ -71,7 +71,7 @@ const searchablePages = [{
   content: "BIM Building Information Modeling Bauwesen Architektur Planung 3D Modellierung Gebäudedaten Konstruktion"
 }, {
   title: "Digitalisierung",
-  path: "/leistungen#digitalisierung",
+  path: "/leistungen/digitalisierung",
   keywords: ["digital", "transformation"],
   content: "Digitalisierung digitale Transformation Prozesse automatisieren Effizienz steigern Modernisierung IT-Strategie Innovation"
 }, {
@@ -225,9 +225,9 @@ const Navigation = () => {
   }, {
     name: "Leistungen",
     href: "/leistungen",
-    submenu: [{
+submenu: [{
       name: "Digitalisierung",
-      href: "/leistungen#digitalisierung",
+      href: "/leistungen/digitalisierung",
       icon: Monitor
     }, {
       name: "CRM & ERP Systeme",

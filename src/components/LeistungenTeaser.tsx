@@ -4,22 +4,22 @@ const leistungen = [{
   icon: Monitor,
   title: "Digitalisierung",
   description: "Strategische Planung und Umsetzung digitaler Transformationsprozesse für Ihr Unternehmen.",
-  href: "/leistungen#digitalisierung"
+  href: "/leistungen/digitalisierung"
 }, {
   icon: Cog,
   title: "CRM & ERP Systeme",
   description: "Einführung und Optimierung von Kundenmanagement- und Unternehmenssoftware.",
-  href: "/leistungen#crm-erp"
+  href: "/leistungen/crm-erp"
 }, {
   icon: TrendingUp,
   title: "Webentwicklung",
   description: "Professionelle Websites und Shopsysteme, die messbare Ergebnisse liefern.",
-  href: "/leistungen#web"
+  href: "/leistungen/websites"
 }, {
   icon: Megaphone,
   title: "Marketing & Social Media",
   description: "Nachhaltige Strategien für Ihre digitale Präsenz und Reichweite.",
-  href: "/leistungen#marketing"
+  href: "/leistungen/marketing"
 }];
 const LeistungenTeaser = () => {
   return <section className="bg-muted/30 mx-0 my-0 px-0 py-0">
