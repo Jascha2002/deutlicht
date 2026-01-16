@@ -30,6 +30,13 @@ import BranchenLoesungen from "./pages/BranchenLoesungen";
 import VoicebotDemos from "./pages/VoicebotDemos";
 import SEO from "./pages/SEO";
 import Schulung from "./pages/Schulung";
+import Websites from "./pages/Websites";
+import Marketing from "./pages/Marketing";
+import Wissensmanagement from "./pages/Wissensmanagement";
+import CrmErp from "./pages/CrmErp";
+import BIM from "./pages/BIM";
+import PIM from "./pages/PIM";
+import Foerderberatung from "./pages/Foerderberatung";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -67,6 +74,13 @@ const App = () => (
               <Route path="/voicebot-demos" element={<VoicebotDemos />} />
               <Route path="/leistungen/seo" element={<SEO />} />
               <Route path="/leistungen/schulung" element={<Schulung />} />
+              <Route path="/leistungen/websites" element={<Websites />} />
+              <Route path="/leistungen/marketing" element={<Marketing />} />
+              <Route path="/leistungen/wissensmanagement" element={<Wissensmanagement />} />
+              <Route path="/leistungen/crm-erp" element={<CrmErp />} />
+              <Route path="/leistungen/bim" element={<BIM />} />
+              <Route path="/leistungen/pim" element={<PIM />} />
+              <Route path="/leistungen/foerderberatung" element={<Foerderberatung />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
