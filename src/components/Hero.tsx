@@ -72,19 +72,19 @@ const Hero = () => {
         <div className="pt-12 border-t border-border/50 mt-12 opacity-100 bg-[#c88a04]/0">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="font-display text-5xl font-bold opacity-100 shadow-none text-primary">30+</div>
+              <div className="font-display text-5xl font-bold opacity-100 shadow-none text-inherit">30+</div>
               <div className="font-display text-xl font-bold text-primary">Jahre Erfahrung</div>
             </div>
             <div className="text-center">
-              <div className="font-display text-5xl font-bold text-primary">25+</div>
+              <div className="font-display text-5xl font-bold text-inherit">25+</div>
               <div className="font-display text-xl font-bold text-primary">Jahre Digitalisierung</div>
             </div>
             <div className="text-center">
-              <div className="font-display text-5xl font-bold text-primary">100%</div>
+              <div className="font-display text-5xl font-bold text-inherit">100%</div>
               <div className="font-display text-xl font-bold text-primary">Individuelle Lösungen</div>
             </div>
             <div className="text-center">
-              <div className="font-display text-5xl font-bold text-primary">KMU</div>
+              <div className="font-display text-5xl font-bold text-inherit">KMU</div>
               <div className="font-display text-xl font-bold text-primary">Fokus</div>
             </div>
           </div>
