@@ -113,19 +113,36 @@ function generateOfferHtml(data: any): string {
   const companySize = data.company_size || "1-10";
   const projectStart = data.project_start || "1-3-monate";
   const services = Array.isArray(data.services_needed) ? data.services_needed : [];
+  // WICHTIG: services_selected wird für die tatsächliche Leistungsmodulauswahl verwendet
+  const servicesSelected = Array.isArray(data.services_selected) ? data.services_selected : [];
   const pagesNeeded = data.pages_needed || 5;
 
-  // Get pricing data
+  // Get pricing data - Paket wird nur für die Referenz geladen, NICHT automatisch berechnet
   const paket = getPaket(industry);
   const sizeFactor = companySizeFactors[companySize] || 1.0;
   const timeInfo = berechneMonateBisStart(projectStart);
   const timeFactor = timeInfo.factor;
-  const hosting = getHostingPaket(services, pagesNeeded);
+  const hosting = getHostingPaket(services.length > 0 ? services : servicesSelected, pagesNeeded);
 
-  // Calculate website costs
+  // WICHTIG: Prüfen ob KI-Branchenlösung EXPLIZIT ausgewählt wurde
+  const kiSelected = servicesSelected.some((s: string) => 
+    s.toLowerCase().includes('ki-agenten') || 
+    s.toLowerCase().includes('ki-branchenl') ||
+    s.toLowerCase().includes('automation')
+  ) || services.some((s: string) => 
+    s.toLowerCase().includes('ki-agenten') || 
+    s.toLowerCase().includes('ki-branchenl') ||
+    s.toLowerCase().includes('automation')
+  );
+
+  // Calculate website costs - NUR wenn Website explizit ausgewählt
   let websiteKosten = 0;
   let websiteLabel = "";
-  if (services.some((s: string) => s.toLowerCase().includes('website'))) {
+  const websiteSelected = servicesSelected.some((s: string) => 
+    s.toLowerCase().includes('website') || s.toLowerCase().includes('digitale plattform')
+  ) || services.some((s: string) => s.toLowerCase().includes('website'));
+  
+  if (websiteSelected) {
     if (pagesNeeded <= 1) {
       websiteKosten = websitePreise.onepager.avg;
       websiteLabel = "Onepager/Starter";
@@ -134,22 +151,36 @@ function generateOfferHtml(data: any): string {
       websiteLabel = `${pagesNeeded} Seiten Website`;
     }
   }
-  if (services.some((s: string) => s.toLowerCase().includes('webshop'))) {
+  const webshopSelected = servicesSelected.some((s: string) => s.toLowerCase().includes('webshop')) || 
+    services.some((s: string) => s.toLowerCase().includes('webshop'));
+  if (webshopSelected) {
     websiteKosten = websitePreise.webshop_starter.avg;
     websiteLabel = "Webshop Starter";
   }
 
-  // Calculate voicebot costs
+  // Calculate voicebot costs - NUR wenn Voicebot explizit ausgewählt
   let voicebotKosten = 0;
-  if (services.some((s: string) => s.toLowerCase().includes('voicebot') || s.toLowerCase().includes('sprachassistenz'))) {
+  const voicebotSelected = servicesSelected.some((s: string) => 
+    s.toLowerCase().includes('voicebot') || s.toLowerCase().includes('sprachassistenz')
+  ) || services.some((s: string) => 
+    s.toLowerCase().includes('voicebot') || s.toLowerCase().includes('sprachassistenz')
+  );
+  if (voicebotSelected) {
     voicebotKosten = voicebotPreise.qualifizierung;
   }
 
-  // Total calculations
-  const basispreis = paket.einmalpreis + websiteKosten + voicebotKosten;
+  // KORRIGIERTE BERECHNUNG: BranchenBot NUR wenn KI explizit ausgewählt wurde
+  const branchenBotEinmalpreis = kiSelected ? paket.einmalpreis : 0;
+  const branchenBotMonatspreis = kiSelected ? paket.monatspreis : 0;
+
+  // Total calculations - Branchenlösung wird NUR berechnet wenn explizit ausgewählt
+  const basispreis = branchenBotEinmalpreis + websiteKosten + voicebotKosten;
   const einmalpreis = Math.round(basispreis * sizeFactor * timeFactor);
-  const monatspreis = Math.round(paket.monatspreis * sizeFactor);
-  const gesamtMonatlich = monatspreis + hosting.total;
+  const monatspreis = Math.round(branchenBotMonatspreis * sizeFactor);
+  
+  // Hosting nur wenn Website/Shop ausgewählt, sonst 0
+  const hostingMonatlich = (websiteSelected || webshopSelected) ? hosting.total : 0;
+  const gesamtMonatlich = monatspreis + hostingMonatlich;
 
   // Dates
   const today = new Date();
@@ -169,9 +200,11 @@ function generateOfferHtml(data: any): string {
 
   const offerNumber = `DL-${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${Date.now().toString(36).toUpperCase().slice(-4)}`;
 
-  // Generate service-specific content
-  const serviceBlocks = services.map((service: string) => {
-    if (service.toLowerCase().includes('website') || service.toLowerCase().includes('webshop')) {
+  // Generate service-specific content - kombiniere services und servicesSelected
+  const allSelectedServices = [...new Set([...services, ...servicesSelected])];
+  
+  const serviceBlocks = allSelectedServices.map((service: string) => {
+    if (service.toLowerCase().includes('website') || service.toLowerCase().includes('webshop') || service.toLowerCase().includes('digitale plattform')) {
       return `
         <div class="service-block">
           <h4>🌐 Website & Digitale Plattformen</h4>
@@ -183,7 +216,8 @@ function generateOfferHtml(data: any): string {
           ${industry === 'Handwerk' ? '<p class="highlight">→ Perfekt für Handwerksbetriebe</p>' : ''}
         </div>`;
     }
-    if (service.toLowerCase().includes('ki') || service.toLowerCase().includes('automation')) {
+    // KI-Agenten NUR wenn explizit ausgewählt
+    if ((service.toLowerCase().includes('ki-agenten') || service.toLowerCase().includes('automation') || service.toLowerCase().includes('ki-branchenl')) && kiSelected) {
       return `
         <div class="service-block">
           <h4>🤖 KI-Agenten für ${escapeHtml(industry)}</h4>
@@ -204,6 +238,34 @@ function generateOfferHtml(data: any): string {
             <li>Qualifizierung: 6.000€</li>
             <li>Vollauto: 9.500€</li>
           </ul>
+        </div>`;
+    }
+    if (service.toLowerCase().includes('social media') || service.toLowerCase().includes('marketing')) {
+      return `
+        <div class="service-block">
+          <h4>📱 Marketing & Social Media</h4>
+          <p>Content-Erstellung, Kampagnenmanagement und Community Building</p>
+        </div>`;
+    }
+    if (service.toLowerCase().includes('seo') || service.toLowerCase().includes('sichtbarkeit')) {
+      return `
+        <div class="service-block">
+          <h4>🔍 SEO & Sichtbarkeit</h4>
+          <p>Suchmaschinenoptimierung für bessere Rankings</p>
+        </div>`;
+    }
+    if (service.toLowerCase().includes('beratung') || service.toLowerCase().includes('schulung')) {
+      return `
+        <div class="service-block">
+          <h4>📚 Beratung & Schulung</h4>
+          <p>Individuelle Workshops und Trainings</p>
+        </div>`;
+    }
+    if (service.toLowerCase().includes('prozess')) {
+      return `
+        <div class="service-block">
+          <h4>⚙️ Prozessoptimierung</h4>
+          <p>Digitale Workflow-Analyse und Optimierung</p>
         </div>`;
     }
     return '';
@@ -385,12 +447,12 @@ function generateOfferHtml(data: any): string {
   
   ${serviceBlocks || `
   <div class="service-block">
-    <h4>🤖 KI-Agenten für ${escapeHtml(industry)}</h4>
-    <p>Basierend auf Ihrer Branche empfehlen wir den <strong>DeutLicht ${paket.botName}</strong>.</p>
-    <p class="highlight">→ ${paket.highlight}</p>
+    <h4>📋 Ihre ausgewählten Leistungen</h4>
+    <p>Basierend auf Ihrer Anfrage erstellen wir Ihnen ein individuelles Angebot.</p>
   </div>`}
   
-  <h3>Ihr empfohlenes Paket: DeutLicht ${paket.botName}</h3>
+  ${kiSelected ? `
+  <h3>Ihr empfohlenes KI-Paket: DeutLicht ${paket.botName}</h3>
   
   <ul class="feature-list">
     <li>Individuelle Konfiguration für ${company}</li>
@@ -413,6 +475,11 @@ function generateOfferHtml(data: any): string {
     <tr><td>Gesundheit</td><td>CareBot</td><td class="price">2.490 €</td><td class="price">199 €</td></tr>
     <tr><td>Bildung</td><td>LernBot</td><td class="price">2.790 €</td><td class="price">249 €</td></tr>
   </table>
+  ` : `
+  <div class="accent-box" style="margin-top: 20px;">
+    <p><strong>Hinweis:</strong> Sie haben noch keine KI-Branchenlösung ausgewählt. Sprechen Sie uns gerne an, um zu erfahren, wie unser DeutLicht ${paket.botName} Ihr Unternehmen unterstützen kann.</p>
+  </div>
+  `}
   
   <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
 </div>
@@ -487,8 +554,8 @@ function generateOfferHtml(data: any): string {
   
   <div class="info-grid">
     <div class="info-card" style="border-left-color: var(--accent);">
-      <label>Ihr Paket</label>
-      <div class="value">${paket.botName} | ${companySize} MA</div>
+      <label>Ihre Auswahl</label>
+      <div class="value">${kiSelected ? paket.botName + ' | ' : ''}${companySize} MA</div>
     </div>
     <div class="info-card" style="border-left-color: var(--success);">
       <label>Zeitfaktor</label>
@@ -496,10 +563,11 @@ function generateOfferHtml(data: any): string {
     </div>
   </div>
   
+  ${basispreis > 0 ? `
   <h3>Einmalige Investition</h3>
   <table class="price-table">
     <tr><th>Position</th><th class="price">Betrag</th></tr>
-    <tr><td>DeutLicht ${paket.botName} – Setup & Konfiguration</td><td class="price">${formatCurrency(paket.einmalpreis)}</td></tr>
+    ${kiSelected ? `<tr><td>DeutLicht ${paket.botName} – Setup & Konfiguration</td><td class="price">${formatCurrency(branchenBotEinmalpreis)}</td></tr>` : ''}
     ${websiteKosten > 0 ? `<tr><td>${websiteLabel}</td><td class="price">${formatCurrency(websiteKosten)}</td></tr>` : ''}
     ${voicebotKosten > 0 ? `<tr><td>Voicebot-Qualifizierung</td><td class="price">${formatCurrency(voicebotKosten)}</td></tr>` : ''}
     <tr class="subtotal"><td>Zwischensumme</td><td class="price">${formatCurrency(basispreis)}</td></tr>
@@ -512,15 +580,22 @@ function generateOfferHtml(data: any): string {
     <strong>Detaillierte Kalkulation:</strong><br>
     Basispreis: <code>${formatCurrency(basispreis)}</code> × Unternehmensfaktor <code>${sizeFactor.toFixed(1)}</code> × Zeitfaktor <code>${timeFactor.toFixed(2)}</code> = <strong>${formatCurrency(einmalpreis)}</strong>
   </div>
+  ` : `
+  <div class="accent-box">
+    <p><strong>Hinweis:</strong> Sie haben noch keine kostenpflichtigen Leistungen ausgewählt. Bitte wählen Sie im Bereich "Leistungsmodule" die gewünschten Services aus.</p>
+  </div>
+  `}
   
+  ${gesamtMonatlich > 0 ? `
   <h3>Monatliche Kosten (optional)</h3>
   <table class="price-table">
     <tr><th>Position</th><th class="price">Betrag/Monat</th></tr>
-    <tr><td>${paket.botName} – Betrieb & Support</td><td class="price">${formatCurrency(monatspreis)}</td></tr>
-    <tr><td>${hosting.name} Hosting (${hosting.basis}€ + ${hosting.service}€ Service)</td><td class="price">${formatCurrency(hosting.total)}</td></tr>
+    ${kiSelected && monatspreis > 0 ? `<tr><td>${paket.botName} – Betrieb & Support</td><td class="price">${formatCurrency(monatspreis)}</td></tr>` : ''}
+    ${hostingMonatlich > 0 ? `<tr><td>${hosting.name} Hosting (${hosting.basis}€ + ${hosting.service}€ Service)</td><td class="price">${formatCurrency(hostingMonatlich)}</td></tr>` : ''}
     <tr class="total"><td><strong>MONATLICH GESAMT (netto)</strong></td><td class="price">${formatCurrency(gesamtMonatlich)}</td></tr>
   </table>
-  <p style="font-size: 9pt; color: var(--gray);">Jahreszahlung: ${formatCurrency(hosting.jahr)}/Jahr (Hosting)</p>
+  ${hostingMonatlich > 0 ? `<p style="font-size: 9pt; color: var(--gray);">Jahreszahlung: ${formatCurrency(hosting.jahr)}/Jahr (Hosting)</p>` : ''}
+  ` : ''}
   
   <h3>✅ Beinhaltet:</h3>
   <div class="info-grid">
