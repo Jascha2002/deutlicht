@@ -45,10 +45,10 @@ const searchablePages = [{
   keywords: ["ki", "künstliche intelligenz", "chatbot", "voice", "automatisierung"],
   content: "KI Agenten künstliche Intelligenz Chatbot Voicebot Sprachassistent Automatisierung Kundenservice 24/7 Erreichbarkeit Machine Learning NLP Branchenlösungen maßgeschneidert"
 }, {
-  title: "Branchenlösungen",
-  path: "/leistungen/branchen-loesungen",
-  keywords: ["handwerk", "gesundheit", "gastronomie", "einzelhandel"],
-  content: "Branchenlösungen Handwerk Gesundheit Gastronomie Einzelhandel maßgeschneidert branchenspezifisch Pakete Lösungen Anforderungen individuell"
+  title: "KI-Branchenlösungen",
+  path: "/leistungen/ki-branchen-loesungen",
+  keywords: ["handwerk", "gesundheit", "gastronomie", "einzelhandel", "ki"],
+  content: "KI-Branchenlösungen Handwerk Gesundheit Gastronomie Einzelhandel maßgeschneidert branchenspezifisch KI Pakete Lösungen Anforderungen individuell"
 }, {
   title: "Self-Order & 24/7",
   path: "/leistungen/chayns-loesungen",
@@ -230,6 +230,42 @@ submenu: [{
       href: "/leistungen/digitalisierung",
       icon: Monitor
     }, {
+      name: "Websites & Shops",
+      href: "/leistungen/websites",
+      icon: Globe
+    }, {
+      name: "Marketing & Social Media",
+      href: "/leistungen/marketing",
+      icon: Megaphone
+    }, {
+      name: "KI-Branchenlösungen",
+      href: "/leistungen/ki-branchen-loesungen",
+      icon: Building2
+    }, {
+      name: "KI Agenten",
+      href: "/leistungen/ki-agenten",
+      icon: Bot
+    }, {
+      name: "SEO & Sichtbarkeit",
+      href: "/leistungen/seo",
+      icon: Search
+    }, {
+      name: "Schulungen & Beratung",
+      href: "/leistungen/schulung",
+      icon: GraduationCap
+    }, {
+      name: "Wissensmanagement",
+      href: "/leistungen/wissensmanagement",
+      icon: BookOpen
+    }, {
+      name: "Self-Order & 24/7 Lösungen",
+      href: "/leistungen/chayns-loesungen",
+      icon: Smartphone
+    }, {
+      name: "Schlösser & Roboter",
+      href: "/leistungen/chayns-hardware",
+      icon: Lock
+    }, {
       name: "CRM & ERP Systeme",
       href: "/leistungen/crm-erp",
       icon: Cog
@@ -241,42 +277,6 @@ submenu: [{
       name: "PIM Systeme",
       href: "/leistungen/pim",
       icon: Package
-    }, {
-      name: "Wissensmanagement",
-      href: "/leistungen/wissensmanagement",
-      icon: BookOpen
-    }, {
-      name: "KI Agenten",
-      href: "/leistungen/ki-agenten",
-      icon: Bot
-    }, {
-      name: "Branchen-Lösungen",
-      href: "/leistungen/branchen-loesungen",
-      icon: Building2
-    }, {
-      name: "Self-Order & 24/7",
-      href: "/leistungen/chayns-loesungen",
-      icon: Smartphone
-    }, {
-      name: "Schlösser & Roboter",
-      href: "/leistungen/chayns-hardware",
-      icon: Lock
-    }, {
-      name: "Websites & Shops",
-      href: "/leistungen/websites",
-      icon: Globe
-    }, {
-      name: "Marketing & Social Media",
-      href: "/leistungen/marketing",
-      icon: Megaphone
-    }, {
-      name: "SEO & Sichtbarkeit",
-      href: "/leistungen/seo",
-      icon: Search
-    }, {
-      name: "Schulung & Beratung",
-      href: "/leistungen/schulung",
-      icon: GraduationCap
     }, {
       name: "Förderberatung",
       href: "/leistungen/foerderberatung",
