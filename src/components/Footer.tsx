@@ -51,8 +51,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen/branchen-loesungen" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  Branchen-Lösungen
+                <Link to="/leistungen/ki-branchen-loesungen" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  KI-Branchenlösungen
                 </Link>
               </li>
               <li>
@@ -81,18 +81,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen/branchen-loesungen" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  Branchenlösungen
-                </Link>
-              </li>
-              <li>
                 <Link to="/leistungen/digitalisierung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   Digitalisierung
-                </Link>
-              </li>
-              <li>
-                <Link to="/leistungen/crm-erp" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  CRM & ERP Systeme
                 </Link>
               </li>
               <li>
@@ -101,13 +91,28 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/leistungen/schulung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  Schulungen & Beratung
+                <Link to="/leistungen/marketing" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  Marketing & Social Media
                 </Link>
               </li>
               <li>
                 <Link to="/leistungen/seo" className="text-muted-foreground hover:text-accent transition-colors text-sm">
                   SEO & Sichtbarkeit
+                </Link>
+              </li>
+              <li>
+                <Link to="/leistungen/ki-branchen-loesungen" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  KI-Branchenlösungen
+                </Link>
+              </li>
+              <li>
+                <Link to="/leistungen/schulung" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  Schulungen & Beratung
+                </Link>
+              </li>
+              <li>
+                <Link to="/leistungen/crm-erp" className="text-muted-foreground hover:text-accent transition-colors text-sm">
+                  CRM & ERP Systeme
                 </Link>
               </li>
             </ul>

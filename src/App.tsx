@@ -69,6 +69,7 @@ const App = () => (
               <Route path="/angebots-generator" element={<AngebotsGenerator />} />
               <Route path="/klarheitscheck" element={<AngebotsGenerator />} />
               <Route path="/ki-check" element={<KICheck />} />
+              <Route path="/leistungen/ki-branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/leistungen/branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/leistungen/voicebot-demos" element={<VoicebotDemos />} />

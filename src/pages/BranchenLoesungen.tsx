@@ -28,7 +28,7 @@ const BranchenLoesungen = () => {
   return (
     <>
       <Helmet>
-        <title>Lösungen für Ihre Branche | DeutLicht KI-Agenten</title>
+        <title>KI-Branchenlösungen | DeutLicht KI-Agenten</title>
         <meta name="description" content="Finden Sie die passende KI-Lösung für Ihre Branche. Von Verwaltung über Handwerk bis Gastronomie – DeutLicht bietet maßgeschneiderte KI-Agenten für jede Branche." />
       </Helmet>
       
