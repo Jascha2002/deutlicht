@@ -84,14 +84,19 @@ export default {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
-  			gold: {
-  				DEFAULT: 'hsl(var(--gold))',
-  				light: 'hsl(var(--gold-light))'
-  			},
-  			navy: {
-  				DEFAULT: 'hsl(var(--navy))',
-  				light: 'hsl(var(--navy-light))'
-  			}
+			gold: {
+				DEFAULT: 'hsl(var(--gold))',
+				light: 'hsl(var(--gold-light))',
+				400: 'hsl(40 58% 60%)',
+				500: 'hsl(var(--gold))',
+				600: 'hsl(40 58% 48%)',
+				700: 'hsl(40 58% 40%)'
+			},
+			navy: {
+				DEFAULT: 'hsl(var(--navy))',
+				light: 'hsl(var(--navy-light))',
+				900: 'hsl(210 29% 14%)'
+			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
