@@ -8,8 +8,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookieBanner } from "@/components/CookieBanner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
-
 import ElevenLabsWidget from "@/components/ElevenLabsWidget";
+import GedankenblitzButton from "@/components/GedankenblitzButton";
 import Index from "./pages/Index";
 import UeberUns from "./pages/UeberUns";
 import Hintergrund from "./pages/Hintergrund";
@@ -90,6 +90,7 @@ const App = () => (
             <GoogleAnalytics />
             <ScrollDepthTracker />
             <CookieBanner />
+            <GedankenblitzButton />
             <ElevenLabsWidget />
           </BrowserRouter>
         </TooltipProvider>
