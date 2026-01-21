@@ -24,7 +24,7 @@ const SAFE_GREETINGS: Record<string, string> = {
   '/ueber-uns': 'Haben Sie Fragen zu DeutLicht®? Ich helfe Ihnen gern weiter.',
   '/ueber-uns/hintergrund': 'Haben Sie Fragen zu unserem Hintergrund? Ich unterstütze Sie gern.',
   '/branchen': 'Haben Sie Fragen zu Branchenlösungen? Ich helfe Ihnen gern weiter.',
-  '/projektanfrage': 'Möchten Sie ein Projekt starten? Ich unterstütze Sie gern bei der Anfrage.',
+  '/angebotsgenerator': 'Möchten Sie ein Angebot erstellen? Ich unterstütze Sie gern dabei.',
   '/ki-check': 'Haben Sie Fragen zum KI-Readiness-Check? Ich helfe Ihnen gern weiter.'
 };
 

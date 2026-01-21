@@ -172,7 +172,7 @@ const Schulung = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/projektanfrage">
+                <Link to="/angebotsgenerator">
                   <Button size="lg" className="group w-full sm:w-auto">
                     Schulung anfragen
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -440,7 +440,7 @@ const Schulung = () => {
                 Kontaktieren Sie uns für ein individuelles Schulungskonzept.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/projektanfrage">
+                <Link to="/angebotsgenerator">
                   <Button size="lg" className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-white">
                     Schulung anfragen
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

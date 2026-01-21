@@ -194,11 +194,11 @@ const BranchenLoesungen = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/projektanfrage"
-                onClick={() => trackCTAClick("Projektanfrage starten", "branchen-loesungen")}
+                to="/angebotsgenerator"
+                onClick={() => trackCTAClick("Angebot erstellen", "branchen-loesungen")}
                 className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-medium transition-all hover:scale-105"
               >
-                Projektanfrage starten
+                Angebot erstellen
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
@@ -293,14 +293,14 @@ const BranchenLoesungen = () => {
                 {/* CTA */}
                 <div className="pt-4 border-t border-border">
                   <Link
-                    to="/projektanfrage"
+                    to="/angebotsgenerator"
                     onClick={() => {
-                      trackCTAClick(`Projektanfrage ${selectedLoesung.botName}`, "branchen-detail-modal");
+                      trackCTAClick(`Angebot ${selectedLoesung.botName}`, "branchen-detail-modal");
                       setDialogOpen(false);
                     }}
                     className="w-full inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-3 rounded-lg font-medium transition-colors"
                   >
-                    Jetzt Projektanfrage für {selectedLoesung.branche}
+                    Jetzt Angebot für {selectedLoesung.branche}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
