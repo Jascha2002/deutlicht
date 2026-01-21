@@ -70,7 +70,7 @@ const Hero = () => {
         
         {/* Trust Indicators */}
         <div className="pt-12 border-t mt-12 opacity-100 border-transparent bg-transparent text-black">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-white/[0.53]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-[#f2cf6e]/[0.41] mx-0 py-0 px-0 my-[2px]">
             <div className="text-center">
               <div className="font-display text-5xl font-bold opacity-100 shadow-none text-inherit">30+</div>
               <div className="font-display text-xl font-bold text-inherit">Jahre Erfahrung</div>
