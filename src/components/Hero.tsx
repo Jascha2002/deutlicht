@@ -20,7 +20,7 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 md:pt-40 py-[97px] lg:px-[131px]">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-inherit">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-inherit mx-0 px-[75px]">
           
           {/* Logo on the left - double size, no loop */}
           <div className="flex-shrink-0">
@@ -38,7 +38,7 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground py-[40px] px-[64px] text-left">
+            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground text-left mx-0 py-[17px] px-[51px]">
               Von der Idee zur
               <br />
               <span className="text-[#c88a04] text-7xl bg-transparent">intelligenten Lösung</span>
