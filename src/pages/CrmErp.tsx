@@ -120,9 +120,9 @@ const CrmErp = () => {
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/projektanfrage">
+                <Link to="/angebotsgenerator">
                   <Button size="lg" variant="outline" className="px-8">
-                    Projektanfrage
+                    Angebotsgenerator
                   </Button>
                 </Link>
               </div>

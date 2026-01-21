@@ -145,7 +145,7 @@ const SEO = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/projektanfrage">
+                <Link to="/angebotsgenerator">
                   <Button size="lg" className="group w-full sm:w-auto">
                     SEO-Analyse anfragen
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -379,7 +379,7 @@ const SEO = () => {
                 Kontaktieren Sie uns für ein unverbindliches Erstgespräch.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/projektanfrage">
+                <Link to="/angebotsgenerator">
                   <Button size="lg" className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-white">
                     SEO-Projekt starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

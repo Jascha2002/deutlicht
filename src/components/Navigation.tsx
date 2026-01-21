@@ -90,10 +90,10 @@ const searchablePages = [{
   keywords: ["readiness", "analyse", "bewertung", "kostenlos"],
   content: "KI-Check KI-Readiness Analyse Bewertung kostenlos Potenzial künstliche Intelligenz Einsatzmöglichkeiten Reife Unternehmen"
 }, {
-  title: "Projektanfrage",
-  path: "/projektanfrage",
-  keywords: ["anfrage", "projekt", "angebot"],
-  content: "Projektanfrage Angebot anfragen Projekt starten Kontakt aufnehmen Beratungsgespräch unverbindlich kostenlos"
+  title: "Angebotsgenerator",
+  path: "/angebotsgenerator",
+  keywords: ["anfrage", "projekt", "angebot", "generator"],
+  content: "Angebotsgenerator Angebot anfragen Projekt starten Kontakt aufnehmen Beratungsgespräch unverbindlich kostenlos"
 }, {
   title: "Projekte",
   path: "/projekte",
@@ -283,8 +283,8 @@ submenu: [{
       icon: FileText
     }]
   }, {
-    name: "Projektanfrage",
-    href: "/projektanfrage"
+    name: "Angebotsgenerator",
+    href: "/angebotsgenerator"
   }, {
     name: "Projekte",
     href: "/projekte"

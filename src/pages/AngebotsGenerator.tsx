@@ -9,8 +9,8 @@ import heroProjektanfrage from "@/assets/hero-projektanfrage.jpg";
 const AngebotsGeneratorPage = () => {
   return <>
       <Helmet>
-        <title>Projektanfrage | DeutLicht - Ihr persönliches Angebot in 5 Minuten</title>
-        <meta name="description" content="Die DeutLicht Projektanfrage: In wenigen Minuten zu Ihrem persönlichen Angebot. Kostenlos und unverbindlich." />
+        <title>Angebotsgenerator | DeutLicht - Ihr persönliches Angebot in 5 Minuten</title>
+        <meta name="description" content="Der DeutLicht Angebotsgenerator: In wenigen Minuten zu Ihrem persönlichen Angebot. Kostenlos und unverbindlich." />
       </Helmet>
       
       <Navigation />
@@ -37,7 +37,7 @@ const AngebotsGeneratorPage = () => {
               </span>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-                Projektanfrage
+                Angebotsgenerator
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
