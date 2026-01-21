@@ -1,6 +1,19 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { ArrowRight, Quote, TrendingUp, Users, Building2, ShoppingBag, Utensils, Factory, Heart, Briefcase, CheckCircle2, Star } from "lucide-react";
+import {
+  ArrowRight,
+  Quote,
+  TrendingUp,
+  Users,
+  Building2,
+  ShoppingBag,
+  Utensils,
+  Factory,
+  Heart,
+  Briefcase,
+  CheckCircle2,
+  Star,
+} from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,128 +26,175 @@ import projektEinzelhandel from "@/assets/einzelhandel-option-3.jpg";
 import projektGastronomie from "@/assets/gastronomie-option-5.jpg";
 import projektGesundheit from "@/assets/gesundheit-option-4.jpg";
 import heroProjekte from "@/assets/hero-projekte.jpg";
-const caseStudies = [{
-  id: "handwerk",
-  icon: Factory,
-  image: projektHandwerk,
-  industry: "Handwerk & Produktion",
-  client: "Metallbauunternehmen aus der Region",
-  title: "Digitalisierung eines traditionellen Handwerksbetriebs",
-  challenge: "Veraltete Prozesse, manuelle Auftragserfassung und fehlende Übersicht über laufende Projekte führten zu Ineffizienzen und verpassten Chancen.",
-  solution: "Implementierung eines integrierten CRM- und ERP-Systems mit automatisierter Auftragserfassung, digitalem Projektmanagement und Echtzeit-Reporting.",
-  results: [{
-    metric: "40%",
-    label: "Zeitersparnis bei der Auftragsbearbeitung"
-  }, {
-    metric: "25%",
-    label: "Steigerung der Kundenzufriedenheit"
-  }, {
-    metric: "50%",
-    label: "Förderung durch go-digital"
-  }],
-  quote: "DeutLicht® hat uns geholfen, den Sprung ins digitale Zeitalter zu schaffen – ohne unsere bewährten Werte zu verlieren.",
-  author: "Geschäftsführer"
-}, {
-  id: "einzelhandel",
-  icon: ShoppingBag,
-  image: projektEinzelhandel,
-  industry: "Einzelhandel",
-  client: "Traditionsreiches Modehaus",
-  title: "E-Commerce-Transformation mit CRM-Integration",
-  challenge: "Ein etabliertes Modehaus wollte seine Reichweite durch einen Onlineshop erweitern, ohne die persönliche Kundenbeziehung zu verlieren.",
-  solution: "Aufbau eines responsiven Shopsystems mit nahtloser CRM-Anbindung, automatisierten E-Mail-Kampagnen und Kundenbindungsprogramm.",
-  results: [{
-    metric: "120%",
-    label: "Umsatzsteigerung im ersten Jahr"
-  }, {
-    metric: "3x",
-    label: "Höhere Wiederkaufrate"
-  }, {
-    metric: "60%",
-    label: "Automatisierte Kundenansprache"
-  }],
-  quote: "Die Kombination aus Online-Shop und CRM hat unsere Kundenbindung auf ein neues Level gehoben.",
-  author: "Inhaberin"
-}, {
-  id: "gastronomie",
-  icon: Utensils,
-  image: projektGastronomie,
-  industry: "Gastronomie",
-  client: "Restaurant-Gruppe mit mehreren Standorten",
-  title: "Multi-Location Management & Marketing",
-  challenge: "Drei Restaurants an verschiedenen Standorten mit unterschiedlichen Systemen, keine einheitliche Marketingstrategie und fehlende Datenauswertung.",
-  solution: "Zentrales CRM-System für alle Standorte, einheitliche Social-Media-Strategie mit lokalen Anpassungen und KI-gestütztes Performance-Tracking.",
-  results: [{
-    metric: "35%",
-    label: "Mehr Reservierungen durch Online-Marketing"
-  }, {
-    metric: "200%",
-    label: "Reichweitensteigerung auf Social Media"
-  }, {
-    metric: "1",
-    label: "Zentrales Dashboard für alle Standorte"
-  }],
-  quote: "Endlich haben wir den Überblick über alle drei Standorte – und unsere Online-Präsenz spricht unsere Gäste wirklich an.",
-  author: "Geschäftsführer"
-}, {
-  id: "gesundheit",
-  icon: Heart,
-  image: projektGesundheit,
-  industry: "Gesundheitswesen",
-  client: "Praxisgemeinschaft im Gesundheitsbereich",
-  title: "Digitale Patientenreise optimieren",
-  challenge: "Hoher administrativer Aufwand bei Terminbuchungen, fehlende Patientenkommunikation zwischen den Terminen und manuelle Dokumentation.",
-  solution: "Online-Terminbuchungssystem, automatisierte Terminerinnerungen, digitale Patientenakte und Newsletter-Automatisierung.",
-  results: [{
-    metric: "70%",
-    label: "Weniger No-Shows durch Erinnerungen"
-  }, {
-    metric: "50%",
-    label: "Zeitersparnis bei Administration"
-  }, {
-    metric: "90%",
-    label: "Positive Patientenbewertungen"
-  }],
-  quote: "Unsere Patienten schätzen die digitalen Services und wir haben endlich mehr Zeit für das, was zählt.",
-  author: "Praxisleitung"
-}];
-const industries = [{
-  icon: Factory,
-  name: "Handwerk & Produktion"
-}, {
-  icon: ShoppingBag,
-  name: "Einzelhandel"
-}, {
-  icon: Utensils,
-  name: "Gastronomie"
-}, {
-  icon: Heart,
-  name: "Gesundheitswesen"
-}, {
-  icon: Building2,
-  name: "Immobilien"
-}, {
-  icon: Briefcase,
-  name: "Dienstleistungen"
-}];
-const stats = [{
-  value: "50+",
-  label: "Erfolgreiche Projekte"
-}, {
-  value: "30+",
-  label: "Jahre Erfahrung"
-}, {
-  value: "95%",
-  label: "Kundenzufriedenheit"
-}, {
-  value: "€2M+",
-  label: "Eingeworbene Fördermittel"
-}];
+const caseStudies = [
+  {
+    id: "handwerk",
+    icon: Factory,
+    image: projektHandwerk,
+    industry: "Handwerk & Produktion",
+    client: "Metallbauunternehmen aus der Region",
+    title: "Digitalisierung eines traditionellen Handwerksbetriebs",
+    challenge:
+      "Veraltete Prozesse, manuelle Auftragserfassung und fehlende Übersicht über laufende Projekte führten zu Ineffizienzen und verpassten Chancen.",
+    solution:
+      "Implementierung eines integrierten CRM- und ERP-Systems mit automatisierter Auftragserfassung, digitalem Projektmanagement und Echtzeit-Reporting.",
+    results: [
+      {
+        metric: "40%",
+        label: "Zeitersparnis bei der Auftragsbearbeitung",
+      },
+      {
+        metric: "25%",
+        label: "Steigerung der Kundenzufriedenheit",
+      },
+      {
+        metric: "80% Zuwendung für Beratung und Strategie",
+        label: "Förderung durch geprüfte Programme",
+      },
+    ],
+    quote:
+      "DeutLicht® hat uns geholfen, den Sprung ins digitale Zeitalter zu schaffen – ohne unsere bewährten Werte zu verlieren.",
+    author: "Geschäftsführer",
+  },
+  {
+    id: "einzelhandel",
+    icon: ShoppingBag,
+    image: projektEinzelhandel,
+    industry: "Einzelhandel",
+    client: "Traditionsreiches Modehaus",
+    title: "E-Commerce-Transformation mit CRM-Integration",
+    challenge:
+      "Ein etabliertes Modehaus wollte seine Reichweite durch einen Onlineshop erweitern, ohne die persönliche Kundenbeziehung zu verlieren.",
+    solution:
+      "Aufbau eines responsiven Shopsystems mit nahtloser CRM-Anbindung, automatisierten E-Mail-Kampagnen und Kundenbindungsprogramm.",
+    results: [
+      {
+        metric: "120%",
+        label: "Umsatzsteigerung im ersten Jahr",
+      },
+      {
+        metric: "3x",
+        label: "Höhere Wiederkaufrate",
+      },
+      {
+        metric: "60%",
+        label: "Automatisierte Kundenansprache",
+      },
+    ],
+    quote: "Die Kombination aus Online-Shop und CRM hat unsere Kundenbindung auf ein neues Level gehoben.",
+    author: "Inhaberin",
+  },
+  {
+    id: "gastronomie",
+    icon: Utensils,
+    image: projektGastronomie,
+    industry: "Gastronomie",
+    client: "Restaurant-Gruppe mit mehreren Standorten",
+    title: "Multi-Location Management & Marketing",
+    challenge:
+      "Drei Restaurants an verschiedenen Standorten mit unterschiedlichen Systemen, keine einheitliche Marketingstrategie und fehlende Datenauswertung.",
+    solution:
+      "Zentrales CRM-System für alle Standorte, einheitliche Social-Media-Strategie mit lokalen Anpassungen und KI-gestütztes Performance-Tracking.",
+    results: [
+      {
+        metric: "35%",
+        label: "Mehr Reservierungen durch Online-Marketing",
+      },
+      {
+        metric: "200%",
+        label: "Reichweitensteigerung auf Social Media",
+      },
+      {
+        metric: "1",
+        label: "Zentrales Dashboard für alle Standorte",
+      },
+    ],
+    quote:
+      "Endlich haben wir den Überblick über alle drei Standorte – und unsere Online-Präsenz spricht unsere Gäste wirklich an.",
+    author: "Geschäftsführer",
+  },
+  {
+    id: "gesundheit",
+    icon: Heart,
+    image: projektGesundheit,
+    industry: "Gesundheitswesen",
+    client: "Praxisgemeinschaft im Gesundheitsbereich",
+    title: "Digitale Patientenreise optimieren",
+    challenge:
+      "Hoher administrativer Aufwand bei Terminbuchungen, fehlende Patientenkommunikation zwischen den Terminen und manuelle Dokumentation.",
+    solution:
+      "Online-Terminbuchungssystem, automatisierte Terminerinnerungen, digitale Patientenakte und Newsletter-Automatisierung.",
+    results: [
+      {
+        metric: "70%",
+        label: "Weniger No-Shows durch Erinnerungen",
+      },
+      {
+        metric: "50%",
+        label: "Zeitersparnis bei Administration",
+      },
+      {
+        metric: "90%",
+        label: "Positive Patientenbewertungen",
+      },
+    ],
+    quote: "Unsere Patienten schätzen die digitalen Services und wir haben endlich mehr Zeit für das, was zählt.",
+    author: "Praxisleitung",
+  },
+];
+const industries = [
+  {
+    icon: Factory,
+    name: "Handwerk & Produktion",
+  },
+  {
+    icon: ShoppingBag,
+    name: "Einzelhandel",
+  },
+  {
+    icon: Utensils,
+    name: "Gastronomie",
+  },
+  {
+    icon: Heart,
+    name: "Gesundheitswesen",
+  },
+  {
+    icon: Building2,
+    name: "Immobilien",
+  },
+  {
+    icon: Briefcase,
+    name: "Dienstleistungen",
+  },
+];
+const stats = [
+  {
+    value: "50+",
+    label: "Erfolgreiche Projekte",
+  },
+  {
+    value: "30+",
+    label: "Jahre Erfahrung",
+  },
+  {
+    value: "95%",
+    label: "Kundenzufriedenheit",
+  },
+  {
+    value: "bis zu 80%",
+    label: "Fördermittel möglich",
+  },
+];
 const Projekte = () => {
-  return <>
+  return (
+    <>
       <Helmet>
         <title>Projekte & Referenzen | DeutLicht® - Erfolgsgeschichten unserer Kunden</title>
-        <meta name="description" content="Entdecken Sie unsere Erfolgsgeschichten: Fallstudien aus Handwerk, Einzelhandel, Gastronomie und mehr. Digitale Transformation mit messbaren Ergebnissen." />
+        <meta
+          name="description"
+          content="Entdecken Sie unsere Erfolgsgeschichten: Fallstudien aus Handwerk, Einzelhandel, Gastronomie und mehr. Digitale Transformation mit messbaren Ergebnissen."
+        />
       </Helmet>
 
       <Navigation />
@@ -144,11 +204,7 @@ const Projekte = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <img 
-              src={heroProjekte} 
-              alt="Projekte Hero" 
-              className="w-full h-full object-cover"
-            />
+            <img src={heroProjekte} alt="Projekte Hero" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
           </div>
 
@@ -157,20 +213,20 @@ const Projekte = () => {
               <div className="mb-8 flex justify-center py-0">
                 <AnimatedLogo size="md" />
               </div>
-              
+
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4 bg-primary text-primary-foreground border border-accent/30">
                 <Briefcase className="w-4 h-4" />
                 Projekte & Referenzen
               </div>
-              
+
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6 leading-tight px-0">
                 Erfolgsgeschichten, die
                 <span className="text-[#c88a04]"> inspirieren</span>
               </h1>
-              
+
               <p className="text-xl leading-relaxed max-w-3xl mx-auto text-muted-foreground">
-                Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen 
-                verschiedener Branchen bei ihrer digitalen Transformation begleitet haben.
+                Von der Idee bis zur Umsetzung – entdecken Sie, wie wir Unternehmen verschiedener Branchen bei ihrer
+                digitalen Transformation begleitet haben.
               </p>
             </div>
           </div>
@@ -196,14 +252,14 @@ const Projekte = () => {
         <section className="border-y border-solid border-4 py-[30px] border-[#c88a04] bg-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => <ScrollReveal key={index} delay={index * 100}>
+              {stats.map((stat, index) => (
+                <ScrollReveal key={index} delay={index * 100}>
                   <div className="text-center">
-                    <p className="font-display text-3xl md:text-4xl font-bold mb-2 text-[#c88a04]">
-                      {stat.value}
-                    </p>
+                    <p className="font-display text-3xl md:text-4xl font-bold mb-2 text-[#c88a04]">{stat.value}</p>
                     <p className="text-sm text-[#c88a04]">{stat.label}</p>
                   </div>
-                </ScrollReveal>)}
+                </ScrollReveal>
+              ))}
             </div>
           </div>
         </section>
@@ -222,18 +278,18 @@ const Projekte = () => {
                   </p>
                 </div>
               </ScrollReveal>
-              
+
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {industries.map((industry, index) => <ScrollReveal key={index} delay={index * 50}>
+                {industries.map((industry, index) => (
+                  <ScrollReveal key={index} delay={index * 50}>
                     <div className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300">
                       <div className="w-12 h-12 rounded-lg flex items-center justify-center text-[#c88a04] bg-muted">
                         <industry.icon className="w-6 h-6 text-[#c88a04]" />
                       </div>
-                      <span className="text-sm font-medium text-center text-[#c88a04]">
-                        {industry.name}
-                      </span>
+                      <span className="text-sm font-medium text-center text-[#c88a04]">{industry.name}</span>
                     </div>
-                  </ScrollReveal>)}
+                  </ScrollReveal>
+                ))}
               </div>
             </div>
           </div>
@@ -245,9 +301,7 @@ const Projekte = () => {
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
                 <div className="text-center mb-16">
-                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    Fallstudien
-                  </h2>
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">Fallstudien</h2>
                   <p className="text-muted-foreground max-w-2xl mx-auto">
                     Detaillierte Einblicke in ausgewählte Projekte – von der Herausforderung bis zum messbaren Erfolg.
                   </p>
@@ -255,105 +309,98 @@ const Projekte = () => {
               </ScrollReveal>
 
               <div className="space-y-16">
-                {caseStudies.map((study, index) => <ScrollReveal key={study.id} delay={100}>
+                {caseStudies.map((study, index) => (
+                  <ScrollReveal key={study.id} delay={100}>
                     <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${index % 2 === 1 ? "" : ""}`}>
-                    {/* Content */}
-                    <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#c88a04]">
-                          <study.icon className="w-5 h-5 bg-inherit text-inherit" />
-                        </div>
-                        <span className="font-medium text-sm text-[#c88a04]">
-                          {study.industry}
-                        </span>
-                      </div>
-
-                      <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
-                        {study.title}
-                      </h3>
-                      
-                      <p className="text-muted-foreground text-sm mb-6">
-                        Kunde: {study.client}
-                      </p>
-
-                      <div className="space-y-4 mb-6">
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                            <span className="w-2 h-2 bg-destructive rounded-full" />
-                            Herausforderung
-                          </h4>
-                          <p className="text-muted-foreground text-sm leading-relaxed pl-4">
-                            {study.challenge}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                            <span className="w-2 h-2 bg-accent rounded-full" />
-                            Lösung
-                          </h4>
-                          <p className="text-muted-foreground text-sm leading-relaxed pl-4">
-                            {study.solution}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Quote */}
-                      <div className="rounded-xl p-6 border border-border bg-gray-800">
-                        <Quote className="w-8 h-8 mb-3 text-[#c88a04]" />
-                        <p className="italic leading-relaxed mb-4 text-[#c88a04]">
-                          "{study.quote}"
-                        </p>
-                        <p className="text-sm font-medium text-[#c88a04]">
-                          – {study.author}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Image + Results Card */}
-                    <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                      {/* Project Image */}
-                      <div className="relative rounded-2xl overflow-hidden mb-6 shadow-lg">
-                        <img src={study.image} alt={`${study.client} - ${study.industry} Projekt`} className="w-full h-64 object-cover" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                      </div>
-                      
-                      {/* Results Card */}
-                      <div className="bg-card rounded-2xl p-8 shadow-lg border border-border">
-                        <div className="flex items-center gap-2 mb-6">
-                          <TrendingUp className="w-5 h-5 text-[#c88a04]" />
-                          <h4 className="font-display text-lg font-semibold text-foreground">
-                            Ergebnisse
-                          </h4>
-                        </div>
-
-                        <div className="space-y-6">
-                          {study.results.map((result, i) => <div key={i} className="flex items-start gap-4">
-                              <div className="w-16 text-center">
-                                <span className="font-display text-2xl font-bold text-[#c88a04]">
-                                  {result.metric}
-                                </span>
-                              </div>
-                              <div className="flex-1 pt-1">
-                                <p className="text-foreground text-sm leading-relaxed">
-                                  {result.label}
-                                </p>
-                              </div>
-                            </div>)}
-                        </div>
-
-                        <div className="mt-8 pt-6 border-t border-border">
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-accent text-accent" />)}
+                      {/* Content */}
+                      <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#c88a04]">
+                            <study.icon className="w-5 h-5 bg-inherit text-inherit" />
                           </div>
-                          <p className="text-muted-foreground text-sm mt-2">
-                            Kundenbewertung
-                          </p>
+                          <span className="font-medium text-sm text-[#c88a04]">{study.industry}</span>
+                        </div>
+
+                        <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                          {study.title}
+                        </h3>
+
+                        <p className="text-muted-foreground text-sm mb-6">Kunde: {study.client}</p>
+
+                        <div className="space-y-4 mb-6">
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                              <span className="w-2 h-2 bg-destructive rounded-full" />
+                              Herausforderung
+                            </h4>
+                            <p className="text-muted-foreground text-sm leading-relaxed pl-4">{study.challenge}</p>
+                          </div>
+
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                              <span className="w-2 h-2 bg-accent rounded-full" />
+                              Lösung
+                            </h4>
+                            <p className="text-muted-foreground text-sm leading-relaxed pl-4">{study.solution}</p>
+                          </div>
+                        </div>
+
+                        {/* Quote */}
+                        <div className="rounded-xl p-6 border border-border bg-gray-800">
+                          <Quote className="w-8 h-8 mb-3 text-[#c88a04]" />
+                          <p className="italic leading-relaxed mb-4 text-[#c88a04]">"{study.quote}"</p>
+                          <p className="text-sm font-medium text-[#c88a04]">– {study.author}</p>
+                        </div>
+                      </div>
+
+                      {/* Image + Results Card */}
+                      <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+                        {/* Project Image */}
+                        <div className="relative rounded-2xl overflow-hidden mb-6 shadow-lg">
+                          <img
+                            src={study.image}
+                            alt={`${study.client} - ${study.industry} Projekt`}
+                            className="w-full h-64 object-cover"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                        </div>
+
+                        {/* Results Card */}
+                        <div className="bg-card rounded-2xl p-8 shadow-lg border border-border">
+                          <div className="flex items-center gap-2 mb-6">
+                            <TrendingUp className="w-5 h-5 text-[#c88a04]" />
+                            <h4 className="font-display text-lg font-semibold text-foreground">Ergebnisse</h4>
+                          </div>
+
+                          <div className="space-y-6">
+                            {study.results.map((result, i) => (
+                              <div key={i} className="flex items-start gap-4">
+                                <div className="w-16 text-center">
+                                  <span className="font-display text-2xl font-bold text-[#c88a04]">
+                                    {result.metric}
+                                  </span>
+                                </div>
+                                <div className="flex-1 pt-1">
+                                  <p className="text-foreground text-sm leading-relaxed">{result.label}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="mt-8 pt-6 border-t border-border">
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                              ))}
+                            </div>
+                            <p className="text-muted-foreground text-sm mt-2">Kundenbewertung</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  </ScrollReveal>)}
+                  </ScrollReveal>
+                ))}
               </div>
             </div>
           </div>
@@ -370,16 +417,24 @@ const Projekte = () => {
                       Unser Ansatz für Ihren Erfolg
                     </h2>
                     <p className="leading-relaxed mb-8 text-[#c88a04]">
-                      Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. 
-                      Gemeinsam entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie 
-                      von der Planung bis zur erfolgreichen Umsetzung.
+                      Jedes Projekt beginnt mit einer gründlichen Analyse Ihrer aktuellen Situation. Gemeinsam
+                      entwickeln wir eine maßgeschneiderte Roadmap und begleiten Sie von der Planung bis zur
+                      erfolgreichen Umsetzung.
                     </p>
 
                     <div className="space-y-4">
-                      {["Individuelle Bedarfsanalyse", "Maßgeschneiderte Lösungskonzepte", "Agile Umsetzung mit regelmäßigem Feedback", "Schulung und nachhaltiger Support", "Messbare Ergebnisse und Optimierung"].map((item, index) => <div key={index} className="flex items-center gap-3 text-accent">
+                      {[
+                        "Individuelle Bedarfsanalyse",
+                        "Maßgeschneiderte Lösungskonzepte",
+                        "Agile Umsetzung mit regelmäßigem Feedback",
+                        "Schulung und nachhaltiger Support",
+                        "Messbare Ergebnisse und Optimierung",
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-center gap-3 text-accent">
                           <CheckCircle2 className="w-5 h-5 flex-shrink-0 bg-inherit text-[#c88a04]" />
                           <span className="text-[#c88a04]">{item}</span>
-                        </div>)}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </ScrollReveal>
@@ -390,8 +445,8 @@ const Projekte = () => {
                       Ihr Projekt könnte das nächste sein
                     </h3>
                     <p className="text-accent-foreground/90 leading-relaxed mb-6">
-                      Lassen Sie uns gemeinsam herausfinden, wie wir Ihre digitale 
-                      Transformation vorantreiben können. Das erste Gespräch ist kostenlos.
+                      Lassen Sie uns gemeinsam herausfinden, wie wir Ihre digitale Transformation vorantreiben können.
+                      Das erste Gespräch ist kostenlos.
                     </p>
                     <Link to="/kontakt">
                       <Button variant="secondary" className="group">
@@ -414,8 +469,8 @@ const Projekte = () => {
                 Bereit für Ihre Erfolgsgeschichte?
               </h2>
               <p className="text-lg mb-8 text-inherit">
-                Kontaktieren Sie uns für ein unverbindliches Erstgespräch. 
-                Gemeinsam bringen wir Ihr Unternehmen digital nach vorne.
+                Kontaktieren Sie uns für ein unverbindliches Erstgespräch. Gemeinsam bringen wir Ihr Unternehmen digital
+                nach vorne.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center px-0">
                 <Link to="/kontakt">
@@ -425,7 +480,11 @@ const Projekte = () => {
                   </Button>
                 </Link>
                 <Link to="/leistungen">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto border-white text-white hover:bg-white/10"
+                  >
                     Leistungen ansehen
                   </Button>
                 </Link>
@@ -436,6 +495,7 @@ const Projekte = () => {
       </main>
 
       <Footer />
-    </>;
+    </>
+  );
 };
 export default Projekte;
