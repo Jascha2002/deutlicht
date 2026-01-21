@@ -48,8 +48,8 @@ const caseStudies = [
         label: "Steigerung der Kundenzufriedenheit",
       },
       {
-        metric: "80% Zuwendung für Beratung und Strategie",
-        label: "Förderung durch geprüfte Programme",
+        metric: "50%",
+        label: "Förderung",
       },
     ],
     quote:
@@ -182,8 +182,8 @@ const stats = [
     label: "Kundenzufriedenheit",
   },
   {
-    value: "bis zu 80%",
-    label: "Fördermittel möglich",
+    value: "€2M+",
+    label: "Eingeworbene Fördermittel",
   },
 ];
 const Projekte = () => {
