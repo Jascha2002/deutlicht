@@ -20,7 +20,7 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40 py-[97px]">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-black/[0.32]">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-inherit">
           
           {/* Logo on the left - double size, no loop */}
           <div className="flex-shrink-0">
