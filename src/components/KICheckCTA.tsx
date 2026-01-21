@@ -88,9 +88,7 @@ const KICheckCTA = () => {
               </div>
 
               {/* Floating badge */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg animate-pulse bg-accent">
-                Kostenlos
-              </div>
+              
             </div>
           </div>
         </div>

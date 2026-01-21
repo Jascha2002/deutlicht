@@ -19,7 +19,7 @@ const Hero = () => {
       <BranchenSelectorButton />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40 py-[97px]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 md:pt-40 py-[97px] lg:px-[131px]">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-inherit">
           
           {/* Logo on the left - double size, no loop */}
@@ -70,7 +70,7 @@ const Hero = () => {
         
         {/* Trust Indicators */}
         <div className="pt-12 border-t mt-12 opacity-100 border-transparent bg-transparent text-black">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-[#f2cf6e]/[0.41] mx-0 py-0 px-0 my-[2px]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mx-0 py-0 px-0 my-[2px] bg-[#f3f5f7]/55">
             <div className="text-center">
               <div className="font-display text-5xl font-bold opacity-100 shadow-none text-inherit">30+</div>
               <div className="font-display text-xl font-bold text-inherit">Jahre Erfahrung</div>

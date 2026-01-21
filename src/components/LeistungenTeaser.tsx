@@ -25,7 +25,7 @@ const LeistungenTeaser = () => {
   return <section className="bg-muted/30 mx-0 my-0 px-0 py-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 px-0 my-[29px]">
           <span className="font-medium uppercase tracking-widest text-xl text-[#c88a04]">
             Unsere Leistungen
           </span>
