@@ -38,7 +38,7 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground py-[40px] text-justify px-[64px]">
+            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground py-[40px] px-[64px] text-left">
               Von der Idee zur
               <br />
               <span className="text-[#c88a04] text-7xl bg-transparent">intelligenten Lösung</span>
