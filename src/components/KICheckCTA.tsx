@@ -2,16 +2,13 @@ import { Link } from "react-router-dom";
 import { Sparkles, TrendingUp, CheckCircle, Brain, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/lib/analytics";
-
 const KICheckCTA = () => {
   const handleCTAClick = () => {
     trackEvent("ki_check_cta_click", {
       location: "homepage_ki_check"
     });
   };
-
-  return (
-    <section className="w-full py-16 md:py-20 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-background">
+  return <section className="w-full py-16 md:py-20 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-background px-[28px]">
       <div className="container px-4">
         <div className="max-w-4xl mx-auto bg-gradient-to-br from-[hsl(210,80%,97%)] to-[hsl(230,70%,95%)] dark:from-[hsl(220,50%,15%)] dark:to-[hsl(240,40%,20%)] rounded-2xl shadow-xl overflow-hidden">
           <div className="flex flex-col items-center text-center p-8 md:p-12 bg-secondary">
@@ -57,25 +54,33 @@ const KICheckCTA = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl blur-2xl" />
               
               <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{ animationDelay: "0.1s" }}>
+                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
+                animationDelay: "0.1s"
+              }}>
                   <Brain className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
                   <p className="text-sm font-medium text-foreground">KI-Potenzial</p>
                   <p className="text-xs text-muted-foreground">erkennen</p>
                 </div>
                 
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{ animationDelay: "0.2s" }}>
+                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
+                animationDelay: "0.2s"
+              }}>
                   <TrendingUp className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
                   <p className="text-sm font-medium text-foreground">Wachstum</p>
                   <p className="text-xs text-muted-foreground">steigern</p>
                 </div>
                 
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{ animationDelay: "0.3s" }}>
+                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
+                animationDelay: "0.3s"
+              }}>
                   <Zap className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
                   <p className="text-sm font-medium text-foreground">Prozesse</p>
                   <p className="text-xs text-muted-foreground">optimieren</p>
                 </div>
                 
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{ animationDelay: "0.4s" }}>
+                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
+                animationDelay: "0.4s"
+              }}>
                   <Target className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
                   <p className="text-sm font-medium text-foreground">Strategie</p>
                   <p className="text-xs text-muted-foreground">entwickeln</p>
@@ -90,8 +95,6 @@ const KICheckCTA = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default KICheckCTA;

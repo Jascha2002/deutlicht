@@ -12,14 +12,14 @@ const Hero = () => {
       }} aria-hidden="true">
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e] py-px" />
       </div>
 
       {/* Branchen-Selector Button */}
       <BranchenSelectorButton />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40 py-[97px]">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-black/[0.32]">
           
           {/* Logo on the left - double size, no loop */}
@@ -38,7 +38,7 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground">
+            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground py-[40px] text-justify px-[64px]">
               Von der Idee zur
               <br />
               <span className="text-[#c88a04] text-7xl bg-transparent">intelligenten Lösung</span>
@@ -69,8 +69,8 @@ const Hero = () => {
         </div>
         
         {/* Trust Indicators */}
-        <div className="pt-12 border-t border-border/50 mt-12 opacity-100 bg-[#c88a04]/0">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="pt-12 border-t mt-12 opacity-100 border-transparent bg-transparent">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-black/[0.21]">
             <div className="text-center">
               <div className="font-display text-5xl font-bold opacity-100 shadow-none text-inherit">30+</div>
               <div className="font-display text-xl font-bold text-inherit">Jahre Erfahrung</div>
