@@ -283,11 +283,6 @@ submenu: [{
       icon: FileText
     }]
   }, {
-    name: "KI-Check",
-    href: "/ki-check",
-    badge: "kostenlos",
-    badgeStyle: 'below'
-  }, {
     name: "Projektanfrage",
     href: "/projektanfrage"
   }, {
@@ -360,7 +355,7 @@ submenu: [{
               </div>)}
           </div>
 
-          {/* CTA Button, Accessibility, Search & Theme Toggle */}
+          {/* CTA Buttons, Accessibility, Search & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-2">
             {/* Search Button */}
             <button onClick={() => setSearchOpen(!searchOpen)} className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="Suche öffnen">
@@ -368,7 +363,19 @@ submenu: [{
             </button>
             <AccessibilityWidget />
             <ThemeToggle />
-            <Link to="/kontakt" onClick={() => trackCTAClick("Beratung anfragen", "navigation")} className="text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
+            {/* KI-Check Button */}
+            <Link 
+              to="/ki-check" 
+              onClick={() => trackCTAClick("KI-Check", "navigation")} 
+              className="relative px-4 py-2.5 rounded-lg font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 border border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            >
+              <span>KI-Check</span>
+              <span className="absolute -top-2 -right-2 px-1.5 py-0.5 text-[9px] font-bold rounded bg-accent text-accent-foreground">
+                kostenlos
+              </span>
+            </Link>
+            {/* Beratung anfragen Button */}
+            <Link to="/kontakt" onClick={() => trackCTAClick("Beratung anfragen", "navigation")} className="text-accent-foreground px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-accent">
               Beratung anfragen
             </Link>
           </div>
@@ -462,23 +469,36 @@ submenu: [{
           }} className="block py-2 text-foreground/80 hover:text-accent">
                   <span className="flex flex-col items-start gap-1">
                     <span>{item.name}</span>
-                    {item.badge && <span className={cn("inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded", item.badgeStyle === 'below' ? "bg-yellow-400 text-yellow-900" : "bg-accent text-accent-foreground animate-pulse rounded-full")}>
+                    {item.badge && <span className={cn("inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded", item.badgeStyle === 'below' ? "bg-accent text-accent-foreground" : "bg-accent text-accent-foreground animate-pulse rounded-full")}>
                         {item.badge}
                       </span>}
                   </span>
                 </Link>}
             </div>)}
-          <div className="flex items-center justify-between mt-4 gap-3">
-            <div className="flex items-center gap-2">
-              <AccessibilityWidget />
-              <ThemeToggle />
+          <div className="flex flex-col gap-3 mt-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AccessibilityWidget />
+                <ThemeToggle />
+              </div>
             </div>
-            <Link to="/kontakt" onClick={() => {
-            trackCTAClick("Beratung anfragen", "mobile_navigation");
-            setIsOpen(false);
-          }} className="flex-1 text-center bg-accent text-white py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors">
-              Beratung anfragen
-            </Link>
+            <div className="flex gap-2">
+              <Link to="/ki-check" onClick={() => {
+                trackCTAClick("KI-Check", "mobile_navigation");
+                setIsOpen(false);
+              }} className="relative flex-1 text-center border border-accent text-accent py-3 rounded-lg font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
+                <span>KI-Check</span>
+                <span className="absolute -top-2 right-2 px-1.5 py-0.5 text-[8px] font-bold rounded bg-accent text-accent-foreground">
+                  kostenlos
+                </span>
+              </Link>
+              <Link to="/kontakt" onClick={() => {
+                trackCTAClick("Beratung anfragen", "mobile_navigation");
+                setIsOpen(false);
+              }} className="flex-1 text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors">
+                Beratung anfragen
+              </Link>
+            </div>
           </div>
         </div>
       </div>
