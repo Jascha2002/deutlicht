@@ -12,7 +12,7 @@ const Hero = () => {
       }} aria-hidden="true">
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e] py-px" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background border-dashed rounded-sm opacity-40 bg-[#19242e] py-0 px-0 my-0 mx-[230px]" />
       </div>
 
       {/* Branchen-Selector Button */}
