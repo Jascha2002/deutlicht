@@ -115,9 +115,9 @@ const Websites = () => {
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button size="lg" variant="outline" className="px-8">
-                    Angebotsgenerator
+                    Projektanfrage
                   </Button>
                 </Link>
               </div>

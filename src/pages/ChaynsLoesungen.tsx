@@ -166,9 +166,9 @@ const ChaynsLoesungen = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/angebotsgenerator">
+                  <Link to="/projektanfrage">
                     <Button size="lg" className="group w-full sm:w-auto">
-                      Angebot erstellen
+                      Projektanfrage starten
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
@@ -331,9 +331,9 @@ const ChaynsLoesungen = () => {
                 welche Lösung zu Ihrem Unternehmen passt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button size="lg" className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-white">
-                    Angebot erstellen
+                    Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

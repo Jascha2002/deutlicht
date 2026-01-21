@@ -374,9 +374,9 @@ const Digitalisierung = () => {
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8">
-                    Angebot erstellen
+                    Projektanfrage starten
                   </Button>
                 </Link>
               </div>

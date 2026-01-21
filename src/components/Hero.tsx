@@ -52,8 +52,8 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 pt-4" role="group" aria-label="Handlungsoptionen">
-              <Link to="/angebotsgenerator" onClick={() => trackCTAClick("Jetzt Angebot erstellen", "hero")} className="group flex items-center gap-2 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
-                Jetzt Angebot erstellen
+              <Link to="/projektanfrage" onClick={() => trackCTAClick("Jetzt Projektanfrage starten", "hero")} className="group flex items-center gap-2 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
+                Jetzt Projektanfrage starten
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
               <Link to="/leistungen" onClick={() => trackCTAClick("Mehr erfahren", "hero")} className="group flex items-center gap-2 px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-[#c88a04] bg-primary-foreground">

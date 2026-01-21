@@ -651,13 +651,13 @@ const Leistungen = () => {
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button 
                     size="lg" 
                     variant="outline" 
                     className="w-full sm:w-auto border-white text-white hover:bg-white/10"
                   >
-                    Angebot erstellen
+                    Projektanfrage starten
                   </Button>
                 </Link>
               </div>

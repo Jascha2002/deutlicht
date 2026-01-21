@@ -56,9 +56,9 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/angebotsgenerator" className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-1">
+                <Link to="/projektanfrage" className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-1">
                   <FileText className="w-3 h-3" />
-                  Angebotsgenerator
+                  Projektanfrage
                 </Link>
               </li>
               <li>

@@ -503,7 +503,7 @@ const VoicebotDemos = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button size="lg" className="group w-full sm:w-auto text-lg px-8">
                     <Phone className="w-5 h-5 mr-2" />
                     Jetzt Demo anfragen
@@ -962,9 +962,9 @@ const VoicebotDemos = () => {
                 Von der Konzeption ueber das Training bis zur Integration - alles aus einer Hand.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/angebotsgenerator">
+                <Link to="/projektanfrage">
                   <Button size="lg" className="group w-full sm:w-auto text-lg px-8 bg-accent hover:bg-accent/90 text-white">
-                    Angebot erstellen
+                    Projektanfrage starten
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
