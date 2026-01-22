@@ -24,6 +24,7 @@ import ChaynsLoesungen from "./pages/ChaynsLoesungen";
 import ChaynsHardware from "./pages/ChaynsHardware";
 import AIAgenten from "./pages/AIAgenten";
 import AngebotsGenerator from "./pages/AngebotsGenerator";
+import Projektanfrage from "./pages/Projektanfrage";
 import AngebotsAnnahme from "./pages/AngebotsAnnahme";
 import KICheck from "./pages/KICheck";
 import BranchenLoesungen from "./pages/BranchenLoesungen";
@@ -65,9 +66,9 @@ const App = () => (
               <Route path="/leistungen/chayns-loesungen" element={<ChaynsLoesungen />} />
               <Route path="/leistungen/chayns-hardware" element={<ChaynsHardware />} />
               <Route path="/leistungen/ki-agenten" element={<AIAgenten />} />
-              <Route path="/projektanfrage" element={<AngebotsGenerator />} />
-              <Route path="/angebots-generator" element={<AngebotsGenerator />} />
-              <Route path="/klarheitscheck" element={<AngebotsGenerator />} />
+              <Route path="/projektanfrage" element={<Projektanfrage />} />
+              <Route path="/angebots-generator" element={<Projektanfrage />} />
+              <Route path="/klarheitscheck" element={<Projektanfrage />} />
               <Route path="/ki-check" element={<KICheck />} />
               <Route path="/leistungen/ki-branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/leistungen/branchen-loesungen" element={<BranchenLoesungen />} />
