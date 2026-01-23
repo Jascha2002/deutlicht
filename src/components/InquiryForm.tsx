@@ -164,7 +164,7 @@ const InquiryForm = ({ onSuccess }: InquiryFormProps) => {
     setIsSubmitting(true);
 
     try {
-      const formData = {
+      const formDataPayload = {
         type: "inquiry",
         anliegen,
         kontakt,
@@ -175,11 +175,26 @@ const InquiryForm = ({ onSuccess }: InquiryFormProps) => {
         beschreibung,
       };
 
+      // Send email notification
       const { error } = await supabase.functions.invoke("send-inquiry-email", {
-        body: formData,
+        body: formDataPayload,
       });
 
       if (error) throw error;
+
+      // Send to Odoo CRM (non-blocking)
+      supabase.functions.invoke("odoo-crm-lead", {
+        body: {
+          type: "kontakt",
+          data: formDataPayload,
+        },
+      }).then(({ error: odooError }) => {
+        if (odooError) {
+          console.error("Odoo CRM error:", odooError);
+        } else {
+          console.log("Lead successfully sent to Odoo CRM");
+        }
+      });
 
       trackFormSubmission("inquiry_form", true);
 

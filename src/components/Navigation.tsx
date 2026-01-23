@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, type LucideIcon } from "lucide-react";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import LeistungenMegamenu from "@/components/LeistungenMegamenu";
 import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
 interface SubMenuItem {
   name: string;
@@ -305,54 +306,71 @@ submenu: [{
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8" role="menubar">
-            {navItems.map(item => <div key={item.name} className="relative group" role="none">
-                {item.submenu ? <div className="flex items-center space-x-1 cursor-pointer" role="menuitem" aria-haspopup="true">
-                    <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md">
-                      {item.name}
-                    </Link>
-                    <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" aria-hidden="true" />
-                    
-                    {/* Dropdown */}
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" role="menu" aria-label={`${item.name} Untermenü`}>
-                      <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
-                        {item.submenu.map(subItem => {
-                    const IconComponent = subItem.icon;
-                    const isHashLink = subItem.href.includes('#');
-                    return isHashLink ? (
-                      <button 
-                        key={subItem.name} 
-                        onClick={() => handleNavigation(subItem.href)} 
-                        className="flex items-center gap-3 px-4 py-2 w-full text-left text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
-                        role="menuitem"
-                      >
-                        {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
-                        {subItem.name}
-                      </button>
-                    ) : (
-                      <Link 
-                        key={subItem.name} 
-                        to={subItem.href} 
-                        onClick={() => trackNavClick(subItem.href)} 
-                        className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
-                        role="menuitem"
-                      >
-                        {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
-                        {subItem.name}
+            {navItems.map(item => {
+              const isLeistungen = item.name === "Leistungen";
+              
+              return (
+                <div key={item.name} className="relative group" role="none">
+                  {item.submenu ? (
+                    <div className="flex items-center space-x-1 cursor-pointer" role="menuitem" aria-haspopup="true">
+                      <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md">
+                        {item.name}
                       </Link>
-                    );
-                  })}
-                      </div>
+                      <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" aria-hidden="true" />
+                      
+                      {/* Megamenu for Leistungen */}
+                      {isLeistungen ? (
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" role="menu" aria-label="Leistungen Megamenü" style={{ width: 'min(1100px, 95vw)' }}>
+                          <LeistungenMegamenu />
+                        </div>
+                      ) : (
+                        /* Standard Dropdown for other items */
+                        <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" role="menu" aria-label={`${item.name} Untermenü`}>
+                          <div className="bg-card border border-border rounded-lg shadow-lg py-2 min-w-[220px]">
+                            {item.submenu.map(subItem => {
+                              const IconComponent = subItem.icon;
+                              const isHashLink = subItem.href.includes('#');
+                              return isHashLink ? (
+                                <button 
+                                  key={subItem.name} 
+                                  onClick={() => handleNavigation(subItem.href)} 
+                                  className="flex items-center gap-3 px-4 py-2 w-full text-left text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
+                                  role="menuitem"
+                                >
+                                  {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
+                                  {subItem.name}
+                                </button>
+                              ) : (
+                                <Link 
+                                  key={subItem.name} 
+                                  to={subItem.href} 
+                                  onClick={() => trackNavClick(subItem.href)} 
+                                  className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-accent hover:bg-muted transition-colors text-sm focus:outline-none focus-visible:bg-muted focus-visible:text-accent" 
+                                  role="menuitem"
+                                >
+                                  {IconComponent && <IconComponent className="w-4 h-4 text-accent" aria-hidden="true" />}
+                                  {subItem.name}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div> : <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex flex-col items-center" role="menuitem">
-                    <span>{item.name}</span>
-                    {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded -mt-0.5 text-primary bg-[#c88a04]">
-                        {item.badge}
-                      </span>}
-                    {item.badge && item.badgeStyle !== 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse ml-2">
-                        {item.badge}
-                      </span>}
-                  </Link>}
-              </div>)}
+                  ) : (
+                    <Link to={item.href} onClick={() => trackNavClick(item.href)} className="text-foreground/80 hover:text-accent transition-colors duration-200 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md flex flex-col items-center" role="menuitem">
+                      <span>{item.name}</span>
+                      {item.badge && item.badgeStyle === 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-semibold rounded -mt-0.5 text-primary bg-[#c88a04]">
+                          {item.badge}
+                        </span>}
+                      {item.badge && item.badgeStyle !== 'below' && <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-accent text-accent-foreground animate-pulse ml-2">
+                          {item.badge}
+                        </span>}
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* CTA Buttons, Accessibility, Search & Theme Toggle */}

@@ -1,1 +1,31 @@
 project_id = "puplxksqwvedhwipblfq"
+
+[functions.send-inquiry-email]
+verify_jwt = false
+
+[functions.send-contact-email]
+verify_jwt = false
+
+[functions.send-offer-email]
+verify_jwt = false
+
+[functions.generate-offer-pdf]
+verify_jwt = false
+
+[functions.accept-offer]
+verify_jwt = false
+
+[functions.gedankenblitz]
+verify_jwt = false
+
+[functions.deutlicht-chat]
+verify_jwt = false
+
+[functions.elevenlabs-tts]
+verify_jwt = false
+
+[functions.elevenlabs-voices]
+verify_jwt = false
+
+[functions.odoo-crm-lead]
+verify_jwt = false

@@ -91,15 +91,40 @@ const Projektanfrage = () => {
     const totals = calcTotal(formData);
     
     try {
-      const { error } = await supabase.functions.invoke('send-inquiry-email', {
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-inquiry-email', {
         body: {
-          formData,
-          totals,
-          timestamp: new Date().toISOString(),
+          type: 'projektanfrage',
+          data: {
+            ...formData,
+            estimated_setup: totals.setup,
+            estimated_monthly: totals.monthly,
+          },
         },
       });
 
-      if (error) throw error;
+      if (emailError) {
+        console.error('Email error:', emailError);
+      }
+
+      // Send to Odoo CRM (non-blocking)
+      supabase.functions.invoke('odoo-crm-lead', {
+        body: {
+          type: 'projektanfrage',
+          data: {
+            ...formData,
+            estimated_setup: totals.setup,
+            estimated_monthly: totals.monthly,
+          },
+        },
+      }).then(({ error: odooError }) => {
+        if (odooError) {
+          console.error('Odoo CRM error:', odooError);
+        } else {
+          console.log('Lead successfully sent to Odoo CRM');
+        }
+      });
+
       setSubmitted(true);
       toast({ title: 'Erfolg!', description: 'Ihre Anfrage wurde erfolgreich gesendet.' });
     } catch (error) {
