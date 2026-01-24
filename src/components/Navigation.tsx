@@ -457,7 +457,7 @@ submenu: [{
                     <span>{item.name}</span>
                     <ChevronDown className={cn("w-4 h-4 transition-transform", (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) && "rotate-180")} />
                   </button>
-                  <div className={cn("pl-4 space-y-1 overflow-hidden transition-all", (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) ? "max-h-[400px]" : "max-h-0")}>
+                  <div className={cn("pl-4 space-y-1 overflow-hidden transition-all overflow-y-auto", (item.name === "Über uns" ? ueberUnsOpen : leistungenOpen) ? "max-h-[60vh]" : "max-h-0")}>
                     {item.submenu.map(subItem => {
                 const IconComponent = subItem.icon;
                 const isHashLink = subItem.href.includes('#');
