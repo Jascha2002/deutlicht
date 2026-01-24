@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { OfferFormData, SERVICES } from '@/types/offer';
 import { cn } from '@/lib/utils';
-import { Check, Layers } from 'lucide-react';
+import { Check } from 'lucide-react';
+import stepLeistungenImg from '@/assets/step-leistungen.jpg';
 
 interface Step3Props {
   formData: OfferFormData;
@@ -10,17 +11,23 @@ interface Step3Props {
 
 export const Step3Services = ({ formData, onToggleService }: Step3Props) => {
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <Layers className="w-8 h-8 text-primary" />
+    <Card className="border-0 shadow-lg overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={stepLeistungenImg} 
+          alt="Gewünschte Leistungen" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+          <CardTitle className="text-2xl text-foreground">Gewünschte Leistungen</CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Wählen Sie alle Services aus, die Sie interessieren{' '}
+            <span className="text-primary">*</span>
+          </CardDescription>
         </div>
-        <CardTitle className="text-2xl">Gewünschte Leistungen</CardTitle>
-        <CardDescription>
-          Wählen Sie alle Services aus, die Sie interessieren{' '}
-          <span className="text-primary">*</span>
-        </CardDescription>
-      </CardHeader>
+      </div>
+      <CardHeader className="pt-4 pb-2" />
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {SERVICES.map((service) => {

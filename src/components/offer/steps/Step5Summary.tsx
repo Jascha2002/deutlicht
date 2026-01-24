@@ -2,7 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { OfferFormData } from '@/types/offer';
 import { calcTotal } from '@/lib/pricing';
-import { FileText, Edit2, CheckCircle } from 'lucide-react';
+import { Edit2, CheckCircle } from 'lucide-react';
+import stepZusammenfassungImg from '@/assets/step-zusammenfassung.jpg';
 
 interface Step5Props {
   formData: OfferFormData;
@@ -17,14 +18,20 @@ export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
   };
 
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <FileText className="w-8 h-8 text-primary" />
+    <Card className="border-0 shadow-lg overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={stepZusammenfassungImg} 
+          alt="Zusammenfassung" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+          <CardTitle className="text-2xl text-foreground">Zusammenfassung</CardTitle>
+          <CardDescription className="text-muted-foreground">Überprüfen Sie Ihre Angaben vor dem Absenden</CardDescription>
         </div>
-        <CardTitle className="text-2xl">Zusammenfassung</CardTitle>
-        <CardDescription>Überprüfen Sie Ihre Angaben vor dem Absenden</CardDescription>
-      </CardHeader>
+      </div>
+      <CardHeader className="pt-4 pb-2" />
       <CardContent className="space-y-6">
         {/* Company Info */}
         <div className="p-4 rounded-lg bg-muted/50">
