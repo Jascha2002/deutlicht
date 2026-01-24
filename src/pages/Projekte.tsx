@@ -26,6 +26,10 @@ import projektEinzelhandel from "@/assets/einzelhandel-option-3.jpg";
 import projektGastronomie from "@/assets/gastronomie-option-5.jpg";
 import projektGesundheit from "@/assets/gesundheit-option-4.jpg";
 import heroProjekte from "@/assets/hero-projekte.jpg";
+
+// Branch images for industries
+import brancheImmobilien from "@/assets/branche-immobilien.jpg";
+import brancheDienstleistungen from "@/assets/branche-dienstleistungen.jpg";
 const caseStudies = [
   {
     id: "handwerk",
@@ -146,26 +150,32 @@ const industries = [
   {
     icon: Factory,
     name: "Handwerk & Produktion",
+    image: projektHandwerk,
   },
   {
     icon: ShoppingBag,
     name: "Einzelhandel",
+    image: projektEinzelhandel,
   },
   {
     icon: Utensils,
     name: "Gastronomie",
+    image: projektGastronomie,
   },
   {
     icon: Heart,
     name: "Gesundheitswesen",
+    image: projektGesundheit,
   },
   {
     icon: Building2,
     name: "Immobilien",
+    image: brancheImmobilien,
   },
   {
     icon: Briefcase,
     name: "Dienstleistungen",
+    image: brancheDienstleistungen,
   },
 ];
 const stats = [
@@ -282,11 +292,18 @@ const Projekte = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {industries.map((industry, index) => (
                   <ScrollReveal key={index} delay={index * 50}>
-                    <div className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center text-[#c88a04] bg-muted">
-                        <industry.icon className="w-6 h-6 text-[#c88a04]" />
+                    <div className="group relative flex flex-col items-center gap-3 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300 overflow-hidden h-full">
+                      <div className="w-full h-28 overflow-hidden">
+                        <img 
+                          src={industry.image} 
+                          alt={industry.name} 
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
                       </div>
-                      <span className="text-sm font-medium text-center text-[#c88a04]">{industry.name}</span>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                        <span className="text-sm font-medium text-[#c88a04]">{industry.name}</span>
+                      </div>
                     </div>
                   </ScrollReveal>
                 ))}
