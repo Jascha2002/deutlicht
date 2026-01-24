@@ -74,7 +74,7 @@ const KICheckCTA = () => {
                 animationDelay: "0.3s"
               }}>
                   <Zap className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground py-[7px]">Prozesse</p>
+                  <p className="text-sm font-medium text-foreground py-[7px] px-0 mx-0">Prozesse </p>
                   <p className="text-xs text-muted-foreground py-0 px-0 my-[10px]">optimieren</p>
                 </div>
                 
