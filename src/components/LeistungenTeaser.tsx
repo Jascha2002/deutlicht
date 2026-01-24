@@ -53,41 +53,41 @@ const LeistungenTeaser = () => {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 px-0 py-0 my-0 mx-0">
+        {/* Services Grid - Mobile: 1 col with horizontal cards, Tablet: 2 cols, Desktop: 4 cols */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {leistungen.map(leistung => (
             <Link 
               key={leistung.title} 
               to={leistung.href} 
-              className="group border border-border rounded-2xl overflow-hidden hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-primary"
+              className="group border border-border rounded-xl sm:rounded-2xl overflow-hidden hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 bg-primary flex flex-row sm:flex-col"
             >
-              {/* Image */}
-              <div className="relative h-40 overflow-hidden">
+              {/* Image - Smaller on mobile, side-by-side layout */}
+              <div className="relative w-28 sm:w-full h-full sm:h-32 md:h-36 lg:h-40 overflow-hidden flex-shrink-0">
                 <img 
                   src={leistung.image} 
                   alt={leistung.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent" />
-                <div className="absolute bottom-3 left-4">
-                  <div className="w-10 h-10 bg-accent/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <leistung.icon className="w-5 h-5 text-accent" />
+                <div className="absolute inset-0 bg-gradient-to-r sm:bg-gradient-to-t from-primary via-primary/50 to-transparent" />
+                <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <leistung.icon className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
                   </div>
                 </div>
               </div>
               
-              {/* Content */}
-              <div className="p-5">
-                <h3 className="font-display text-xl font-semibold mb-3 text-accent">
+              {/* Content - Compact on mobile */}
+              <div className="p-3 sm:p-4 lg:p-5 flex flex-col justify-center flex-1 min-w-0">
+                <h3 className="font-display text-base sm:text-lg lg:text-xl font-semibold mb-1 sm:mb-2 lg:mb-3 text-accent line-clamp-1 sm:line-clamp-none">
                   {leistung.title}
                 </h3>
-                <p className="text-sm leading-relaxed mb-4 text-primary-foreground">
+                <p className="text-xs sm:text-sm leading-relaxed mb-2 sm:mb-3 lg:mb-4 text-primary-foreground line-clamp-2 sm:line-clamp-3">
                   {leistung.description}
                 </p>
-                <div className="flex items-center gap-2 text-accent font-medium text-sm group-hover:gap-3 transition-all">
-                  Mehr erfahren
-                  <ArrowRight className="w-4 h-4" />
+                <div className="flex items-center gap-1.5 sm:gap-2 text-accent font-medium text-xs sm:text-sm group-hover:gap-2 sm:group-hover:gap-3 transition-all">
+                  <span className="whitespace-nowrap">Mehr erfahren</span>
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 </div>
               </div>
             </Link>
