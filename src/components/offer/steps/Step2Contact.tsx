@@ -10,6 +10,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { OfferFormData } from '@/types/offer';
 import { Mail, Phone, Calendar } from 'lucide-react';
+import stepKontaktImg from '@/assets/step-kontakt.jpg';
 
 interface Step2Props {
   formData: OfferFormData;
@@ -18,14 +19,20 @@ interface Step2Props {
 
 export const Step2Contact = ({ formData, onChange }: Step2Props) => {
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <Mail className="w-8 h-8 text-primary" />
+    <Card className="border-0 shadow-lg overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={stepKontaktImg} 
+          alt="Kontakt & Zeitplan" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+          <CardTitle className="text-2xl text-foreground">Kontakt & Zeitplan</CardTitle>
+          <CardDescription className="text-muted-foreground">Wie können wir Sie erreichen und wann soll es losgehen?</CardDescription>
         </div>
-        <CardTitle className="text-2xl">Kontakt & Zeitplan</CardTitle>
-        <CardDescription>Wie können wir Sie erreichen und wann soll es losgehen?</CardDescription>
-      </CardHeader>
+      </div>
+      <CardHeader className="pt-4 pb-2" />
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">

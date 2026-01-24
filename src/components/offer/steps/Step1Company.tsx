@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { OfferFormData, INDUSTRIES } from '@/types/offer';
-import { Building2 } from 'lucide-react';
+import stepUnternehmenImg from '@/assets/step-unternehmen.jpg';
 
 interface Step1Props {
   formData: OfferFormData;
@@ -18,14 +18,20 @@ interface Step1Props {
 
 export const Step1Company = ({ formData, onChange }: Step1Props) => {
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <Building2 className="w-8 h-8 text-primary" />
+    <Card className="border-0 shadow-lg overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={stepUnternehmenImg} 
+          alt="Unternehmensdaten" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+          <CardTitle className="text-2xl text-foreground">Unternehmensdaten</CardTitle>
+          <CardDescription className="text-muted-foreground">Erzählen Sie uns von Ihrem Unternehmen</CardDescription>
         </div>
-        <CardTitle className="text-2xl">Unternehmensdaten</CardTitle>
-        <CardDescription>Erzählen Sie uns von Ihrem Unternehmen</CardDescription>
-      </CardHeader>
+      </div>
+      <CardHeader className="pt-4 pb-2" />
       <CardContent className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="company_name">Unternehmensname *</Label>
