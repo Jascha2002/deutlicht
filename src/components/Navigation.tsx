@@ -318,9 +318,17 @@ submenu: [{
                       </Link>
                       <ChevronDown className="w-4 h-4 text-foreground/60 group-hover:text-accent transition-colors" aria-hidden="true" />
                       
-                      {/* Megamenu for Leistungen */}
+                      {/* Megamenu for Leistungen - Fixed positioning to viewport center */}
                       {isLeistungen ? (
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" role="menu" aria-label="Leistungen Megamenü" style={{ width: 'min(1100px, 95vw)' }}>
+                        <div 
+                          className="fixed left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" 
+                          role="menu" 
+                          aria-label="Leistungen Megamenü" 
+                          style={{ 
+                            width: 'min(1100px, calc(100vw - 2rem))',
+                            top: '80px' // Match nav height
+                          }}
+                        >
                           <LeistungenMegamenu />
                         </div>
                       ) : (
@@ -500,21 +508,21 @@ submenu: [{
                 <ThemeToggle />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Link to="/ki-check" onClick={() => {
                 trackCTAClick("KI-Check", "mobile_navigation");
                 setIsOpen(false);
-              }} className="relative flex-1 text-center border border-accent text-accent py-3 rounded-lg font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
+              }} className="relative flex-1 text-center border border-accent text-accent py-3 px-4 rounded-lg font-medium hover:bg-accent hover:text-accent-foreground transition-colors text-sm whitespace-nowrap">
                 <span>KI-Check</span>
-                <span className="absolute -top-2 right-2 px-1.5 py-0.5 text-[8px] font-bold rounded bg-accent text-accent-foreground">
+                <span className="absolute -top-2 right-2 px-1.5 py-0.5 text-[8px] font-bold rounded bg-accent text-accent-foreground whitespace-nowrap">
                   kostenlos
                 </span>
               </Link>
               <Link to="/kontakt" onClick={() => {
                 trackCTAClick("Beratung anfragen", "mobile_navigation");
                 setIsOpen(false);
-              }} className="flex-1 text-center bg-accent text-accent-foreground py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors">
-                Beratung anfragen
+              }} className="flex-1 text-center bg-accent text-accent-foreground py-3 px-4 rounded-lg font-medium hover:bg-accent/90 transition-colors text-sm whitespace-nowrap">
+                Beratung
               </Link>
             </div>
           </div>

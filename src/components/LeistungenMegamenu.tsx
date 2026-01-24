@@ -184,23 +184,25 @@ const LeistungenMegamenu = ({ onItemClick }: LeistungenMegamenuProps) => {
   };
 
   return (
-    <div className="w-full bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
-      {/* Megamenu Grid */}
-      <div className="grid grid-cols-4 gap-0 divide-x divide-border">
+    <div className="w-full bg-card border border-border rounded-xl shadow-2xl overflow-hidden max-h-[calc(100vh-100px)] overflow-y-auto">
+      {/* Megamenu Grid - Responsive: 2 cols on medium, 4 cols on large */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-0 divide-x divide-border">
         {megamenuData.map((column, columnIndex) => (
           <div 
             key={column.title} 
             className={cn(
-              "p-5",
-              columnIndex === 0 && "bg-accent/5"
+              "p-3 lg:p-4 xl:p-5",
+              columnIndex === 0 && "bg-accent/5",
+              // Add top border for second row on 2-col layout
+              columnIndex >= 2 && "xl:border-t-0 border-t border-border"
             )}
           >
             {/* Column Header */}
-            <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-              <div className="p-1.5 rounded-lg bg-accent/10">
-                <column.icon className="w-4 h-4 text-accent" />
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+              <div className="p-1 lg:p-1.5 rounded-lg bg-accent/10 flex-shrink-0">
+                <column.icon className="w-3 h-3 lg:w-4 lg:h-4 text-accent" />
               </div>
-              <h3 className="font-semibold text-sm text-foreground">
+              <h3 className="font-semibold text-xs lg:text-sm text-foreground truncate">
                 {column.title}
               </h3>
             </div>
@@ -209,47 +211,48 @@ const LeistungenMegamenu = ({ onItemClick }: LeistungenMegamenuProps) => {
             <Link 
               to={column.highlightHref}
               onClick={() => handleClick(column.highlightHref)}
-              className="block relative rounded-xl overflow-hidden group mb-4 h-24"
+              className="block relative rounded-lg xl:rounded-xl overflow-hidden group mb-3 h-16 lg:h-20 xl:h-24"
             >
               <img 
                 src={column.highlightImage} 
                 alt={column.highlightTitle}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-3">
-                <span className="text-xs font-medium text-white flex items-center gap-1">
-                  {column.highlightTitle}
-                  <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              <div className="absolute bottom-0 left-0 right-0 p-2 lg:p-3">
+                <span className="text-[10px] lg:text-xs font-medium text-white flex items-center gap-1">
+                  <span className="truncate">{column.highlightTitle}</span>
+                  <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex-shrink-0" />
                 </span>
               </div>
             </Link>
 
             {/* Column Items */}
-            <div className="space-y-1">
+            <div className="space-y-0.5 lg:space-y-1">
               {column.items.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => handleClick(item.href)}
                   className={cn(
-                    "group flex items-start gap-3 p-2.5 rounded-lg",
+                    "group flex items-start gap-2 lg:gap-3 p-2 lg:p-2.5 rounded-lg",
                     "transition-all duration-200",
                     "hover:bg-accent/10 hover:shadow-sm",
                     "border border-transparent hover:border-accent/20"
                   )}
                 >
                   <div className={cn(
-                    "p-1.5 rounded-lg transition-colors flex-shrink-0",
+                    "p-1 lg:p-1.5 rounded-lg transition-colors flex-shrink-0",
                     "bg-muted group-hover:bg-accent/20"
                   )}>
-                    <item.icon className="w-4 h-4 text-accent" />
+                    <item.icon className="w-3 h-3 lg:w-4 lg:h-4 text-accent" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm text-foreground group-hover:text-accent transition-colors">
+                    <p className="font-medium text-xs lg:text-sm text-foreground group-hover:text-accent transition-colors truncate">
                       {item.name}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                    <p className="text-[10px] lg:text-xs text-muted-foreground mt-0.5 line-clamp-1 hidden lg:block">
                       {item.description}
                     </p>
                   </div>
@@ -261,22 +264,22 @@ const LeistungenMegamenu = ({ onItemClick }: LeistungenMegamenuProps) => {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-border bg-muted/30 px-5 py-3 flex items-center justify-between">
+      <div className="border-t border-border bg-muted/30 px-3 lg:px-5 py-2 lg:py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
         <Link
           to="/leistungen"
           onClick={() => handleClick("/leistungen")}
-          className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+          className="inline-flex items-center gap-2 text-xs lg:text-sm font-medium text-accent hover:text-accent/80 transition-colors"
         >
-          Alle Leistungen anzeigen
-          <ArrowRight className="w-4 h-4" />
+          <span className="whitespace-nowrap">Alle Leistungen</span>
+          <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4" />
         </Link>
         <Link
           to="/projektanfrage"
           onClick={() => handleClick("/projektanfrage")}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition-colors"
+          className="inline-flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition-colors whitespace-nowrap"
         >
           Bedarf klären
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4" />
         </Link>
       </div>
     </div>
