@@ -41,6 +41,8 @@ export const getTimeFactor = (timing: string): number => {
 
 export const calcWebsite = (formData: OfferFormData): { setup: number; monthly: number } => {
   let base = 0;
+  
+  // Website-Typen
   if (formData.website_type === 'onepager') base = 1200;
   else if (formData.website_type === 'landingpage_starter') base = 399;
   else if (formData.website_type === 'landingpage') base = 1500;
@@ -52,6 +54,11 @@ export const calcWebsite = (formData: OfferFormData): { setup: number; monthly: 
     base = 5900 + ((parseInt(formData.website_pages_count) || 20) - 20) * 200;
   else if (formData.website_type === '>30')
     base = 7900 + ((parseInt(formData.website_pages_count) || 30) - 30) * 180;
+  // Shop-Typen
+  else if (formData.website_type === 'webshop_starter') base = 2990;
+  else if (formData.website_type === 'webshop_standard') base = 4500;
+  else if (formData.website_type === 'webshop_professional') base = 6500;
+  else if (formData.website_type === 'webshop_enterprise') base = 9500;
 
   formData.website_features.forEach((f) => {
     if (f === 'Lead-/Vertriebsfokus') base += 2000;
@@ -68,18 +75,28 @@ export const calcWebsite = (formData: OfferFormData): { setup: number; monthly: 
 
   let monthly = 0;
   if (formData.hosting_needed === 'ja') {
-    const h: Record<string, number> = {
+    const hostingPrices: Record<string, number> = {
+      // Website-Hosting
       onepager_landingpage: 12,
       'website_5-10': 20,
       'website_10-20': 30,
+      'website_20-30': 40,
+      'website_30+': 50,
+      // Shop-Hosting
+      shop_klein: 25,
+      shop_mittel: 40,
+      shop_gross: 60,
+      pro_shop_server: 80,
+      pro_shop_2jahre: 62.5,
+      pro_shop_3jahre: 58.33,
     };
-    monthly += h[formData.hosting_type] || 0;
+    monthly += hostingPrices[formData.hosting_type] || 0;
   }
   if (formData.service_contract === 'ja') {
     const s: Record<string, number> = { '20': 39, '60': 99, '120': 179 };
     monthly += s[formData.service_minutes] || 0;
   }
-  return { setup: Math.round(base), monthly };
+  return { setup: Math.round(base), monthly: Math.round(monthly * 100) / 100 };
 };
 
 export const calcSocial = (formData: OfferFormData): { setup: number; monthly: number } => {

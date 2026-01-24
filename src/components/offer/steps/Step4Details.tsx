@@ -20,13 +20,21 @@ interface Step4Props {
 
 // Website-Typen mit Beschreibungen
 const WEBSITE_TYPES = [
-  { value: 'landingpage_starter', label: 'Landing Page Starter', description: 'Perfekt für schnelle Kampagnen oder Produktlaunches.' },
-  { value: 'onepager', label: 'One-Pager', description: 'Elegante Einzelseite mit scrollenden Sektionen.' },
-  { value: 'landingpage', label: 'Landing Page Pro', description: 'Erweiterte Landing Page mit A/B-Testing-Möglichkeiten.' },
-  { value: '5-10', label: 'Website 5-10 Seiten', description: 'Klassische Unternehmenswebsite.' },
-  { value: '10-20', label: 'Website 10-20 Seiten', description: 'Umfangreiche Website für größere Unternehmen.' },
-  { value: '20-30', label: 'Website 20-30 Seiten', description: 'Komplexe Website mit tiefgehender Struktur.' },
-  { value: '>30', label: 'Website 30+ Seiten', description: 'Enterprise-Website für große Organisationen.' },
+  { value: 'landingpage_starter', label: 'Landing Page Starter', description: 'Perfekt für schnelle Kampagnen oder Produktlaunches.', price: 'ab 399€' },
+  { value: 'onepager', label: 'One-Pager', description: 'Elegante Einzelseite mit scrollenden Sektionen.', price: 'ab 1.200€' },
+  { value: 'landingpage', label: 'Landing Page Pro', description: 'Erweiterte Landing Page mit A/B-Testing-Möglichkeiten.', price: 'ab 1.500€' },
+  { value: '5-10', label: 'Website 5-10 Seiten', description: 'Klassische Unternehmenswebsite.', price: 'ab 1.900€' },
+  { value: '10-20', label: 'Website 10-20 Seiten', description: 'Umfangreiche Website für größere Unternehmen.', price: 'ab 3.400€' },
+  { value: '20-30', label: 'Website 20-30 Seiten', description: 'Komplexe Website mit tiefgehender Struktur.', price: 'ab 5.900€' },
+  { value: '>30', label: 'Website 30+ Seiten', description: 'Enterprise-Website für große Organisationen.', price: 'ab 7.900€' },
+];
+
+// Shop-Typen mit Beschreibungen und Preisen
+const SHOP_TYPES = [
+  { value: 'webshop_starter', label: 'Webshop Starter', description: 'Einfacher Einstieg mit bis zu 50 Produkten.', price: '2.990€' },
+  { value: 'webshop_standard', label: 'Webshop Standard', description: 'Professioneller Shop mit erweiterten Features.', price: 'ab 4.500€' },
+  { value: 'webshop_professional', label: 'Webshop Professional', description: 'Umfangreicher Shop mit 500+ Produkten.', price: 'ab 6.500€' },
+  { value: 'webshop_enterprise', label: 'Webshop Enterprise', description: 'Enterprise-Lösung mit Multi-Channel.', price: 'ab 9.500€' },
 ];
 
 const WEBSITE_FEATURES_DETAILED = [
@@ -39,10 +47,23 @@ const WEBSITE_FEATURES_DETAILED = [
   { value: 'Mitgliederbereich', label: 'Mitgliederbereich', description: 'Geschützter Bereich mit Login' },
 ];
 
-const HOSTING_TYPES = [
+// Website Hosting
+const HOSTING_TYPES_WEBSITE = [
   { value: 'onepager_landingpage', label: 'Onepager/Landingpage', price: '12€/Monat' },
-  { value: 'website_5-10', label: '5-10 Seiten', price: '20€/Monat' },
-  { value: 'website_10-20', label: '10-20 Seiten', price: '30€/Monat' },
+  { value: 'website_5-10', label: 'Website 5-10 Seiten', price: '20€/Monat' },
+  { value: 'website_10-20', label: 'Website 10-20 Seiten', price: '30€/Monat' },
+  { value: 'website_20-30', label: 'Website 20-30 Seiten', price: '40€/Monat' },
+  { value: 'website_30+', label: 'Website 30+ Seiten', price: '50€/Monat' },
+];
+
+// Shop Hosting
+const HOSTING_TYPES_SHOP = [
+  { value: 'shop_klein', label: 'Kleiner Shop', description: 'Bis 100 Produkte', price: '25€/Monat' },
+  { value: 'shop_mittel', label: 'Mittelgroßer Shop', description: '100-500 Produkte', price: '40€/Monat' },
+  { value: 'shop_gross', label: 'Großer Shop', description: '500+ Produkte', price: '60€/Monat' },
+  { value: 'pro_shop_server', label: 'Pro-Shop-Server', description: 'Hohe Ausfallsicherheit, schnelle Zugriffe', price: '80€/Monat' },
+  { value: 'pro_shop_2jahre', label: 'Pro-Shop-Server (2 Jahre)', description: '2-Jahres-Vertrag', price: '62,50€/Monat' },
+  { value: 'pro_shop_3jahre', label: 'Pro-Shop-Server (3 Jahre)', description: '3-Jahres-Vertrag', price: '58,33€/Monat' },
 ];
 
 const SERVICE_MINUTES = [
@@ -117,6 +138,12 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
   const hasProzess = formData.services_selected.includes('Prozessoptimierung & Digitalstrategie');
   const hasBeratung = formData.services_selected.includes('Beratung & Schulung');
 
+  // Prüfen ob ein Shop-Typ gewählt ist
+  const isShopType = ['webshop_starter', 'webshop_standard', 'webshop_professional', 'webshop_enterprise'].includes(formData.website_type);
+  
+  // Passendes Hosting-Array basierend auf Website-Typ
+  const HOSTING_OPTIONS = isShopType ? HOSTING_TYPES_SHOP : HOSTING_TYPES_WEBSITE;
+
   return (
     <Card className="border-0 shadow-lg">
       <CardHeader className="text-center pb-6">
@@ -149,9 +176,41 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                         : 'border-border hover:border-primary/50'
                     )}
                   >
-                    <div className="flex items-center gap-2">
-                      {formData.website_type === type.value && <Check className="w-4 h-4 text-primary" />}
-                      <span className="font-medium">{type.label}</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {formData.website_type === type.value && <Check className="w-4 h-4 text-primary" />}
+                        <span className="font-medium">{type.label}</span>
+                      </div>
+                      <span className="text-xs text-primary font-medium">{type.price}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Shop-Pakete */}
+            <div className="space-y-2">
+              <Label>Webshop-Pakete</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {SHOP_TYPES.map((type) => (
+                  <button
+                    key={type.value}
+                    type="button"
+                    onClick={() => onChange('website_type', type.value)}
+                    className={cn(
+                      'p-3 rounded-lg border text-left transition-all',
+                      formData.website_type === type.value
+                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
+                        : 'border-border hover:border-primary/50'
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {formData.website_type === type.value && <Check className="w-4 h-4 text-primary" />}
+                        <span className="font-medium">{type.label}</span>
+                      </div>
+                      <span className="text-xs text-primary font-medium">{type.price}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
                   </button>
@@ -220,10 +279,12 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             </div>
 
             {formData.hosting_needed === 'ja' && (
-              <div className="space-y-2">
-                <Label>Hosting-Paket</Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  {HOSTING_TYPES.map((type) => (
+              <div className="space-y-3">
+                <Label>
+                  {isShopType ? 'Shop-Hosting-Paket' : 'Website-Hosting-Paket'}
+                </Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {HOSTING_OPTIONS.map((type) => (
                     <button
                       key={type.value}
                       type="button"
@@ -235,13 +296,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                           : 'border-border hover:border-primary/50'
                       )}
                     >
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{type.label}</span>
-                        <span className="text-sm text-muted-foreground">{type.price}</span>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <span className="font-medium block">{type.label}</span>
+                          {'description' in type && type.description && (
+                            <span className="text-xs text-muted-foreground">{type.description as string}</span>
+                          )}
+                        </div>
+                        <span className="text-sm text-primary font-medium whitespace-nowrap">{type.price}</span>
                       </div>
                     </button>
                   ))}
                 </div>
+                {isShopType && (
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Info className="w-3 h-3" />
+                    Shop-Hosting beinhaltet SSL, tägliche Backups und Performance-Optimierung
+                  </p>
+                )}
               </div>
             )}
 
