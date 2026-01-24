@@ -13,6 +13,10 @@ import websitesImg from "@/assets/leistung-websites-new.jpg";
 import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
 import marketingImg from "@/assets/leistung-marketing-new.jpg";
 import foerderungImg from "@/assets/leistung-foerderung-new.jpg";
+import erfahrungImg from "@/assets/ueber-uns-erfahrung.jpg";
+import digitalisierungImg from "@/assets/ueber-uns-digitalisierung.jpg";
+import kiPionierCardImg from "@/assets/ueber-uns-ki-pionier.jpg";
+import foerderberatungCardImg from "@/assets/ueber-uns-foerderberatung.jpg";
 const UeberUns = () => {
   return <>
       <Helmet>
@@ -83,58 +87,66 @@ const UeberUns = () => {
               
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <ScrollReveal delay={0}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
-                      <Award className="w-6 h-6 text-primary" />
+                  <div className="rounded-xl shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105 overflow-hidden">
+                    <div className="h-32 overflow-hidden">
+                      <img src={erfahrungImg} alt="30+ Jahre Erfahrung" className="w-full h-full object-cover" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
-                      30+ Jahre Erfahrung
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[#c88a04]/90">
-                      Fundiertes unternehmerisches Know-how im Management. Bewährte Strategien für nachhaltiges Wachstum.
-                    </p>
+                    <div className="p-5">
+                      <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
+                        30+ Jahre Erfahrung
+                      </h3>
+                      <p className="text-sm leading-relaxed text-[#c88a04]/90">
+                        Fundiertes unternehmerisches Know-how im Management. Bewährte Strategien für nachhaltiges Wachstum.
+                      </p>
+                    </div>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={100}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
-                      <Globe className="w-6 h-6 text-primary" />
+                  <div className="rounded-xl shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105 overflow-hidden">
+                    <div className="h-32 overflow-hidden">
+                      <img src={digitalisierungImg} alt="25+ Jahre Digitalisierung" className="w-full h-full object-cover" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
-                      25+ Jahre Digitalisierung
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[#c88a04]/90">
-                      Seit den Anfängen des Internets dabei. Expertise in Webentwicklung, E-Commerce und digitaler Transformation.
-                    </p>
+                    <div className="p-5">
+                      <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
+                        25+ Jahre Digitalisierung
+                      </h3>
+                      <p className="text-sm leading-relaxed text-[#c88a04]/90">
+                        Seit den Anfängen des Internets dabei. Expertise in Webentwicklung, E-Commerce und digitaler Transformation.
+                      </p>
+                    </div>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={200}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
-                      <Brain className="w-6 h-6 text-primary" />
+                  <div className="rounded-xl shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105 overflow-hidden">
+                    <div className="h-32 overflow-hidden">
+                      <img src={kiPionierCardImg} alt="Erste KI-Agentur" className="w-full h-full object-cover" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
-                      Erste KI-Agentur
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[#c88a04]/90">
-                      Pionier für Künstliche Intelligenz in Ostthüringen, erste KI-Agentur in Gera. Modernste KI-Lösungen für Ihr Unternehmen.
-                    </p>
+                    <div className="p-5">
+                      <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
+                        Erste KI-Agentur
+                      </h3>
+                      <p className="text-sm leading-relaxed text-[#c88a04]/90">
+                        Pionier für Künstliche Intelligenz in Ostthüringen, erste KI-Agentur in Gera. Modernste KI-Lösungen für Ihr Unternehmen.
+                      </p>
+                    </div>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={300}>
-                  <div className="rounded-xl p-6 shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-[#c88a04]">
-                      <Target className="w-6 h-6 text-primary" />
+                  <div className="rounded-xl shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105 overflow-hidden">
+                    <div className="h-32 overflow-hidden">
+                      <img src={foerderberatungCardImg} alt="Förderberatung" className="w-full h-full object-cover" />
                     </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
-                      Förderberatung
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[#c88a04]/90">
-                      Maximieren Sie Ihre Investitionen. Wir unterstützen bei förderfähigen Digitalisierungsprojekten.
-                    </p>
+                    <div className="p-5">
+                      <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
+                        Förderberatung
+                      </h3>
+                      <p className="text-sm leading-relaxed text-[#c88a04]/90">
+                        Maximieren Sie Ihre Investitionen. Wir unterstützen bei förderfähigen Digitalisierungsprojekten.
+                      </p>
+                    </div>
                   </div>
                 </ScrollReveal>
               </div>
