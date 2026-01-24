@@ -58,32 +58,32 @@ const KICheckCTA = () => {
                 animationDelay: "0.1s"
               }}>
                   <Brain className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground">KI-Potenzial</p>
-                  <p className="text-xs text-muted-foreground">erkennen</p>
+                  <p className="text-sm font-medium text-foreground px-0 py-[2px]">KI-Potenzial</p>
+                  <p className="text-xs text-muted-foreground px-0 py-0 my-0">erkennen</p>
                 </div>
                 
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
+                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50 px-0" style={{
                 animationDelay: "0.2s"
               }}>
                   <TrendingUp className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground">Wachstum</p>
-                  <p className="text-xs text-muted-foreground">steigern</p>
+                  <p className="text-sm font-medium text-foreground mx-0 text-justify my-0 px-[8px] py-[15px]">Wachstum </p>
+                  <p className="text-xs text-muted-foreground my-0 mx-[17px] px-[2px] py-px">steigern</p>
                 </div>
                 
                 <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
                 animationDelay: "0.3s"
               }}>
                   <Zap className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground">Prozesse</p>
-                  <p className="text-xs text-muted-foreground">optimieren</p>
+                  <p className="text-sm font-medium text-foreground py-[7px]">Prozesse</p>
+                  <p className="text-xs text-muted-foreground py-0 px-0 my-[10px]">optimieren</p>
                 </div>
                 
                 <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
                 animationDelay: "0.4s"
               }}>
                   <Target className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground">Strategie</p>
-                  <p className="text-xs text-muted-foreground">entwickeln</p>
+                  <p className="text-sm font-medium text-foreground py-[2px] px-0 my-0 mx-0">Strategie</p>
+                  <p className="text-xs text-muted-foreground py-[20px]">entwickeln</p>
                 </div>
               </div>
 
