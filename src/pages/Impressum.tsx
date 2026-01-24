@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -221,6 +222,33 @@ const Impressum = () => {
                     aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von 
                     Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
                   </p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={1.1}>
+              <div className="mb-12 pt-8 border-t border-border">
+                <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+                  Rechtliche Dokumente
+                </h2>
+                <div className="text-muted-foreground">
+                  <p className="mb-4">
+                    Weitere rechtliche Informationen finden Sie hier:
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Link 
+                      to="/agb" 
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 hover:underline font-medium transition-colors"
+                    >
+                      Allgemeine Geschäftsbedingungen (AGB)
+                    </Link>
+                    <Link 
+                      to="/datenschutz" 
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 hover:underline font-medium transition-colors"
+                    >
+                      Datenschutzerklärung
+                    </Link>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
