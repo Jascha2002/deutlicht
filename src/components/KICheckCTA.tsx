@@ -1,17 +1,49 @@
 import { Link } from "react-router-dom";
-import { Sparkles, TrendingUp, CheckCircle, Brain, Zap, Target } from "lucide-react";
+import { Sparkles, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/lib/analytics";
+
+// Import thematic images
+import heroKiCheck from "@/assets/hero-ki-check.jpg";
+import digitalisierungProzesse from "@/assets/digitalisierung-prozesse.jpg";
+import leistungKiAgenten from "@/assets/leistung-ki-agenten.jpg";
+import heroLeistungen from "@/assets/hero-leistungen.jpg";
+
+const focusAreas = [
+  {
+    title: "Potenzial",
+    subtitle: "erkennen",
+    image: heroKiCheck,
+  },
+  {
+    title: "Wachstum",
+    subtitle: "steigern",
+    image: leistungKiAgenten,
+  },
+  {
+    title: "Prozesse",
+    subtitle: "optimieren",
+    image: digitalisierungProzesse,
+  },
+  {
+    title: "Strategie",
+    subtitle: "entwickeln",
+    image: heroLeistungen,
+  },
+];
+
 const KICheckCTA = () => {
   const handleCTAClick = () => {
     trackEvent("ki_check_cta_click", {
       location: "homepage_ki_check"
     });
   };
-  return <section className="w-full py-16 md:py-20 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-background px-[28px]">
+
+  return (
+    <section className="w-full py-16 md:py-20 bg-gradient-to-br from-accent/10 via-primary/5 to-accent/20 bg-background px-4 sm:px-6">
       <div className="container px-4">
         <div className="max-w-4xl mx-auto bg-gradient-to-br from-[hsl(210,80%,97%)] to-[hsl(230,70%,95%)] dark:from-[hsl(220,50%,15%)] dark:to-[hsl(240,40%,20%)] rounded-2xl shadow-xl overflow-hidden">
-          <div className="flex flex-col items-center text-center p-8 md:p-12 bg-secondary">
+          <div className="flex flex-col items-center text-center p-6 sm:p-8 md:p-12 bg-secondary">
             {/* Header */}
             <div className="space-y-4 max-w-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
@@ -23,7 +55,7 @@ const KICheckCTA = () => {
             </div>
 
             {/* Benefits List */}
-            <ul className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-6">
+            <ul className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-x-8 sm:gap-y-3 mt-6">
               <li className="flex items-center gap-2 text-foreground">
                 <CheckCircle className="h-5 w-5 flex-shrink-0 text-accent" />
                 <span>10 gezielte Fragen</span>
@@ -40,7 +72,7 @@ const KICheckCTA = () => {
 
             {/* CTA Button */}
             <div className="mt-8">
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-white font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-white font-semibold px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                 <Link to="/ki-check" onClick={handleCTAClick}>
                   <Sparkles className="mr-2 h-5 w-5" />
                   Jetzt kostenlos testen
@@ -48,51 +80,46 @@ const KICheckCTA = () => {
               </Button>
             </div>
 
-            {/* Icon Grid */}
-            <div className="relative mt-10 w-full max-w-md">
+            {/* Focus Areas Grid with Images */}
+            <div className="relative mt-10 w-full max-w-lg">
               {/* Background decoration */}
               <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl blur-2xl" />
               
-              <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
-                animationDelay: "0.1s"
-              }}>
-                  <Brain className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground px-0 py-[2px]">KI-Potenzial</p>
-                  <p className="text-xs text-muted-foreground px-0 py-0 my-0">erkennen</p>
-                </div>
-                
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50 px-0" style={{
-                animationDelay: "0.2s"
-              }}>
-                  <TrendingUp className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground mx-0 text-justify my-0 px-[8px] py-[15px]">Wachstum </p>
-                  <p className="text-xs text-muted-foreground my-0 mx-[17px] px-[2px] py-px">steigern</p>
-                </div>
-                
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
-                animationDelay: "0.3s"
-              }}>
-                  <Zap className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground py-[7px] px-0 mx-0">Prozesse </p>
-                  <p className="text-xs text-muted-foreground py-0 px-0 my-[10px]">optimieren</p>
-                </div>
-                
-                <div className="backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/50" style={{
-                animationDelay: "0.4s"
-              }}>
-                  <Target className="h-8 w-8 md:h-10 md:w-10 mb-2 text-accent mx-auto" />
-                  <p className="text-sm font-medium text-foreground py-[2px] px-0 my-0 mx-0">Strategie</p>
-                  <p className="text-xs text-muted-foreground py-[20px]">entwickeln</p>
-                </div>
+              <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                {focusAreas.map((area, index) => (
+                  <div
+                    key={area.title}
+                    className="group backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in bg-background/80"
+                    style={{ animationDelay: `${(index + 1) * 0.1}s` }}
+                  >
+                    {/* Image */}
+                    <div className="relative h-16 sm:h-20 w-full overflow-hidden">
+                      <img
+                        src={area.image}
+                        alt={`${area.title} ${area.subtitle}`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                    </div>
+                    
+                    {/* Text */}
+                    <div className="p-2 sm:p-3 text-center">
+                      <p className="text-xs sm:text-sm font-semibold text-foreground leading-tight">
+                        {area.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-tight">
+                        {area.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              {/* Floating badge */}
-              
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default KICheckCTA;
