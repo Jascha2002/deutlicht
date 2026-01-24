@@ -243,8 +243,18 @@ const Projekte = () => {
         </section>
 
         {/* Video Section */}
-        <section className="py-12 md:py-16 bg-[#2b3d50]/95 opacity-90">
-          <div className="container mx-auto px-4">
+        <section className="relative py-12 md:py-16 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={heroProjekte} 
+              alt="" 
+              className="w-full h-full object-cover opacity-40"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#2b3d50]/80 via-[#2b3d50]/70 to-[#2b3d50]/80" />
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
             <ScrollReveal>
               <div className="max-w-3xl mx-auto">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border">
