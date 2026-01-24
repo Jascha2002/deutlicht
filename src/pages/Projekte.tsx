@@ -192,8 +192,8 @@ const stats = [
     label: "Kundenzufriedenheit",
   },
   {
-    value: "€2M+",
-    label: "Eingeworbene Fördermittel",
+    value: "bis 80%",
+    label: "geförderte Beratung",
   },
 ];
 const Projekte = () => {
