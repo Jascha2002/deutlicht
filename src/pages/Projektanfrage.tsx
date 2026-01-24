@@ -12,9 +12,11 @@ import { OfferFormData, initialFormData } from '@/types/offer';
 import { calcTotal } from '@/lib/pricing';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import AnimatedLogo from '@/components/AnimatedLogo';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, ArrowRight, Send, CheckCircle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send, CheckCircle, RotateCcw, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import heroProjektanfrage from '@/assets/hero-projektanfrage.jpg';
 
 const STEPS = ['Unternehmen', 'Kontakt', 'Leistungen', 'Details', 'Zusammenfassung'];
 
@@ -175,12 +177,39 @@ const Projektanfrage = () => {
         <meta name="description" content="Erstellen Sie Ihr individuelles Digitalpaket: Website, KI-Agenten, Voicebots, Social Media & SEO. Unverbindliche Preiskalkulation in 5 Minuten." />
       </Helmet>
       <Navigation />
-      <main className="min-h-screen bg-secondary pt-32 pb-16">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">Projektanfrage</h1>
-            <p className="text-muted-foreground">Ihr individuelles Angebot in 5 Minuten</p>
+      <main className="min-h-screen bg-secondary">
+        {/* Hero Section */}
+        <section className="relative flex items-center justify-center overflow-hidden pt-32 pb-12">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={heroProjektanfrage} 
+              alt="Projektanfrage Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-secondary" />
           </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col items-center text-center">
+              <AnimatedLogo size="lg" className="mb-8" />
+              
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground border border-accent/30 text-sm font-medium mb-6">
+                <FileText className="w-4 h-4" />
+                Kostenlos & Unverbindlich
+              </span>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
+                Projektanfrage
+              </h1>
+              
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+                Ihr individuelles Angebot in 5 Minuten
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 max-w-4xl pb-16">
 
           <WizardProgress currentStep={currentStep} totalSteps={5} steps={STEPS} />
 

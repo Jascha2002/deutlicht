@@ -19,16 +19,16 @@ const Hero = () => {
       <BranchenSelectorButton />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 md:pt-40 py-[97px] lg:px-[240px]">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-solid border-accent opacity-100 bg-inherit px-0 py-0 mx-[4px]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 md:pt-40 py-[97px] lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           
-          {/* Logo on the left - double size, no loop */}
-          <div className="flex-shrink-0">
+          {/* Logo on the left - larger, no loop */}
+          <div className="flex-shrink-0 lg:self-start">
             <AnimatedLogo size="xl" loop={false} />
           </div>
           
-          {/* Text content */}
-          <div className="text-center lg:text-left space-y-8 px-0 my-0 mx-0">
+          {/* Text content - centered */}
+          <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 border border-accent/30 rounded-full px-4 py-2 bg-primary text-primary-foreground">
               <Zap className="w-4 h-4" />
@@ -37,21 +37,23 @@ const Hero = () => {
               </span>
             </div>
 
-            {/* Headline */}
-            <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-black/[0.41] text-primary-foreground mx-0 text-center px-[2px] py-[15px]">
-              Von der Idee zur
-              <br />
-              <span className="text-[#c88a04] text-7xl bg-transparent">intelligenten Lösung</span>
-            </h1>
+            {/* Headline - centered box */}
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl px-6 py-8 md:px-12 md:py-10">
+              <h1 id="hero-heading" className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-primary-foreground">
+                Von der Idee zur
+                <br />
+                <span className="text-[#c88a04]">intelligenten Lösung</span>
+              </h1>
 
-            {/* Subheadline */}
-            <p className="max-w-2xl text-lg leading-relaxed sm:text-2xl font-semibold bg-[#c88a04]/[0.01] text-primary-foreground">
-              Wir begleiten Ihr Unternehmen durch die digitale Transformation – 
-              mit Strategie, Erfahrung und maßgeschneiderten Lösungen.
-            </p>
+              {/* Subheadline */}
+              <p className="max-w-2xl mx-auto mt-6 text-lg leading-relaxed sm:text-2xl font-semibold text-primary-foreground/90">
+                Wir begleiten Ihr Unternehmen durch die digitale Transformation – 
+                mit Strategie, Erfahrung und maßgeschneiderten Lösungen.
+              </p>
+            </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 pt-4" role="group" aria-label="Handlungsoptionen">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4" role="group" aria-label="Handlungsoptionen">
               <Link to="/projektanfrage" onClick={() => trackCTAClick("Jetzt Projektanfrage starten", "hero")} className="group flex items-center gap-2 text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 bg-[#c88a04]">
                 Projektanfrage starten
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
