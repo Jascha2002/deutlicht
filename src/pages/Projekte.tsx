@@ -249,7 +249,7 @@ const Projekte = () => {
             <img 
               src={heroProjekte} 
               alt="" 
-              className="w-full h-full object-cover opacity-40"
+              className="w-full h-full object-cover opacity-60"
               aria-hidden="true"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#2b3d50]/80 via-[#2b3d50]/70 to-[#2b3d50]/80" />
