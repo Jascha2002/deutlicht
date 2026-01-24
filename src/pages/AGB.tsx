@@ -2,10 +2,8 @@ import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
-
 const AGB = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Allgemeine Geschäftsbedingungen | DeutLicht®</title>
         <meta name="description" content="Allgemeine Geschäftsbedingungen (AGB) der Stadtnetz UG (haftungsbeschränkt) handelnd unter der Marke DeutLicht®." />
@@ -278,7 +276,7 @@ const AGB = () => {
             <ScrollReveal delay={1.1}>
               <div className="p-6 bg-muted/30 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Stand:</strong> Januar 2025
+                  <strong className="text-foreground">Stand:</strong> Januar 2026
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   <strong className="text-foreground">Anbieter:</strong> Stadtnetz UG (haftungsbeschränkt) 
@@ -291,8 +289,6 @@ const AGB = () => {
       </section>
 
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default AGB;
