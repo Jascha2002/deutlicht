@@ -19,6 +19,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedLogo from "@/components/AnimatedLogo";
+import VideoWithFadeOut from "@/components/VideoWithFadeOut";
 
 // Project images
 import projektHandwerk from "@/assets/handwerk-option-2.jpg";
@@ -258,10 +259,11 @@ const Projekte = () => {
             <ScrollReveal>
               <div className="max-w-3xl mx-auto">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                  <video autoPlay muted playsInline className="w-full aspect-video object-cover px-[55px] bg-black/0">
-                    <source src="/videos/deutlicht-vernetzt.mp4" type="video/mp4" />
-                    Ihr Browser unterstützt keine Videos.
-                  </video>
+                  <VideoWithFadeOut 
+                    src="/videos/deutlicht-vernetzt.mp4" 
+                    className="w-full aspect-video object-cover px-[55px] bg-black/0"
+                    fadeOutDuration={1}
+                  />
                 </div>
               </div>
             </ScrollReveal>
