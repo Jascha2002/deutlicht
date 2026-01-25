@@ -360,7 +360,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Send notification to business
       const notificationEmail = await resend.emails.send({
         from: "DeutLicht Projektanfrage <kontakt@deutlicht.de>",
-        to: ["info@deutlicht.de"],
+        to: ["info@deutlicht.de", "carstenvds@gmail.com"],
         subject: `🎯 Projektanfrage: ${escapeHtml(data.company_name)} | ${escapeHtml(data._meta?.lead_priority) || 'Normal'} Priorität`,
         html: formatKlarheitsCheckEmail(data),
       });
@@ -485,7 +485,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification to business
     const notificationEmail = await resend.emails.send({
       from: "DeutLicht Anfrage <kontakt@deutlicht.de>",
-      to: ["info@deutlicht.de"],
+      to: ["info@deutlicht.de", "carstenvds@gmail.com"],
       subject: `Qualifizierte Anfrage: ${safeKontaktUnternehmen} - ${safeKontaktName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;">

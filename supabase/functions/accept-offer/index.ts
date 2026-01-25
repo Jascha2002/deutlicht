@@ -363,7 +363,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send internal notification
     const internalEmailResult = await resend.emails.send({
       from: "DeutLicht System <system@deutlicht.de>",
-      to: ["info@deutlicht.de"],
+      to: ["info@deutlicht.de", "carstenvds@gmail.com"],
       subject: `🎉 Neuer Auftrag: ${data.company || data.fullName} – ${data.offerNumber}`,
       html: internalNotificationHtml,
     });
