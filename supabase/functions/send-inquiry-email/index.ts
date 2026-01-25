@@ -344,8 +344,11 @@ const handler = async (req: Request): Promise<Response> => {
     if ((requestData.type === 'klarheitscheck' || requestData.type === 'projektanfrage') && requestData.data) {
       const data = requestData.data;
       
+      // Get email from either field (customer_email for projektanfrage, email for klarheitscheck)
+      const customerEmail = data.customer_email || data.email;
+      
       // Validate email
-      if (!data.email || !validateEmail(data.email)) {
+      if (!customerEmail || !validateEmail(customerEmail)) {
         return new Response(
           JSON.stringify({ error: "Ungültige E-Mail-Adresse" }),
           {
@@ -354,6 +357,9 @@ const handler = async (req: Request): Promise<Response> => {
           }
         );
       }
+      
+      // Normalize email field for consistent usage
+      data.email = customerEmail;
 
       console.log("Processing Klarheitscheck submission");
 
