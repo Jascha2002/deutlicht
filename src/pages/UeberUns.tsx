@@ -13,7 +13,7 @@ import websitesImg from "@/assets/leistung-websites-new.jpg";
 import kiVoicebotsImg from "@/assets/ueber-uns-ki-voicebots.jpg";
 import marketingImg from "@/assets/leistung-marketing-new.jpg";
 import foerderungImg from "@/assets/leistung-foerderung-new.jpg";
-import erfahrungImg from "@/assets/ueber-uns-erfahrung.jpg";
+import erfahrungImg from "@/assets/carsten-van-de-sand.jpg";
 import digitalisierungImg from "@/assets/ueber-uns-digitalisierung.jpg";
 import kiPionierCardImg from "@/assets/ueber-uns-ki-pionier.jpg";
 import foerderberatungCardImg from "@/assets/ueber-uns-foerderberatung.jpg";
@@ -89,7 +89,7 @@ const UeberUns = () => {
                 <ScrollReveal delay={0}>
                   <div className="rounded-xl shadow-lg border transition-all duration-300 border-[#c88a04] bg-primary h-full hover:shadow-xl hover:scale-105 overflow-hidden">
                     <div className="h-32 overflow-hidden">
-                      <img src={erfahrungImg} alt="30+ Jahre Erfahrung" className="w-full h-full object-cover" />
+                      <img src={erfahrungImg} alt="Carsten van de Sand - Geschäftsführer" className="w-full h-full object-cover object-top" />
                     </div>
                     <div className="p-5">
                       <h3 className="font-display text-xl font-semibold mb-3 text-[#c88a04]">
