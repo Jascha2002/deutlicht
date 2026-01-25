@@ -7,7 +7,7 @@ const corsHeaders = {
 
 // Odoo API Configuration
 const ODOO_URL = "https://deutlicht.odoo.com";
-const ODOO_DB = "deutlicht-main-17715609";
+const ODOO_DB = "deutlicht"; // For Odoo SaaS, DB name is typically the subdomain
 const ODOO_API_KEY = Deno.env.get("OdooCRMLeads") || "";
 
 interface OdooLeadData {
