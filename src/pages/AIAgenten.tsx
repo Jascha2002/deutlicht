@@ -14,6 +14,23 @@ import aiAgentChatbot from "@/assets/ai-agent-chatbot.jpg";
 import aiAgentWorkflow from "@/assets/ai-agent-workflow.jpg";
 import aiAgentAnalytics from "@/assets/ai-agent-analytics.jpg";
 import aiAgentenHeroBg from "@/assets/ai-agenten-hero-bg.jpg";
+
+// Use Case Images
+import usecaseKundenservice from "@/assets/usecase-kundenservice.jpg";
+import usecaseVertriebMarketing from "@/assets/usecase-vertrieb-marketing.jpg";
+import usecaseWissensmanagement from "@/assets/usecase-wissensmanagement.jpg";
+import usecaseProzessautomatisierung from "@/assets/usecase-prozessautomatisierung.jpg";
+
+// Technology Images
+import techLlmKern from "@/assets/tech-llm-kern.jpg";
+import techRagSystem from "@/assets/tech-rag-system.jpg";
+import techToolIntegration from "@/assets/tech-tool-integration.jpg";
+
+// Branchen Images
+import projektHandwerk from "@/assets/projekt-handwerk.jpg";
+import projektGesundheit from "@/assets/projekt-gesundheit.jpg";
+import projektGastronomie from "@/assets/projekt-gastronomie.jpg";
+import projektEinzelhandel from "@/assets/projekt-einzelhandel.jpg";
 const agentTypes = [{
   id: "chatbot",
   icon: MessageSquare,
@@ -61,22 +78,22 @@ const agentTypes = [{
   }
 }];
 const useCases = [{
-  icon: Headphones,
+  image: usecaseKundenservice,
   title: "Kundenservice",
   description: "Automatisierte Beantwortung von FAQs, Bestellstatus, Reklamationen",
   result: "Bis zu 80% weniger Support-Tickets"
 }, {
-  icon: TrendingUp,
+  image: usecaseVertriebMarketing,
   title: "Vertrieb & Marketing",
   description: "Lead-Qualifizierung, personalisierte Kampagnen, Marktanalysen",
   result: "35% höhere Conversion-Rate"
 }, {
-  icon: FileSearch,
+  image: usecaseWissensmanagement,
   title: "Wissensmanagement",
   description: "Intelligente Dokumentensuche, automatische Zusammenfassungen",
   result: "90% schnellerer Informationszugriff"
 }, {
-  icon: Settings,
+  image: usecaseProzessautomatisierung,
   title: "Prozessautomatisierung",
   description: "Rechnungsverarbeitung, Dateneingabe, Berichterstellung",
   result: "70% Zeitersparnis bei Routineaufgaben"
@@ -282,18 +299,24 @@ const AIAgenten = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {useCases.map((useCase, i) => <ScrollReveal key={i} delay={i * 100}>
-                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border h-full hover:shadow-xl transition-shadow">
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
-                      <useCase.icon className="w-6 h-6 text-accent" />
+                  <div className="bg-card rounded-xl shadow-lg border border-border h-full hover:shadow-xl transition-shadow overflow-hidden">
+                    <div className="h-40 overflow-hidden">
+                      <img 
+                        src={useCase.image} 
+                        alt={useCase.title} 
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
                     </div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {useCase.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mb-4">
-                      {useCase.description}
-                    </p>
-                    <div className="pt-4 border-t border-border">
-                      <p className="text-accent font-medium text-sm">{useCase.result}</p>
+                    <div className="p-6">
+                      <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                        {useCase.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm mb-4">
+                        {useCase.description}
+                      </p>
+                      <div className="pt-4 border-t border-border">
+                        <p className="text-accent font-medium text-sm">{useCase.result}</p>
+                      </div>
                     </div>
                   </div>
                 </ScrollReveal>)}
@@ -389,32 +412,44 @@ const AIAgenten = () => {
 
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <ScrollReveal delay={0}>
-                <div className="bg-muted/30 rounded-xl p-8 text-center">
-                  <Brain className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="font-display text-lg font-semibold text-foreground mb-2 py-[10px]">LLM-Kern</h3>
-                  <p className="text-muted-foreground text-sm">
-                    GPT-4, Claude, Gemini und Open-Source-Modelle als intelligentes Herzstück
-                  </p>
+                <div className="bg-muted/30 rounded-xl overflow-hidden text-center">
+                  <div className="h-40 overflow-hidden">
+                    <img src={techLlmKern} alt="LLM-Kern" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">LLM-Kern</h3>
+                    <p className="text-muted-foreground text-sm">
+                      GPT-4, Claude, Gemini und Open-Source-Modelle als intelligentes Herzstück
+                    </p>
+                  </div>
                 </div>
               </ScrollReveal>
               
               <ScrollReveal delay={100}>
-                <div className="bg-muted/30 rounded-xl p-8 text-center">
-                  <Database className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="font-display text-lg font-semibold text-foreground mb-2">RAG-Systeme</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Retrieval-Augmented Generation für Zugriff auf Ihre Unternehmensdaten
-                  </p>
+                <div className="bg-muted/30 rounded-xl overflow-hidden text-center">
+                  <div className="h-40 overflow-hidden">
+                    <img src={techRagSystem} alt="RAG-Systeme" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">RAG-Systeme</h3>
+                    <p className="text-muted-foreground text-sm">
+                      Retrieval-Augmented Generation für Zugriff auf Ihre Unternehmensdaten
+                    </p>
+                  </div>
                 </div>
               </ScrollReveal>
               
               <ScrollReveal delay={200}>
-                <div className="bg-muted/30 rounded-xl p-8 text-center">
-                  <Workflow className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="font-display text-lg font-semibold text-foreground mb-2">Tool-Integration</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Nahtlose Anbindung an CRM, ERP und weitere Geschäftssysteme
-                  </p>
+                <div className="bg-muted/30 rounded-xl overflow-hidden text-center">
+                  <div className="h-40 overflow-hidden">
+                    <img src={techToolIntegration} alt="Tool-Integration" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">Tool-Integration</h3>
+                    <p className="text-muted-foreground text-sm">
+                      Nahtlose Anbindung an CRM, ERP und weitere Geschäftssysteme
+                    </p>
+                  </div>
                 </div>
               </ScrollReveal>
             </div>
@@ -442,24 +477,37 @@ const AIAgenten = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {[{
               title: "Handwerk",
-              description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation"
+              description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation",
+              image: projektHandwerk
             }, {
               title: "Gesundheit",
-              description: "CareBot für Patientenmanagement & Terminvergabe"
+              description: "CareBot für Patientenmanagement & Terminvergabe",
+              image: projektGesundheit
             }, {
               title: "Gastronomie",
-              description: "Bestell- und Reservierungsassistenten"
+              description: "Bestell- und Reservierungsassistenten",
+              image: projektGastronomie
             }, {
               title: "Einzelhandel",
-              description: "ShopBot für Kundenberatung & Bestellstatus"
+              description: "ShopBot für Kundenberatung & Bestellstatus",
+              image: projektEinzelhandel
             }].map((branche, i) => <ScrollReveal key={i} delay={i * 100}>
-                  <div className="bg-card rounded-xl p-6 shadow-lg border border-border h-full hover:shadow-xl transition-shadow">
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {branche.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {branche.description}
-                    </p>
+                  <div className="bg-card rounded-xl shadow-lg border border-border h-full hover:shadow-xl transition-shadow overflow-hidden group">
+                    <div className="h-36 overflow-hidden">
+                      <img 
+                        src={branche.image} 
+                        alt={branche.title} 
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                        {branche.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {branche.description}
+                      </p>
+                    </div>
                   </div>
                 </ScrollReveal>)}
             </div>
