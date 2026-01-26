@@ -202,7 +202,7 @@ const ChaynsHardware = () => {
                   </Link>
                   <Link to="/kontakt">
                     <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                      Beratungstermin vereinbaren
+                      Beratung
                     </Button>
                   </Link>
                 </div>

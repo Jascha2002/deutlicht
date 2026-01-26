@@ -418,7 +418,7 @@ const Schulung = () => {
                   </div>
                   <Link to="/kontakt">
                     <Button size="lg" variant="secondary" className="w-full">
-                      Beratungstermin vereinbaren
+                      Beratung
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </Link>
