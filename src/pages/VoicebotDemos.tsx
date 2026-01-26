@@ -46,18 +46,42 @@ import imgArztpraxis from "@/assets/voicebot-arztpraxis.jpg";
 import imgWerkstatt from "@/assets/voicebot-werkstatt.jpg";
 import imgAbholung from "@/assets/voicebot-abholung.jpg";
 
-// Category images for demo cards
-import imgTermine from "@/assets/voicebot-termine.jpg";
-import imgErinnerungen from "@/assets/voicebot-erinnerungen.jpg";
-import imgBenachrichtigungen from "@/assets/voicebot-benachrichtigungen.jpg";
-import imgKundenservice from "@/assets/voicebot-kundenservice.jpg";
+// Scenario-specific images for demo cards
+import demoArzttermin from "@/assets/demo-arzttermin.jpg";
+import demoBesichtigung from "@/assets/demo-besichtigung.jpg";
+import demoWerkstatt from "@/assets/demo-werkstatt.jpg";
+import demoAblesung from "@/assets/demo-ablesung.jpg";
+import demoWerkstattErinnerung from "@/assets/demo-werkstatt-erinnerung.jpg";
+import demoArztErinnerung from "@/assets/demo-arzt-erinnerung.jpg";
+import demoTherapie from "@/assets/demo-therapie.jpg";
+import demoEinzelhandel from "@/assets/demo-einzelhandel.jpg";
+import demoWerkstattFertig from "@/assets/demo-werkstatt-fertig.jpg";
+import demoApotheke from "@/assets/demo-apotheke.jpg";
+import demoBibliothek from "@/assets/demo-bibliothek.jpg";
+import demoPaketstation from "@/assets/demo-paketstation.jpg";
+import demoHausverwaltung from "@/assets/demo-hausverwaltung.jpg";
+import demoVersicherung from "@/assets/demo-versicherung.jpg";
+import demoMietzahlung from "@/assets/demo-mietzahlung.jpg";
+import demoVersicherungVerlaengerung from "@/assets/demo-versicherung-verlaengerung.jpg";
 
-// Category to image mapping
-const categoryImages: Record<string, string> = {
-  "termine": imgTermine,
-  "erinnerungen": imgErinnerungen,
-  "benachrichtigungen": imgBenachrichtigungen,
-  "service": imgKundenservice,
+// Scenario ID to image mapping
+const scenarioImages: Record<string, string> = {
+  "arzt": demoArzttermin,
+  "immobilien": demoBesichtigung,
+  "werkstatt": demoWerkstatt,
+  "ablesung": demoAblesung,
+  "werkstatt-erinnerung": demoWerkstattErinnerung,
+  "arzt-erinnerung": demoArztErinnerung,
+  "therapie-erinnerung": demoTherapie,
+  "einzelhandel-abholung": demoEinzelhandel,
+  "werkstatt-fertig": demoWerkstattFertig,
+  "apotheke-abholung": demoApotheke,
+  "bibliothek-abholung": demoBibliothek,
+  "logistik-abholung": demoPaketstation,
+  "hausverwaltung": demoHausverwaltung,
+  "versicherung": demoVersicherung,
+  "mietzahlung": demoMietzahlung,
+  "versicherung-verlaengerung": demoVersicherungVerlaengerung,
 };
 
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
@@ -813,63 +837,69 @@ const VoicebotDemos = () => {
                 
                 return (
                   <ScrollReveal key={scenario.id} delay={index * 30}>
-                    <div className={`bg-card rounded-xl border p-5 h-full flex flex-col transition-all ${
+                    <div className={`rounded-xl border overflow-hidden h-full flex flex-col transition-all ${
                       isActive ? "border-accent ring-2 ring-accent/20" : "border-border hover:border-accent/50"
                     }`}>
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                          <img 
-                            src={categoryImages[scenario.category] || imgKundenservice} 
-                            alt={scenario.shortTitle}
-                            className="w-full h-full object-cover"
-                          />
+                      {/* Background Image Header */}
+                      <div 
+                        className="relative h-28 bg-cover bg-center"
+                        style={{ backgroundImage: `url(${scenarioImages[scenario.id] || demoArzttermin})` }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+                        <div className="absolute top-3 left-3 right-3 flex items-start justify-between">
+                          <div className="w-10 h-10 bg-accent/90 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <scenario.icon className="w-5 h-5 text-accent-foreground" />
+                          </div>
+                          <span className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-sm ${
+                            scenario.type === "inbound" 
+                              ? "bg-green-500/80 text-white" 
+                              : "bg-blue-500/80 text-white"
+                          }`}>
+                            {scenario.type === "inbound" ? (
+                              <PhoneIncoming className="w-3 h-3" />
+                            ) : (
+                              <PhoneOutgoing className="w-3 h-3" />
+                            )}
+                          </span>
                         </div>
-                        <span className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${
-                          scenario.type === "inbound" 
-                            ? "bg-green-500/20 text-green-600" 
-                            : "bg-blue-500/20 text-blue-600"
-                        }`}>
-                          {scenario.type === "inbound" ? (
-                            <PhoneIncoming className="w-3 h-3" />
-                          ) : (
-                            <PhoneOutgoing className="w-3 h-3" />
-                          )}
-                        </span>
                       </div>
 
-                      <h3 className="font-semibold text-foreground text-sm mb-2">
-                        {scenario.shortTitle}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mb-4 flex-1 line-clamp-2">
-                        {scenario.description}
-                      </p>
+                      {/* Card Content */}
+                      <div className="p-4 flex flex-col flex-1 bg-card">
+                        <h3 className="font-semibold text-foreground text-sm mb-2">
+                          {scenario.shortTitle}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mb-4 flex-1 line-clamp-2">
+                          {scenario.description}
+                        </p>
 
-                      {isActive ? (
-                        <Button 
-                          onClick={stopDemo} 
-                          variant="destructive" 
-                          size="sm"
-                          className="w-full"
-                        >
-                          <PhoneOff className="w-4 h-4 mr-2" />
-                          Beenden
-                        </Button>
-                      ) : (
-                        <Button 
-                          onClick={() => startDemo(scenario)} 
-                          variant="outline"
-                          size="sm"
-                          className="w-full"
-                          disabled={isLoading && activeScenario !== null}
-                        >
-                          {isLoading && activeScenario?.id === scenario.id ? (
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          ) : (
-                            <Play className="w-4 h-4 mr-2" />
-                          )}
-                          Anhoeren
-                        </Button>
-                      )}
+                        {isActive ? (
+                          <Button 
+                            onClick={stopDemo} 
+                            variant="destructive" 
+                            size="sm"
+                            className="w-full"
+                          >
+                            <PhoneOff className="w-4 h-4 mr-2" />
+                            Beenden
+                          </Button>
+                        ) : (
+                          <Button 
+                            onClick={() => startDemo(scenario)} 
+                            variant="outline"
+                            size="sm"
+                            className="w-full"
+                            disabled={isLoading && activeScenario !== null}
+                          >
+                            {isLoading && activeScenario?.id === scenario.id ? (
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            ) : (
+                              <Play className="w-4 h-4 mr-2" />
+                            )}
+                            Anhören
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </ScrollReveal>
                 );
