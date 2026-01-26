@@ -128,12 +128,12 @@ const BranchenLoesungen = () => {
                         alt={loesung.branche}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-primary/30" />
                       <div className="absolute bottom-3 left-3">
-                        <p className="text-xs text-white/80 uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-primary-foreground/90 uppercase tracking-wider mb-0.5 font-medium">
                           {loesung.branche}
                         </p>
-                        <h3 className="font-display text-lg font-bold text-white">
+                        <h3 className="font-display text-lg font-bold text-primary-foreground drop-shadow-md">
                           {loesung.botName}
                         </h3>
                       </div>
