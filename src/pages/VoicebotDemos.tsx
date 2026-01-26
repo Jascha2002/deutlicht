@@ -46,6 +46,20 @@ import imgArztpraxis from "@/assets/voicebot-arztpraxis.jpg";
 import imgWerkstatt from "@/assets/voicebot-werkstatt.jpg";
 import imgAbholung from "@/assets/voicebot-abholung.jpg";
 
+// Category images for demo cards
+import imgTermine from "@/assets/voicebot-termine.jpg";
+import imgErinnerungen from "@/assets/voicebot-erinnerungen.jpg";
+import imgBenachrichtigungen from "@/assets/voicebot-benachrichtigungen.jpg";
+import imgKundenservice from "@/assets/voicebot-kundenservice.jpg";
+
+// Category to image mapping
+const categoryImages: Record<string, string> = {
+  "termine": imgTermine,
+  "erinnerungen": imgErinnerungen,
+  "benachrichtigungen": imgBenachrichtigungen,
+  "service": imgKundenservice,
+};
+
 type AgentState = "idle" | "connecting" | "listening" | "speaking" | "thinking";
 
 // Voice IDs for ElevenLabs - Male and Female options
@@ -803,8 +817,12 @@ const VoicebotDemos = () => {
                       isActive ? "border-accent ring-2 ring-accent/20" : "border-border hover:border-accent/50"
                     }`}>
                       <div className="flex items-start justify-between gap-2 mb-3">
-                        <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <scenario.icon className="w-5 h-5 text-accent" />
+                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                          <img 
+                            src={categoryImages[scenario.category] || imgKundenservice} 
+                            alt={scenario.shortTitle}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                         <span className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${
                           scenario.type === "inbound" 
