@@ -11,6 +11,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { trackCTAClick } from "@/lib/analytics";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
+// Branchen Images
+import brancheVerwaltungKi from "@/assets/branche-verwaltung-ki.jpg";
+import brancheHandwerkKi from "@/assets/branche-handwerk-ki.jpg";
+import brancheGastronomieKi from "@/assets/branche-gastronomie-ki.jpg";
+import brancheIndustrieKi from "@/assets/branche-industrie-ki.jpg";
+import brancheTourismusKi from "@/assets/branche-tourismus-ki.jpg";
+import brancheMittelstandKi from "@/assets/branche-mittelstand-ki.jpg";
+import branchePflegeKi from "@/assets/branche-pflege-ki.jpg";
+import brancheBildungKi from "@/assets/branche-bildung-ki.jpg";
+import brancheLandwirtschaftKi from "@/assets/branche-landwirtschaft-ki.jpg";
+import brancheWeitereKi from "@/assets/branche-weitere-ki.jpg";
+
+// Map branche IDs to images
+const branchenImages: Record<string, string> = {
+  "oeffentliche-verwaltung": brancheVerwaltungKi,
+  "handwerk-bau": brancheHandwerkKi,
+  "handel-gastronomie": brancheGastronomieKi,
+  "maschinenbau-industrie": brancheIndustrieKi,
+  "tourismus-hotellerie": brancheTourismusKi,
+  "mittelstand-digitalisierung": brancheMittelstandKi,
+  "pflege-senioren": branchePflegeKi,
+  "bildung-weiterbildung": brancheBildungKi,
+  "landwirtschaft": brancheLandwirtschaftKi,
+  "weitere-branchen": brancheWeitereKi,
+};
+
 const BranchenLoesungen = () => {
   const [selectedBranche, setSelectedBranche] = useState<string>("alle");
   const [selectedLoesung, setSelectedLoesung] = useState<BranchenLoesung | null>(null);
@@ -89,49 +115,57 @@ const BranchenLoesungen = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredLoesungen.map((loesung) => {
                 const IconComponent = loesung.icon;
+                const brancheImage = branchenImages[loesung.id];
                 return (
                   <div
                     key={loesung.id}
-                    className="group bg-card border border-border rounded-2xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300"
+                    className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300"
                   >
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="p-3 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
-                        <IconComponent className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+                    {/* Image Header */}
+                    <div className="h-40 overflow-hidden relative">
+                      <img 
+                        src={brancheImage} 
+                        alt={loesung.branche}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                      <div className="absolute bottom-3 left-3">
+                        <p className="text-xs text-white/80 uppercase tracking-wider mb-0.5">
                           {loesung.branche}
                         </p>
-                        <h3 className="font-display text-xl font-bold text-foreground">
+                        <h3 className="font-display text-lg font-bold text-white">
                           {loesung.botName}
                         </h3>
                       </div>
                     </div>
                     
-                    <p className="text-muted-foreground mb-4 line-clamp-2">
-                      {loesung.loesung}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {loesung.roi.slice(0, 2).map((roi, idx) => (
-                        <span 
-                          key={idx}
-                          className="inline-flex items-center gap-1 text-xs bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-1 rounded-full"
-                        >
-                          <Check className="w-3 h-3" />
-                          {roi}
-                        </span>
-                      ))}
+                    {/* Content */}
+                    <div className="p-5">
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                        {loesung.loesung}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {loesung.roi.slice(0, 2).map((roi, idx) => (
+                          <span 
+                            key={idx}
+                            className="inline-flex items-center gap-1 text-xs bg-accent/10 text-accent px-2 py-1 rounded-full"
+                          >
+                            <Check className="w-3 h-3" />
+                            {roi}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      <Button
+                        variant="outline"
+                        className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-colors"
+                        onClick={() => handleOpenDetail(loesung)}
+                      >
+                        Mehr erfahren
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
                     </div>
-                    
-                    <Button
-                      variant="outline"
-                      className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-colors"
-                      onClick={() => handleOpenDetail(loesung)}
-                    >
-                      Mehr erfahren
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
                   </div>
                 );
               })}
