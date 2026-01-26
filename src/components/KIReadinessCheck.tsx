@@ -269,7 +269,7 @@ const KIReadinessCheck: React.FC = () => {
         priorities: ['KI-gestützter Kundensupport (WhatsApp/Telefon)', 'Prozessautomatisierung mit Odoo-Integration', 'Intelligentes CRM mit Lead-Scoring'],
         bundle: 'Premium KI-Paket',
         roi: '6-9 Monate',
-        nextSteps: ['Kostenloses Erstgespräch vereinbaren', 'Quick-Win-Analyse Ihrer Prozesse', 'Pilotprojekt in 4 Wochen starten']
+        nextSteps: ['Erstgespräch vereinbaren', 'Quick-Win-Analyse Ihrer Prozesse', 'Pilotprojekt in 4 Wochen starten']
       };
     } else if (percentage >= 60) {
       return {
