@@ -27,10 +27,10 @@ import techRagSystem from "@/assets/tech-rag-system.jpg";
 import techToolIntegration from "@/assets/tech-tool-integration.jpg";
 
 // Branchen Images
-import projektHandwerk from "@/assets/projekt-handwerk.jpg";
-import projektGesundheit from "@/assets/projekt-gesundheit.jpg";
-import projektGastronomie from "@/assets/projekt-gastronomie.jpg";
-import projektEinzelhandel from "@/assets/projekt-einzelhandel.jpg";
+import brancheHandwerkKi from "@/assets/branche-handwerk-ki.jpg";
+import brancheGesundheitKi from "@/assets/branche-gesundheit-ki.jpg";
+import brancheGastronomieKi from "@/assets/branche-gastronomie-ki.jpg";
+import brancheEinzelhandelKi from "@/assets/branche-einzelhandel-ki.jpg";
 const agentTypes = [{
   id: "chatbot",
   icon: MessageSquare,
@@ -478,19 +478,19 @@ const AIAgenten = () => {
               {[{
               title: "Handwerk",
               description: "HandwerksBot für Terminierung, Angebote & Kundenkommunikation",
-              image: projektHandwerk
+              image: brancheHandwerkKi
             }, {
               title: "Gesundheit",
               description: "CareBot für Patientenmanagement & Terminvergabe",
-              image: projektGesundheit
+              image: brancheGesundheitKi
             }, {
               title: "Gastronomie",
               description: "Bestell- und Reservierungsassistenten",
-              image: projektGastronomie
+              image: brancheGastronomieKi
             }, {
               title: "Einzelhandel",
               description: "ShopBot für Kundenberatung & Bestellstatus",
-              image: projektEinzelhandel
+              image: brancheEinzelhandelKi
             }].map((branche, i) => <ScrollReveal key={i} delay={i * 100}>
                   <div className="bg-card rounded-xl shadow-lg border border-border h-full hover:shadow-xl transition-shadow overflow-hidden group">
                     <div className="h-36 overflow-hidden">
