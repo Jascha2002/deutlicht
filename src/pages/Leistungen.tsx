@@ -647,7 +647,7 @@ const Leistungen = () => {
                     size="lg" 
                     className="group w-full sm:w-auto bg-accent hover:bg-accent/90 text-white px-8"
                   >
-                    Kostenloses Beratungsgespräch vereinbaren
+                    Beratung vereinbaren
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
