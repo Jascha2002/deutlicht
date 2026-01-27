@@ -98,6 +98,7 @@ interface PartnerDetailDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUpdate: () => void;
+  onDelete?: () => void;
 }
 
 const partnerTypeLabels: Record<string, string> = {
@@ -134,6 +135,7 @@ export function PartnerDetailDialog({
   open,
   onOpenChange,
   onUpdate,
+  onDelete,
 }: PartnerDetailDialogProps) {
   const { toast } = useToast();
   const [internalNotes, setInternalNotes] = useState(partner?.internal_notes || '');
@@ -947,6 +949,10 @@ export function PartnerDetailDialog({
         open={contractEditorOpen}
         onOpenChange={setContractEditorOpen}
         onUpdate={onUpdate}
+        onDelete={() => {
+          onOpenChange(false);
+          if (onDelete) onDelete();
+        }}
       />
 
       {/* Documents Manager Dialog */}
