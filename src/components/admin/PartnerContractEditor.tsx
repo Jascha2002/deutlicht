@@ -35,6 +35,7 @@ import {
   FileText,
   Trash2,
   Edit,
+  Download,
 } from 'lucide-react';
 import { COMPANY_INFO, getContractHeader, getDocumentFooter } from '@/data/companyInfo';
 
@@ -184,6 +185,7 @@ export function PartnerContractEditor({
   const [isSending, setIsSending] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   useEffect(() => {
     if (partner.contract_draft_content) {
@@ -358,6 +360,73 @@ export function PartnerContractEditor({
     setContractContent(updatedContent);
   };
 
+  const handleDownloadPdf = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      // Call the edge function to generate HTML
+      const { data: response, error } = await supabase.functions.invoke('generate-contract-pdf', {
+        body: {
+          partnerNumber: partner.partner_number,
+          companyName: partner.company_name,
+          street: partner.street,
+          postalCode: partner.postal_code,
+          city: partner.city,
+          country: partner.country,
+          legalForm: partner.legal_form,
+          taxId: partner.tax_id,
+          contactFirstName: partner.contact_first_name,
+          contactLastName: partner.contact_last_name,
+          contactEmail: partner.contact_email,
+          commissionRate: commissionRate,
+        },
+      });
+
+      if (error) throw error;
+
+      if (response?.html) {
+        // Use html2pdf.js to generate PDF
+        const html2pdf = (await import('html2pdf.js')).default;
+        
+        // Create a container element
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response.html, 'text/html');
+        const element = document.createElement('div');
+        
+        while (doc.body.firstChild) {
+          element.appendChild(doc.body.firstChild);
+        }
+        document.body.appendChild(element);
+
+        const opt = {
+          margin: 0,
+          filename: `Partnervertrag-${partner.company_name}-${partner.partner_number || 'Entwurf'}.pdf`,
+          image: { type: 'jpeg' as const, quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const },
+          pagebreak: { mode: 'css' as const }
+        };
+
+        await html2pdf().set(opt).from(element).save();
+        
+        document.body.removeChild(element);
+
+        toast({
+          title: 'PDF erstellt',
+          description: 'Der Partnervertrag wurde als PDF heruntergeladen.',
+        });
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: 'Fehler',
+        description: 'PDF konnte nicht erstellt werden.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   const getStatusBadge = () => {
     switch (partner.contract_status) {
       case 'draft':
@@ -493,6 +562,15 @@ export function PartnerContractEditor({
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
+          <Button
+            variant="outline"
+            onClick={handleDownloadPdf}
+            disabled={isGeneratingPdf}
+            className="gap-2"
+          >
+            {isGeneratingPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            PDF
+          </Button>
           <Button
             variant="outline"
             onClick={() => setIsPreview(!isPreview)}
