@@ -1,0 +1,51 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Users, Handshake, DollarSign, UserCheck } from "lucide-react";
+import { UserManagement } from "./UserManagement";
+import { PartnerManagement } from "./PartnerManagement";
+import { ReferralManagement } from "./ReferralManagement";
+import { CommissionManagement } from "./CommissionManagement";
+
+interface AdminTabsProps {
+  defaultTab?: string;
+}
+
+export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
+  return (
+    <Tabs defaultValue={defaultTab} className="w-full">
+      <TabsList className="grid w-full grid-cols-4 mb-6">
+        <TabsTrigger value="users" className="gap-2">
+          <Users className="w-4 h-4" />
+          <span className="hidden sm:inline">Benutzer</span>
+        </TabsTrigger>
+        <TabsTrigger value="partners" className="gap-2">
+          <Handshake className="w-4 h-4" />
+          <span className="hidden sm:inline">Partner</span>
+        </TabsTrigger>
+        <TabsTrigger value="referrals" className="gap-2">
+          <UserCheck className="w-4 h-4" />
+          <span className="hidden sm:inline">Referrals</span>
+        </TabsTrigger>
+        <TabsTrigger value="commissions" className="gap-2">
+          <DollarSign className="w-4 h-4" />
+          <span className="hidden sm:inline">Provisionen</span>
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="users">
+        <UserManagement />
+      </TabsContent>
+
+      <TabsContent value="partners">
+        <PartnerManagement />
+      </TabsContent>
+
+      <TabsContent value="referrals">
+        <ReferralManagement />
+      </TabsContent>
+
+      <TabsContent value="commissions">
+        <CommissionManagement />
+      </TabsContent>
+    </Tabs>
+  );
+}
