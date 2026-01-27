@@ -1171,6 +1171,56 @@ export type Database = {
           },
         ]
       }
+      partner_documents: {
+        Row: {
+          created_at: string
+          document_name: string
+          document_type: string
+          file_size: number | null
+          id: string
+          notes: string | null
+          partner_id: string
+          storage_path: string
+          updated_at: string
+          uploaded_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_name: string
+          document_type: string
+          file_size?: number | null
+          id?: string
+          notes?: string | null
+          partner_id: string
+          storage_path: string
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_name?: string
+          document_type?: string
+          file_size?: number | null
+          id?: string
+          notes?: string | null
+          partner_id?: string
+          storage_path?: string
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_documents_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partner_invoices: {
         Row: {
           approved_at: string | null
@@ -1332,6 +1382,8 @@ export type Database = {
           contact_last_name: string
           contact_phone: string | null
           contact_position: string | null
+          contract_draft_content: string | null
+          contract_pdf_url: string | null
           contract_sent_at: string | null
           contract_signed_at: string | null
           contract_status: string | null
@@ -1365,6 +1417,9 @@ export type Database = {
           updated_at: string
           user_id: string | null
           website: string | null
+          website_check_at: string | null
+          website_check_result: Json | null
+          website_check_status: string | null
           welcome_email_sent_at: string | null
           withdrawal_token: string | null
           withdrawn_at: string | null
@@ -1384,6 +1439,8 @@ export type Database = {
           contact_last_name: string
           contact_phone?: string | null
           contact_position?: string | null
+          contract_draft_content?: string | null
+          contract_pdf_url?: string | null
           contract_sent_at?: string | null
           contract_signed_at?: string | null
           contract_status?: string | null
@@ -1417,6 +1474,9 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           website?: string | null
+          website_check_at?: string | null
+          website_check_result?: Json | null
+          website_check_status?: string | null
           welcome_email_sent_at?: string | null
           withdrawal_token?: string | null
           withdrawn_at?: string | null
@@ -1436,6 +1496,8 @@ export type Database = {
           contact_last_name?: string
           contact_phone?: string | null
           contact_position?: string | null
+          contract_draft_content?: string | null
+          contract_pdf_url?: string | null
           contract_sent_at?: string | null
           contract_signed_at?: string | null
           contract_status?: string | null
@@ -1469,6 +1531,9 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           website?: string | null
+          website_check_at?: string | null
+          website_check_result?: Json | null
+          website_check_status?: string | null
           welcome_email_sent_at?: string | null
           withdrawal_token?: string | null
           withdrawn_at?: string | null

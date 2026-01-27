@@ -33,8 +33,15 @@ import {
   FileSignature,
   Banknote,
   AlertCircle,
+  FolderOpen,
+  Edit,
+  RefreshCw,
+  Loader2,
+  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PartnerContractEditor } from './PartnerContractEditor';
+import { PartnerDocuments } from './PartnerDocuments';
 
 interface PartnerDetail {
   id: string;
@@ -77,8 +84,13 @@ interface PartnerDetail {
   contract_status: string | null;
   contract_sent_at: string | null;
   contract_signed_at: string | null;
+  contract_draft_content: string | null;
+  contract_pdf_url: string | null;
   notes: string | null;
   internal_notes: string | null;
+  website_check_status: string | null;
+  website_check_at: string | null;
+  website_check_result: Record<string, unknown> | null;
 }
 
 interface PartnerDetailDialogProps {
@@ -126,6 +138,9 @@ export function PartnerDetailDialog({
   const { toast } = useToast();
   const [internalNotes, setInternalNotes] = useState(partner?.internal_notes || '');
   const [isSaving, setIsSaving] = useState(false);
+  const [isCheckingWebsite, setIsCheckingWebsite] = useState(false);
+  const [contractEditorOpen, setContractEditorOpen] = useState(false);
+  const [documentsOpen, setDocumentsOpen] = useState(false);
   const [bankData, setBankData] = useState({
     iban: partner?.iban || '',
     bic: partner?.bic || '',
@@ -186,6 +201,74 @@ export function PartnerDetailDialog({
       });
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleCheckWebsite = async () => {
+    if (!partner.website) {
+      toast({
+        title: 'Keine Website',
+        description: 'Der Partner hat keine Website angegeben.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsCheckingWebsite(true);
+    try {
+      // Try to fetch the website (no-cors mode due to browser restrictions)
+      await fetch(partner.website, {
+        method: 'HEAD',
+        mode: 'no-cors',
+      });
+
+      const checkResult = {
+        reachable: true,
+        checkedAt: new Date().toISOString(),
+        url: partner.website,
+      };
+
+      await supabase
+        .from('partners')
+        .update({
+          website_check_status: 'reachable',
+          website_check_at: new Date().toISOString(),
+          website_check_result: checkResult,
+        })
+        .eq('id', partner.id);
+
+      toast({
+        title: 'Website erreichbar',
+        description: `Die Website ${partner.website} scheint erreichbar zu sein.`,
+      });
+      onUpdate();
+    } catch (error) {
+      console.error('Website check failed:', error);
+
+      const checkResult = {
+        reachable: false,
+        checkedAt: new Date().toISOString(),
+        url: partner.website,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+
+      await supabase
+        .from('partners')
+        .update({
+          website_check_status: 'unreachable',
+          website_check_at: new Date().toISOString(),
+          website_check_result: checkResult,
+        })
+        .eq('id', partner.id);
+
+      toast({
+        title: 'Website-Prüfung',
+        description: 'Konnte Website nicht erreichen. Möglicherweise CORS-geschützt oder offline.',
+        variant: 'destructive',
+      });
+      onUpdate();
+    } finally {
+      setIsCheckingWebsite(false);
     }
   };
 
@@ -426,28 +509,60 @@ export function PartnerDetailDialog({
                   </div>
                 </div>
 
-                {/* Website */}
+                {/* Website with Check */}
                 <div className="space-y-4">
                   <h3 className="font-semibold flex items-center gap-2">
                     <Globe className="w-4 h-4" />
                     Online-Präsenz
                   </h3>
                   <div className="bg-muted/30 rounded-lg p-4 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <Globe className="w-4 h-4 text-muted-foreground" />
-                      {partner.website ? (
-                        <a
-                          href={partner.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-accent hover:underline truncate"
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <Globe className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        {partner.website ? (
+                          <div className="flex items-center gap-2 min-w-0">
+                            <a
+                              href={partner.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-accent hover:underline truncate flex items-center gap-1"
+                            >
+                              {partner.website.replace(/^https?:\/\//, '')}
+                              <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                            </a>
+                            {partner.website_check_status === 'reachable' && (
+                              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                            )}
+                            {partner.website_check_status === 'unreachable' && (
+                              <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">Keine Website</span>
+                        )}
+                      </div>
+                      {partner.website && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleCheckWebsite}
+                          disabled={isCheckingWebsite}
+                          className="gap-1 text-xs"
                         >
-                          {partner.website}
-                        </a>
-                      ) : (
-                        <span className="text-muted-foreground">Keine Website</span>
+                          {isCheckingWebsite ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : (
+                            <RefreshCw className="w-3 h-3" />
+                          )}
+                          Prüfen
+                        </Button>
                       )}
                     </div>
+                    {partner.website_check_at && (
+                      <p className="text-xs text-muted-foreground">
+                        Zuletzt geprüft: {formatDate(partner.website_check_at)}
+                      </p>
+                    )}
                     {partner.portfolio_url && (
                       <>
                         <Separator />
@@ -634,7 +749,9 @@ export function PartnerDetailDialog({
                       partner.contract_status === 'signed' || partner.contract_status === 'active'
                         ? 'border-green-500 text-green-600'
                         : partner.contract_status === 'sent'
-                        ? 'border-yellow-500 text-yellow-600'
+                        ? 'border-blue-500 text-blue-600'
+                        : partner.contract_status === 'draft'
+                        ? 'border-muted-foreground text-muted-foreground'
                         : ''
                     )}
                   >
@@ -649,11 +766,33 @@ export function PartnerDetailDialog({
                     Partnerbereich.
                   </p>
 
+                  {/* Action Buttons Row */}
                   <div className="flex flex-wrap gap-3">
-                    {partner.contract_status === 'none' && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setContractEditorOpen(true)}
+                      className="gap-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                      Vertrag bearbeiten
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setDocumentsOpen(true)}
+                      className="gap-2"
+                    >
+                      <FolderOpen className="w-4 h-4" />
+                      Dokumente verwalten
+                    </Button>
+                  </div>
+
+                  <Separator />
+
+                  {/* Status Workflow Buttons */}
+                  <div className="flex flex-wrap gap-3">
+                    {(!partner.contract_status || partner.contract_status === 'none') && (
                       <Button
-                        variant="outline"
-                        onClick={() => handleUpdateContractStatus('draft')}
+                        onClick={() => setContractEditorOpen(true)}
                         className="gap-2"
                       >
                         <FileText className="w-4 h-4" />
@@ -688,16 +827,28 @@ export function PartnerDetailDialog({
                 </div>
               </div>
 
-              {partner.contract_sent_at && (
-                <div className="text-sm text-muted-foreground">
-                  Vertrag versendet am: {formatDate(partner.contract_sent_at)}
-                </div>
-              )}
-              {partner.contract_signed_at && (
-                <div className="text-sm text-muted-foreground">
-                  Vertrag unterschrieben am: {formatDate(partner.contract_signed_at)}
-                </div>
-              )}
+              {/* Timeline */}
+              <div className="bg-muted/30 rounded-lg p-4 space-y-2 text-sm">
+                <h4 className="font-medium mb-3">Vertragsverlauf</h4>
+                {partner.contract_draft_content && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Entwurf erstellt</span>
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                  </div>
+                )}
+                {partner.contract_sent_at && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Versendet am</span>
+                    <span>{formatDate(partner.contract_sent_at)}</span>
+                  </div>
+                )}
+                {partner.contract_signed_at && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Unterschrieben am</span>
+                    <span>{formatDate(partner.contract_signed_at)}</span>
+                  </div>
+                )}
+              </div>
             </TabsContent>
 
             {/* Bank Tab */}
@@ -789,6 +940,22 @@ export function PartnerDetailDialog({
           </Tabs>
         </ScrollArea>
       </DialogContent>
+
+      {/* Contract Editor Dialog */}
+      <PartnerContractEditor
+        partner={partner}
+        open={contractEditorOpen}
+        onOpenChange={setContractEditorOpen}
+        onUpdate={onUpdate}
+      />
+
+      {/* Documents Manager Dialog */}
+      <PartnerDocuments
+        partnerId={partner.id}
+        partnerNumber={partner.partner_number}
+        open={documentsOpen}
+        onOpenChange={setDocumentsOpen}
+      />
     </Dialog>
   );
 }

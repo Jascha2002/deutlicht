@@ -51,8 +51,13 @@ interface Partner {
   contract_status: string | null;
   contract_sent_at: string | null;
   contract_signed_at: string | null;
+  contract_draft_content: string | null;
+  contract_pdf_url: string | null;
   notes: string | null;
   internal_notes: string | null;
+  website_check_status: string | null;
+  website_check_at: string | null;
+  website_check_result: Record<string, unknown> | null;
 }
 
 export function PartnerManagement() {
