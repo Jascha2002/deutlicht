@@ -5,3 +5,6 @@ export { PartnerDetailDialog } from './PartnerDetailDialog';
 export { PartnerInvoiceManagement } from './PartnerInvoiceManagement';
 export { ReferralManagement } from './ReferralManagement';
 export { CommissionManagement } from './CommissionManagement';
+export { PartnerQuickView } from './PartnerQuickView';
+export { PartnerContractEditor } from './PartnerContractEditor';
+export { PartnerDocuments } from './PartnerDocuments';
