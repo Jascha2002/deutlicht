@@ -79,7 +79,42 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
 
     console.log("Sending to Odoo:", JSON.stringify(leadValues, null, 2));
 
-    // JSON-RPC call to create lead
+    // First, authenticate to get the correct user ID
+    console.log("Authenticating with Odoo...");
+    const authResponse = await fetch(`${ODOO_URL}/jsonrpc`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "call",
+        params: {
+          service: "common",
+          method: "authenticate",
+          args: [ODOO_DB, "carstenvds@gmail.com", ODOO_API_KEY, {}],
+        },
+        id: Date.now(),
+      }),
+    });
+
+    const authResult = await authResponse.json();
+    console.log("Odoo auth response:", JSON.stringify(authResult, null, 2));
+
+    if (authResult.error) {
+      console.error("Odoo auth error:", authResult.error);
+      return { success: false, error: "Authentication failed: " + (authResult.error.message || JSON.stringify(authResult.error)) };
+    }
+
+    const userId = authResult.result;
+    if (!userId) {
+      console.error("No user ID returned from authentication");
+      return { success: false, error: "Authentication failed: No user ID returned" };
+    }
+
+    console.log("Authenticated as user ID:", userId);
+
+    // JSON-RPC call to create lead with authenticated user ID
     const response = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
       headers: {
@@ -93,7 +128,7 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
           method: "execute_kw",
           args: [
             ODOO_DB,
-            2, // User ID (usually 2 for API user, or get via authentication)
+            userId,
             ODOO_API_KEY,
             "crm.lead",
             "create",
