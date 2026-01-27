@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Save, BarChart, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Save, BarChart, Download, ChevronLeft, ChevronRight, FileText, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ANALYSE_MODULES, AnalyseModule } from './AnalyseModules';
 import AnalyseDashboard from './AnalyseDashboard';
 import AnalyseErgebnis from './AnalyseErgebnis';
+import BeratungsberichtView from './BeratungsberichtView';
 import StammdatenModule from './modules/StammdatenModule';
 import OnlineModule from './modules/OnlineModule';
 import SocialModule from './modules/SocialModule';
@@ -32,7 +33,7 @@ interface ClientSummary {
   modified: string;
 }
 
-type ViewType = 'dashboard' | 'form' | 'analyse';
+type ViewType = 'dashboard' | 'form' | 'analyse' | 'bericht';
 
 export const DigitalisierungsAnalyseApp: React.FC = () => {
   const navigate = useNavigate();
@@ -45,6 +46,9 @@ export const DigitalisierungsAnalyseApp: React.FC = () => {
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
   const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
   const [analysis, setAnalysis] = useState<GesamtAnalyse | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string>('kunde');
+  const [isSendingToOdoo, setIsSendingToOdoo] = useState(false);
   
   // Form data for all modules
   const [formData, setFormData] = useState<Record<string, Record<string, any>>>({
@@ -62,10 +66,61 @@ export const DigitalisierungsAnalyseApp: React.FC = () => {
 
   const currentModule = ANALYSE_MODULES[currentModuleIndex];
 
+  // Check auth and load user role
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate('/auth');
+        return;
+      }
+      setUser(session.user);
+      checkUserRole(session.user.id);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate('/auth');
+        return;
+      }
+      setUser(session.user);
+      setTimeout(() => {
+        checkUserRole(session.user.id);
+      }, 0);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const checkUserRole = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId);
+      
+      if (data && data.length > 0) {
+        // Check for highest role
+        if (data.some(r => r.role === 'admin')) {
+          setUserRole('admin');
+        } else if (data.some(r => r.role === 'mitarbeiter')) {
+          setUserRole('mitarbeiter');
+        } else {
+          setUserRole('kunde');
+        }
+      }
+    } catch (error) {
+      console.error('Error checking user role:', error);
+    }
+  };
+
+  const canEdit = userRole === 'admin' || userRole === 'mitarbeiter';
+
   // Load clients on mount
   useEffect(() => {
-    loadClients();
-  }, []);
+    if (user) {
+      loadClients();
+    }
+  }, [user]);
 
   const loadClients = async () => {
     setIsLoading(true);
@@ -317,6 +372,81 @@ export const DigitalisierungsAnalyseApp: React.FC = () => {
     setView('analyse');
   };
 
+  // Send to Odoo CRM and generate report
+  const completeAnalysisAndSendToOdoo = async () => {
+    setIsSendingToOdoo(true);
+    
+    try {
+      // First save the client
+      await saveClient();
+      
+      // Run the analysis
+      const clientData: ClientData = {
+        stammdaten: formData.stammdaten,
+        online: formData.online,
+        systeme: formData.systeme,
+        prozesse: formData.prozesse,
+        daten: formData.daten,
+        social: formData.social,
+        reporting: formData.reporting,
+        schulung: formData.schulung
+      };
+
+      const result = analyzeClientData(clientData);
+      setAnalysis(result);
+
+      // Prepare data for Odoo CRM
+      const odooData = {
+        name: `Digitalisierungsanalyse: ${formData.stammdaten.unternehmensname}`,
+        contact_name: formData.stammdaten.ansprechpartner_name,
+        email_from: formData.stammdaten.ansprechpartner_email,
+        phone: formData.stammdaten.ansprechpartner_telefon,
+        company_name: formData.stammdaten.unternehmensname,
+        street: '',
+        city: formData.stammdaten.hauptsitz_ort,
+        zip: formData.stammdaten.hauptsitz_plz,
+        description: `Digitalisierungsanalyse abgeschlossen.\n\nGesamtscore: ${result.gesamtscore}/100\n\nTop Empfehlungen:\n${result.empfehlungen.slice(0, 5).map(e => `- ${e.titel}`).join('\n')}\n\nInterne Einschätzung:\n${formData.intern.gesamteindruck || 'Keine Angabe'}\n\nDigitalisierungsgrad: ${formData.intern.digitalisierungsgrad || 'k.A.'}/10`,
+        source: 'digitalisierungsanalyse',
+        industry: formData.stammdaten.branche,
+        company_size: formData.stammdaten.mitarbeiterzahl_kategorie
+      };
+
+      // Send to Odoo CRM
+      const { data, error } = await supabase.functions.invoke('odoo-crm-lead', {
+        body: {
+          type: 'analyse',
+          data: odooData
+        }
+      });
+
+      if (error) {
+        console.error('Odoo CRM error:', error);
+        toast({
+          title: 'Hinweis',
+          description: 'Analyse erstellt. CRM-Übertragung konnte nicht durchgeführt werden.',
+          variant: 'default'
+        });
+      } else {
+        toast({
+          title: 'Erfolgreich',
+          description: 'Analyse abgeschlossen und an CRM übertragen.'
+        });
+      }
+
+      // Show the report view
+      setView('bericht');
+    } catch (error) {
+      console.error('Error completing analysis:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Analyse konnte nicht abgeschlossen werden.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSendingToOdoo(false);
+    }
+  };
+
   const downloadReport = () => {
     if (!analysis) return;
 
@@ -396,6 +526,21 @@ export const DigitalisierungsAnalyseApp: React.FC = () => {
       />
     );
   }
+
+  // Report View
+  if (view === 'bericht' && analysis) {
+    return (
+      <BeratungsberichtView
+        analysis={analysis}
+        formData={formData}
+        canEdit={canEdit}
+        onBack={() => setView('form')}
+      />
+    );
+  }
+
+  // Check if we're on the last module (Intern)
+  const isLastModule = currentModuleIndex === ANALYSE_MODULES.length - 1;
 
   // Form View
   return (
@@ -481,14 +626,25 @@ export const DigitalisierungsAnalyseApp: React.FC = () => {
             <ChevronLeft size={18} />
             Zurück
           </Button>
-          <Button
-            onClick={() => setCurrentModuleIndex(Math.min(ANALYSE_MODULES.length - 1, currentModuleIndex + 1))}
-            disabled={currentModuleIndex === ANALYSE_MODULES.length - 1}
-            className="gap-2"
-          >
-            Weiter
-            <ChevronRight size={18} />
-          </Button>
+          
+          {isLastModule ? (
+            <Button
+              onClick={completeAnalysisAndSendToOdoo}
+              disabled={isSendingToOdoo}
+              className="gap-2 bg-accent hover:bg-accent/90"
+            >
+              <Send size={18} />
+              {isSendingToOdoo ? 'Wird verarbeitet...' : 'Analyse abschließen & Bericht erstellen'}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setCurrentModuleIndex(Math.min(ANALYSE_MODULES.length - 1, currentModuleIndex + 1))}
+              className="gap-2"
+            >
+              Weiter
+              <ChevronRight size={18} />
+            </Button>
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import LeistungenMegamenu from "@/components/LeistungenMegamenu";
+import AuthLoginButton from "@/components/AuthLoginButton";
 import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
 interface SubMenuItem {
   name: string;
@@ -381,7 +382,7 @@ submenu: [{
             })}
           </div>
 
-          {/* CTA Buttons, Accessibility, Search & Theme Toggle */}
+          {/* CTA Buttons, Accessibility, Search, Login & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-2">
             {/* Search Button */}
             <button onClick={() => setSearchOpen(!searchOpen)} className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="Suche öffnen">
@@ -389,6 +390,8 @@ submenu: [{
             </button>
             <AccessibilityWidget />
             <ThemeToggle />
+            {/* Login Button */}
+            <AuthLoginButton />
             {/* KI-Check Button */}
             <Link 
               to="/ki-check" 

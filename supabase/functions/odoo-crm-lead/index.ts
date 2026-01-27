@@ -185,6 +185,22 @@ function transformToLeadData(type: string, data: any): OdooLeadData {
         project_deadline: data.project_end,
       };
 
+    case 'analyse':
+      return {
+        name: data.name || `Digitalisierungsanalyse: ${data.company_name || 'Unbekannt'}`,
+        contact_name: data.contact_name || "",
+        email_from: data.email_from || "",
+        phone: data.phone || "",
+        company_name: data.company_name || "",
+        street: data.street || "",
+        city: data.city || "",
+        zip: data.zip || "",
+        description: data.description || `Quelle: Digitalisierungsanalyse\n\nBranche: ${data.industry || '-'}`,
+        source: "digitalisierungsanalyse",
+        industry: data.industry,
+        company_size: data.company_size,
+      };
+
     default:
       return {
         name: `Anfrage: ${data.company_name || data.kontakt?.unternehmen || 'Unbekannt'}`,

@@ -40,6 +40,8 @@ import PIM from "./pages/PIM";
 import Foerderberatung from "./pages/Foerderberatung";
 import Digitalisierung from "./pages/Digitalisierung";
 import DigitalisierungsAnalyse from "./pages/DigitalisierungsAnalyse";
+import Auth from "./pages/Auth";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -88,6 +90,8 @@ const App = () => (
               <Route path="/leistungen/digitalisierung" element={<Digitalisierung />} />
               <Route path="/intern/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/analyse" element={<DigitalisierungsAnalyse />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<AdminDashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
