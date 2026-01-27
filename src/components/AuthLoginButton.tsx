@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, LogOut, User, Shield, BarChart3 } from 'lucide-react';
+import { Lock, LogOut, User, Shield, BarChart3, Handshake } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 const AuthLoginButton = () => {
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isPartner, setIsPartner] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -24,7 +25,7 @@ const AuthLoginButton = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        checkAdminRole(session.user.id);
+        checkRoles(session.user.id);
       }
       setIsLoading(false);
     });
@@ -34,17 +35,18 @@ const AuthLoginButton = () => {
       setUser(session?.user ?? null);
       if (session?.user) {
         setTimeout(() => {
-          checkAdminRole(session.user.id);
+          checkRoles(session.user.id);
         }, 0);
       } else {
         setIsAdmin(false);
+        setIsPartner(false);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const checkAdminRole = async (userId: string) => {
+  const checkRoles = async (userId: string) => {
     try {
       const { data } = await supabase
         .from('user_roles')
@@ -52,8 +54,9 @@ const AuthLoginButton = () => {
         .eq('user_id', userId);
       
       setIsAdmin(data?.some(r => r.role === 'admin') || false);
+      setIsPartner(data?.some(r => r.role === 'partner') || false);
     } catch (error) {
-      console.error('Error checking admin role:', error);
+      console.error('Error checking roles:', error);
     }
   };
 
@@ -118,6 +121,13 @@ const AuthLoginButton = () => {
           <DropdownMenuItem onClick={() => navigate('/admin')} className="cursor-pointer gap-2">
             <Shield className="w-4 h-4" />
             Admin Dashboard
+          </DropdownMenuItem>
+        )}
+        
+        {isPartner && (
+          <DropdownMenuItem onClick={() => navigate('/partner/dashboard')} className="cursor-pointer gap-2">
+            <Handshake className="w-4 h-4" />
+            Partner Dashboard
           </DropdownMenuItem>
         )}
         
