@@ -1106,6 +1106,253 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_commissions: {
+        Row: {
+          amount: number
+          base_amount: number | null
+          commission_type: string
+          created_at: string
+          customer_id: string
+          id: string
+          notes: string | null
+          paid_at: string | null
+          partner_id: string
+          payment_reference: string | null
+          percentage_applied: number | null
+          period_end: string | null
+          period_start: string | null
+          project_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          base_amount?: number | null
+          commission_type: string
+          created_at?: string
+          customer_id: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          partner_id: string
+          payment_reference?: string | null
+          percentage_applied?: number | null
+          period_end?: string | null
+          period_start?: string | null
+          project_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          base_amount?: number | null
+          commission_type?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          partner_id?: string
+          payment_reference?: string | null
+          percentage_applied?: number | null
+          period_end?: string | null
+          period_start?: string | null
+          project_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_commissions_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_referrals: {
+        Row: {
+          conversion_date: string | null
+          created_at: string
+          customer_company: string | null
+          customer_email: string | null
+          customer_name: string
+          customer_user_id: string | null
+          first_contact_date: string | null
+          id: string
+          lifetime_value: number | null
+          notes: string | null
+          partner_id: string
+          referral_code: string | null
+          referral_source: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          conversion_date?: string | null
+          created_at?: string
+          customer_company?: string | null
+          customer_email?: string | null
+          customer_name: string
+          customer_user_id?: string | null
+          first_contact_date?: string | null
+          id?: string
+          lifetime_value?: number | null
+          notes?: string | null
+          partner_id: string
+          referral_code?: string | null
+          referral_source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          conversion_date?: string | null
+          created_at?: string
+          customer_company?: string | null
+          customer_email?: string | null
+          customer_name?: string
+          customer_user_id?: string | null
+          first_contact_date?: string | null
+          id?: string
+          lifetime_value?: number | null
+          notes?: string | null
+          partner_id?: string
+          referral_code?: string | null
+          referral_source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_referrals_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partners: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          average_project_value: string | null
+          city: string | null
+          commission_rate: number | null
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone: string | null
+          contact_position: string | null
+          country: string | null
+          created_at: string
+          current_clients: string | null
+          employee_count: string | null
+          expected_volume: string | null
+          experience: string | null
+          founded_year: number | null
+          id: string
+          legal_form: string | null
+          logo_url: string | null
+          motivation: string | null
+          odoo_partner_id: number | null
+          partner_type: string
+          portfolio_url: string | null
+          postal_code: string | null
+          references_text: string | null
+          rejection_reason: string | null
+          show_on_website: boolean | null
+          specializations: string[] | null
+          status: string
+          street: string | null
+          target_markets: string[] | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string | null
+          website: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          average_project_value?: string | null
+          city?: string | null
+          commission_rate?: number | null
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone?: string | null
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string
+          current_clients?: string | null
+          employee_count?: string | null
+          expected_volume?: string | null
+          experience?: string | null
+          founded_year?: number | null
+          id?: string
+          legal_form?: string | null
+          logo_url?: string | null
+          motivation?: string | null
+          odoo_partner_id?: number | null
+          partner_type: string
+          portfolio_url?: string | null
+          postal_code?: string | null
+          references_text?: string | null
+          rejection_reason?: string | null
+          show_on_website?: boolean | null
+          specializations?: string[] | null
+          status?: string
+          street?: string | null
+          target_markets?: string[] | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          website?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          average_project_value?: string | null
+          city?: string | null
+          commission_rate?: number | null
+          company_name?: string
+          contact_email?: string
+          contact_first_name?: string
+          contact_last_name?: string
+          contact_phone?: string | null
+          contact_position?: string | null
+          country?: string | null
+          created_at?: string
+          current_clients?: string | null
+          employee_count?: string | null
+          expected_volume?: string | null
+          experience?: string | null
+          founded_year?: number | null
+          id?: string
+          legal_form?: string | null
+          logo_url?: string | null
+          motivation?: string | null
+          odoo_partner_id?: number | null
+          partner_type?: string
+          portfolio_url?: string | null
+          postal_code?: string | null
+          references_text?: string | null
+          rejection_reason?: string | null
+          show_on_website?: boolean | null
+          specializations?: string[] | null
+          status?: string
+          street?: string | null
+          target_markets?: string[] | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1268,7 +1515,7 @@ export type Database = {
     }
     Enums: {
       analysis_status: "entwurf" | "aktiv" | "abgeschlossen"
-      app_role: "admin" | "mitarbeiter" | "kunde"
+      app_role: "admin" | "mitarbeiter" | "kunde" | "partner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1397,7 +1644,7 @@ export const Constants = {
   public: {
     Enums: {
       analysis_status: ["entwurf", "aktiv", "abgeschlossen"],
-      app_role: ["admin", "mitarbeiter", "kunde"],
+      app_role: ["admin", "mitarbeiter", "kunde", "partner"],
     },
   },
 } as const
