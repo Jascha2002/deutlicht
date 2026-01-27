@@ -43,20 +43,21 @@ const handler = async (req: Request): Promise<Response> => {
     const data: PartnerRegistrationData = await req.json();
     console.log("Partner data:", JSON.stringify(data, null, 2));
 
-    // Environment variables
-    const ODOO_URL = Deno.env.get("ODOO_URL") || "https://deutlicht.odoo.com";
-    const ODOO_DB = Deno.env.get("ODOO_DB") || "deutlicht";
+    // Environment variables - use same config as odoo-crm-lead
+    const ODOO_URL = "https://deutlicht.odoo.com";
+    const ODOO_DB = "deutlicht";
+    const ODOO_USERNAME = "carstenvds@gmail.com";
     const ODOO_API_KEY = Deno.env.get("OdooCRMLeads");
 
     if (!ODOO_API_KEY) {
-      console.error("Missing Odoo API key");
+      console.error("Missing Odoo API key (OdooCRMLeads)");
       return new Response(
         JSON.stringify({ success: false, error: "Odoo configuration missing" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Authenticate with Odoo
+    // Authenticate with Odoo using JSON-RPC
     console.log("Authenticating with Odoo...");
     const authResponse = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
@@ -67,7 +68,7 @@ const handler = async (req: Request): Promise<Response> => {
         params: {
           service: "common",
           method: "authenticate",
-          args: [ODOO_DB, "carstenvds@gmail.com", ODOO_API_KEY, {}],
+          args: [ODOO_DB, ODOO_USERNAME, ODOO_API_KEY, {}],
         },
         id: Date.now(),
       }),
