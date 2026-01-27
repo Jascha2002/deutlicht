@@ -258,20 +258,35 @@ export function PartnerContractEditor({
 
       if (saveError) throw saveError;
 
-      // TODO: Send email with contract attachment
-      // For now, just update the status
+      // Send contract email via Edge Function
+      const response = await supabase.functions.invoke('send-partner-contract', {
+        body: {
+          partnerId: partner.id,
+          partnerEmail: partner.contact_email,
+          partnerName: `${partner.contact_first_name} ${partner.contact_last_name}`,
+          companyName: partner.company_name,
+          partnerNumber: partner.partner_number,
+          contractContent: contractContent,
+          commissionRate: commissionRate,
+        },
+      });
+
+      if (response.error) {
+        console.error('Edge function error:', response.error);
+        throw new Error(response.error.message || 'E-Mail konnte nicht gesendet werden');
+      }
 
       toast({
         title: 'Vertrag versendet',
-        description: `Der Vertrag wurde an ${partner.contact_email} gesendet.`,
+        description: `Der Vertrag wurde an ${partner.contact_email} gesendet. Interne Bestätigung wurde an info@deutlicht.de gesendet.`,
       });
       onUpdate();
       onOpenChange(false);
     } catch (error) {
       console.error('Error sending contract:', error);
       toast({
-        title: 'Fehler',
-        description: 'Vertrag konnte nicht versendet werden.',
+        title: 'Fehler beim Versand',
+        description: error instanceof Error ? error.message : 'Vertrag konnte nicht versendet werden.',
         variant: 'destructive',
       });
     } finally {
