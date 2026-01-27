@@ -1171,6 +1171,89 @@ export type Database = {
           },
         ]
       }
+      partner_invoices: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          gross_amount: number
+          id: string
+          invoice_date: string
+          invoice_number: string
+          net_amount: number
+          notes: string | null
+          paid_at: string | null
+          partner_id: string
+          payment_reference: string | null
+          pdf_url: string | null
+          period_end: string
+          period_start: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_at: string | null
+          updated_at: string
+          vat_amount: number
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          gross_amount?: number
+          id?: string
+          invoice_date?: string
+          invoice_number: string
+          net_amount?: number
+          notes?: string | null
+          paid_at?: string | null
+          partner_id: string
+          payment_reference?: string | null
+          pdf_url?: string | null
+          period_end: string
+          period_start: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          vat_amount?: number
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          gross_amount?: number
+          id?: string
+          invoice_date?: string
+          invoice_number?: string
+          net_amount?: number
+          notes?: string | null
+          paid_at?: string | null
+          partner_id?: string
+          payment_reference?: string | null
+          pdf_url?: string | null
+          period_end?: string
+          period_start?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          vat_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_invoices_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partner_referrals: {
         Row: {
           conversion_date: string | null
@@ -1235,9 +1318,12 @@ export type Database = {
       }
       partners: {
         Row: {
+          account_holder: string | null
           approved_at: string | null
           approved_by: string | null
           average_project_value: string | null
+          bank_name: string | null
+          bic: string | null
           city: string | null
           commission_rate: number | null
           company_name: string
@@ -1246,6 +1332,9 @@ export type Database = {
           contact_last_name: string
           contact_phone: string | null
           contact_position: string | null
+          contract_sent_at: string | null
+          contract_signed_at: string | null
+          contract_status: string | null
           country: string | null
           created_at: string
           current_clients: string | null
@@ -1253,11 +1342,15 @@ export type Database = {
           expected_volume: string | null
           experience: string | null
           founded_year: number | null
+          iban: string | null
           id: string
+          internal_notes: string | null
           legal_form: string | null
           logo_url: string | null
           motivation: string | null
+          notes: string | null
           odoo_partner_id: number | null
+          partner_number: string | null
           partner_type: string
           portfolio_url: string | null
           postal_code: string | null
@@ -1272,11 +1365,17 @@ export type Database = {
           updated_at: string
           user_id: string | null
           website: string | null
+          welcome_email_sent_at: string | null
+          withdrawal_token: string | null
+          withdrawn_at: string | null
         }
         Insert: {
+          account_holder?: string | null
           approved_at?: string | null
           approved_by?: string | null
           average_project_value?: string | null
+          bank_name?: string | null
+          bic?: string | null
           city?: string | null
           commission_rate?: number | null
           company_name: string
@@ -1285,6 +1384,9 @@ export type Database = {
           contact_last_name: string
           contact_phone?: string | null
           contact_position?: string | null
+          contract_sent_at?: string | null
+          contract_signed_at?: string | null
+          contract_status?: string | null
           country?: string | null
           created_at?: string
           current_clients?: string | null
@@ -1292,11 +1394,15 @@ export type Database = {
           expected_volume?: string | null
           experience?: string | null
           founded_year?: number | null
+          iban?: string | null
           id?: string
+          internal_notes?: string | null
           legal_form?: string | null
           logo_url?: string | null
           motivation?: string | null
+          notes?: string | null
           odoo_partner_id?: number | null
+          partner_number?: string | null
           partner_type: string
           portfolio_url?: string | null
           postal_code?: string | null
@@ -1311,11 +1417,17 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           website?: string | null
+          welcome_email_sent_at?: string | null
+          withdrawal_token?: string | null
+          withdrawn_at?: string | null
         }
         Update: {
+          account_holder?: string | null
           approved_at?: string | null
           approved_by?: string | null
           average_project_value?: string | null
+          bank_name?: string | null
+          bic?: string | null
           city?: string | null
           commission_rate?: number | null
           company_name?: string
@@ -1324,6 +1436,9 @@ export type Database = {
           contact_last_name?: string
           contact_phone?: string | null
           contact_position?: string | null
+          contract_sent_at?: string | null
+          contract_signed_at?: string | null
+          contract_status?: string | null
           country?: string | null
           created_at?: string
           current_clients?: string | null
@@ -1331,11 +1446,15 @@ export type Database = {
           expected_volume?: string | null
           experience?: string | null
           founded_year?: number | null
+          iban?: string | null
           id?: string
+          internal_notes?: string | null
           legal_form?: string | null
           logo_url?: string | null
           motivation?: string | null
+          notes?: string | null
           odoo_partner_id?: number | null
+          partner_number?: string | null
           partner_type?: string
           portfolio_url?: string | null
           postal_code?: string | null
@@ -1350,6 +1469,9 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           website?: string | null
+          welcome_email_sent_at?: string | null
+          withdrawal_token?: string | null
+          withdrawn_at?: string | null
         }
         Relationships: []
       }
