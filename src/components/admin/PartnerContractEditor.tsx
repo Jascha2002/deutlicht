@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
@@ -15,15 +16,27 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
   FileSignature,
   Save,
   Send,
-  Download,
   Eye,
   Loader2,
   FileText,
-  CheckCircle,
+  Trash2,
+  Edit,
 } from 'lucide-react';
+import { COMPANY_INFO, getContractHeader, getDocumentFooter } from '@/data/companyInfo';
 
 interface PartnerContractEditorProps {
   partner: {
@@ -47,16 +60,21 @@ interface PartnerContractEditorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUpdate: () => void;
+  onDelete?: () => void;
 }
 
 const DEFAULT_CONTRACT_TEMPLATE = `PARTNERVERTRAG
 
+
 zwischen
 
-DeutLicht
-[IHRE FIRMENANSCHRIFT]
+Stadtnetz UG / DeutLicht
+Gemeindeweg 4
+07546 Gera
+Deutschland
 
 - nachfolgend "Auftraggeber" genannt -
+
 
 und
 
@@ -72,6 +90,7 @@ Ansprechpartner: {{contact_first_name}} {{contact_last_name}}
 E-Mail: {{contact_email}}
 
 - nachfolgend "Partner" genannt -
+
 
 
 § 1 Vertragsgegenstand
@@ -129,16 +148,26 @@ E-Mail: {{contact_email}}
 (3) Es gilt deutsches Recht.
 
 
+
 _______________________________
 Ort, Datum, Unterschrift Auftraggeber
+
 
 
 _______________________________
 Ort, Datum, Unterschrift Partner
 
 
+
 Partner-Nr.: {{partner_number}}
 Vertragsdatum: {{contract_date}}
+
+
+────────────────────────────────────────────────────────────────────────────────
+Stadtnetz UG (haftungsbeschränkt) | handelnd unter der Marke DeutLicht®
+Gemeindeweg 4 (Mäuseturm) | 07546 Gera (Deutschland)
+Steuernummer: 161/120/05343 | HRB 514530, Amtsgericht Jena
+────────────────────────────────────────────────────────────────────────────────
 `;
 
 export function PartnerContractEditor({
@@ -146,12 +175,15 @@ export function PartnerContractEditor({
   open,
   onOpenChange,
   onUpdate,
+  onDelete,
 }: PartnerContractEditorProps) {
   const { toast } = useToast();
   const [contractContent, setContractContent] = useState('');
+  const [commissionRate, setCommissionRate] = useState(partner.commission_rate || 15);
   const [isSaving, setIsSaving] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (partner.contract_draft_content) {
@@ -181,11 +213,13 @@ export function PartnerContractEditor({
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      // Update contract content and commission rate
       const { error } = await supabase
         .from('partners')
         .update({
           contract_draft_content: contractContent,
           contract_status: 'draft',
+          commission_rate: commissionRate,
         })
         .eq('id', partner.id);
 
@@ -193,7 +227,7 @@ export function PartnerContractEditor({
 
       toast({
         title: 'Vertrag gespeichert',
-        description: 'Der Vertragsentwurf wurde gespeichert.',
+        description: 'Der Vertragsentwurf und die Provision wurden gespeichert.',
       });
       onUpdate();
     } catch (error) {
@@ -218,6 +252,7 @@ export function PartnerContractEditor({
           contract_draft_content: contractContent,
           contract_status: 'sent',
           contract_sent_at: new Date().toISOString(),
+          commission_rate: commissionRate,
         })
         .eq('id', partner.id);
 
@@ -244,14 +279,78 @@ export function PartnerContractEditor({
     }
   };
 
+  const handleDeletePartner = async () => {
+    setIsDeleting(true);
+    try {
+      // Delete associated documents first
+      await supabase
+        .from('partner_documents')
+        .delete()
+        .eq('partner_id', partner.id);
+
+      // Delete associated commissions
+      await supabase
+        .from('partner_commissions')
+        .delete()
+        .eq('partner_id', partner.id);
+
+      // Delete associated invoices
+      await supabase
+        .from('partner_invoices')
+        .delete()
+        .eq('partner_id', partner.id);
+
+      // Delete associated referrals
+      await supabase
+        .from('partner_referrals')
+        .delete()
+        .eq('partner_id', partner.id);
+
+      // Finally delete the partner
+      const { error } = await supabase
+        .from('partners')
+        .delete()
+        .eq('id', partner.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Partner gelöscht',
+        description: `${partner.company_name} wurde endgültig gelöscht.`,
+      });
+      
+      onOpenChange(false);
+      if (onDelete) onDelete();
+    } catch (error) {
+      console.error('Error deleting partner:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Partner konnte nicht gelöscht werden.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const updateCommissionInContract = (newRate: number) => {
+    setCommissionRate(newRate);
+    // Update commission rate in contract content
+    const updatedContent = contractContent.replace(
+      /(\d+(?:\.\d+)?% auf den Nettoumsatz)/g,
+      `${newRate}% auf den Nettoumsatz`
+    );
+    setContractContent(updatedContent);
+  };
+
   const getStatusBadge = () => {
     switch (partner.contract_status) {
       case 'draft':
         return <Badge variant="secondary">Entwurf</Badge>;
       case 'sent':
-        return <Badge className="bg-blue-100 text-blue-800">Versendet</Badge>;
+        return <Badge className="bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-400">Versendet</Badge>;
       case 'signed':
-        return <Badge className="bg-green-100 text-green-800">Unterschrieben</Badge>;
+        return <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Unterschrieben</Badge>;
       default:
         return <Badge variant="outline">Neu</Badge>;
     }
@@ -276,8 +375,8 @@ export function PartnerContractEditor({
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden flex flex-col">
-          {/* Quick Info */}
-          <div className="bg-muted/30 rounded-lg p-4 mb-4 grid grid-cols-3 gap-4 text-sm">
+          {/* Quick Info with editable commission */}
+          <div className="bg-muted/30 rounded-lg p-4 mb-4 grid grid-cols-4 gap-4 text-sm">
             <div>
               <span className="text-muted-foreground">Firma:</span>
               <p className="font-medium">{partner.company_name}</p>
@@ -289,8 +388,73 @@ export function PartnerContractEditor({
               </p>
             </div>
             <div>
-              <span className="text-muted-foreground">Provision:</span>
-              <p className="font-medium text-accent">{partner.commission_rate || 15}% (Netto)</p>
+              <Label htmlFor="commission-rate" className="text-muted-foreground text-xs">
+                Provision (Netto):
+              </Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="commission-rate"
+                  type="number"
+                  min="0"
+                  max="50"
+                  step="0.5"
+                  value={commissionRate}
+                  onChange={(e) => updateCommissionInContract(parseFloat(e.target.value) || 0)}
+                  className="h-8 w-20 text-center font-medium"
+                />
+                <span className="text-accent font-medium">%</span>
+              </div>
+            </div>
+            <div className="flex items-end justify-end">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 text-destructive border-destructive/30 hover:bg-destructive/10"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Löschen
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-destructive flex items-center gap-2">
+                      <Trash2 className="w-5 h-5" />
+                      Partner endgültig löschen?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="space-y-2">
+                      <p>
+                        <strong>Achtung:</strong> Diese Aktion kann nicht rückgängig gemacht werden!
+                      </p>
+                      <p>
+                        Folgende Daten werden unwiderruflich gelöscht:
+                      </p>
+                      <ul className="list-disc list-inside text-sm space-y-1">
+                        <li>Partnerprofil von <strong>{partner.company_name}</strong></li>
+                        <li>Alle zugehörigen Dokumente</li>
+                        <li>Alle Vermittlungen & Provisionen</li>
+                        <li>Alle Abrechnungen</li>
+                      </ul>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDeletePartner}
+                      disabled={isDeleting}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      ) : (
+                        <Trash2 className="w-4 h-4 mr-2" />
+                      )}
+                      Endgültig löschen
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
 
@@ -299,7 +463,7 @@ export function PartnerContractEditor({
           {/* Contract Editor / Preview */}
           <div className="flex-1 overflow-auto">
             {isPreview ? (
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 font-mono text-sm whitespace-pre-wrap border">
+              <div className="bg-card rounded-lg p-6 font-mono text-sm whitespace-pre-wrap border">
                 {contractContent}
               </div>
             ) : (
@@ -319,7 +483,7 @@ export function PartnerContractEditor({
             onClick={() => setIsPreview(!isPreview)}
             className="gap-2"
           >
-            {isPreview ? <FileText className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {isPreview ? <Edit className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             {isPreview ? 'Bearbeiten' : 'Vorschau'}
           </Button>
           <Button

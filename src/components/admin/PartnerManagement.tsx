@@ -535,6 +535,10 @@ export function PartnerManagement() {
         open={detailDialogOpen}
         onOpenChange={setDetailDialogOpen}
         onUpdate={loadPartners}
+        onDelete={() => {
+          setDetailDialogOpen(false);
+          loadPartners();
+        }}
       />
     </div>
   );
