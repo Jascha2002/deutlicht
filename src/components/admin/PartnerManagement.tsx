@@ -6,23 +6,53 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Handshake, Check, X, Eye, Percent, ExternalLink, Building2, Mail, Phone } from 'lucide-react';
+import { Handshake, Check, X, Eye, Percent, ExternalLink, Building2, Mail, Phone, MapPin, Search, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PartnerDetailDialog } from './PartnerDetailDialog';
 
 interface Partner {
   id: string;
+  partner_number: string | null;
   company_name: string;
+  legal_form: string | null;
+  tax_id: string | null;
+  website: string | null;
+  street: string | null;
+  postal_code: string | null;
+  city: string | null;
+  country: string | null;
   contact_first_name: string;
   contact_last_name: string;
   contact_email: string;
   contact_phone: string | null;
+  contact_position: string | null;
   partner_type: string;
+  employee_count: string | null;
+  founded_year: number | null;
+  current_clients: string | null;
+  average_project_value: string | null;
+  target_markets: string[] | null;
+  specializations: string[] | null;
+  experience: string | null;
+  motivation: string | null;
+  portfolio_url: string | null;
+  references_text: string | null;
+  expected_volume: string | null;
   status: string;
   commission_rate: number | null;
   created_at: string;
-  city: string | null;
-  website: string | null;
+  approved_at: string | null;
+  rejection_reason: string | null;
   show_on_website: boolean | null;
+  iban: string | null;
+  bic: string | null;
+  bank_name: string | null;
+  account_holder: string | null;
+  contract_status: string | null;
+  contract_sent_at: string | null;
+  contract_signed_at: string | null;
+  notes: string | null;
+  internal_notes: string | null;
 }
 
 export function PartnerManagement() {
@@ -30,7 +60,9 @@ export function PartnerManagement() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [newCommissionRate, setNewCommissionRate] = useState('');
 
@@ -42,7 +74,7 @@ export function PartnerManagement() {
     try {
       let query = supabase
         .from('partners')
-        .select('id, company_name, contact_first_name, contact_last_name, contact_email, contact_phone, partner_type, status, commission_rate, created_at, city, website, show_on_website')
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (statusFilter !== 'all') {
@@ -52,7 +84,7 @@ export function PartnerManagement() {
       const { data, error } = await query;
 
       if (error) throw error;
-      setPartners(data || []);
+      setPartners((data || []) as Partner[]);
     } catch (error) {
       console.error('Error loading partners:', error);
       toast({
@@ -69,7 +101,7 @@ export function PartnerManagement() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      const updateData: any = { 
+      const updateData: Record<string, unknown> = { 
         status,
         updated_at: new Date().toISOString()
       };
@@ -94,7 +126,6 @@ export function PartnerManagement() {
       });
 
       await loadPartners();
-      setSelectedPartner(null);
       setRejectionReason('');
     } catch (error) {
       console.error('Error updating partner:', error);
@@ -158,6 +189,11 @@ export function PartnerManagement() {
     }
   };
 
+  const openPartnerDetail = (partner: Partner) => {
+    setSelectedPartner(partner);
+    setDetailDialogOpen(true);
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
@@ -167,7 +203,7 @@ export function PartnerManagement() {
       case 'rejected':
         return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -182,6 +218,33 @@ export function PartnerManagement() {
     };
     return labels[type] || type;
   };
+
+  const getContractStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'signed':
+      case 'active':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+      case 'sent':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'draft':
+        return 'bg-muted text-muted-foreground';
+      default:
+        return '';
+    }
+  };
+
+  const filteredPartners = partners.filter(partner => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      partner.company_name.toLowerCase().includes(query) ||
+      partner.contact_email.toLowerCase().includes(query) ||
+      partner.contact_first_name.toLowerCase().includes(query) ||
+      partner.contact_last_name.toLowerCase().includes(query) ||
+      (partner.city && partner.city.toLowerCase().includes(query)) ||
+      (partner.partner_number && partner.partner_number.toLowerCase().includes(query))
+    );
+  });
 
   if (isLoading) {
     return (
@@ -207,18 +270,29 @@ export function PartnerManagement() {
               </span>
             )}
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter nach Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alle Partner</SelectItem>
-              <SelectItem value="pending">Ausstehend</SelectItem>
-              <SelectItem value="approved">Genehmigt</SelectItem>
-              <SelectItem value="rejected">Abgelehnt</SelectItem>
-              <SelectItem value="inactive">Inaktiv</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input 
+                placeholder="Suchen..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 w-[200px]"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter nach Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Partner</SelectItem>
+                <SelectItem value="pending">Ausstehend</SelectItem>
+                <SelectItem value="approved">Genehmigt</SelectItem>
+                <SelectItem value="rejected">Abgelehnt</SelectItem>
+                <SelectItem value="inactive">Inaktiv</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
@@ -228,17 +302,24 @@ export function PartnerManagement() {
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Partner-Nr.</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Unternehmen</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Typ</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Kontakt</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Adresse</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Status</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Vertrag</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Provision</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktionen</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {partners.map((partner) => (
+              {filteredPartners.map((partner) => (
                 <tr key={partner.id} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-6 py-4">
+                    <span className="font-mono text-sm text-accent">
+                      {partner.partner_number || '-'}
+                    </span>
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
@@ -246,12 +327,11 @@ export function PartnerManagement() {
                       </div>
                       <div>
                         <p className="font-medium text-foreground">{partner.company_name}</p>
-                        <p className="text-xs text-muted-foreground">{partner.city || 'Kein Ort'}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {getPartnerTypeLabel(partner.partner_type)}
+                        </p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-muted-foreground">
-                    {getPartnerTypeLabel(partner.partner_type)}
                   </td>
                   <td className="px-6 py-4">
                     <div className="space-y-1">
@@ -260,7 +340,26 @@ export function PartnerManagement() {
                       </p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <Mail className="w-3 h-3" />
-                        {partner.contact_email}
+                        <a href={`mailto:${partner.contact_email}`} className="hover:text-accent">
+                          {partner.contact_email}
+                        </a>
+                      </div>
+                      {partner.contact_phone && (
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Phone className="w-3 h-3" />
+                          <a href={`tel:${partner.contact_phone}`} className="hover:text-accent">
+                            {partner.contact_phone}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        {partner.street && <p>{partner.street}</p>}
+                        <p>{partner.postal_code} {partner.city}</p>
                       </div>
                     </div>
                   </td>
@@ -273,6 +372,21 @@ export function PartnerManagement() {
                        partner.status === 'pending' ? 'Ausstehend' : 
                        partner.status === 'rejected' ? 'Abgelehnt' : partner.status}
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {partner.contract_status && partner.contract_status !== 'none' ? (
+                      <span className={cn(
+                        "px-2 py-1 rounded text-xs font-medium",
+                        getContractStatusBadge(partner.contract_status)
+                      )}>
+                        {partner.contract_status === 'signed' ? '✓ Unterschrieben' :
+                         partner.contract_status === 'sent' ? 'Versendet' :
+                         partner.contract_status === 'draft' ? 'Entwurf' :
+                         partner.contract_status}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">-</span>
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
@@ -288,6 +402,8 @@ export function PartnerManagement() {
                             <DialogTitle>Provision anpassen</DialogTitle>
                             <DialogDescription>
                               Aktuelle Provision für {partner.company_name}: {partner.commission_rate || 15}%
+                              <br />
+                              <span className="text-xs">Berechnung auf Basis der Nettoumsätze (ohne USt.)</span>
                             </DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4 pt-4">
@@ -317,26 +433,33 @@ export function PartnerManagement() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 gap-1"
+                        onClick={() => openPartnerDetail(partner)}
+                      >
+                        <FileText className="w-3 h-3" />
+                        Details
+                      </Button>
                       {partner.status === 'pending' && (
                         <>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="h-8 gap-1 text-green-600 border-green-200 hover:bg-green-50"
+                            className="h-8 gap-1 text-green-600 border-green-200 hover:bg-green-50 dark:border-green-800 dark:hover:bg-green-900/20"
                             onClick={() => updatePartnerStatus(partner.id, 'approved')}
                           >
                             <Check className="w-3 h-3" />
-                            Genehmigen
                           </Button>
                           <Dialog>
                             <DialogTrigger asChild>
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-8 gap-1 text-red-600 border-red-200 hover:bg-red-50"
+                                className="h-8 gap-1 text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20"
                               >
                                 <X className="w-3 h-3" />
-                                Ablehnen
                               </Button>
                             </DialogTrigger>
                             <DialogContent>
@@ -371,8 +494,7 @@ export function PartnerManagement() {
                           className={cn("h-8", partner.show_on_website && "bg-accent/10")}
                           onClick={() => toggleWebsiteVisibility(partner.id, !partner.show_on_website)}
                         >
-                          <Eye className="w-3 h-3 mr-1" />
-                          {partner.show_on_website ? 'Sichtbar' : 'Ausblenden'}
+                          <Eye className="w-3 h-3" />
                         </Button>
                       )}
                       {partner.website && (
@@ -395,12 +517,20 @@ export function PartnerManagement() {
           </table>
         </div>
 
-        {partners.length === 0 && (
+        {filteredPartners.length === 0 && (
           <div className="p-12 text-center text-muted-foreground">
             Keine Partner gefunden.
           </div>
         )}
       </div>
+
+      {/* Partner Detail Dialog */}
+      <PartnerDetailDialog
+        partner={selectedPartner}
+        open={detailDialogOpen}
+        onOpenChange={setDetailDialogOpen}
+        onUpdate={loadPartners}
+      />
     </div>
   );
 }

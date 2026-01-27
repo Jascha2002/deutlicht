@@ -1,9 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Handshake, DollarSign, UserCheck } from "lucide-react";
+import { Users, Handshake, DollarSign, UserCheck, Receipt } from "lucide-react";
 import { UserManagement } from "./UserManagement";
 import { PartnerManagement } from "./PartnerManagement";
 import { ReferralManagement } from "./ReferralManagement";
 import { CommissionManagement } from "./CommissionManagement";
+import { PartnerInvoiceManagement } from "./PartnerInvoiceManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
@@ -12,7 +13,7 @@ interface AdminTabsProps {
 export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
   return (
     <Tabs defaultValue={defaultTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-4 mb-6">
+      <TabsList className="grid w-full grid-cols-5 mb-6">
         <TabsTrigger value="users" className="gap-2">
           <Users className="w-4 h-4" />
           <span className="hidden sm:inline">Benutzer</span>
@@ -28,6 +29,10 @@ export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
         <TabsTrigger value="commissions" className="gap-2">
           <DollarSign className="w-4 h-4" />
           <span className="hidden sm:inline">Provisionen</span>
+        </TabsTrigger>
+        <TabsTrigger value="invoices" className="gap-2">
+          <Receipt className="w-4 h-4" />
+          <span className="hidden sm:inline">Abrechnungen</span>
         </TabsTrigger>
       </TabsList>
 
@@ -45,6 +50,10 @@ export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
 
       <TabsContent value="commissions">
         <CommissionManagement />
+      </TabsContent>
+
+      <TabsContent value="invoices">
+        <PartnerInvoiceManagement />
       </TabsContent>
     </Tabs>
   );
