@@ -42,6 +42,8 @@ import Digitalisierung from "./pages/Digitalisierung";
 import DigitalisierungsAnalyse from "./pages/DigitalisierungsAnalyse";
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
+import Partner from "./pages/Partner";
+import PartnerAnmelden from "./pages/PartnerAnmelden";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -92,6 +94,8 @@ const App = () => (
               <Route path="/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/partner" element={<Partner />} />
+              <Route path="/partner/anmelden" element={<PartnerAnmelden />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
