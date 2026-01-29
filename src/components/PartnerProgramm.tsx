@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -21,12 +20,20 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+// Partner type images
+import partnerSteuerberater from "@/assets/partner-steuerberater.jpg";
+import partnerMarketing from "@/assets/partner-marketing.jpg";
+import partnerWebdesigner from "@/assets/partner-webdesigner.jpg";
+import partnerItDienstleister from "@/assets/partner-it-dienstleister.jpg";
+import partnerUnternehmensberater from "@/assets/partner-unternehmensberater.jpg";
+
 const partnerTypes = [
   {
     id: "steuerberater",
     title: "Steuerberater & Kanzleien",
     description: "Empfehlen Sie Ihren Mandanten digitale Lösungen und profitieren Sie von wiederkehrenden Provisionen.",
     icon: Briefcase,
+    image: partnerSteuerberater,
     benefits: ["Mandantenbindung stärken", "Zusätzliche Einnahmequelle", "Digitale Beratungskompetenz"]
   },
   {
@@ -34,6 +41,7 @@ const partnerTypes = [
     title: "Marketing-Agenturen",
     description: "Erweitern Sie Ihr Leistungsportfolio um KI-gestützte Lösungen für Ihre Kunden.",
     icon: TrendingUp,
+    image: partnerMarketing,
     benefits: ["Vollständiges Digitalportfolio", "White-Label-Lösungen", "Höhere Kundenbindung"]
   },
   {
@@ -41,6 +49,7 @@ const partnerTypes = [
     title: "Webdesigner & Developer",
     description: "Bieten Sie Ihren Kunden mehr als nur Websites – intelligente Geschäftslösungen.",
     icon: Users,
+    image: partnerWebdesigner,
     benefits: ["Upselling-Möglichkeiten", "Langfristige Kundenbeziehungen", "Technologie-Partnerschaft"]
   },
   {
@@ -48,6 +57,7 @@ const partnerTypes = [
     title: "IT-Dienstleister & Systemhäuser",
     description: "Integrieren Sie KI-Agenten in Ihre bestehenden IT-Lösungen und Serviceangebote.",
     icon: Shield,
+    image: partnerItDienstleister,
     benefits: ["Managed Services erweitern", "Automatisierungslösungen", "Wettbewerbsvorteil"]
   },
   {
@@ -55,6 +65,7 @@ const partnerTypes = [
     title: "Unternehmensberater",
     description: "Unterstützen Sie Ihre Klienten bei der digitalen Transformation mit konkreten Lösungen.",
     icon: BookOpen,
+    image: partnerUnternehmensberater,
     benefits: ["Strategieberatung + Umsetzung", "Messbare Ergebnisse", "Langfristige Begleitung"]
   }
 ];
@@ -194,19 +205,30 @@ export function PartnerProgramm() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {partnerTypes.map((type) => (
-            <Card key={type.id} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
-                  <type.icon className="h-6 w-6 text-accent" />
+            <Card key={type.id} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg overflow-hidden group">
+              {/* Image Header */}
+              <div className="relative h-40 overflow-hidden">
+                <img 
+                  src={type.image} 
+                  alt={type.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                <div className="absolute bottom-3 left-4 right-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-lg bg-accent/90 flex items-center justify-center">
+                      <type.icon className="h-5 w-5 text-primary-foreground" />
+                    </div>
+                    <CardTitle className="text-lg text-foreground drop-shadow-md">{type.title}</CardTitle>
+                  </div>
                 </div>
-                <CardTitle className="text-xl">{type.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              </div>
+              <CardContent className="pt-4 space-y-4">
                 <p className="text-sm text-muted-foreground">{type.description}</p>
                 <ul className="space-y-2">
                   {type.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" />
                       {benefit}
                     </li>
                   ))}
@@ -275,15 +297,16 @@ export function PartnerProgramm() {
                     value={annualRevenue}
                     onValueChange={setAnnualRevenue}
                     min={0}
-                    max={50000}
+                    max={120000}
                     step={100}
                     className="w-full"
                   />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>0 €</span>
-                    <span className="text-amber-600">Bronze ab 100 €</span>
-                    <span className="text-gray-500">Silber ab 10.000 €</span>
-                    <span className="text-yellow-600">Gold ab 25.000 €</span>
+                    <span>30.000 €</span>
+                    <span>60.000 €</span>
+                    <span>90.000 €</span>
+                    <span>120.000 €</span>
                   </div>
                 </div>
                 
