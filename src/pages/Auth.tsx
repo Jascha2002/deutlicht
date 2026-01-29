@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Lock, Mail, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { z } from 'zod';
+import { checkPasswordLeaked, validatePasswordStrength } from '@/lib/passwordSecurity';
+import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
 
 const loginSchema = z.object({
   email: z.string().email('Bitte geben Sie eine gültige E-Mail-Adresse ein'),
@@ -15,7 +17,8 @@ const loginSchema = z.object({
 });
 
 const signupSchema = loginSchema.extend({
-  fullName: z.string().min(2, 'Der Name muss mindestens 2 Zeichen haben')
+  fullName: z.string().min(2, 'Der Name muss mindestens 2 Zeichen haben'),
+  password: z.string().min(8, 'Das Passwort muss mindestens 8 Zeichen haben')
 });
 
 const Auth = () => {
@@ -26,8 +29,46 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [passwordStrength, setPasswordStrength] = useState({ isValid: false, messages: [] as string[], score: 0 });
+  const [isPasswordLeaked, setIsPasswordLeaked] = useState(false);
+  const [leakCount, setLeakCount] = useState(0);
+  const [isCheckingPassword, setIsCheckingPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Check password strength and leaked status when password changes (signup only)
+  const checkPassword = useCallback(async (pwd: string) => {
+    if (isLogin || pwd.length < 8) {
+      setPasswordStrength({ isValid: false, messages: [], score: 0 });
+      setIsPasswordLeaked(false);
+      setLeakCount(0);
+      return;
+    }
+
+    // Validate strength immediately
+    const strength = validatePasswordStrength(pwd);
+    setPasswordStrength(strength);
+
+    // Check for leaked password with debounce
+    setIsCheckingPassword(true);
+    const result = await checkPasswordLeaked(pwd);
+    setIsCheckingPassword(false);
+    setIsPasswordLeaked(result.isLeaked);
+    setLeakCount(result.count);
+  }, [isLogin]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (password.length >= 8 && !isLogin) {
+        checkPassword(password);
+      } else if (!isLogin) {
+        setPasswordStrength(validatePasswordStrength(password));
+        setIsPasswordLeaked(false);
+      }
+    }, 500); // Debounce 500ms
+
+    return () => clearTimeout(timeoutId);
+  }, [password, isLogin, checkPassword]);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -73,6 +114,27 @@ const Auth = () => {
     e.preventDefault();
     
     if (!validateForm()) return;
+
+    // For signup, check if password is leaked
+    if (!isLogin) {
+      if (isPasswordLeaked) {
+        toast({
+          title: 'Unsicheres Passwort',
+          description: 'Dieses Passwort wurde in Datenlecks gefunden. Bitte wählen Sie ein anderes.',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      if (!passwordStrength.isValid) {
+        toast({
+          title: 'Passwort zu schwach',
+          description: 'Bitte wählen Sie ein stärkeres Passwort.',
+          variant: 'destructive'
+        });
+        return;
+      }
+    }
     
     setIsLoading(true);
 
@@ -239,12 +301,23 @@ const Auth = () => {
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password}</p>
                 )}
+                
+                {/* Password strength indicator for signup */}
+                {!isLogin && password.length > 0 && (
+                  <PasswordStrengthIndicator
+                    score={passwordStrength.score}
+                    messages={passwordStrength.messages}
+                    isLeaked={isPasswordLeaked}
+                    leakCount={leakCount}
+                    isChecking={isCheckingPassword}
+                  />
+                )}
               </div>
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={isLoading}
+                disabled={isLoading || (!isLogin && (isCheckingPassword || isPasswordLeaked || !passwordStrength.isValid))}
               >
                 {isLoading ? 'Bitte warten...' : isLogin ? 'Anmelden' : 'Registrieren'}
               </Button>
