@@ -82,25 +82,49 @@ const benefits = [
   }
 ];
 
+// Korrigierte Provisionsstufen:
+// Bronze: 100€ - 9.999€ Jahresumsatz → 15%
+// Silber: 10.000€ - 24.999€ Jahresumsatz → 17%
+// Gold: ab 25.000€ Jahresumsatz → 20%
 const commissionTiers = [
-  { name: "Bronze", minRevenue: 0, rate: 15, color: "bg-amber-600" },
-  { name: "Silber", minRevenue: 10000, rate: 17, color: "bg-gray-400" },
-  { name: "Gold", minRevenue: 25000, rate: 20, color: "bg-yellow-500" }
+  { name: "Bronze", minRevenue: 100, maxRevenue: 9999, rate: 15, color: "bg-amber-600", description: "Ab 100 € Jahresumsatz" },
+  { name: "Silber", minRevenue: 10000, maxRevenue: 24999, rate: 17, color: "bg-gray-400", description: "Ab 10.000 € Jahresumsatz" },
+  { name: "Gold", minRevenue: 25000, maxRevenue: Infinity, rate: 20, color: "bg-yellow-500", description: "Ab 25.000 € Jahresumsatz" }
 ];
 
 export function PartnerProgramm() {
-  const [monthlyClients, setMonthlyClients] = useState([2]);
-  const [avgProjectValue, setAvgProjectValue] = useState([5000]);
+  // Angepasst für kleinere Umsätze bei Bronze-Partnern
+  const [annualRevenue, setAnnualRevenue] = useState([5000]);
   
   const calculateCommission = () => {
-    const annualRevenue = monthlyClients[0] * avgProjectValue[0] * 12;
-    const tier = commissionTiers.slice().reverse().find(t => annualRevenue >= t.minRevenue) || commissionTiers[0];
-    const annualCommission = annualRevenue * (tier.rate / 100);
+    const revenue = annualRevenue[0];
+    
+    // Provision erst ab 100€ Jahresumsatz
+    if (revenue < 100) {
+      return {
+        annualRevenue: revenue,
+        annualCommission: 0,
+        monthlyCommission: 0,
+        tier: null,
+        belowMinimum: true
+      };
+    }
+    
+    // Korrekte Tier-Ermittlung basierend auf Jahresumsatz
+    let tier = commissionTiers[0]; // Default Bronze
+    if (revenue >= 25000) {
+      tier = commissionTiers[2]; // Gold
+    } else if (revenue >= 10000) {
+      tier = commissionTiers[1]; // Silber
+    }
+    
+    const annualCommission = revenue * (tier.rate / 100);
     return {
-      annualRevenue,
+      annualRevenue: revenue,
       annualCommission,
       monthlyCommission: annualCommission / 12,
-      tier
+      tier,
+      belowMinimum: false
     };
   };
   
@@ -193,7 +217,39 @@ export function PartnerProgramm() {
         </div>
       </section>
 
-      {/* Commission Calculator */}
+      {/* Commission Tiers - JETZT VOR DEM RECHNER */}
+      <section className="space-y-8">
+        <div className="text-center">
+          <h2 className="font-display text-3xl font-bold mb-4">Unsere Provisions-Stufen</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Je mehr Sie vermitteln, desto höher Ihre Provision – einfach und transparent.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {commissionTiers.map((tier, index) => (
+            <Card key={tier.name} className={`border-2 ${index === 2 ? 'border-accent' : 'border-border/50'}`}>
+              <CardHeader className="text-center pb-2">
+                <div className={`w-16 h-16 rounded-full ${tier.color} mx-auto mb-4 flex items-center justify-center`}>
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <CardTitle className="text-2xl">{tier.name}</CardTitle>
+                <p className="text-4xl font-bold text-accent">{tier.rate}%</p>
+                <p className="text-sm text-muted-foreground">Provision</p>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-sm font-medium">{tier.description}</p>
+                {tier.maxRevenue !== Infinity && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    bis {tier.maxRevenue.toLocaleString('de-DE')} € Jahresumsatz
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Commission Calculator - JETZT NACH DEN STUFEN */}
       <section id="rechner" className="scroll-mt-24">
         <Card className="border-accent/20 bg-gradient-to-br from-background to-accent/5">
           <CardHeader className="text-center">
@@ -208,64 +264,64 @@ export function PartnerProgramm() {
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Inputs */}
+              {/* Input - Vereinfacht auf Jahresumsatz */}
               <div className="space-y-6">
                 <div className="space-y-4">
                   <label className="text-sm font-medium flex items-center justify-between">
-                    <span>Vermittelte Kunden pro Monat</span>
-                    <span className="text-accent font-bold text-lg">{monthlyClients[0]}</span>
+                    <span>Vermittelter Jahresumsatz (netto)</span>
+                    <span className="text-accent font-bold text-lg">{annualRevenue[0].toLocaleString('de-DE')} €</span>
                   </label>
                   <Slider
-                    value={monthlyClients}
-                    onValueChange={setMonthlyClients}
-                    min={1}
-                    max={20}
-                    step={1}
+                    value={annualRevenue}
+                    onValueChange={setAnnualRevenue}
+                    min={0}
+                    max={50000}
+                    step={100}
                     className="w-full"
                   />
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>1 Kunde</span>
-                    <span>20 Kunden</span>
+                    <span>0 €</span>
+                    <span className="text-amber-600">Bronze ab 100 €</span>
+                    <span className="text-gray-500">Silber ab 10.000 €</span>
+                    <span className="text-yellow-600">Gold ab 25.000 €</span>
                   </div>
                 </div>
                 
-                <div className="space-y-4">
-                  <label className="text-sm font-medium flex items-center justify-between">
-                    <span>Durchschnittlicher Projektwert</span>
-                    <span className="text-accent font-bold text-lg">{avgProjectValue[0].toLocaleString('de-DE')} €</span>
-                  </label>
-                  <Slider
-                    value={avgProjectValue}
-                    onValueChange={setAvgProjectValue}
-                    min={1000}
-                    max={50000}
-                    step={1000}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>1.000 €</span>
-                    <span>50.000 €</span>
-                  </div>
+                <div className="bg-muted/50 rounded-lg p-4 text-sm space-y-2">
+                  <p className="font-medium">Hinweis für Bronze-Partner:</p>
+                  <p className="text-muted-foreground">
+                    Bereits ab 100 € vermitteltem Jahresumsatz erhalten Sie 15% Provision. 
+                    Ideal für den Einstieg – auch ohne regelmäßige Vermittlungen.
+                  </p>
                 </div>
               </div>
               
               {/* Results */}
               <div className="space-y-4">
-                <div className={`rounded-lg p-4 ${calculation.tier.color} text-white`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Star className="h-5 w-5" />
-                    <span className="font-semibold">{calculation.tier.name}-Partner</span>
-                    <Badge variant="secondary" className="ml-auto bg-white/20 text-white">
-                      {calculation.tier.rate}% Provision
-                    </Badge>
+                {calculation.belowMinimum ? (
+                  <div className="rounded-lg p-4 bg-muted border border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Star className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-semibold text-muted-foreground">Minimum nicht erreicht</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Provisionen werden ab einem vermittelten Jahresumsatz von 100 € berechnet.
+                    </p>
                   </div>
-                  <p className="text-sm opacity-90">
-                    {calculation.tier.minRevenue === 0 
-                      ? "Startlevel für neue Partner"
-                      : `Ab ${calculation.tier.minRevenue.toLocaleString('de-DE')} € Jahresumsatz`
-                    }
-                  </p>
-                </div>
+                ) : calculation.tier && (
+                  <div className={`rounded-lg p-4 ${calculation.tier.color} text-white`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Star className="h-5 w-5" />
+                      <span className="font-semibold">{calculation.tier.name}-Partner</span>
+                      <Badge variant="secondary" className="ml-auto bg-white/20 text-white">
+                        {calculation.tier.rate}% Provision
+                      </Badge>
+                    </div>
+                    <p className="text-sm opacity-90">
+                      {calculation.tier.description}
+                    </p>
+                  </div>
+                )}
                 
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="border-border/50">
@@ -287,7 +343,7 @@ export function PartnerProgramm() {
                 </div>
                 
                 <p className="text-xs text-muted-foreground text-center">
-                  Basierend auf {calculation.annualRevenue.toLocaleString('de-DE')} € vermitteltem Jahresumsatz
+                  Basierend auf {calculation.annualRevenue.toLocaleString('de-DE')} € vermitteltem Jahresumsatz (netto)
                 </p>
               </div>
             </div>
@@ -302,38 +358,6 @@ export function PartnerProgramm() {
             </div>
           </CardContent>
         </Card>
-      </section>
-
-      {/* Commission Tiers */}
-      <section className="space-y-8">
-        <div className="text-center">
-          <h2 className="font-display text-3xl font-bold mb-4">Unsere Provisions-Stufen</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Je mehr Sie vermitteln, desto höher Ihre Provision – einfach und transparent.
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {commissionTiers.map((tier, index) => (
-            <Card key={tier.name} className={`border-2 ${index === 2 ? 'border-accent' : 'border-border/50'}`}>
-              <CardHeader className="text-center pb-2">
-                <div className={`w-16 h-16 rounded-full ${tier.color} mx-auto mb-4 flex items-center justify-center`}>
-                  <Star className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">{tier.name}</CardTitle>
-                <p className="text-4xl font-bold text-accent">{tier.rate}%</p>
-                <p className="text-sm text-muted-foreground">Provision</p>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-sm">
-                  {tier.minRevenue === 0 
-                    ? "Für alle neuen Partner"
-                    : `Ab ${tier.minRevenue.toLocaleString('de-DE')} € Jahresumsatz`
-                  }
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </section>
 
       {/* CTA Section */}
