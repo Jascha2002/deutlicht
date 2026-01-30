@@ -601,6 +601,80 @@ Die externe Betreuung der zentralen Website wird überflüssig. Das Unternehmen 
     datensicherheit: `
 Erhöhte Datensicherheit
 Ein zentrales System erleichtert die Umsetzung von Sicherheitsstandards. Updates und Schutzmaßnahmen können gebündelt und zeitnah umgesetzt werden, wodurch das Sicherheitsniveau insgesamt steigt.`
+  },
+
+  // ============================================================================
+  // STRATEGIEENTWICKLUNG & NEUPOSITIONIERUNG AM MARKT
+  // ============================================================================
+  
+  strategieNeupositionierung: {
+    beratungsziel: (firma: string, ort: string, uebernahmeJahr?: string, gruendungsJahr?: string) => `
+Ziel der Beratung: Positionierung als Qualitätsanbieter mit sozialem und lokalem Fokus durch den Aufbau einer emotional starken und vertrauensvollen Marke
+
+Im Rahmen einer Betriebsberatung wird die strategische Neupositionierung von ${firma} begleitet. ${uebernahmeJahr ? `Das Unternehmen wurde im Zuge einer geregelten Nachfolgeregelung im Jahr ${uebernahmeJahr} übernommen und ist am Standort ${ort} tätig.` : `Das Unternehmen ist am Standort ${ort} tätig.`} ${gruendungsJahr ? `Seit seiner Gründung im Jahr ${gruendungsJahr}` : 'Seit seiner Gründung'} ist ${firma} als Anbieter am Markt etabliert.
+
+Das Unternehmen verfügt über eine stabile Kundenbasis mit hoher regionaler Bekanntheit sowie über eine konstante Nachfrage nach den angebotenen Leistungen. Die bestehende wirtschaftliche Stabilität bildet eine tragfähige Grundlage für weiteres Wachstum und eine strategische Weiterentwicklung der Marktposition.`,
+
+    ausgangslage: (firma: string, rechtsformAenderung?: boolean) => `
+Ausgangslage (Ist-Zustand)
+
+Nach der erfolgreichen Betriebsübernahme erfolgte eine strukturelle Neuaufstellung des Unternehmens${rechtsformAenderung ? ', unter anderem durch eine Anpassung der Rechtsform' : ''}. Das Geschäftsmodell weist eine stabile Entwicklung mit anhaltender Nachfrage und positiver Ergebnislage auf.
+
+Die Kundenstruktur ist geprägt von einer hohen Bindung, insbesondere bei den Kernzielgruppen im regionalen Umfeld. Die Kombination aus den angebotenen Dienstleistungen stellt einen belastbaren und ausbaufähigen Leistungskern dar.
+
+Die Organisation ist durch eine lokal verankerte Mitarbeiterstruktur, kurze Entscheidungswege und eine persönliche Kundenansprache gekennzeichnet. Diese Nähe zum Kunden wird als wesentlicher Erfolgsfaktor wahrgenommen.`,
+
+    zielsetzungSoll: (firma: string, ort: string) => `
+Zielsetzung (Soll-Zustand)
+
+Ziel der Beratung ist die klare Positionierung von ${firma} als Qualitätsanbieter mit sozialem und lokalem Fokus. Dabei soll eine emotional ansprechende und vertrauensbildende Marke aufgebaut werden, die sich deutlich vom Wettbewerb abgrenzt.
+
+Ein weiterer Schwerpunkt liegt auf der gezielten Bearbeitung einzelner regionaler Teilmärkte bzw. Stadtteile im Einzugsgebiet von ${ort}. Parallel dazu sollen klassische und digitale Kommunikationskanäle systematisch ausgebaut werden.
+
+Die Corporate Identity sowie die Außendarstellung des Unternehmens sollen vereinheitlicht und professionalisiert werden. Langfristig wird die Entwicklung eines skalierbaren Geschäftsmodells angestrebt, das auch eine Übertragbarkeit auf weitere Regionen ermöglicht.`,
+
+    handlungsempfehlungen: {
+      visuelleIdentitaet: (firma: string) => `
+Zur Unterstützung der strategischen Zielsetzung wird empfohlen, die visuelle Identität von ${firma} weiterzuentwickeln. Ziel ist ein konsistentes und professionelles Erscheinungsbild über alle Kommunikationskanäle hinweg. Dies umfasst insbesondere die Überarbeitung des Logos, eine einheitliche Gestaltung von Printmaterialien sowie einen klaren, vertrauensfördernden Markenauftritt.`,
+
+      regionalesMarketing: `
+Für ausgewählte regionale Teilmärkte wird eine gezielte Marketingstrategie empfohlen. Diese soll auf lokal angepassten Kommunikationsmaßnahmen basieren und unter anderem durch stadtteilbezogene Online-Präsenzen (z. B. Microsites oder Landingpages) unterstützt werden. Diese Maßnahmen dienen als Pilotprojekte für eine spätere Übertragung auf weitere Gebiete.`,
+
+      marketingMix: `
+Der Aufbau eines integrierten Marketingmixes aus klassischen und digitalen Maßnahmen wird als sinnvoll erachtet. Dazu zählen unter anderem personalisierte Anschreiben, hochwertige Printmedien, Außenwerbung, digitale Informationsseiten sowie ein strukturiertes Empfehlungsmanagement.`,
+
+      kundenbindung: `
+Zur Stärkung der Kundenbindung wird eine kontinuierliche und persönliche Kommunikation empfohlen. Beispiele hierfür sind individualisierte Gruß- und Anlasskommunikation, regelmäßige Kundeninformationen mit regionalem Bezug sowie die systematische Erfassung von Kundenfeedback zur Messung der Servicezufriedenheit.`,
+
+      digitaleProzesse: `
+Darüber hinaus wird empfohlen, digitale Prozesse in der Kunden- und Mitarbeitergewinnung auszubauen. Dies umfasst unter anderem digitale Anfrageformulare, strukturierte Online-Bewerbungsprozesse sowie perspektivisch die Einführung digitaler Systeme zur Einsatz- und Ressourcenplanung.`,
+
+      skalierbarkeit: (ort: string) => `
+Langfristig sollte die Übertragbarkeit des Geschäftsmodells geprüft werden. Die im regionalen Umfeld von ${ort} entwickelten Strategien können dabei als Blaupause für eine mögliche Expansion oder eine standardisierte Weitergabe des Modells dienen.`
+    }
+  },
+
+  // Vorteile durch strategische Neupositionierung
+  strategieVorteile: {
+    markenstaerkung: `
+Stärkung der Markenidentität
+Durch eine konsistente visuelle Identität und emotionale Markenführung entsteht ein klarer Wiedererkennungswert. Die Marke wird als vertrauenswürdig und nahbar wahrgenommen, was die Kundenbindung nachhaltig stärkt.`,
+
+    wettbewerbsdifferenzierung: `
+Differenzierung vom Wettbewerb
+Die klare Positionierung als regionaler Qualitätsanbieter mit sozialem Fokus schafft ein Alleinstellungsmerkmal. Preisgetriebene Wettbewerber werden auf diese Weise strategisch umgangen.`,
+
+    kundengewinnung: `
+Verbesserte Neukundengewinnung
+Durch den integrierten Marketingmix und die stadtteilbezogene Ansprache werden potenzielle Kunden gezielter erreicht. Die Kombination aus klassischen und digitalen Kanälen maximiert die Reichweite.`,
+
+    mitarbeiterrekrutierung: `
+Erleichterte Mitarbeitergewinnung
+Ein starker, sympathischer Markenauftritt macht das Unternehmen auch für potenzielle Mitarbeiter attraktiver. Die Positionierung als regionaler, wertorientierter Arbeitgeber unterstützt das Recruiting.`,
+
+    expansionsFaehigkeit: `
+Skalierbarkeit und Expansionsfähigkeit
+Die standardisierten Prozesse und die dokumentierte Markenstrategie ermöglichen eine Übertragung des Geschäftsmodells auf weitere Regionen oder eine Weitergabe im Rahmen von Franchise-Modellen.`
   }
 };
 // CHECKLISTEN FÜR WEBSITE-ANALYSE (wie in BAFA-Berichten)
