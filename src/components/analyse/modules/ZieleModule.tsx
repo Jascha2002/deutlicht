@@ -150,7 +150,7 @@ export const ZieleModule: React.FC<ZieleModuleProps> = ({ data, onChange }) => {
             label="Bekannte Förderprogramme"
             value={data.foerderung_programme}
             onChange={(v) => onChange('foerderung_programme', v)}
-            placeholder="z.B. go-digital, Digital Jetzt, Thüringer Digitalbonus..."
+            placeholder="z.B. BAFA, Thüringer Digitalbonus, regionale Programme..."
           />
         </div>
       </div>

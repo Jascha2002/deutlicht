@@ -184,7 +184,7 @@ export function analyzeOnline(data: OnlineData, stammdaten?: StammdatenData): Be
       prioritaet: 'hoch',
       zeitraum: 'sofort',
       foerderrelevant: 'ja',
-      foerderbgruendung: 'Digitale Präsenz ist förderfähig im Rahmen von "Digitalisierung KMU" und "go-digital".'
+      foerderbgruendung: 'Digitale Präsenz ist förderfähig im Rahmen regionaler und bundesweiter Digitalisierungsprogramme.'
     });
   } else {
     result.staerken.push('Website vorhanden');

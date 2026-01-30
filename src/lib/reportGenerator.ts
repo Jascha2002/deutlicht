@@ -372,7 +372,7 @@ ZUSAMMENFASSUNG
 Die vorliegende Roadmap priorisiert schnell wirksame Sofort-Maßnahmen (0-3 Monate) 
 sowie mittel- und langfristige Projekte (bis 24 Monate). Der Bericht dient als 
 Grundlage für interne Entscheidungen und kann zur Beantragung von Fördermitteln 
-(z.B. "go-digital", "Digital Jetzt") herangezogen werden.
+herangezogen werden. Die konkreten Förderprogramme werden regional ermittelt.
 
 Gesamtbewertung Digitalisierungsgrad: ${analysis.gesamtscore}/100 Punkte
 
@@ -877,7 +877,7 @@ und mit Prioritäten versehen.
     let foerderText = '';
     if (e.foerderrelevant === 'ja') {
       foerderText = `✓ Diese Maßnahme ist förderfähig.
-  Maßnahme unterstützt Digitalisierung und ist grundsätzlich förderfähig im Rahmen von "go-digital" oder "Digital Jetzt".`;
+  Maßnahme unterstützt Digitalisierung und ist grundsätzlich förderfähig im Rahmen regionaler und bundesweiter Förderprogramme.`;
     } else if (e.foerderrelevant === 'teilweise') {
       foerderText = `⚬ Teilweise förderfähig (Einzelfallprüfung empfohlen)`;
     } else {
