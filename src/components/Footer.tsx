@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, FileText, ArrowRight, Handshake } from "lucide-react";
+import { Mail, Phone, MapPin, FileText, ArrowRight, Handshake, Map } from "lucide-react";
 const Footer = () => {
   return (
     <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit">
@@ -225,6 +225,13 @@ const Footer = () => {
                 className="text-muted-foreground hover:text-accent transition-colors text-sm"
               >
                 Barrierefreiheit
+              </Link>
+              <Link
+                to="/sitemap"
+                className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-1"
+              >
+                <Map className="w-3 h-3" />
+                Sitemap
               </Link>
             </nav>
           </div>

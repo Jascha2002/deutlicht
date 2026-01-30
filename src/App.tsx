@@ -46,6 +46,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Partner from "./pages/Partner";
 import PartnerAnmelden from "./pages/PartnerAnmelden";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -100,6 +101,7 @@ const App = () => (
               <Route path="/partner" element={<Partner />} />
               <Route path="/partner/anmelden" element={<PartnerAnmelden />} />
               <Route path="/partner/dashboard" element={<PartnerDashboard />} />
+              <Route path="/sitemap" element={<Sitemap />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
