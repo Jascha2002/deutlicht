@@ -511,10 +511,98 @@ Als nächste Schritte empfehlen wir:
 5. Regelmäßige Review-Termine zur Fortschrittskontrolle
 
 Wir stehen Ihnen gerne für die Begleitung der Umsetzung zur Verfügung.`
+  },
+  // DIGITALISIERUNGSBERATUNG - WEBSITE-KONSOLIDIERUNG & CMS
+  // ============================================================================
+  
+  digitalisierungZiele: {
+    strategie: (firma: string) => `
+Im Rahmen einer Betriebsberatung soll eine langfristig ausgerichtete Digitalisierungsstrategie entwickelt werden, die auf die Optimierung und Vereinheitlichung der bestehenden Geschäftsprozesse abzielt. Ein zentrales Ziel besteht darin, die Vielzahl bestehender Websites und Landingpages künftig unter einem einheitlichen Portalsystem zusammenzuführen, um Effizienz, Wartbarkeit sowie technische und inhaltliche Steuerung nachhaltig zu verbessern.`,
+
+    websiteFragmentierung: (firma: string) => `
+${firma} ist neben seinem Kerngeschäft in mehreren angrenzenden Geschäftsfeldern tätig. Diese zusätzlichen Leistungsbereiche werden aktuell über separate Webauftritte abgebildet. Die Umsetzung erfolgte überwiegend mit unterschiedlichen Content-Management-Systemen, insbesondere WordPress.
+
+Durch das kontinuierliche Wachstum dieser Weblandschaft ist der administrative und technische Aufwand für Pflege, Wartung und Weiterentwicklung deutlich gestiegen. Erschwerend kommt hinzu, dass die zentrale Unternehmenswebsite durch eine externe Agentur auf Basis eines proprietären, nicht frei verfügbaren CMS realisiert wurde. Die laufende Betreuung erfolgt weiterhin extern, wodurch die interne Unabhängigkeit und Flexibilität bei Anpassungen und Weiterentwicklungen erheblich eingeschränkt ist.`,
+
+    zielformulierungen: {
+      cmsVereinheitlichung: `
+Auswahl und Einführung eines einheitlichen Content-Management-Systems
+Sämtliche bestehenden Websites und Landingpages sollen künftig über ein zentrales CMS verwaltet werden, um Pflegeprozesse zu vereinfachen und technische Standards zu vereinheitlichen.`,
+
+      zentralesPortal: `
+Aufbau eines zentralen Webportals
+Das geplante Portalsystem soll sowohl die interne Verwaltung aller Online-Präsenzen ermöglichen als auch definierte externe Zugriffe, etwa durch IT-Dienstleister oder perspektivisch auch Kunden, unterstützen.`,
+
+      zieleNutzen: `
+Durch diese Maßnahmen soll eine effizientere Organisation der digitalen Aktivitäten erreicht, technische Abhängigkeiten reduziert und eine konsistente, zukunftsfähige Online-Präsenz aufgebaut werden.`
+    }
+  },
+
+  websiteKonsolidierung: {
+    problemAnalyse: (firma: string) => `
+${firma} steht vor der Herausforderung, eine stark fragmentierte Weblandschaft mit zahlreichen Einzelwebsites und unterschiedlichen CMS-Strukturen zu konsolidieren und technisch zu modernisieren. Die bestehende Struktur erschwert nicht nur eine einheitliche Außendarstellung, sondern stellt insbesondere Mitarbeitende ohne vertiefte IT-Kenntnisse vor erhebliche Hürden bei der laufenden Pflege und Verwaltung der Inhalte.`,
+
+    sicherheitsRisiken: `
+Viele der bestehenden Webauftritte basieren auf veralteten Themes und nicht mehr aktiv gepflegten Plugins, was erhöhte Sicherheits-, Kompatibilitäts- und Performance-Risiken mit sich bringt. Diese Schwächen werden zusätzlich durch eine nicht mehr zeitgemäße Hosting-Umgebung im Shared-Hosting-Bereich verstärkt, die weder ausreichende Performance noch Skalierbarkeit bietet.`,
+
+    multisiteEmpfehlung: `
+Im Rahmen der Digitalisierungsberatung wurde daher der Aufbau eines zentralen WordPress-Multisite-Portals empfohlen. Dieses ermöglicht die zentrale Verwaltung aller Websites auf einer einheitlichen technischen Basis. Gleichzeitig können einzelne Webauftritte weiterhin individuell an die jeweiligen Geschäftsbereiche angepasst werden. Zentrale Updates, Sicherheitsmaßnahmen und Designanpassungen lassen sich dadurch effizient und zeitsparend umsetzen.`,
+
+    migrationEmpfehlung: `
+Ergänzend wird die schrittweise Migration und Modernisierung der bestehenden Websites empfohlen. Veraltete Themes und Plugins sollen durch aktuelle, wartbare Alternativen ersetzt werden. Der Einsatz einer Staging-Umgebung stellt sicher, dass Änderungen vor der Veröffentlichung getestet werden können, um Risiken im laufenden Betrieb zu minimieren.`,
+
+    hostingEmpfehlung: `
+Für die Hosting-Infrastruktur wird ein spezialisierter deutscher Managed-Hosting-Anbieter für WordPress empfohlen. Diese Lösung bietet optimierte Serverkonfigurationen, automatische Backups, integrierte Sicherheitsfunktionen sowie eine DSGVO-konforme Datenverarbeitung. Die bisher bestehenden Performance- und Stabilitätsprobleme werden dadurch nachhaltig beseitigt und eine skalierbare Grundlage für das neue Portalsystem geschaffen.`,
+
+    nutzerfreundlichkeit: `
+Mit der Einführung des zentralen WordPress-Portals entsteht zudem eine benutzerfreundliche Plattform, die es auch nicht-technischen Mitarbeitenden ermöglicht, Inhalte eigenständig zu erstellen und zu pflegen. Rollen- und Rechtesysteme gewährleisten dabei ein angemessenes Sicherheitsniveau. Gleichzeitig verbessert das zentrale System die Konsistenz der Außendarstellung und vereinfacht die Zusammenarbeit mit externen Dienstleistern.`,
+
+    fazit: `
+Insgesamt stellt die empfohlene Kombination aus WordPress-Multisite-Struktur und spezialisiertem Managed Hosting eine zukunftssichere Lösung dar. Sie adressiert die bestehenden technischen und organisatorischen Herausforderungen und bildet zugleich die Grundlage für eine langfristige Digitalisierungsstrategie. Die Vereinheitlichung der Weblandschaft optimiert interne Prozesse, stärkt die Außenwirkung und eröffnet Perspektiven für zukünftige digitale Erweiterungen, etwa in Form von Kundenportalen oder weiteren digitalen Services.`
+  },
+
+  // Themenschwerpunkte Digitalisierungsberatung
+  themenschwerpunkte: {
+    geschaeftsmodell: [
+      'Konzepte für Social-Media-Kommunikation',
+      'Digitale Vertriebskanäle, Plattformen und Anwendungen',
+      'Digitale Präsentationsformate für Messen und Veranstaltungen',
+      'Entwicklung neuer digitaler Produkte und Dienstleistungen',
+      'Weiterentwicklung des Produkt-, Service- und Kundenportfolios',
+      'Kooperationen und Netzwerke, insbesondere mit Start-ups und etablierten Unternehmen'
+    ],
+    geschaeftsprozesse: [
+      'Entwicklung einer ganzheitlichen Digitalisierungsstrategie',
+      'Digitale Service- und Wartungskonzepte (z. B. Fernzugriffe)',
+      'Einführung oder Optimierung von ERP-Systemen',
+      'Definition digitaler Standards und Normen',
+      'IT- und Datensicherheitskonzepte',
+      'Produktbegleitende Softwarelösungen und Anwendungen',
+      'Datenbasierte Dienstleistungen',
+      'Projekte zur Verbesserung der Benutzerfreundlichkeit',
+      'Optimierung von Kunden- und Lieferantenschnittstellen inkl. Aftersales'
+    ]
+  },
+
+  // Interne Vorteile durch Zielerreichung
+  interneVorteile: {
+    zeitKostenersparnis: `
+Zeit- und Kostenersparnis
+Die zentrale Verwaltung aller Websites über ein einheitliches CMS reduziert redundante Tätigkeiten und senkt den laufenden Pflegeaufwand deutlich. Gleichzeitig verringert sich die Abhängigkeit von externen Dienstleistern, was langfristig Kosten spart.`,
+
+    effizienzsteigerung: `
+Effizienzsteigerung
+Durch standardisierte technische Strukturen können Änderungen schneller umgesetzt und Prozesse besser organisiert werden. Mitarbeitende gewinnen Zeit für ihre eigentlichen wertschöpfenden Tätigkeiten, während technische Hürden reduziert werden.`,
+
+    unabhaengigkeit: `
+Unabhängigkeit und Flexibilität
+Die externe Betreuung der zentralen Website wird überflüssig. Das Unternehmen erlangt die vollständige Kontrolle über alle Webpräsenzen und kann Anpassungen eigenständig und flexibel vornehmen.`,
+
+    datensicherheit: `
+Erhöhte Datensicherheit
+Ein zentrales System erleichtert die Umsetzung von Sicherheitsstandards. Updates und Schutzmaßnahmen können gebündelt und zeitnah umgesetzt werden, wodurch das Sicherheitsniveau insgesamt steigt.`
   }
 };
-
-// ============================================================================
 // CHECKLISTEN FÜR WEBSITE-ANALYSE (wie in BAFA-Berichten)
 // ============================================================================
 
