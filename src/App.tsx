@@ -27,6 +27,7 @@ import AngebotsGenerator from "./pages/AngebotsGenerator";
 import Projektanfrage from "./pages/Projektanfrage";
 import AngebotsAnnahme from "./pages/AngebotsAnnahme";
 import KICheck from "./pages/KICheck";
+import KIAgenten from "./pages/KIAgenten";
 import BranchenLoesungen from "./pages/BranchenLoesungen";
 import VoicebotDemos from "./pages/VoicebotDemos";
 import SEO from "./pages/SEO";
@@ -76,6 +77,7 @@ const App = () => (
               <Route path="/angebots-generator" element={<Projektanfrage />} />
               <Route path="/klarheitscheck" element={<Projektanfrage />} />
               <Route path="/ki-check" element={<KICheck />} />
+              <Route path="/ki-agenten" element={<KIAgenten />} />
               <Route path="/leistungen/ki-branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/leistungen/branchen-loesungen" element={<BranchenLoesungen />} />
               <Route path="/branchen-loesungen" element={<BranchenLoesungen />} />
