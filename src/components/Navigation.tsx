@@ -213,9 +213,14 @@ const Navigation = () => {
     setSearchOpen(false);
     setSearchQuery("");
   };
-  const navItems: NavItem[] = [{
+const navItems: NavItem[] = [{
     name: "Startseite",
-    href: "/"
+    href: "/",
+    submenu: [{
+      name: "Sitemap",
+      href: "/sitemap",
+      icon: FileText
+    }]
   }, {
     name: "Über uns",
     href: "/ueber-uns",
