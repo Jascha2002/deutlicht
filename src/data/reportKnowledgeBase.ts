@@ -478,15 +478,15 @@ Um die Wettbewerbsfähigkeit langfristig zu sichern, ist es notwendig, ein umfas
   // Fördermittel-Texte
   foerderung: {
     hinweis: (foerderfaehig: number, gesamt: number) => `
-Von den ${gesamt} empfohlenen Maßnahmen sind ${foerderfaehig} grundsätzlich förderfähig. Je nach Bundesland und aktueller Förderlandschaft können Programme wie "go-digital", "Digital Jetzt" oder landesspezifische Förderprogramme in Anspruch genommen werden.
+Von den ${gesamt} empfohlenen Maßnahmen sind ${foerderfaehig} grundsätzlich förderfähig. Je nach Region des Unternehmens (Bundesland, EU-Fördermittel) können verschiedene Förderprogramme in Anspruch genommen werden.
 
-Wir empfehlen eine Förderberatung, um die optimalen Fördermöglichkeiten für Ihr Unternehmen zu identifizieren.`,
+Wir empfehlen eine individuelle Förderberatung, um die aktuell optimalen Fördermöglichkeiten für Ihr Unternehmen zu identifizieren. Die Förderlandschaft ist dynamisch und wird regelmäßig aktualisiert.`,
     
     bafa: `
 Diese Maßnahmen können im Rahmen der BAFA-Förderung "Förderung unternehmerischen Know-hows" bezuschusst werden. Die Förderquote beträgt je nach Region und Unternehmensalter zwischen 50% und 80% der Beratungskosten.`,
 
-    goDigital: `
-Im Rahmen des Förderprogramms "go-digital" des BMWi werden bis zu 50% der Beratungskosten für autorisierte Beratungsunternehmen übernommen. Die Fördersumme beträgt maximal 16.500 Euro.`
+    regional: (region?: string) => `
+Für Unternehmen${region ? ` in ${region}` : ''} stehen verschiedene regionale, bundesweite und EU-Förderprogramme zur Verfügung. Die konkreten Programme werden im Rahmen der Förderberatung ermittelt und auf die individuellen Anforderungen des Unternehmens abgestimmt.`
   },
 
   // Schlussformulierungen
