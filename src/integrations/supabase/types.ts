@@ -1579,6 +1579,96 @@ export type Database = {
         }
         Relationships: []
       }
+      project_leads: {
+        Row: {
+          additional_notes: string | null
+          ai_use_cases: string | null
+          company_name: string | null
+          company_size: string | null
+          created_at: string | null
+          current_step: number | null
+          customer_address: string | null
+          customer_city: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
+          id: string
+          industry: string | null
+          internal_notes: string | null
+          internal_price_estimate_monthly: number | null
+          internal_price_estimate_setup: number | null
+          last_activity_at: string | null
+          services_selected: string[] | null
+          session_id: string
+          social_platforms: string[] | null
+          status: string
+          submitted_at: string | null
+          updated_at: string | null
+          voicebot_use_cases: string | null
+          website_features: string[] | null
+          website_type: string | null
+        }
+        Insert: {
+          additional_notes?: string | null
+          ai_use_cases?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          created_at?: string | null
+          current_step?: number | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          internal_price_estimate_monthly?: number | null
+          internal_price_estimate_setup?: number | null
+          last_activity_at?: string | null
+          services_selected?: string[] | null
+          session_id: string
+          social_platforms?: string[] | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string | null
+          voicebot_use_cases?: string | null
+          website_features?: string[] | null
+          website_type?: string | null
+        }
+        Update: {
+          additional_notes?: string | null
+          ai_use_cases?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          created_at?: string | null
+          current_step?: number | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          internal_price_estimate_monthly?: number | null
+          internal_price_estimate_setup?: number | null
+          last_activity_at?: string | null
+          services_selected?: string[] | null
+          session_id?: string
+          social_platforms?: string[] | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string | null
+          voicebot_use_cases?: string | null
+          website_features?: string[] | null
+          website_type?: string | null
+        }
+        Relationships: []
+      }
       support_tickets: {
         Row: {
           assigned_to: string | null
