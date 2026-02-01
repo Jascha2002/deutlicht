@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { WizardProgress } from '@/components/offer/WizardProgress';
@@ -7,15 +7,16 @@ import { Step2Contact } from '@/components/offer/steps/Step2Contact';
 import { Step3Services } from '@/components/offer/steps/Step3Services';
 import { Step4Details } from '@/components/offer/steps/Step4Details';
 import { Step5Summary } from '@/components/offer/steps/Step5Summary';
-import { PriceDisplay } from '@/components/offer/PriceDisplay';
 import { OfferFormData, initialFormData } from '@/types/offer';
 import { calcTotal } from '@/lib/pricing';
+import { getApproximatePriceRange, formatCurrencyRange } from '@/lib/pricingRanges';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AnimatedLogo from '@/components/AnimatedLogo';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, ArrowRight, Send, CheckCircle, RotateCcw, FileText } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send, CheckCircle, RotateCcw, FileText, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useLeadTracking } from '@/hooks/useLeadTracking';
 import heroProjektanfrage from '@/assets/hero-projektanfrage.jpg';
 
 const STEPS = ['Unternehmen', 'Kontakt', 'Leistungen', 'Details', 'Zusammenfassung'];
@@ -26,6 +27,14 @@ const Projektanfrage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { saveLead, submitLead, isSaving } = useLeadTracking();
+
+  // Auto-save lead data when form changes
+  useEffect(() => {
+    if (formData.company_name || formData.customer_email || formData.services_selected.length > 0) {
+      saveLead(formData, currentStep);
+    }
+  }, [formData, currentStep, saveLead]);
 
   const handleChange = (field: keyof OfferFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -49,11 +58,27 @@ const Projektanfrage = () => {
     }));
   };
 
+  // Überprüft, ob alle wesentlichen Kontaktdaten vorhanden sind
+  const hasRequiredContactData = (): boolean => {
+    return !!(
+      formData.company_name.trim() &&
+      formData.customer_email.trim() &&
+      formData.customer_phone.trim() &&
+      formData.company_street.trim() &&
+      formData.company_zip.trim() &&
+      formData.company_city.trim()
+    );
+  };
+
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
         if (!formData.company_name.trim()) {
           toast({ title: 'Fehler', description: 'Bitte geben Sie einen Unternehmensnamen ein.', variant: 'destructive' });
+          return false;
+        }
+        if (!formData.company_street.trim() || !formData.company_zip.trim() || !formData.company_city.trim()) {
+          toast({ title: 'Fehler', description: 'Bitte geben Sie die vollständige Adresse an.', variant: 'destructive' });
           return false;
         }
         return true;
@@ -89,18 +114,35 @@ const Projektanfrage = () => {
   };
 
   const handleSubmit = async () => {
+    // Validierung: Alle wesentlichen Daten müssen vorhanden sein
+    if (!hasRequiredContactData()) {
+      toast({ 
+        title: 'Unvollständige Daten', 
+        description: 'Bitte füllen Sie alle erforderlichen Felder aus (Adresse, E-Mail, Telefon).', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     const totals = calcTotal(formData);
+    const priceRange = getApproximatePriceRange(formData.services_selected);
     
     try {
-      // Send email notification
+      // Submit lead to tracking (saves internal prices)
+      await submitLead(formData, currentStep, totals.setup, totals.monthly);
+
+      // Send email notification (without exact prices to customer)
       const { error: emailError } = await supabase.functions.invoke('send-inquiry-email', {
         body: {
           type: 'projektanfrage',
           data: {
             ...formData,
-            estimated_setup: totals.setup,
-            estimated_monthly: totals.monthly,
+            // Nur grobe Preisrahmen für interne Verwendung
+            estimated_range: priceRange.label,
+            // Interne Preise nur für DeutLicht-Team
+            internal_setup: totals.setup,
+            internal_monthly: totals.monthly,
           },
         },
       });
@@ -128,7 +170,7 @@ const Projektanfrage = () => {
       });
 
       setSubmitted(true);
-      toast({ title: 'Erfolg!', description: 'Ihre Anfrage wurde erfolgreich gesendet.' });
+      toast({ title: 'Erfolg!', description: 'Ihre Anfrage wurde erfolgreich gesendet. Wir erstellen Ihnen ein individuelles Angebot.' });
     } catch (error) {
       console.error('Submit error:', error);
       toast({ title: 'Fehler', description: 'Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut.', variant: 'destructive' });
@@ -141,6 +183,8 @@ const Projektanfrage = () => {
     setFormData(initialFormData);
     setCurrentStep(1);
     setSubmitted(false);
+    // Clear session storage for new lead
+    sessionStorage.removeItem('projektanfrage_session_id');
   };
 
   if (submitted) {
@@ -222,17 +266,25 @@ const Projektanfrage = () => {
           </div>
 
           <div className="flex justify-between">
-            <Button variant="outline" onClick={handleBack} disabled={currentStep === 1}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Zurück
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" onClick={handleBack} disabled={currentStep === 1}>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Zurück
+              </Button>
+              {isSaving && (
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Save className="w-3 h-3 animate-pulse" />
+                  Speichern...
+                </span>
+              )}
+            </div>
             {currentStep < 5 ? (
               <Button onClick={handleNext}>
                 Weiter
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
-              <Button onClick={handleSubmit} disabled={isSubmitting}>
+              <Button onClick={handleSubmit} disabled={isSubmitting || !hasRequiredContactData()}>
                 <Send className="w-4 h-4 mr-2" />
                 {isSubmitting ? 'Wird gesendet...' : 'Anfrage senden'}
               </Button>
@@ -240,7 +292,18 @@ const Projektanfrage = () => {
           </div>
         </div>
 
-        {currentStep >= 3 && <PriceDisplay formData={formData} />}
+        {/* Info-Banner statt Preisanzeige */}
+        {currentStep >= 3 && formData.services_selected.length > 0 && (
+          <div className="fixed bottom-4 right-4 z-50">
+            <div className="bg-card border border-border rounded-xl shadow-lg p-4 max-w-[280px]">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Ihr individuelles Angebot</strong>
+                <br />
+                erhalten Sie nach Absenden Ihrer Anfrage per E-Mail.
+              </p>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </>
