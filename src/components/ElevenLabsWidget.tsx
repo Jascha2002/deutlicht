@@ -15,7 +15,7 @@ const SAFE_GREETINGS: Record<string, string> = {
   '/leistungen/crm-erp': 'Haben Sie Fragen zu CRM- oder ERP-Systemen? Ich helfe Ihnen gern weiter.',
   '/leistungen/bim': 'Haben Sie Fragen zu BIM-Systemen? Ich unterstütze Sie gern.',
   '/leistungen/pim': 'Haben Sie Fragen zu PIM-Systemen? Ich helfe Ihnen gern weiter.',
-  '/leistungen/foerderberatung': 'Haben Sie Fragen zu Fördermitteln? Ich unterstütze Sie gern.',
+  '/leistungen/foerderberatung': 'Haben Sie Fragen zu Fördermitteln? Ich unterstütze Sie gern mit einer ersten Orientierung. Für konkrete Programm-Details vereinbaren wir gerne ein persönliches Beratungsgespräch.',
   '/leistungen/chayns-loesungen': 'Haben Sie Fragen zu Self-Order oder 24/7-Lösungen? Ich helfe Ihnen gern weiter.',
   '/leistungen/chayns-hardware': 'Haben Sie Fragen zu Schlössern oder Robotern? Ich unterstütze Sie gern.',
   '/leistungen/voicebot-demos': 'Haben Sie Fragen zu Voice-Agenten? Ich helfe Ihnen gern weiter.',

@@ -141,6 +141,41 @@ export const BUNDESWEITE_FOERDERPROGRAMME: Foerderprogramm[] = [
 
 export const REGIONALE_FOERDERPROGRAMME: Foerderprogramm[] = [
   {
+    id: 'digitalbonus-thueringen',
+    name: 'Digitalbonus Thüringen',
+    ebene: 'regional',
+    region: 'Thüringen',
+    zweck: 'Unterstützung von KMU bei der Digitalisierung von Betriebsprozessen, Produkten und Dienstleistungen sowie bei der Verbesserung von Informations- und Datensicherheitslösungen. Gefördert werden Investitionen in Software, Hardware, IT-Sicherheitslösungen und externe Dienstleistungen.',
+    zielgruppen: [
+      'KMU der gewerblichen Wirtschaft',
+      'Verarbeitendes Gewerbe',
+      'Unternehmensnahe Dienstleistungen',
+      'Baugewerbe',
+      'Handwerk',
+      'Handel',
+      'Gastgewerbe',
+      'Veranstaltungswirtschaft',
+      'Kreativwirtschaftliche Freie Berufe'
+    ],
+    foerderhoehe: 'Bis zu 50% der förderfähigen Ausgaben, max. 15.000 EUR. Zuwendungsfähige Ausgaben: min. 5.000 EUR, max. 150.000 EUR',
+    foerderart: 'zuschuss',
+    fristenInfo: 'Laufend beantragbar. Projekt darf erst 1 Tag nach Antragseingang im Thüringer Förderportal begonnen werden. Abschluss innerhalb eines Jahres.',
+    voraussetzungen: [
+      'KMU gemäß EU-Definition',
+      'Vorhaben muss in Thüringen durchgeführt werden',
+      'Konzept mit Beschreibung des Digitalisierungsfortschritts erforderlich',
+      'Gesamtfinanzierung muss gesichert sein',
+      'Tragfähige Vollexistenz mit nachhaltigem wirtschaftlichen Erfolg',
+      'De-minimis-Beihilfe (max. 2 Anträge pro Unternehmen)'
+    ],
+    antragsdauer: 'Bearbeitung durch TAB üblicherweise wenige Wochen',
+    auszahlungsInfo: 'Nach Projektabschluss und Verwendungsnachweis',
+    besonderheiten: 'Förderung über Thüringer Aufbaubank (TAB). Ansprechpartner: Gorkistraße 9, 99084 Erfurt, Tel: +49 361 7447-0',
+    quellen: ['Thüringer Förderportal', 'TMWLLR Richtlinie Digitalbonus'],
+    status: 'aktiv',
+    letzteAktualisierung: '2026-02'
+  },
+  {
     id: 'esf-plus-thueringen',
     name: 'ESF+ Regionalförderung Thüringen',
     ebene: 'regional',
@@ -165,7 +200,7 @@ export const REGIONALE_FOERDERPROGRAMME: Foerderprogramm[] = [
     name: 'Regionale Technologie- und Innovationsförderung Thüringen',
     ebene: 'regional',
     region: 'Thüringen',
-    zweck: 'Digitalbonus, Innovationsgutscheine, Technologieförderung über Thüringer Ministerien – themenspezifische Programme',
+    zweck: 'Innovationsgutscheine, Technologieförderung über Thüringer Ministerien – themenspezifische Programme',
     zielgruppen: ['KMU', 'Technologieunternehmen', 'Innovationsprojekte'],
     foerderhoehe: 'Variiert je nach Programm und Maßnahme',
     foerderart: 'zuschuss',
@@ -201,6 +236,22 @@ export const AUSGELAUFENE_PROGRAMME: Foerderprogramm[] = [
     besonderheiten: 'Das Programm go-digital wurde eingestellt und ist nicht mehr verfügbar. Alternative: BAFA Digitalisierungsberatung',
     status: 'abgelaufen',
     letzteAktualisierung: '2026-01'
+  },
+  {
+    id: 'digital-jetzt',
+    name: 'Digital Jetzt (BMWi)',
+    ebene: 'bundesweit',
+    zweck: 'Ehemaliges Programm zur Förderung der Digitalisierung von KMU',
+    zielgruppen: ['KMU'],
+    foerderhoehe: 'Bis 50% Zuschuss, max. 50.000 EUR',
+    foerderart: 'zuschuss',
+    fristenInfo: 'PROGRAMM AUSGELAUFEN seit 31.12.2023',
+    voraussetzungen: ['Nicht mehr anwendbar'],
+    antragsdauer: 'Nicht mehr anwendbar',
+    auszahlungsInfo: 'Nicht mehr anwendbar',
+    besonderheiten: 'Das Programm "Digital Jetzt" war bis zum 31. Dezember 2023 befristet und ist nicht mehr verfügbar. Alternative: Digitalbonus Thüringen (für Thüringer Unternehmen) oder BAFA Digitalisierungsberatung',
+    status: 'abgelaufen',
+    letzteAktualisierung: '2026-02'
   }
 ];
 

@@ -675,6 +675,157 @@ Ein starker, sympathischer Markenauftritt macht das Unternehmen auch für potenz
     expansionsFaehigkeit: `
 Skalierbarkeit und Expansionsfähigkeit
 Die standardisierten Prozesse und die dokumentierte Markenstrategie ermöglichen eine Übertragung des Geschäftsmodells auf weitere Regionen oder eine Weitergabe im Rahmen von Franchise-Modellen.`
+  },
+
+  // ============================================================================
+  // DIGITALBONUS THÜRINGEN - FÖRDERPROGRAMM-TEXTBAUSTEINE (INTERN/VERTRAULICH)
+  // Stand: Februar 2026
+  // ============================================================================
+
+  digitalbonusThueringen: {
+    // Programmbeschreibung (neutral für Berichte)
+    programmBeschreibung: `
+Das Förderprogramm Digitalbonus Thüringen ist ein Zuschussprogramm zur Unterstützung kleiner und mittlerer Unternehmen (KMU) im Freistaat Thüringen. Ziel ist es, Unternehmen bei der Digitalisierung von Betriebsprozessen, Produkten und Dienstleistungen sowie bei der Verbesserung von Informations- und Datensicherheitslösungen zu fördern. Die Förderung erfolgt durch die Thüringer Aufbaubank (TAB) im Auftrag des Thüringer Ministeriums für Wirtschaft, Wissenschaft und Digitale Gesellschaft (TMWLLR).`,
+
+    // Förderfähige Leistungen
+    foerderfaehigeLeistungen: {
+      allgemein: `
+Gefördert werden Digitalisierungsprojekte, die zu einem wesentlichen Fortschritt im digitalen Betriebsablauf, im Produkt- bzw. Dienstleistungsportfolio oder in der Informations- und Kommunikationssicherheit führen. Dazu zählen Investitionen in Software, Hardware, IT-Sicherheitslösungen und externe Dienstleistungen im Rahmen der Projektumsetzung.`,
+
+      itSicherheit: `
+Im Rahmen des Vorhabens werden Maßnahmen zur Einführung, Optimierung oder Verbesserung von IT- und Datensicherheitslösungen realisiert, z. B. Backup-Strategien, Firewall-Lösungen, Berechtigungs- und Zugriffsverwaltung, Verschlüsselungstechnologien sowie Monitoring-Systeme.`,
+
+      prozessoptimierung: `
+Förderfähig sind Maßnahmen zur Digitalisierung und Automatisierung von Betriebsprozessen, einschließlich der Einführung oder Anpassung von ERP-Systemen, DMS (Dokumenten-Management), CRM-Plattformen, Workflow-Automatisierungen und Schnittstellen zur Effizienz- und Produktivitätssteigerung.`,
+
+      produktDigitalisierung: `
+Die Digitalisierung des Produkt- oder Servicenutzens umfasst z. B. Webshops, Online-Bestellsysteme, digitale Beratungstools, mobile Dienste, Integrationen von Plattform-Services sowie die Erweiterung digitaler Vertriebs- bzw. Kundenschnittstellen.`,
+
+      schulungen: `
+Für Beschäftigte können Schulungsmaßnahmen gefördert werden, wenn sie unmittelbar im Zusammenhang mit dem Digitalisierungsprojekt stehen, etwa Einweisungen in neue Software, Bedienerschulungen oder Sicherheitstrainings.`
+    },
+
+    // Voraussetzungen und Vorgaben
+    voraussetzungen: {
+      allgemein: `
+Förderfähig sind kleine und mittlere Unternehmen der gewerblichen Wirtschaft (KMU). Das Vorhaben muss in Thüringen umgesetzt werden, darf vor Antragstellung nicht begonnen worden sein und muss innerhalb eines Jahres abgeschlossen werden. Die zuwendungsfähigen Ausgaben müssen mindestens 5.000 € und dürfen grundsätzlich 150.000 € nicht übersteigen. Die Förderung beträgt bis zu 50 % der förderfähigen Ausgaben, maximal 15.000 €.`,
+
+      antragsBeginn: `
+Das Projekt darf erst 1 Tag nach Antragseingang im Thüringer Förderportal begonnen werden. Vorzeitige Leistungen werden nicht anerkannt.`,
+
+      deMinimis: `
+Der Digitalbonus wird als De-minimis-Beihilfe gewährt. Unternehmen können maximal zwei Anträge pro Unternehmen im Rahmen dieses Programms stellen.`,
+
+      antragsberechtigung: `
+Antragsberechtigt sind kleine und mittlere Unternehmen der gewerblichen Wirtschaft gemäß KMU-Definition der EU, vor allem des verarbeitenden Gewerbes, der unternehmensnahen Dienstleistungen, des Baugewerbes, des Handwerks und des Handels, des Gastgewerbes, der Veranstaltungswirtschaft (ohne Freizeitwirtschaft) sowie der wirtschaftsnahen und kreativwirtschaftlichen Freien Berufe.`,
+
+      bedingungen: [
+        'Vorhaben muss zu einem bedeutenden Digitalisierungsfortschritt im Betriebsprozess bzw. Produkt- und Dienstleistungsportfolio oder zu einer wesentlichen Verbesserung der Informationssicherheit führen',
+        'Vorhaben muss in Thüringen durchgeführt werden',
+        'Konzept mit Beschreibung des Vorhabens und erwarteten Digitalisierungsfortschritts erforderlich',
+        'Gesamtfinanzierung der Maßnahme muss gesichert sein',
+        'Beginn frühestens 1 Tag nach Antragseingang, Abschluss innerhalb eines Jahres',
+        'Unternehmenstätigkeit auf tragfähige Vollexistenz ausgerichtet mit nachhaltigem wirtschaftlichen Erfolg'
+      ]
+    },
+
+    // Beratungsbericht-Templates
+    beratungsberichtBausteine: {
+      projekttitelVorlage: (firma: string) => `Analyse & Digitalisierung ${firma}`,
+
+      projektziel: `
+Ziel des Projekts ist die systematische Digitalisierung zentraler Betriebsprozesse sowie die Verbesserung der Informations- und Datensicherheit. Durch die Einführung einer neuen IT-Systemlandschaft und Automatisierung von Kernprozessen soll die Effizienz gesteigert und die Wettbewerbsfähigkeit erhöht werden.`,
+
+      istSituation: `
+Aktuell werden zentrale Prozesse des Unternehmens manuell abgewickelt, was zu Ineffizienzen, erhöhter Fehleranfälligkeit und hohen Kosten führt. Die bestehende IT-Infrastruktur ist fragmentiert und bietet keine zentralisierte Datenverwaltung oder moderne Sicherheitsmechanismen.`,
+
+      sollZustand: `
+Implementierung eines integrierten digitalen Systems inklusive digitaler Kundenverwaltung, automatisierter Workflow-Steuerung und einer sicheren Datenstruktur mit modernen Sicherheits- und Backup-Lösungen.`,
+
+      beratungsansatz: [
+        'Erfassung der aktuellen Prozesslandschaft',
+        'Identifikation digitaler Optimierungspotenziale',
+        'Bewertung von Tools und Technologien (z. B. ERP/CRM/DMS/Security)',
+        'Erstellung eines Umsetzungs- und Implementierungsplans',
+        'Unterstützung bei Förderantrag und Fristen'
+      ],
+
+      erwarteterEffekt: `
+Messbare Effizienzsteigerungen in Betriebsabläufen, Reduktion manueller Fehler, Erhöhung der Datensicherheit und verbesserte Wettbewerbsfähigkeit.`
+    },
+
+    // Projektbericht-Beispiele
+    projektberichtVorlagen: {
+      hintergrund: `
+Das Projekt wurde initiiert, um manuelle Arbeitsprozesse zu reduzieren, die Systemintegration zu verbessern und die Datenverarbeitung zu modernisieren. Infolge der Marktentwicklung war eine digitale Transformation notwendig.`,
+
+      projektinhalte: [
+        'Einführung eines ERP-Systems zur effizienten Ressourcenplanung',
+        'Integration eines Daten- und Dokumentenmanagementsystems',
+        'Aufbau sicherer IT-Infrastruktur und Firewall-Lösungen',
+        'Schulung von Mitarbeitenden im Systemgebrauch'
+      ],
+
+      nutzenOutcome: [
+        'Reduktion manueller Tätigkeiten um X %',
+        'Verbesserte Datenintegrität und Verfügbarkeit',
+        'Erhöhung der Prozessgeschwindigkeit um Y %',
+        'Stärkung der IT-Sicherheit'
+      ],
+
+      foerderbezug: `
+Die zur Umsetzung eingesetzten Hard- und Software-Lizenzen, externen Beratungsdienstleistungen und Schulungsleistungen sind im Rahmen des Digitalbonus Thüringen förderfähig, da sie einen Digitalisierungsfortschritt in der Betriebsorganisation und IT-Sicherheit darstellen.`
+    },
+
+    // Analyse-Blöcke
+    analyseModules: {
+      digitalisierungsstatus: `
+Die Analyse der aktuellen technologischen Situation zeigt signifikante Potenziale zur Automatisierung manueller Prozesse. Die fehlende zentrale Datenverwaltung führt zu Doppelarbeit, Inkonsistenzen und Sicherheitsrisiken. Eine Harmonisierung technischer Plattformen ist daher erforderlich.`,
+
+      handlungsfelder: [
+        'Prozessautomatisierung: Verbesserung der Durchlaufzeiten von Kernprozessen',
+        'IT-Sicherheit: Einführung von regelmäßigen Backups, Firewall-Konzept, Zugriffsprotokollen',
+        'Kundeninteraktion digital: Aufbau eines CRM-Systems zur Kundendaten- und Sales-Pflege',
+        'Datenintegration: Zentralisierung der Datenhaltung für Effizienz und Compliance'
+      ],
+
+      empfohleneMassnahmen: [
+        'Einführung einer Cloud-basierten DMS/ERP-Lösung',
+        'Aufbau einer Firewall- und Backup-Infrastruktur',
+        'Erstellung eines Roll-Out-Plans mit Schulungsmodulen',
+        'Implementierung von Tracking- und Monitoring-Tools'
+      ]
+    },
+
+    // Kontaktdaten Förderinstitution
+    kontakt: {
+      institution: 'Thüringer Aufbaubank (TAB)',
+      adresse: 'Gorkistraße 9, 99084 Erfurt',
+      telefon: '+49 361 7447-0',
+      fax: '+49 361 7447-410',
+      email: 'info@aufbaubank.de',
+      web: 'https://www.aufbaubank.de'
+    }
+  },
+
+  // ============================================================================
+  // AUSGELAUFENE PROGRAMME - HINWEISE
+  // ============================================================================
+  
+  ausgelaufeneProgramme: {
+    digitalJetzt: {
+      name: 'Digital Jetzt',
+      status: 'AUSGELAUFEN',
+      enddatum: '31. Dezember 2023',
+      hinweis: 'Das Programm "Digital Jetzt" des Bundesministeriums für Wirtschaft und Klimaschutz ist seit dem 31. Dezember 2023 ausgelaufen und steht nicht mehr für neue Anträge zur Verfügung.',
+      alternative: 'Als Alternative stehen je nach Region verschiedene Landes- und EU-Förderprogramme zur Verfügung, z.B. der Digitalbonus Thüringen oder BAFA-Digitalisierungsberatung.'
+    },
+    goDigital: {
+      name: 'go-digital',
+      status: 'AUSGELAUFEN',
+      hinweis: 'Das Programm go-digital ist eingestellt und nicht mehr verfügbar.',
+      alternative: 'BAFA Digitalisierungsberatung bietet ähnliche Fördermöglichkeiten für KMU.'
+    }
   }
 };
 // CHECKLISTEN FÜR WEBSITE-ANALYSE (wie in BAFA-Berichten)
