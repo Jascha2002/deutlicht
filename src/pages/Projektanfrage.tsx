@@ -126,7 +126,7 @@ const Projektanfrage = () => {
 
     setIsSubmitting(true);
     const totals = calcTotal(formData);
-    const priceRange = getApproximatePriceRange(formData.services_selected);
+    const priceRange = getApproximatePriceRange(formData);
     
     try {
       // Submit lead to tracking (saves internal prices)
