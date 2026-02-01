@@ -11,8 +11,8 @@ interface Step5Props {
 }
 
 export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
-  // Nur grober Preisrahmen für Kundenanzeige
-  const priceRange = getApproximatePriceRange(formData.services_selected);
+  // Grober Preisrahmen basierend auf Preismatrix ±25%
+  const priceRange = getApproximatePriceRange(formData);
 
   return (
     <Card className="border-0 shadow-lg overflow-hidden">
@@ -118,9 +118,9 @@ export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
                   <div className="text-xl font-semibold text-primary">
                     {formatCurrencyRange(priceRange.minSetup, priceRange.maxSetup)}
                   </div>
-                  {priceRange.minMonthly !== undefined && priceRange.maxMonthly !== undefined && (
+                  {priceRange.fixedMonthly > 0 && (
                     <div className="text-sm text-muted-foreground mt-1">
-                      zzgl. ca. {formatCurrencyRange(priceRange.minMonthly, priceRange.maxMonthly)}/Monat
+                      zzgl. {priceRange.fixedMonthly.toLocaleString('de-DE')} €/Monat (Hosting & Service)
                     </div>
                   )}
                   <div className="text-xs text-muted-foreground mt-2">
