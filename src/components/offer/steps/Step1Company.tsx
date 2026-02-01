@@ -46,30 +46,33 @@ export const Step1Company = ({ formData, onChange }: Step1Props) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="company_street">Straße</Label>
+            <Label htmlFor="company_street">Straße *</Label>
             <Input
               id="company_street"
               value={formData.company_street}
               onChange={(e) => onChange('company_street', e.target.value)}
               placeholder="Musterstraße 1"
+              required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="company_zip">PLZ</Label>
+            <Label htmlFor="company_zip">PLZ *</Label>
             <Input
               id="company_zip"
               value={formData.company_zip}
               onChange={(e) => onChange('company_zip', e.target.value)}
               placeholder="12345"
+              required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="company_city">Ort</Label>
+            <Label htmlFor="company_city">Ort *</Label>
             <Input
               id="company_city"
               value={formData.company_city}
               onChange={(e) => onChange('company_city', e.target.value)}
               placeholder="Musterstadt"
+              required
             />
           </div>
         </div>

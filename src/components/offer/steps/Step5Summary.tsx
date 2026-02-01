@@ -1,8 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { OfferFormData } from '@/types/offer';
-import { calcTotal } from '@/lib/pricing';
-import { Edit2, CheckCircle } from 'lucide-react';
+import { getApproximatePriceRange, formatCurrencyRange } from '@/lib/pricingRanges';
+import { Edit2, CheckCircle, Info } from 'lucide-react';
 import stepZusammenfassungImg from '@/assets/step-zusammenfassung.jpg';
 
 interface Step5Props {
@@ -11,11 +11,8 @@ interface Step5Props {
 }
 
 export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
-  const totals = calcTotal(formData);
-
-  const formatCurrency = (value: number) => {
-    return value.toLocaleString('de-DE') + ' €';
-  };
+  // Nur grober Preisrahmen für Kundenanzeige
+  const priceRange = getApproximatePriceRange(formData.services_selected);
 
   return (
     <Card className="border-0 shadow-lg overflow-hidden">
@@ -47,6 +44,10 @@ export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
             <div className="font-medium">{formData.company_name || '-'}</div>
             <div className="text-muted-foreground">Ansprechpartner:</div>
             <div className="font-medium">{formData.contact_person || '-'}</div>
+            <div className="text-muted-foreground">Adresse:</div>
+            <div className="font-medium">
+              {formData.company_street ? `${formData.company_street}, ${formData.company_zip} ${formData.company_city}` : '-'}
+            </div>
             <div className="text-muted-foreground">Branche:</div>
             <div className="font-medium">
               {formData.industry === 'Andere' ? formData.industry_other : formData.industry || '-'}
@@ -100,25 +101,39 @@ export const Step5Summary = ({ formData, onGoToStep }: Step5Props) => {
           </div>
         </div>
 
-        {/* Pricing */}
+        {/* Grobe Orientierung statt exakter Preise */}
         <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
-          <h3 className="font-semibold text-lg mb-4">💰 Geschätzte Kosten</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-background rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Einrichtung</div>
-              <div className="text-2xl font-bold text-primary">{formatCurrency(totals.setup)}</div>
-              <div className="text-xs text-muted-foreground">netto, einmalig</div>
-            </div>
-            <div className="text-center p-4 bg-background rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Monatlich</div>
-              <div className="text-2xl font-bold text-primary">{formatCurrency(totals.monthly)}</div>
-              <div className="text-xs text-muted-foreground">netto, laufend</div>
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Ihr individuelles Angebot</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Nach Absenden Ihrer Anfrage erstellen wir Ihnen ein maßgeschneidertes Angebot,
+                das Ihre spezifischen Anforderungen und Wünsche berücksichtigt.
+              </p>
+              
+              {formData.services_selected.length > 0 && (
+                <div className="bg-background rounded-lg p-4">
+                  <div className="text-sm text-muted-foreground mb-1">Grober Orientierungsrahmen</div>
+                  <div className="text-xl font-semibold text-primary">
+                    {formatCurrencyRange(priceRange.minSetup, priceRange.maxSetup)}
+                  </div>
+                  {priceRange.minMonthly !== undefined && priceRange.maxMonthly !== undefined && (
+                    <div className="text-sm text-muted-foreground mt-1">
+                      zzgl. ca. {formatCurrencyRange(priceRange.minMonthly, priceRange.maxMonthly)}/Monat
+                    </div>
+                  )}
+                  <div className="text-xs text-muted-foreground mt-2">
+                    * Der tatsächliche Preis wird individuell nach persönlicher Beratung kalkuliert
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          * Alle Preise verstehen sich netto zzgl. MwSt. | Unverbindliche Kalkulation
+          Mit dem Absenden stimmen Sie zu, dass wir Sie zur Angebotserstellung kontaktieren.
         </p>
       </CardContent>
     </Card>

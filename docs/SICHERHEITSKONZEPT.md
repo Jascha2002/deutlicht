@@ -114,6 +114,16 @@ AS $$
 $$;
 ```
 
+#### Lead-Tracking (project_leads):
+
+| Tabelle | Operation | Policy |
+|---------|-----------|--------|
+| `project_leads` | INSERT | Session-ID muss vorhanden sein (≥20 Zeichen) |
+| `project_leads` | UPDATE | Nur eigene Session-ID |
+| `project_leads` | SELECT | Nur admin/mitarbeiter (Leads sind für Nutzer nicht lesbar) |
+
+**Hinweis:** Die `project_leads` Tabelle speichert auch abgebrochene Anfragen. Die internen Preisschätzungen (`internal_price_estimate_setup`, `internal_price_estimate_monthly`) sind nur für Mitarbeiter sichtbar – Kunden sehen keine exakten Preise.
+
 ---
 
 ## 4. Edge Functions Sicherheit
