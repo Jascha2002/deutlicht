@@ -72,15 +72,38 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
       zip: leadData.zip || "",
       description: descriptionParts,
       type: "lead",
-      // Tag the source
-      medium_id: false, // Will be set if exists
-      source_id: false, // Will be set if exists
     };
 
     console.log("Sending to Odoo:", JSON.stringify(leadValues, null, 2));
 
-    // First, authenticate to get the correct user ID
-    console.log("Authenticating with Odoo...");
+    // Use API key directly with Basic Auth (Odoo SaaS method)
+    // Format: email:api_key base64 encoded
+    const credentials = btoa(`carstenvds@gmail.com:${ODOO_API_KEY}`);
+    
+    // Try the REST API endpoint first (Odoo 14+)
+    console.log("Trying Odoo REST API...");
+    const restResponse = await fetch(`${ODOO_URL}/api/v1/crm.lead`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Basic ${credentials}`,
+      },
+      body: JSON.stringify(leadValues),
+    });
+
+    // If REST API works
+    if (restResponse.ok) {
+      const restResult = await restResponse.json();
+      console.log("Odoo REST API response:", JSON.stringify(restResult, null, 2));
+      if (restResult.id) {
+        return { success: true, lead_id: restResult.id };
+      }
+    }
+
+    // Fallback: Try JSON-RPC with API key authentication
+    console.log("Trying Odoo JSON-RPC with API key...");
+    
+    // First authenticate
     const authResponse = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
       headers: {
@@ -103,18 +126,20 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
 
     if (authResult.error) {
       console.error("Odoo auth error:", authResult.error);
-      return { success: false, error: "Authentication failed: " + (authResult.error.message || JSON.stringify(authResult.error)) };
+      // Log but continue - the lead data is still sent via email
+      return { success: false, error: "Odoo auth failed: " + (authResult.error.message || JSON.stringify(authResult.error)) };
     }
 
     const userId = authResult.result;
     if (!userId) {
-      console.error("No user ID returned from authentication");
-      return { success: false, error: "Authentication failed: No user ID returned" };
+      console.error("No user ID returned from authentication - API key may be invalid or user email incorrect");
+      // Return partial success - data will still be sent via email
+      return { success: false, error: "Odoo authentication failed. Please verify the API key and user email in Odoo settings." };
     }
 
     console.log("Authenticated as user ID:", userId);
 
-    // JSON-RPC call to create lead with authenticated user ID
+    // Create lead
     const response = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
       headers: {
