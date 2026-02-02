@@ -12,9 +12,9 @@ import {
 } from '@/components/ui/table';
 import { 
   Search, FileText, Building2, CheckCircle, XCircle, Clock, 
-  Eye, Send, Euro, ExternalLink
+  Eye, Send, Euro, ExternalLink, Bell
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { de } from 'date-fns/locale';
 
 type OfferStatus = 'entwurf' | 'gesendet' | 'angesehen' | 'angenommen' | 'abgelehnt' | 'abgelaufen';
@@ -91,6 +91,57 @@ export function OfferManagement() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Send offer and create followup
+  const handleSendOffer = async (offer: CrmOffer) => {
+    try {
+      // Update offer status
+      const { error: offerError } = await supabase
+        .from('crm_offers')
+        .update({ 
+          status: 'gesendet',
+          sent_at: new Date().toISOString()
+        })
+        .eq('id', offer.id);
+
+      if (offerError) throw offerError;
+
+      // Create 7-day followup
+      const followupDate = addDays(new Date(), 7);
+      const { error: followupError } = await supabase
+        .from('crm_followups')
+        .insert({
+          title: `Angebot nachfassen: ${offer.title}`,
+          description: `Wiedervorlage für Angebot ${offer.offer_number}. Bitte beim Kunden nachfragen, ob noch Fragen bestehen.`,
+          followup_type: 'anruf',
+          priority: 'normal',
+          due_date: format(followupDate, 'yyyy-MM-dd'),
+          offer_id: offer.id,
+          company_id: offer.company_id,
+          status: 'offen'
+        });
+
+      if (followupError) {
+        console.error('Followup creation error:', followupError);
+        // Don't throw - followup is optional
+      }
+
+      toast({ 
+        title: 'Angebot gesendet',
+        description: 'Wiedervorlage in 7 Tagen wurde erstellt.'
+      });
+      
+      loadOffers();
+      setSelectedOffer(null);
+    } catch (error) {
+      console.error('Error sending offer:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Angebot konnte nicht gesendet werden.',
+        variant: 'destructive'
+      });
     }
   };
 
@@ -366,10 +417,19 @@ export function OfferManagement() {
                   </Button>
                 )}
                 {selectedOffer.status === 'entwurf' && (
-                  <Button className="gap-2">
+                  <Button 
+                    className="gap-2"
+                    onClick={() => handleSendOffer(selectedOffer)}
+                  >
                     <Send className="h-4 w-4" />
                     Angebot senden
                   </Button>
+                )}
+                {selectedOffer.status === 'gesendet' && (
+                  <Badge variant="outline" className="gap-1 py-2">
+                    <Bell className="h-3 w-3" />
+                    Wiedervorlage in 7 Tagen
+                  </Badge>
                 )}
               </div>
             </>
