@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.send-partner-contract]
 verify_jwt = false
+
+[functions.create-crm-lead]
+verify_jwt = false
