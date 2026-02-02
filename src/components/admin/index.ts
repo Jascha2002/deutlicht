@@ -10,3 +10,7 @@ export { PartnerContractEditor } from './PartnerContractEditor';
 export { PartnerDocuments } from './PartnerDocuments';
 export { LeadManagement } from './LeadManagement';
 export { CompanyManagement } from './CompanyManagement';
+export { ProjectManagement } from './ProjectManagement';
+export { OfferManagement } from './OfferManagement';
+export { InvoiceManagement } from './InvoiceManagement';
+export { ReportManagement } from './ReportManagement';

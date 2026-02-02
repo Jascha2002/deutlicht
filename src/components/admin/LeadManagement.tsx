@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Filter, Eye, Phone, Mail, Building2, Calendar, MessageSquare, RefreshCw } from 'lucide-react';
+import { Search, Filter, Eye, Phone, Mail, Building2, Calendar, MessageSquare, RefreshCw, FolderOpen, ArrowRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import type { Database } from '@/integrations/supabase/types';
@@ -177,6 +177,53 @@ export function LeadManagement() {
       toast({
         title: 'Fehler',
         description: 'Status konnte nicht aktualisiert werden.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const convertToProject = async (lead: Lead) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Create project from lead
+      const { data: newProject, error } = await supabase
+        .from('crm_projects')
+        .insert({
+          title: `Projekt: ${lead.company_name || 'Neuer Kunde'}`,
+          lead_id: lead.id,
+          services_included: lead.services_interested,
+          status: 'planung',
+          created_by: user?.id
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Update lead status
+      await supabase
+        .from('crm_leads')
+        .update({ status: 'gewonnen' })
+        .eq('id', lead.id);
+
+      // Add activity
+      await supabase.from('crm_lead_activities').insert({
+        lead_id: lead.id,
+        activity_type: 'note',
+        description: `In Projekt ${newProject.project_number} konvertiert`,
+      });
+
+      toast({ 
+        title: 'Projekt erstellt', 
+        description: `Projekt ${newProject.project_number} wurde aus Lead erstellt.` 
+      });
+      fetchLeads();
+    } catch (error) {
+      console.error('Error converting to project:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Lead konnte nicht in Projekt konvertiert werden.',
         variant: 'destructive',
       });
     }
@@ -466,6 +513,22 @@ export function LeadManagement() {
                                     </div>
                                   </div>
                                 </div>
+
+                                {/* Convert to Project Button */}
+                                {selectedLead.status !== 'gewonnen' && selectedLead.status !== 'verloren' && (
+                                  <div className="border-t pt-4">
+                                    <Button 
+                                      onClick={() => {
+                                        convertToProject(selectedLead);
+                                      }}
+                                      className="w-full gap-2"
+                                    >
+                                      <FolderOpen className="w-4 h-4" />
+                                      In Projekt konvertieren
+                                      <ArrowRight className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </DialogContent>
