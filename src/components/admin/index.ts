@@ -8,3 +8,5 @@ export { CommissionManagement } from './CommissionManagement';
 export { PartnerQuickView } from './PartnerQuickView';
 export { PartnerContractEditor } from './PartnerContractEditor';
 export { PartnerDocuments } from './PartnerDocuments';
+export { LeadManagement } from './LeadManagement';
+export { CompanyManagement } from './CompanyManagement';

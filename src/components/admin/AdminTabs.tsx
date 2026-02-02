@@ -1,19 +1,29 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Handshake, DollarSign, UserCheck, Receipt } from "lucide-react";
+import { Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2 } from "lucide-react";
 import { UserManagement } from "./UserManagement";
 import { PartnerManagement } from "./PartnerManagement";
 import { ReferralManagement } from "./ReferralManagement";
 import { CommissionManagement } from "./CommissionManagement";
 import { PartnerInvoiceManagement } from "./PartnerInvoiceManagement";
+import { LeadManagement } from "./LeadManagement";
+import { CompanyManagement } from "./CompanyManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
 }
 
-export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
+export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
   return (
     <Tabs defaultValue={defaultTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-5 mb-6">
+      <TabsList className="grid w-full grid-cols-7 mb-6">
+        <TabsTrigger value="leads" className="gap-2">
+          <Target className="w-4 h-4" />
+          <span className="hidden sm:inline">Leads</span>
+        </TabsTrigger>
+        <TabsTrigger value="companies" className="gap-2">
+          <Building2 className="w-4 h-4" />
+          <span className="hidden sm:inline">Firmen</span>
+        </TabsTrigger>
         <TabsTrigger value="users" className="gap-2">
           <Users className="w-4 h-4" />
           <span className="hidden sm:inline">Benutzer</span>
@@ -35,6 +45,14 @@ export function AdminTabs({ defaultTab = "users" }: AdminTabsProps) {
           <span className="hidden sm:inline">Abrechnungen</span>
         </TabsTrigger>
       </TabsList>
+
+      <TabsContent value="leads">
+        <LeadManagement />
+      </TabsContent>
+
+      <TabsContent value="companies">
+        <CompanyManagement />
+      </TabsContent>
 
       <TabsContent value="users">
         <UserManagement />
