@@ -1033,6 +1033,107 @@ export type Database = {
           },
         ]
       }
+      crm_calendar_events: {
+        Row: {
+          all_day: boolean | null
+          attendees: Json | null
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_time: string
+          event_type: string | null
+          followup_id: string | null
+          google_calendar_id: string | null
+          google_event_id: string | null
+          id: string
+          last_synced_at: string | null
+          lead_id: string | null
+          location: string | null
+          owner_id: string | null
+          project_id: string | null
+          start_time: string
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          all_day?: boolean | null
+          attendees?: Json | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time: string
+          event_type?: string | null
+          followup_id?: string | null
+          google_calendar_id?: string | null
+          google_event_id?: string | null
+          id?: string
+          last_synced_at?: string | null
+          lead_id?: string | null
+          location?: string | null
+          owner_id?: string | null
+          project_id?: string | null
+          start_time: string
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          all_day?: boolean | null
+          attendees?: Json | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time?: string
+          event_type?: string | null
+          followup_id?: string | null
+          google_calendar_id?: string | null
+          google_event_id?: string | null
+          id?: string
+          last_synced_at?: string | null
+          lead_id?: string | null
+          location?: string | null
+          owner_id?: string | null
+          project_id?: string | null
+          start_time?: string
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_calendar_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_calendar_events_followup_id_fkey"
+            columns: ["followup_id"]
+            isOneToOne: false
+            referencedRelation: "crm_followups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_calendar_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_calendar_events_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_companies: {
         Row: {
           account_holder: string | null
@@ -1488,6 +1589,114 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_followups: {
+        Row: {
+          assigned_to: string | null
+          company_id: string | null
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string
+          due_time: string | null
+          followup_type: string | null
+          id: string
+          invoice_id: string | null
+          lead_id: string | null
+          offer_id: string | null
+          priority: string | null
+          project_id: string | null
+          reminder_date: string | null
+          result: string | null
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          company_id?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date: string
+          due_time?: string | null
+          followup_type?: string | null
+          id?: string
+          invoice_id?: string | null
+          lead_id?: string | null
+          offer_id?: string | null
+          priority?: string | null
+          project_id?: string | null
+          reminder_date?: string | null
+          result?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          company_id?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string
+          due_time?: string | null
+          followup_type?: string | null
+          id?: string
+          invoice_id?: string | null
+          lead_id?: string | null
+          offer_id?: string | null
+          priority?: string | null
+          project_id?: string | null
+          reminder_date?: string | null
+          result?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_followups_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_followups_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "crm_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_followups_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_followups_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_followups_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -1993,6 +2202,72 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      crm_products: {
+        Row: {
+          category: Database["public"]["Enums"]["product_category"]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          implementation_weeks: number | null
+          is_active: boolean | null
+          modified_by: string | null
+          name: string
+          price_monthly: number | null
+          price_setup: number | null
+          price_yearly: number | null
+          product_code: string | null
+          sort_order: number | null
+          source: string | null
+          source_id: string | null
+          target_group: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          implementation_weeks?: number | null
+          is_active?: boolean | null
+          modified_by?: string | null
+          name: string
+          price_monthly?: number | null
+          price_setup?: number | null
+          price_yearly?: number | null
+          product_code?: string | null
+          sort_order?: number | null
+          source?: string | null
+          source_id?: string | null
+          target_group?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          implementation_weeks?: number | null
+          is_active?: boolean | null
+          modified_by?: string | null
+          name?: string
+          price_monthly?: number | null
+          price_setup?: number | null
+          price_yearly?: number | null
+          product_code?: string | null
+          sort_order?: number | null
+          source?: string | null
+          source_id?: string | null
+          target_group?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       crm_project_activities: {
         Row: {
@@ -3253,6 +3528,18 @@ export type Database = {
         | "angenommen"
         | "abgelehnt"
         | "abgelaufen"
+      price_type: "einmalig" | "monatlich" | "jaehrlich"
+      product_category:
+        | "website"
+        | "hosting"
+        | "seo"
+        | "ki_agent"
+        | "voicebot"
+        | "social_media"
+        | "beratung"
+        | "prozess"
+        | "branchenloesung"
+        | "service"
       project_status:
         | "planung"
         | "aktiv"
@@ -3452,6 +3739,19 @@ export const Constants = {
         "angenommen",
         "abgelehnt",
         "abgelaufen",
+      ],
+      price_type: ["einmalig", "monatlich", "jaehrlich"],
+      product_category: [
+        "website",
+        "hosting",
+        "seo",
+        "ki_agent",
+        "voicebot",
+        "social_media",
+        "beratung",
+        "prozess",
+        "branchenloesung",
+        "service",
       ],
       project_status: [
         "planung",
