@@ -78,7 +78,7 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
 
     // Use API key directly with Basic Auth (Odoo SaaS method)
     // Format: email:api_key base64 encoded
-    const credentials = btoa(`carstenvds@gmail.com:${ODOO_API_KEY}`);
+    const credentials = btoa(`carsten.vds@gmail.com:${ODOO_API_KEY}`);
     
     // Try the REST API endpoint first (Odoo 14+)
     console.log("Trying Odoo REST API...");
@@ -115,7 +115,7 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
         params: {
           service: "common",
           method: "authenticate",
-          args: [ODOO_DB, "carstenvds@gmail.com", ODOO_API_KEY, {}],
+          args: [ODOO_DB, "carsten.vds@gmail.com", ODOO_API_KEY, {}],
         },
         id: Date.now(),
       }),
