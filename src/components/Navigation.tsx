@@ -8,7 +8,7 @@ import AccessibilityWidget from "@/components/AccessibilityWidget";
 import LeistungenMegamenu from "@/components/LeistungenMegamenu";
 import AuthLoginButton from "@/components/AuthLoginButton";
 import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+// Dialog import removed - using window.open instead
 interface SubMenuItem {
   name: string;
   href: string;
@@ -124,7 +124,7 @@ const Navigation = () => {
   const [leistungenOpen, setLeistungenOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [incognitoOpen, setIncognitoOpen] = useState(false);
+  // incognitoOpen state removed - using window.open instead
   const [searchResults, setSearchResults] = useState<Array<{
     title: string;
     path: string;
@@ -316,7 +316,18 @@ submenu: [{
             </Link>
             {/* Temporary Incognito Button */}
             <button
-              onClick={() => setIncognitoOpen(true)}
+              onClick={() => {
+                // Open in popup window - URL will be minimally visible
+                const width = 800;
+                const height = 700;
+                const left = (window.screen.width - width) / 2;
+                const top = (window.screen.height - height) / 2;
+                window.open(
+                  'https://elevenlabs.io/app/talk-to?agent_id=agent_5101kff7978mfvbtey1eserg78j2&branch_id=agtbrch_5301kff79843f85t3sfe0m3r63na',
+                  'demo',
+                  `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+                );
+              }}
               className="p-2 text-foreground/60 hover:text-accent transition-colors rounded-full hover:bg-muted/50"
               title="Geheimlink"
             >
@@ -552,17 +563,6 @@ submenu: [{
       </div>
     </nav>
 
-      {/* Incognito Modal */}
-      <Dialog open={incognitoOpen} onOpenChange={setIncognitoOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden">
-          <iframe
-            src="https://elevenlabs.io/app/talk-to?agent_id=agent_5101kff7978mfvbtey1eserg78j2&branch_id=agtbrch_5301kff79843f85t3sfe0m3r63na"
-            className="w-full h-full border-0"
-            allow="microphone"
-            title="Demo"
-          />
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
