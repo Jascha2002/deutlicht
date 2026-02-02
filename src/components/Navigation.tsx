@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, type LucideIcon } from "lucide-react";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, UserX, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -8,6 +8,7 @@ import AccessibilityWidget from "@/components/AccessibilityWidget";
 import LeistungenMegamenu from "@/components/LeistungenMegamenu";
 import AuthLoginButton from "@/components/AuthLoginButton";
 import deutlichtLogo from "@/assets/deutlicht-logo-final.png";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 interface SubMenuItem {
   name: string;
   href: string;
@@ -123,6 +124,7 @@ const Navigation = () => {
   const [leistungenOpen, setLeistungenOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [incognitoOpen, setIncognitoOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<Array<{
     title: string;
     path: string;
@@ -299,16 +301,28 @@ submenu: [{
     name: "Kontakt",
     href: "/kontakt"
   }];
-  return <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border" role="navigation" aria-label="Hauptnavigation">
+  return (
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border" role="navigation" aria-label="Hauptnavigation">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:bg-accent focus:text-accent-foreground focus:px-4 focus:py-2 focus:rounded-md">
         Zum Hauptinhalt springen
       </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
-            <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-14 w-auto rounded-2xl shadow-md object-fill" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
+              <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-14 w-auto rounded-2xl shadow-md object-fill" />
+            </Link>
+            {/* Temporary Incognito Button */}
+            <button
+              onClick={() => setIncognitoOpen(true)}
+              className="p-2 text-foreground/60 hover:text-accent transition-colors rounded-full hover:bg-muted/50"
+              title="Geheimlink"
+            >
+              <UserX className="w-5 h-5" />
+            </button>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8" role="menubar">
@@ -536,6 +550,20 @@ submenu: [{
           </div>
         </div>
       </div>
-    </nav>;
+    </nav>
+
+      {/* Incognito Modal */}
+      <Dialog open={incognitoOpen} onOpenChange={setIncognitoOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden">
+          <iframe
+            src="https://elevenlabs.io/app/talk-to?agent_id=agent_5101kff7978mfvbtey1eserg78j2&branch_id=agtbrch_5301kff79843f85t3sfe0m3r63na"
+            className="w-full h-full border-0"
+            allow="microphone"
+            title="Demo"
+          />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 };
 export default Navigation;
