@@ -1492,6 +1492,150 @@ export type Database = {
           },
         ]
       }
+      crm_invoices: {
+        Row: {
+          amount_gross: number | null
+          amount_net: number | null
+          amount_paid: number | null
+          company_id: string | null
+          contact_id: string | null
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          invoice_date: string | null
+          invoice_number: string | null
+          invoice_type: string | null
+          is_recurring: boolean | null
+          last_reminder_date: string | null
+          legacy_invoice_id: string | null
+          line_items: Json | null
+          next_invoice_date: string | null
+          offer_id: string | null
+          paid_date: string | null
+          payment_method: string | null
+          payment_reference: string | null
+          pdf_url: string | null
+          project_id: string | null
+          recurring_interval: string | null
+          reminder_count: number | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["invoice_status"] | null
+          tax_amount: number | null
+          tax_rate: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount_gross?: number | null
+          amount_net?: number | null
+          amount_paid?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_date?: string | null
+          invoice_number?: string | null
+          invoice_type?: string | null
+          is_recurring?: boolean | null
+          last_reminder_date?: string | null
+          legacy_invoice_id?: string | null
+          line_items?: Json | null
+          next_invoice_date?: string | null
+          offer_id?: string | null
+          paid_date?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          recurring_interval?: string | null
+          reminder_count?: number | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"] | null
+          tax_amount?: number | null
+          tax_rate?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount_gross?: number | null
+          amount_net?: number | null
+          amount_paid?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_date?: string | null
+          invoice_number?: string | null
+          invoice_type?: string | null
+          is_recurring?: boolean | null
+          last_reminder_date?: string | null
+          legacy_invoice_id?: string | null
+          line_items?: Json | null
+          next_invoice_date?: string | null
+          offer_id?: string | null
+          paid_date?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          recurring_interval?: string | null
+          reminder_count?: number | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"] | null
+          tax_amount?: number | null
+          tax_rate?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_invoices_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoices_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoices_legacy_invoice_id_fkey"
+            columns: ["legacy_invoice_id"]
+            isOneToOne: false
+            referencedRelation: "customer_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoices_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoices_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_lead_activities: {
         Row: {
           activity_type: string
@@ -1708,6 +1852,442 @@ export type Database = {
             columns: ["partner_referral_id"]
             isOneToOne: false
             referencedRelation: "partner_referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_offers: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          amount_monthly: number | null
+          amount_setup: number | null
+          amount_total: number | null
+          company_id: string | null
+          contact_id: string | null
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          description: string | null
+          discount_amount: number | null
+          discount_percent: number | null
+          form_data: Json | null
+          id: string
+          lead_id: string | null
+          legacy_project_lead_id: string | null
+          line_items: Json | null
+          offer_number: string | null
+          pdf_url: string | null
+          project_id: string | null
+          rejection_reason: string | null
+          sent_at: string | null
+          signed_pdf_url: string | null
+          status: Database["public"]["Enums"]["offer_status"] | null
+          tax_rate: number | null
+          title: string
+          updated_at: string | null
+          valid_from: string | null
+          valid_until: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          amount_monthly?: number | null
+          amount_setup?: number | null
+          amount_total?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          discount_amount?: number | null
+          discount_percent?: number | null
+          form_data?: Json | null
+          id?: string
+          lead_id?: string | null
+          legacy_project_lead_id?: string | null
+          line_items?: Json | null
+          offer_number?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          rejection_reason?: string | null
+          sent_at?: string | null
+          signed_pdf_url?: string | null
+          status?: Database["public"]["Enums"]["offer_status"] | null
+          tax_rate?: number | null
+          title: string
+          updated_at?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          amount_monthly?: number | null
+          amount_setup?: number | null
+          amount_total?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          discount_amount?: number | null
+          discount_percent?: number | null
+          form_data?: Json | null
+          id?: string
+          lead_id?: string | null
+          legacy_project_lead_id?: string | null
+          line_items?: Json | null
+          offer_number?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          rejection_reason?: string | null
+          sent_at?: string | null
+          signed_pdf_url?: string | null
+          status?: Database["public"]["Enums"]["offer_status"] | null
+          tax_rate?: number | null
+          title?: string
+          updated_at?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_offers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_offers_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_offers_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_offers_legacy_project_lead_id_fkey"
+            columns: ["legacy_project_lead_id"]
+            isOneToOne: false
+            referencedRelation: "project_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_offers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_project_activities: {
+        Row: {
+          activity_type: string
+          created_at: string | null
+          description: string | null
+          id: string
+          invoice_id: string | null
+          offer_id: string | null
+          performed_at: string | null
+          performed_by: string | null
+          project_id: string
+          report_id: string | null
+          title: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          invoice_id?: string | null
+          offer_id?: string | null
+          performed_at?: string | null
+          performed_by?: string | null
+          project_id: string
+          report_id?: string | null
+          title: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          invoice_id?: string | null
+          offer_id?: string | null
+          performed_at?: string | null
+          performed_by?: string | null
+          project_id?: string
+          report_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_project_activities_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "crm_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_project_activities_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_project_activities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_project_activities_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "crm_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_projects: {
+        Row: {
+          actual_end_date: string | null
+          analysis_client_id: string | null
+          assigned_to: string | null
+          budget_monthly: number | null
+          budget_setup: number | null
+          company_id: string | null
+          contact_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          lead_id: string | null
+          legacy_project_id: string | null
+          modified_by: string | null
+          project_number: string | null
+          services_included: string[] | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["project_status"] | null
+          target_end_date: string | null
+          title: string
+          total_invoiced: number | null
+          total_paid: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_end_date?: string | null
+          analysis_client_id?: string | null
+          assigned_to?: string | null
+          budget_monthly?: number | null
+          budget_setup?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id?: string | null
+          legacy_project_id?: string | null
+          modified_by?: string | null
+          project_number?: string | null
+          services_included?: string[] | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
+          target_end_date?: string | null
+          title: string
+          total_invoiced?: number | null
+          total_paid?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_end_date?: string | null
+          analysis_client_id?: string | null
+          assigned_to?: string | null
+          budget_monthly?: number | null
+          budget_setup?: number | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id?: string | null
+          legacy_project_id?: string | null
+          modified_by?: string | null
+          project_number?: string | null
+          services_included?: string[] | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
+          target_end_date?: string | null
+          title?: string
+          total_invoiced?: number | null
+          total_paid?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_projects_analysis_client_id_fkey"
+            columns: ["analysis_client_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_projects_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_projects_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_projects_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_projects_legacy_project_id_fkey"
+            columns: ["legacy_project_id"]
+            isOneToOne: false
+            referencedRelation: "customer_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_reports: {
+        Row: {
+          analysis_client_id: string | null
+          analysis_results: Json | null
+          analysis_score: number | null
+          approved_at: string | null
+          approved_by: string | null
+          company_id: string | null
+          content_html: string | null
+          content_markdown: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          lead_id: string | null
+          pdf_url: string | null
+          project_id: string | null
+          recommendations: Json | null
+          report_number: string | null
+          report_type: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          sent_to_client_at: string | null
+          sent_to_email: string | null
+          status: string | null
+          summary: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_client_id?: string | null
+          analysis_results?: Json | null
+          analysis_score?: number | null
+          approved_at?: string | null
+          approved_by?: string | null
+          company_id?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          lead_id?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          recommendations?: Json | null
+          report_number?: string | null
+          report_type: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sent_to_client_at?: string | null
+          sent_to_email?: string | null
+          status?: string | null
+          summary?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_client_id?: string | null
+          analysis_results?: Json | null
+          analysis_score?: number | null
+          approved_at?: string | null
+          approved_by?: string | null
+          company_id?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          lead_id?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          recommendations?: Json | null
+          report_number?: string | null
+          report_type?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sent_to_client_at?: string | null
+          sent_to_email?: string | null
+          status?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_reports_analysis_client_id_fkey"
+            columns: ["analysis_client_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_reports_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_reports_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -2639,6 +3219,13 @@ export type Database = {
         | "avv"
         | "retainer"
         | "projektvertrag"
+      invoice_status:
+        | "entwurf"
+        | "gesendet"
+        | "ueberfaellig"
+        | "bezahlt"
+        | "storniert"
+        | "mahnung"
       lead_source:
         | "projektanfrage"
         | "kontaktformular"
@@ -2659,6 +3246,19 @@ export type Database = {
         | "gewonnen"
         | "verloren"
         | "inaktiv"
+      offer_status:
+        | "entwurf"
+        | "gesendet"
+        | "angesehen"
+        | "angenommen"
+        | "abgelehnt"
+        | "abgelaufen"
+      project_status:
+        | "planung"
+        | "aktiv"
+        | "pausiert"
+        | "abgeschlossen"
+        | "abgebrochen"
       tax_region: "deutschland" | "eu" | "drittland"
     }
     CompositeTypes: {
@@ -2815,6 +3415,14 @@ export const Constants = {
         "retainer",
         "projektvertrag",
       ],
+      invoice_status: [
+        "entwurf",
+        "gesendet",
+        "ueberfaellig",
+        "bezahlt",
+        "storniert",
+        "mahnung",
+      ],
       lead_source: [
         "projektanfrage",
         "kontaktformular",
@@ -2836,6 +3444,21 @@ export const Constants = {
         "gewonnen",
         "verloren",
         "inaktiv",
+      ],
+      offer_status: [
+        "entwurf",
+        "gesendet",
+        "angesehen",
+        "angenommen",
+        "abgelehnt",
+        "abgelaufen",
+      ],
+      project_status: [
+        "planung",
+        "aktiv",
+        "pausiert",
+        "abgeschlossen",
+        "abgebrochen",
       ],
       tax_region: ["deutschland", "eu", "drittland"],
     },
