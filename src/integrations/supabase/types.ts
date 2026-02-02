@@ -929,6 +929,66 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          changed_fields: string[] | null
+          created_at: string
+          id: string
+          ip_address: unknown
+          is_gdpr_relevant: boolean | null
+          is_tax_relevant: boolean | null
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string | null
+          retention_until: string | null
+          session_id: string | null
+          table_name: string
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+          user_role: string | null
+        }
+        Insert: {
+          action: string
+          changed_fields?: string[] | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          is_gdpr_relevant?: boolean | null
+          is_tax_relevant?: boolean | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          retention_until?: string | null
+          session_id?: string | null
+          table_name: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Update: {
+          action?: string
+          changed_fields?: string[] | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          is_gdpr_relevant?: boolean | null
+          is_tax_relevant?: boolean | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          retention_until?: string | null
+          session_id?: string | null
+          table_name?: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Relationships: []
+      }
       change_requests: {
         Row: {
           created_at: string
@@ -1103,6 +1163,69 @@ export type Database = {
           status?: string | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      document_permissions: {
+        Row: {
+          can_delete: boolean | null
+          can_download: boolean | null
+          can_edit: boolean | null
+          can_share: boolean | null
+          can_view: boolean | null
+          created_at: string
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          resource_id: string
+          resource_type: string
+          revoked_at: string | null
+          revoked_by: string | null
+          role: Database["public"]["Enums"]["app_role"] | null
+          updated_at: string
+          user_id: string | null
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          can_delete?: boolean | null
+          can_download?: boolean | null
+          can_edit?: boolean | null
+          can_share?: boolean | null
+          can_view?: boolean | null
+          created_at?: string
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          resource_id: string
+          resource_type: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
+          updated_at?: string
+          user_id?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          can_delete?: boolean | null
+          can_download?: boolean | null
+          can_edit?: boolean | null
+          can_share?: boolean | null
+          can_view?: boolean | null
+          created_at?: string
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          resource_id?: string
+          resource_type?: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
+          updated_at?: string
+          user_id?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Relationships: []
       }
@@ -1778,6 +1901,27 @@ export type Database = {
     }
     Functions: {
       can_access_client: { Args: { _client_id: string }; Returns: boolean }
+      can_access_resource: {
+        Args: {
+          p_permission?: string
+          p_resource_id: string
+          p_resource_type: string
+        }
+        Returns: boolean
+      }
+      create_audit_log: {
+        Args: {
+          p_action: string
+          p_changed_fields?: string[]
+          p_is_gdpr_relevant?: boolean
+          p_is_tax_relevant?: boolean
+          p_new_values?: Json
+          p_old_values?: Json
+          p_record_id: string
+          p_table_name: string
+        }
+        Returns: string
+      }
       get_user_roles: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"][]
@@ -1792,7 +1936,15 @@ export type Database = {
     }
     Enums: {
       analysis_status: "entwurf" | "aktiv" | "abgeschlossen"
-      app_role: "admin" | "mitarbeiter" | "kunde" | "partner"
+      app_role:
+        | "admin"
+        | "mitarbeiter"
+        | "kunde"
+        | "partner"
+        | "freelancer_eu"
+        | "freelancer_drittland"
+        | "lieferant"
+        | "ki_agent"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1921,7 +2073,16 @@ export const Constants = {
   public: {
     Enums: {
       analysis_status: ["entwurf", "aktiv", "abgeschlossen"],
-      app_role: ["admin", "mitarbeiter", "kunde", "partner"],
+      app_role: [
+        "admin",
+        "mitarbeiter",
+        "kunde",
+        "partner",
+        "freelancer_eu",
+        "freelancer_drittland",
+        "lieferant",
+        "ki_agent",
+      ],
     },
   },
 } as const
