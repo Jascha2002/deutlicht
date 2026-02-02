@@ -5,18 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 import { 
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from '@/components/ui/table';
 import { 
   Search, Plus, Receipt, CheckCircle, XCircle, Clock, 
-  AlertTriangle, Euro, Send, Eye, ExternalLink
+  AlertTriangle, Euro, Send, Eye
 } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { InvoiceCreateDialog, InvoicePaymentDialog, InvoiceDetailDialog } from './invoice';
 
 type InvoiceStatus = 'entwurf' | 'gesendet' | 'ueberfaellig' | 'bezahlt' | 'storniert' | 'mahnung';
 
@@ -44,13 +43,13 @@ interface CrmInvoice {
   crm_projects?: { project_number: string; title: string } | null;
 }
 
-const statusConfig: Record<InvoiceStatus, { label: string; className: string; icon: any }> = {
-  entwurf: { label: 'Entwurf', className: 'bg-gray-100 text-gray-800', icon: Receipt },
-  gesendet: { label: 'Gesendet', className: 'bg-blue-100 text-blue-800', icon: Send },
-  ueberfaellig: { label: 'Überfällig', className: 'bg-red-100 text-red-800', icon: AlertTriangle },
-  bezahlt: { label: 'Bezahlt', className: 'bg-green-100 text-green-800', icon: CheckCircle },
-  storniert: { label: 'Storniert', className: 'bg-gray-100 text-gray-500', icon: XCircle },
-  mahnung: { label: 'Mahnung', className: 'bg-orange-100 text-orange-800', icon: AlertTriangle }
+const statusConfig: Record<InvoiceStatus, { label: string; className: string; icon: typeof Receipt }> = {
+  entwurf: { label: 'Entwurf', className: 'bg-muted text-muted-foreground', icon: Receipt },
+  gesendet: { label: 'Gesendet', className: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200', icon: Send },
+  ueberfaellig: { label: 'Überfällig', className: 'bg-destructive/10 text-destructive', icon: AlertTriangle },
+  bezahlt: { label: 'Bezahlt', className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200', icon: CheckCircle },
+  storniert: { label: 'Storniert', className: 'bg-muted text-muted-foreground', icon: XCircle },
+  mahnung: { label: 'Mahnung', className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200', icon: AlertTriangle }
 };
 
 export function InvoiceManagement() {
@@ -59,8 +58,12 @@ export function InvoiceManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedInvoice, setSelectedInvoice] = useState<CrmInvoice | null>(null);
+  
+  // Dialog states
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<CrmInvoice | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   useEffect(() => {
     loadInvoices();
@@ -105,6 +108,23 @@ export function InvoiceManagement() {
     return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
   };
 
+  const handleOpenDetail = (invoice: CrmInvoice) => {
+    setSelectedInvoice(invoice);
+    setIsDetailOpen(true);
+  };
+
+  const handleOpenPayment = () => {
+    setIsDetailOpen(false);
+    setIsPaymentOpen(true);
+  };
+
+  const handleRefresh = () => {
+    loadInvoices();
+    setSelectedInvoice(null);
+    setIsDetailOpen(false);
+    setIsPaymentOpen(false);
+  };
+
   // Stats
   const stats = {
     total: invoices.length,
@@ -145,10 +165,10 @@ export function InvoiceManagement() {
             </div>
           </CardContent>
         </Card>
-        <Card className={stats.ueberfaellig > 0 ? 'border-red-200 bg-red-50' : ''}>
+        <Card className={stats.ueberfaellig > 0 ? 'border-destructive/50 bg-destructive/5' : ''}>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <AlertTriangle className={`h-8 w-8 ${stats.ueberfaellig > 0 ? 'text-red-500' : 'text-gray-400'}`} />
+              <AlertTriangle className={`h-8 w-8 ${stats.ueberfaellig > 0 ? 'text-destructive' : 'text-muted-foreground'}`} />
               <div>
                 <p className="text-2xl font-bold">{stats.ueberfaellig}</p>
                 <p className="text-sm text-muted-foreground">Überfällig</p>
@@ -205,27 +225,10 @@ export function InvoiceManagement() {
           </Select>
         </div>
 
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Neue Rechnung
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Neue Rechnung erstellen</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 mt-4">
-              <p className="text-muted-foreground text-sm">
-                Die Rechnungserstellung wird in einer zukünftigen Version mit vollständigem Editor verfügbar sein.
-              </p>
-              <Button onClick={() => setIsCreateOpen(false)} variant="outline" className="w-full">
-                Schließen
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button className="gap-2" onClick={() => setIsCreateOpen(true)}>
+          <Plus className="h-4 w-4" />
+          Neue Rechnung
+        </Button>
       </div>
 
       {/* Table */}
@@ -264,7 +267,11 @@ export function InvoiceManagement() {
                 const isOverdue = daysOverdue > 0;
                 
                 return (
-                  <TableRow key={invoice.id} className={`cursor-pointer hover:bg-muted/50 ${isOverdue ? 'bg-red-50' : ''}`}>
+                  <TableRow 
+                    key={invoice.id} 
+                    className={`cursor-pointer hover:bg-muted/50 ${isOverdue ? 'bg-destructive/5' : ''}`}
+                    onClick={() => handleOpenDetail(invoice)}
+                  >
                     <TableCell>
                       <div>
                         <p className="font-medium">{invoice.title}</p>
@@ -288,13 +295,20 @@ export function InvoiceManagement() {
                       {formatCurrency(invoice.amount_gross || 0)}
                     </TableCell>
                     <TableCell>
-                      <span className={isOverdue ? 'text-red-600 font-medium' : ''}>
+                      <span className={isOverdue ? 'text-destructive font-medium' : ''}>
                         {format(new Date(invoice.due_date), 'dd.MM.yyyy', { locale: de })}
                         {isOverdue && ` (+${daysOverdue} Tage)`}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon" onClick={() => setSelectedInvoice(invoice)}>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenDetail(invoice);
+                        }}
+                      >
                         <Eye className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -306,107 +320,27 @@ export function InvoiceManagement() {
         </Table>
       </Card>
 
-      {/* Detail Dialog */}
-      <Dialog open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          {selectedInvoice && (
-            <>
-              <DialogHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <DialogTitle className="text-xl">{selectedInvoice.title}</DialogTitle>
-                    <p className="text-muted-foreground">{selectedInvoice.invoice_number}</p>
-                  </div>
-                  <Badge className={statusConfig[selectedInvoice.status]?.className}>
-                    {statusConfig[selectedInvoice.status]?.label}
-                  </Badge>
-                </div>
-              </DialogHeader>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold">{formatCurrency(selectedInvoice.amount_net || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Netto</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-muted-foreground">{formatCurrency(selectedInvoice.tax_amount || 0)}</p>
-                    <p className="text-xs text-muted-foreground">MwSt. ({selectedInvoice.tax_rate}%)</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-primary">{formatCurrency(selectedInvoice.amount_gross || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Brutto</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-green-500">{formatCurrency(selectedInvoice.amount_paid || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Bezahlt</p>
-                  </CardContent>
-                </Card>
-              </div>
+      {/* Dialogs */}
+      <InvoiceCreateDialog
+        open={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSuccess={handleRefresh}
+      />
 
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Kunde</p>
-                  <p className="font-medium">{selectedInvoice.crm_companies?.company_name || '-'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Projekt</p>
-                  <p className="font-medium">{selectedInvoice.crm_projects?.title || '-'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Rechnungsdatum</p>
-                  <p className="font-medium">
-                    {format(new Date(selectedInvoice.invoice_date), 'dd.MM.yyyy', { locale: de })}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Fälligkeitsdatum</p>
-                  <p className="font-medium">
-                    {format(new Date(selectedInvoice.due_date), 'dd.MM.yyyy', { locale: de })}
-                  </p>
-                </div>
-              </div>
+      <InvoiceDetailDialog
+        invoice={selectedInvoice}
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+        onPayment={handleOpenPayment}
+        onUpdate={handleRefresh}
+      />
 
-              {selectedInvoice.paid_date && (
-                <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <p className="text-green-800 font-medium">
-                    ✓ Bezahlt am {format(new Date(selectedInvoice.paid_date), 'dd.MM.yyyy', { locale: de })}
-                  </p>
-                </div>
-              )}
-
-              <div className="flex gap-2 mt-6">
-                {selectedInvoice.pdf_url && (
-                  <Button variant="outline" className="gap-2" asChild>
-                    <a href={selectedInvoice.pdf_url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                      PDF öffnen
-                    </a>
-                  </Button>
-                )}
-                {selectedInvoice.status === 'gesendet' && (
-                  <Button className="gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    Als bezahlt markieren
-                  </Button>
-                )}
-                {(selectedInvoice.status === 'ueberfaellig' || selectedInvoice.status === 'mahnung') && (
-                  <Button variant="destructive" className="gap-2">
-                    <AlertTriangle className="h-4 w-4" />
-                    Mahnung senden
-                  </Button>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <InvoicePaymentDialog
+        invoice={selectedInvoice}
+        open={isPaymentOpen}
+        onOpenChange={setIsPaymentOpen}
+        onSuccess={handleRefresh}
+      />
     </div>
   );
 }
