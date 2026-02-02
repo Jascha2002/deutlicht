@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2,
-  FolderOpen, FileText, BarChart3
+  FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell
 } from "lucide-react";
 import { UserManagement } from "./UserManagement";
 import { PartnerManagement } from "./PartnerManagement";
@@ -14,6 +14,9 @@ import { ProjectManagement } from "./ProjectManagement";
 import { OfferManagement } from "./OfferManagement";
 import { InvoiceManagement } from "./InvoiceManagement";
 import { ReportManagement } from "./ReportManagement";
+import { ProductManagement } from "./ProductManagement";
+import { FollowupManagement } from "./FollowupManagement";
+import { CalendarManagement } from "./CalendarManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
@@ -22,7 +25,7 @@ interface AdminTabsProps {
 export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
   return (
     <Tabs defaultValue={defaultTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10 mb-6 h-auto gap-1">
+      <TabsList className="flex flex-wrap justify-start mb-6 h-auto gap-1">
         <TabsTrigger value="leads" className="gap-1 px-2 py-2 text-xs">
           <Target className="w-4 h-4" />
           <span className="hidden sm:inline">Leads</span>
@@ -39,9 +42,21 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
           <Receipt className="w-4 h-4" />
           <span className="hidden sm:inline">Rechnungen</span>
         </TabsTrigger>
+        <TabsTrigger value="followups" className="gap-1 px-2 py-2 text-xs">
+          <Bell className="w-4 h-4" />
+          <span className="hidden sm:inline">Wiedervorlagen</span>
+        </TabsTrigger>
+        <TabsTrigger value="calendar" className="gap-1 px-2 py-2 text-xs">
+          <CalendarDays className="w-4 h-4" />
+          <span className="hidden sm:inline">Kalender</span>
+        </TabsTrigger>
         <TabsTrigger value="reports" className="gap-1 px-2 py-2 text-xs">
           <BarChart3 className="w-4 h-4" />
           <span className="hidden sm:inline">Berichte</span>
+        </TabsTrigger>
+        <TabsTrigger value="products" className="gap-1 px-2 py-2 text-xs">
+          <Package className="w-4 h-4" />
+          <span className="hidden sm:inline">Produkte</span>
         </TabsTrigger>
         <TabsTrigger value="companies" className="gap-1 px-2 py-2 text-xs">
           <Building2 className="w-4 h-4" />
@@ -81,8 +96,20 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
         <InvoiceManagement />
       </TabsContent>
 
+      <TabsContent value="followups">
+        <FollowupManagement />
+      </TabsContent>
+
+      <TabsContent value="calendar">
+        <CalendarManagement />
+      </TabsContent>
+
       <TabsContent value="reports">
         <ReportManagement />
+      </TabsContent>
+
+      <TabsContent value="products">
+        <ProductManagement />
       </TabsContent>
 
       <TabsContent value="companies">

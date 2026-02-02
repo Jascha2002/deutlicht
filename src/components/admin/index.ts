@@ -14,3 +14,6 @@ export { ProjectManagement } from './ProjectManagement';
 export { OfferManagement } from './OfferManagement';
 export { InvoiceManagement } from './InvoiceManagement';
 export { ReportManagement } from './ReportManagement';
+export { ProductManagement } from './ProductManagement';
+export { FollowupManagement } from './FollowupManagement';
+export { CalendarManagement } from './CalendarManagement';
