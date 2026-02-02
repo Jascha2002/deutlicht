@@ -78,7 +78,7 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
 
     // Use API key directly with Basic Auth (Odoo SaaS method)
     // Format: email:api_key base64 encoded
-    const credentials = btoa(`carstenvds@gmail.com:${ODOO_API_KEY}`);
+    const credentials = btoa(`carsten.vds@gmail.com:${ODOO_API_KEY}`);
     
     // Try the REST API endpoint first (Odoo 14+)
     console.log("Trying Odoo REST API...");
@@ -100,11 +100,12 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
       }
     }
 
-    // Fallback: Try JSON-RPC with session authentication
-    console.log("Trying Odoo JSON-RPC with session authentication...");
+    // Fallback: Try JSON-RPC with external API authentication
+    console.log("Trying Odoo JSON-RPC with external API...");
     
-    // First authenticate via session endpoint
-    const authResponse = await fetch(`${ODOO_URL}/web/session/authenticate`, {
+    // For Odoo SaaS, use the /jsonrpc endpoint with API key
+    // First authenticate using common service
+    const authResponse = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -113,56 +114,51 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
         jsonrpc: "2.0",
         method: "call",
         params: {
-          db: ODOO_DB,
-          login: "carstenvds@gmail.com",
-          password: ODOO_API_KEY,
+          service: "common",
+          method: "authenticate",
+          args: [ODOO_DB, "carsten.vds@gmail.com", ODOO_API_KEY, {}],
         },
         id: Date.now(),
       }),
     });
 
     const authResult = await authResponse.json();
-    console.log("Odoo session auth response:", JSON.stringify(authResult, null, 2));
-
-    // Extract session cookie for subsequent requests
-    const cookies = authResponse.headers.get("set-cookie");
-    console.log("Session cookies received:", cookies ? "Yes" : "No");
+    console.log("Odoo JSON-RPC auth response:", JSON.stringify(authResult, null, 2));
 
     if (authResult.error) {
-      console.error("Odoo session auth error:", authResult.error);
+      console.error("Odoo JSON-RPC auth error:", authResult.error);
       return { success: false, error: "Odoo auth failed: " + (authResult.error.message || JSON.stringify(authResult.error)) };
     }
 
-    const userId = authResult.result?.uid;
+    const userId = authResult.result;
     if (!userId) {
-      console.error("No user ID returned from session authentication");
+      console.error("No user ID returned from authentication");
       console.log("Full auth result:", JSON.stringify(authResult, null, 2));
-      return { success: false, error: "Odoo authentication failed. Please verify the API key and user email in Odoo settings." };
+      return { success: false, error: "Odoo authentication failed. API key may be invalid or not linked to this user." };
     }
 
     console.log("Authenticated as user ID:", userId);
 
-    // Create lead using the session
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-    
-    // Include session cookie if available
-    if (cookies) {
-      headers["Cookie"] = cookies.split(",").map(c => c.split(";")[0]).join("; ");
-    }
-
-    const response = await fetch(`${ODOO_URL}/web/dataset/call_kw`, {
+    // Create lead using object service
+    const response = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: "POST",
-      headers,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         jsonrpc: "2.0",
         method: "call",
         params: {
-          model: "crm.lead",
-          method: "create",
-          args: [leadValues],
-          kwargs: {},
+          service: "object",
+          method: "execute_kw",
+          args: [
+            ODOO_DB,
+            userId,
+            ODOO_API_KEY,
+            "crm.lead",
+            "create",
+            [leadValues],
+          ],
         },
         id: Date.now(),
       }),
