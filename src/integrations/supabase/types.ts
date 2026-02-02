@@ -1033,6 +1033,685 @@ export type Database = {
           },
         ]
       }
+      crm_companies: {
+        Row: {
+          account_holder: string | null
+          address_line_2: string | null
+          annual_revenue: string | null
+          bank_name: string | null
+          bic: string | null
+          city: string | null
+          company_name: string
+          country: string | null
+          country_code: string | null
+          created_at: string
+          created_by: string | null
+          email: string | null
+          employee_count: string | null
+          foreign_tax_id: string | null
+          founded_year: number | null
+          gdpr_consent_date: string | null
+          gdpr_consent_given: boolean | null
+          gdpr_consent_purpose: string | null
+          gdpr_data_source: string | null
+          gdpr_deletion_deadline: string | null
+          gdpr_last_activity: string | null
+          iban: string | null
+          id: string
+          industry: string | null
+          internal_notes: string | null
+          is_active: boolean | null
+          is_reverse_charge: boolean | null
+          is_small_business: boolean | null
+          legal_form: string | null
+          modified_by: string | null
+          payment_currency: string | null
+          payment_terms_days: number | null
+          phone: string | null
+          phone_secondary: string | null
+          postal_code: string | null
+          state_province: string | null
+          street: string | null
+          street_number: string | null
+          tags: string[] | null
+          tax_number: string | null
+          tax_region: Database["public"]["Enums"]["tax_region"] | null
+          trade_name: string | null
+          updated_at: string
+          vat_id: string | null
+          website: string | null
+        }
+        Insert: {
+          account_holder?: string | null
+          address_line_2?: string | null
+          annual_revenue?: string | null
+          bank_name?: string | null
+          bic?: string | null
+          city?: string | null
+          company_name: string
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employee_count?: string | null
+          foreign_tax_id?: string | null
+          founded_year?: number | null
+          gdpr_consent_date?: string | null
+          gdpr_consent_given?: boolean | null
+          gdpr_consent_purpose?: string | null
+          gdpr_data_source?: string | null
+          gdpr_deletion_deadline?: string | null
+          gdpr_last_activity?: string | null
+          iban?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          is_active?: boolean | null
+          is_reverse_charge?: boolean | null
+          is_small_business?: boolean | null
+          legal_form?: string | null
+          modified_by?: string | null
+          payment_currency?: string | null
+          payment_terms_days?: number | null
+          phone?: string | null
+          phone_secondary?: string | null
+          postal_code?: string | null
+          state_province?: string | null
+          street?: string | null
+          street_number?: string | null
+          tags?: string[] | null
+          tax_number?: string | null
+          tax_region?: Database["public"]["Enums"]["tax_region"] | null
+          trade_name?: string | null
+          updated_at?: string
+          vat_id?: string | null
+          website?: string | null
+        }
+        Update: {
+          account_holder?: string | null
+          address_line_2?: string | null
+          annual_revenue?: string | null
+          bank_name?: string | null
+          bic?: string | null
+          city?: string | null
+          company_name?: string
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employee_count?: string | null
+          foreign_tax_id?: string | null
+          founded_year?: number | null
+          gdpr_consent_date?: string | null
+          gdpr_consent_given?: boolean | null
+          gdpr_consent_purpose?: string | null
+          gdpr_data_source?: string | null
+          gdpr_deletion_deadline?: string | null
+          gdpr_last_activity?: string | null
+          iban?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          is_active?: boolean | null
+          is_reverse_charge?: boolean | null
+          is_small_business?: boolean | null
+          legal_form?: string | null
+          modified_by?: string | null
+          payment_currency?: string | null
+          payment_terms_days?: number | null
+          phone?: string | null
+          phone_secondary?: string | null
+          postal_code?: string | null
+          state_province?: string | null
+          street?: string | null
+          street_number?: string | null
+          tags?: string[] | null
+          tax_number?: string | null
+          tax_region?: Database["public"]["Enums"]["tax_region"] | null
+          trade_name?: string | null
+          updated_at?: string
+          vat_id?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      crm_company_contacts: {
+        Row: {
+          company_id: string
+          contact_id: string
+          created_at: string
+          id: string
+          is_billing_contact: boolean | null
+          is_primary: boolean | null
+          is_technical_contact: boolean | null
+          role_description: string | null
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          company_id: string
+          contact_id: string
+          created_at?: string
+          id?: string
+          is_billing_contact?: boolean | null
+          is_primary?: boolean | null
+          is_technical_contact?: boolean | null
+          role_description?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          company_id?: string
+          contact_id?: string
+          created_at?: string
+          id?: string
+          is_billing_contact?: boolean | null
+          is_primary?: boolean | null
+          is_technical_contact?: boolean | null
+          role_description?: string | null
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_company_contacts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_company_contacts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_company_roles: {
+        Row: {
+          commission_rate: number | null
+          company_id: string
+          created_at: string
+          credit_limit: number | null
+          id: string
+          is_active: boolean | null
+          legacy_partner_id: string | null
+          notes: string | null
+          payment_rating: number | null
+          role_type: Database["public"]["Enums"]["company_role_type"]
+          updated_at: string
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          commission_rate?: number | null
+          company_id: string
+          created_at?: string
+          credit_limit?: number | null
+          id?: string
+          is_active?: boolean | null
+          legacy_partner_id?: string | null
+          notes?: string | null
+          payment_rating?: number | null
+          role_type: Database["public"]["Enums"]["company_role_type"]
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          commission_rate?: number | null
+          company_id?: string
+          created_at?: string
+          credit_limit?: number | null
+          id?: string
+          is_active?: boolean | null
+          legacy_partner_id?: string | null
+          notes?: string | null
+          payment_rating?: number | null
+          role_type?: Database["public"]["Enums"]["company_role_type"]
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_company_roles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_company_roles_legacy_partner_id_fkey"
+            columns: ["legacy_partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_contacts: {
+        Row: {
+          city: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          created_by: string | null
+          department: string | null
+          email: string | null
+          first_name: string
+          gdpr_consent_date: string | null
+          gdpr_consent_given: boolean | null
+          gdpr_newsletter_consent: boolean | null
+          has_own_address: boolean | null
+          id: string
+          internal_notes: string | null
+          is_active: boolean | null
+          last_name: string
+          modified_by: string | null
+          phone: string | null
+          phone_mobile: string | null
+          position: string | null
+          postal_code: string | null
+          preferred_contact_method: string | null
+          preferred_language: string | null
+          salutation: string | null
+          street: string | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          email?: string | null
+          first_name: string
+          gdpr_consent_date?: string | null
+          gdpr_consent_given?: boolean | null
+          gdpr_newsletter_consent?: boolean | null
+          has_own_address?: boolean | null
+          id?: string
+          internal_notes?: string | null
+          is_active?: boolean | null
+          last_name: string
+          modified_by?: string | null
+          phone?: string | null
+          phone_mobile?: string | null
+          position?: string | null
+          postal_code?: string | null
+          preferred_contact_method?: string | null
+          preferred_language?: string | null
+          salutation?: string | null
+          street?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          email?: string | null
+          first_name?: string
+          gdpr_consent_date?: string | null
+          gdpr_consent_given?: boolean | null
+          gdpr_newsletter_consent?: boolean | null
+          has_own_address?: boolean | null
+          id?: string
+          internal_notes?: string | null
+          is_active?: boolean | null
+          last_name?: string
+          modified_by?: string | null
+          phone?: string | null
+          phone_mobile?: string | null
+          position?: string | null
+          postal_code?: string | null
+          preferred_contact_method?: string | null
+          preferred_language?: string | null
+          salutation?: string | null
+          street?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      crm_contracts: {
+        Row: {
+          auto_renewal: boolean | null
+          company_id: string
+          contact_id: string | null
+          contract_number: string | null
+          contract_type: Database["public"]["Enums"]["contract_type"]
+          created_at: string
+          created_by: string | null
+          currency: string | null
+          description: string | null
+          document_url: string | null
+          end_date: string | null
+          id: string
+          is_indefinite: boolean | null
+          modified_by: string | null
+          notice_period_days: number | null
+          payment_terms: string | null
+          renewal_period_months: number | null
+          signed_at: string | null
+          signed_document_url: string | null
+          start_date: string
+          status: string | null
+          terminated_at: string | null
+          termination_reason: string | null
+          title: string
+          updated_at: string
+          value: number | null
+        }
+        Insert: {
+          auto_renewal?: boolean | null
+          company_id: string
+          contact_id?: string | null
+          contract_number?: string | null
+          contract_type: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          document_url?: string | null
+          end_date?: string | null
+          id?: string
+          is_indefinite?: boolean | null
+          modified_by?: string | null
+          notice_period_days?: number | null
+          payment_terms?: string | null
+          renewal_period_months?: number | null
+          signed_at?: string | null
+          signed_document_url?: string | null
+          start_date: string
+          status?: string | null
+          terminated_at?: string | null
+          termination_reason?: string | null
+          title: string
+          updated_at?: string
+          value?: number | null
+        }
+        Update: {
+          auto_renewal?: boolean | null
+          company_id?: string
+          contact_id?: string | null
+          contract_number?: string | null
+          contract_type?: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          document_url?: string | null
+          end_date?: string | null
+          id?: string
+          is_indefinite?: boolean | null
+          modified_by?: string | null
+          notice_period_days?: number | null
+          payment_terms?: string | null
+          renewal_period_months?: number | null
+          signed_at?: string | null
+          signed_document_url?: string | null
+          start_date?: string
+          status?: string | null
+          terminated_at?: string | null
+          termination_reason?: string | null
+          title?: string
+          updated_at?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_contracts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_contracts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_lead_activities: {
+        Row: {
+          activity_type: string
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          lead_id: string
+          new_status: Database["public"]["Enums"]["lead_status"] | null
+          old_status: Database["public"]["Enums"]["lead_status"] | null
+          scheduled_at: string | null
+          title: string | null
+        }
+        Insert: {
+          activity_type: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id: string
+          new_status?: Database["public"]["Enums"]["lead_status"] | null
+          old_status?: Database["public"]["Enums"]["lead_status"] | null
+          scheduled_at?: string | null
+          title?: string | null
+        }
+        Update: {
+          activity_type?: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id?: string
+          new_status?: Database["public"]["Enums"]["lead_status"] | null
+          old_status?: Database["public"]["Enums"]["lead_status"] | null
+          scheduled_at?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_leads: {
+        Row: {
+          assigned_at: string | null
+          assigned_to: string | null
+          budget_range: string | null
+          city: string | null
+          company_name: string | null
+          company_size: string | null
+          contact_email: string | null
+          contact_first_name: string | null
+          contact_last_name: string | null
+          contact_phone: string | null
+          converted_at: string | null
+          converted_by: string | null
+          converted_company_id: string | null
+          converted_contact_id: string | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          estimated_value: number | null
+          followup_notes: string | null
+          id: string
+          industry: string | null
+          internal_notes: string | null
+          last_contact_at: string | null
+          lead_number: string | null
+          legacy_project_lead_id: string | null
+          lost_reason: string | null
+          lost_to_competitor: string | null
+          next_followup_at: string | null
+          odoo_lead_id: number | null
+          odoo_synced_at: string | null
+          partner_referral_id: string | null
+          postal_code: string | null
+          priority: number | null
+          project_description: string | null
+          score: number | null
+          services_interested: string[] | null
+          source: Database["public"]["Enums"]["lead_source"]
+          source_detail: string | null
+          source_url: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          street: string | null
+          tags: string[] | null
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          budget_range?: string | null
+          city?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          contact_email?: string | null
+          contact_first_name?: string | null
+          contact_last_name?: string | null
+          contact_phone?: string | null
+          converted_at?: string | null
+          converted_by?: string | null
+          converted_company_id?: string | null
+          converted_contact_id?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_value?: number | null
+          followup_notes?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          last_contact_at?: string | null
+          lead_number?: string | null
+          legacy_project_lead_id?: string | null
+          lost_reason?: string | null
+          lost_to_competitor?: string | null
+          next_followup_at?: string | null
+          odoo_lead_id?: number | null
+          odoo_synced_at?: string | null
+          partner_referral_id?: string | null
+          postal_code?: string | null
+          priority?: number | null
+          project_description?: string | null
+          score?: number | null
+          services_interested?: string[] | null
+          source: Database["public"]["Enums"]["lead_source"]
+          source_detail?: string | null
+          source_url?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          street?: string | null
+          tags?: string[] | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          budget_range?: string | null
+          city?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          contact_email?: string | null
+          contact_first_name?: string | null
+          contact_last_name?: string | null
+          contact_phone?: string | null
+          converted_at?: string | null
+          converted_by?: string | null
+          converted_company_id?: string | null
+          converted_contact_id?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_value?: number | null
+          followup_notes?: string | null
+          id?: string
+          industry?: string | null
+          internal_notes?: string | null
+          last_contact_at?: string | null
+          lead_number?: string | null
+          legacy_project_lead_id?: string | null
+          lost_reason?: string | null
+          lost_to_competitor?: string | null
+          next_followup_at?: string | null
+          odoo_lead_id?: number | null
+          odoo_synced_at?: string | null
+          partner_referral_id?: string | null
+          postal_code?: string | null
+          priority?: number | null
+          project_description?: string | null
+          score?: number | null
+          services_interested?: string[] | null
+          source?: Database["public"]["Enums"]["lead_source"]
+          source_detail?: string | null
+          source_url?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          street?: string | null
+          tags?: string[] | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_leads_converted_company_id_fkey"
+            columns: ["converted_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_leads_converted_contact_id_fkey"
+            columns: ["converted_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_leads_legacy_project_lead_id_fkey"
+            columns: ["legacy_project_lead_id"]
+            isOneToOne: false
+            referencedRelation: "project_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_leads_partner_referral_id_fkey"
+            columns: ["partner_referral_id"]
+            isOneToOne: false
+            referencedRelation: "partner_referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_files: {
         Row: {
           created_at: string
@@ -1945,6 +2624,42 @@ export type Database = {
         | "freelancer_drittland"
         | "lieferant"
         | "ki_agent"
+      company_role_type:
+        | "kunde"
+        | "partner"
+        | "freelancer_eu"
+        | "freelancer_drittland"
+        | "lieferant"
+        | "interessent"
+        | "lead"
+      contract_type:
+        | "rahmenvertrag"
+        | "einzelvertrag"
+        | "nda"
+        | "avv"
+        | "retainer"
+        | "projektvertrag"
+      lead_source:
+        | "projektanfrage"
+        | "kontaktformular"
+        | "partner_referral"
+        | "website"
+        | "telefon"
+        | "messe"
+        | "empfehlung"
+        | "social_media"
+        | "google_ads"
+        | "sonstige"
+      lead_status:
+        | "neu"
+        | "kontaktiert"
+        | "qualifiziert"
+        | "angebot_erstellt"
+        | "verhandlung"
+        | "gewonnen"
+        | "verloren"
+        | "inaktiv"
+      tax_region: "deutschland" | "eu" | "drittland"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2083,6 +2798,46 @@ export const Constants = {
         "lieferant",
         "ki_agent",
       ],
+      company_role_type: [
+        "kunde",
+        "partner",
+        "freelancer_eu",
+        "freelancer_drittland",
+        "lieferant",
+        "interessent",
+        "lead",
+      ],
+      contract_type: [
+        "rahmenvertrag",
+        "einzelvertrag",
+        "nda",
+        "avv",
+        "retainer",
+        "projektvertrag",
+      ],
+      lead_source: [
+        "projektanfrage",
+        "kontaktformular",
+        "partner_referral",
+        "website",
+        "telefon",
+        "messe",
+        "empfehlung",
+        "social_media",
+        "google_ads",
+        "sonstige",
+      ],
+      lead_status: [
+        "neu",
+        "kontaktiert",
+        "qualifiziert",
+        "angebot_erstellt",
+        "verhandlung",
+        "gewonnen",
+        "verloren",
+        "inaktiv",
+      ],
+      tax_region: ["deutschland", "eu", "drittland"],
     },
   },
 } as const

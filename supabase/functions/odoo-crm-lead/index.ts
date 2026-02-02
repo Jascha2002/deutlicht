@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,6 +10,10 @@ const corsHeaders = {
 const ODOO_URL = "https://deutlicht.odoo.com";
 const ODOO_DB = "deutlicht"; // For Odoo SaaS, DB name is typically the subdomain
 const ODOO_API_KEY = Deno.env.get("OdooCRMLeads") || "";
+
+// Initialize Supabase for CRM Lead creation
+const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
 interface OdooLeadData {
   name: string;
@@ -274,6 +279,96 @@ function transformToLeadData(type: string, data: any): OdooLeadData {
   }
 }
 
+// Create lead in DeutLicht Kompass (internal CRM)
+async function createKompassLead(type: string, data: any, odooLeadId?: number): Promise<{ success: boolean; lead_id?: string; lead_number?: string; error?: string }> {
+  try {
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    // Map source type
+    const sourceMap: Record<string, string> = {
+      'projektanfrage': 'projektanfrage',
+      'angebotsgenerator': 'projektanfrage',
+      'kontakt': 'kontaktformular',
+      'inquiry': 'kontaktformular',
+      'klarheitscheck': 'website',
+      'analyse': 'website',
+    };
+    
+    // Extract contact name parts
+    const contactName = data.contact_person || data.kontakt?.name || '';
+    const nameParts = contactName.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
+    const leadData = {
+      source: sourceMap[type] || 'sonstige',
+      source_detail: type,
+      company_name: data.company_name || data.kontakt?.unternehmen || null,
+      contact_first_name: firstName || null,
+      contact_last_name: lastName || null,
+      contact_email: data.customer_email || data.kontakt?.email || data.email || null,
+      contact_phone: data.customer_phone || data.kontakt?.telefon || data.phone || null,
+      street: data.company_street || data.kontakt?.adresse || data.street || null,
+      postal_code: data.company_zip || data.zip || null,
+      city: data.company_city || data.city || null,
+      industry: data.industry === 'Andere' ? data.industry_other : data.industry || null,
+      company_size: data.company_size || null,
+      services_interested: data.services_selected || data.services_needed || [],
+      project_description: data.beschreibung || data.main_challenge || null,
+      budget_range: null,
+      timeline: data.project_start_timing || data.project_start || null,
+      odoo_lead_id: odooLeadId || null,
+      odoo_synced_at: odooLeadId ? new Date().toISOString() : null,
+      status: 'neu',
+      priority: 3
+    };
+
+    // Check for duplicates
+    if (leadData.contact_email) {
+      const { data: existing } = await supabase
+        .from('crm_leads')
+        .select('id, lead_number')
+        .eq('contact_email', leadData.contact_email)
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .limit(1);
+      
+      if (existing && existing.length > 0) {
+        console.log('Kompass: Duplicate lead detected, updating existing:', existing[0].lead_number);
+        return { success: true, lead_id: existing[0].id, lead_number: existing[0].lead_number };
+      }
+    }
+
+    const { data: newLead, error } = await supabase
+      .from('crm_leads')
+      .insert(leadData)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating Kompass lead:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('Kompass lead created:', newLead.lead_number);
+
+    // Create activity
+    await supabase
+      .from('crm_lead_activities')
+      .insert({
+        lead_id: newLead.id,
+        activity_type: 'note',
+        title: 'Lead erstellt',
+        description: `Neuer Lead über ${type} eingegangen. ${odooLeadId ? `Odoo Lead ID: ${odooLeadId}` : ''}`
+      });
+
+    return { success: true, lead_id: newLead.id, lead_number: newLead.lead_number };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error creating Kompass lead:', msg);
+    return { success: false, error: msg };
+  }
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
@@ -283,22 +378,57 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { type, data }: RequestBody = await req.json();
     
-    console.log(`Processing ${type} submission for Odoo CRM`);
+    console.log(`Processing ${type} submission for Odoo CRM and Kompass`);
     console.log("Received data:", JSON.stringify(data, null, 2));
 
     // Transform data to lead format
     const leadData = transformToLeadData(type, data);
 
-    // Create lead in Odoo
-    const result = await createOdooLead(leadData);
+    // Create lead in Odoo AND Kompass in parallel
+    const [odooResult, kompassResult] = await Promise.all([
+      createOdooLead(leadData),
+      createKompassLead(type, data) // Create without Odoo ID first
+    ]);
 
-    if (result.success) {
-      console.log(`Successfully created lead in Odoo with ID: ${result.lead_id}`);
+    // If Odoo succeeded but Kompass was created without Odoo ID, update it
+    if (odooResult.success && odooResult.lead_id && kompassResult.success && kompassResult.lead_id) {
+      const supabase = createClient(supabaseUrl, supabaseServiceKey);
+      await supabase
+        .from('crm_leads')
+        .update({ 
+          odoo_lead_id: odooResult.lead_id,
+          odoo_synced_at: new Date().toISOString()
+        })
+        .eq('id', kompassResult.lead_id);
+    }
+
+    console.log(`Odoo result: ${odooResult.success ? 'Success' : 'Failed'} - ${odooResult.lead_id || odooResult.error}`);
+    console.log(`Kompass result: ${kompassResult.success ? 'Success' : 'Failed'} - ${kompassResult.lead_number || kompassResult.error}`);
+
+    // Return success if at least Kompass succeeded
+    if (kompassResult.success) {
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: "Lead erfolgreich in Odoo erstellt",
-          lead_id: result.lead_id 
+          message: "Lead erfolgreich erstellt",
+          odoo_lead_id: odooResult.lead_id,
+          kompass_lead_id: kompassResult.lead_id,
+          kompass_lead_number: kompassResult.lead_number,
+          odoo_success: odooResult.success
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    } else if (odooResult.success) {
+      // Odoo succeeded but Kompass failed - still return success
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          message: "Lead in Odoo erstellt, Kompass-Sync fehlgeschlagen",
+          odoo_lead_id: odooResult.lead_id,
+          kompass_error: kompassResult.error
         }),
         {
           status: 200,
@@ -306,11 +436,11 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     } else {
-      console.error(`Failed to create lead in Odoo: ${result.error}`);
+      // Both failed
       return new Response(
         JSON.stringify({ 
           success: false, 
-          error: result.error 
+          error: `Odoo: ${odooResult.error}, Kompass: ${kompassResult.error}`
         }),
         {
           status: 500,
