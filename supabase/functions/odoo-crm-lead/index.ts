@@ -78,7 +78,7 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
 
     // Use API key directly with Basic Auth (Odoo SaaS method)
     // Format: email:api_key base64 encoded
-    const credentials = btoa(`carsten.vds@gmail.com:${ODOO_API_KEY}`);
+    const credentials = btoa(`carstenvds@gmail.com:${ODOO_API_KEY}`);
     
     // Try the REST API endpoint first (Odoo 14+)
     console.log("Trying Odoo REST API...");
@@ -100,11 +100,11 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
       }
     }
 
-    // Fallback: Try JSON-RPC with API key authentication
-    console.log("Trying Odoo JSON-RPC with API key...");
+    // Fallback: Try JSON-RPC with session authentication
+    console.log("Trying Odoo JSON-RPC with session authentication...");
     
-    // First authenticate
-    const authResponse = await fetch(`${ODOO_URL}/jsonrpc`, {
+    // First authenticate via session endpoint
+    const authResponse = await fetch(`${ODOO_URL}/web/session/authenticate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -113,52 +113,56 @@ async function createOdooLead(leadData: OdooLeadData): Promise<{ success: boolea
         jsonrpc: "2.0",
         method: "call",
         params: {
-          service: "common",
-          method: "authenticate",
-          args: [ODOO_DB, "carsten.vds@gmail.com", ODOO_API_KEY, {}],
+          db: ODOO_DB,
+          login: "carstenvds@gmail.com",
+          password: ODOO_API_KEY,
         },
         id: Date.now(),
       }),
     });
 
     const authResult = await authResponse.json();
-    console.log("Odoo auth response:", JSON.stringify(authResult, null, 2));
+    console.log("Odoo session auth response:", JSON.stringify(authResult, null, 2));
+
+    // Extract session cookie for subsequent requests
+    const cookies = authResponse.headers.get("set-cookie");
+    console.log("Session cookies received:", cookies ? "Yes" : "No");
 
     if (authResult.error) {
-      console.error("Odoo auth error:", authResult.error);
-      // Log but continue - the lead data is still sent via email
+      console.error("Odoo session auth error:", authResult.error);
       return { success: false, error: "Odoo auth failed: " + (authResult.error.message || JSON.stringify(authResult.error)) };
     }
 
-    const userId = authResult.result;
+    const userId = authResult.result?.uid;
     if (!userId) {
-      console.error("No user ID returned from authentication - API key may be invalid or user email incorrect");
-      // Return partial success - data will still be sent via email
+      console.error("No user ID returned from session authentication");
+      console.log("Full auth result:", JSON.stringify(authResult, null, 2));
       return { success: false, error: "Odoo authentication failed. Please verify the API key and user email in Odoo settings." };
     }
 
     console.log("Authenticated as user ID:", userId);
 
-    // Create lead
-    const response = await fetch(`${ODOO_URL}/jsonrpc`, {
+    // Create lead using the session
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    
+    // Include session cookie if available
+    if (cookies) {
+      headers["Cookie"] = cookies.split(",").map(c => c.split(";")[0]).join("; ");
+    }
+
+    const response = await fetch(`${ODOO_URL}/web/dataset/call_kw`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({
         jsonrpc: "2.0",
         method: "call",
         params: {
-          service: "object",
-          method: "execute_kw",
-          args: [
-            ODOO_DB,
-            userId,
-            ODOO_API_KEY,
-            "crm.lead",
-            "create",
-            [leadValues],
-          ],
+          model: "crm.lead",
+          method: "create",
+          args: [leadValues],
+          kwargs: {},
         },
         id: Date.now(),
       }),
