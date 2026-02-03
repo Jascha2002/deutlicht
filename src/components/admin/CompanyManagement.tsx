@@ -316,14 +316,14 @@ export function CompanyManagement() {
       </div>
       <div>
         <Label>Steuerregion</Label>
-        <Select value={formData.tax_region || ''} onValueChange={(v) => setFormData({ ...formData, tax_region: v as any })}>
+        <Select value={formData.tax_region || ''} onValueChange={(v) => setFormData({ ...formData, tax_region: v as TaxRegion })}>
           <SelectTrigger>
             <SelectValue placeholder="Auswählen" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="DE">Deutschland</SelectItem>
-            <SelectItem value="EU">EU-Ausland</SelectItem>
-            <SelectItem value="DRITTLAND">Drittland</SelectItem>
+            <SelectItem value="deutschland">Deutschland</SelectItem>
+            <SelectItem value="eu">EU-Ausland</SelectItem>
+            <SelectItem value="drittland">Drittland</SelectItem>
           </SelectContent>
         </Select>
       </div>
