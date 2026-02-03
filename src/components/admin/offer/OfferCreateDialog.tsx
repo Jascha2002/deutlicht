@@ -8,23 +8,44 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Euro } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Plus, Trash2, Euro, Building2, User, FileText, Settings, Calculator,
+  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap
+} from 'lucide-react';
 import { format, addDays } from 'date-fns';
-
-interface LineItem {
-  id: string;
-  position: number;
-  title: string;
-  description: string;
-  quantity: number;
-  unit: string;
-  unit_price_net: number;
-  discount_percent: number;
-}
+import {
+  SERVICE_OPTIONS,
+  WEBSITE_FEATURES,
+  INDUSTRIES,
+  COMPANY_SIZES,
+  CMS_SYSTEMS,
+  VOICEBOT_ANWENDUNGEN,
+  BERATUNG_TOPICS,
+  SOCIAL_PLATFORMS,
+  OfferFormData,
+  initialFormData
+} from '@/components/AngebotsGenerator/types';
+import {
+  hostingPakete,
+  serviceVertraege,
+  seoPakete,
+  kiAgentenPreise,
+  voicebotPreise,
+  COMPANY_SIZE_FACTORS,
+  TIME_FACTORS,
+  formatCurrency
+} from '@/data/branchenPakete';
 
 interface Company {
   id: string;
   company_name: string;
+  industry: string | null;
+  employee_count: string | null;
+  email: string | null;
+  phone: string | null;
 }
 
 interface Lead {
@@ -33,177 +54,339 @@ interface Lead {
   company_name: string | null;
   contact_first_name: string | null;
   contact_last_name: string | null;
-}
-
-interface Project {
-  id: string;
-  project_number: string;
-  title: string;
+  contact_email: string | null;
+  contact_phone: string | null;
+  industry: string | null;
+  company_size: string | null;
+  services_interested: string[] | null;
+  project_description: string | null;
 }
 
 interface OfferCreateDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
+  prefillLeadId?: string;
+  prefillCompanyId?: string;
 }
 
-export function OfferCreateDialog({ open, onOpenChange, onSuccess }: OfferCreateDialogProps) {
+export function OfferCreateDialog({ 
+  open, 
+  onOpenChange, 
+  onSuccess,
+  prefillLeadId,
+  prefillCompanyId 
+}: OfferCreateDialogProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [currentTab, setCurrentTab] = useState('kunde');
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    company_id: '',
-    lead_id: '',
-    project_id: '',
-    discount_percent: 0,
-    valid_days: 14,
-  });
+  // Mitarbeiter/Ersteller
+  const [creatorName, setCreatorName] = useState('');
+  const [creatorEmail, setCreatorEmail] = useState('');
 
-  const [lineItems, setLineItems] = useState<LineItem[]>([
-    { id: crypto.randomUUID(), position: 1, title: '', description: '', quantity: 1, unit: 'Stück', unit_price_net: 0, discount_percent: 0 }
-  ]);
+  // Kundenauswahl
+  const [selectedCompanyId, setSelectedCompanyId] = useState('');
+  const [selectedLeadId, setSelectedLeadId] = useState('');
+
+  // Angebotsdaten (basierend auf AngebotsGenerator)
+  const [formData, setFormData] = useState<OfferFormData>(initialFormData);
+  const [validDays, setValidDays] = useState(14);
+  const [offerTitle, setOfferTitle] = useState('');
+  const [offerDescription, setOfferDescription] = useState('');
 
   useEffect(() => {
     if (open) {
       loadReferenceData();
+      loadCurrentUser();
+      if (prefillLeadId) setSelectedLeadId(prefillLeadId);
+      if (prefillCompanyId) setSelectedCompanyId(prefillCompanyId);
     }
-  }, [open]);
+  }, [open, prefillLeadId, prefillCompanyId]);
+
+  // Wenn Lead ausgewählt wird, Daten vorausfüllen
+  useEffect(() => {
+    if (selectedLeadId && selectedLeadId !== '_none') {
+      const lead = leads.find(l => l.id === selectedLeadId);
+      if (lead) {
+        setFormData(prev => ({
+          ...prev,
+          company_name: lead.company_name || '',
+          contact_person: [lead.contact_first_name, lead.contact_last_name].filter(Boolean).join(' '),
+          email: lead.contact_email || '',
+          phone: lead.contact_phone || '',
+          industry: lead.industry || '',
+          company_size: mapCompanySize(lead.company_size) || '1-10',
+          services_selected: mapServicesFromLead(lead.services_interested),
+          additional_notes: lead.project_description || ''
+        }));
+        setOfferTitle(`Angebot für ${lead.company_name || 'Interessent'}`);
+        setSelectedCompanyId('');
+      }
+    }
+  }, [selectedLeadId, leads]);
+
+  // Wenn Firma ausgewählt wird
+  useEffect(() => {
+    if (selectedCompanyId && selectedCompanyId !== '_none') {
+      const company = companies.find(c => c.id === selectedCompanyId);
+      if (company) {
+        setFormData(prev => ({
+          ...prev,
+          company_name: company.company_name,
+          email: company.email || '',
+          phone: company.phone || '',
+          industry: company.industry || '',
+          company_size: mapCompanySize(company.employee_count) || '1-10'
+        }));
+        setOfferTitle(`Angebot für ${company.company_name}`);
+        setSelectedLeadId('');
+      }
+    }
+  }, [selectedCompanyId, companies]);
+
+  const mapCompanySize = (size: string | null): string => {
+    if (!size) return '1-10';
+    if (size.includes('1-10') || size.includes('klein')) return '1-10';
+    if (size.includes('11-50') || size.includes('mittel')) return '11-50';
+    if (size.includes('51-250')) return '51-250';
+    if (size.includes('>250') || size.includes('groß')) return '>250';
+    return '1-10';
+  };
+
+  const mapServicesFromLead = (services: string[] | null): string[] => {
+    if (!services) return [];
+    const mapped: string[] = [];
+    services.forEach(s => {
+      const lower = s.toLowerCase();
+      if (lower.includes('website') || lower.includes('web')) mapped.push('Website & Digitale Plattformen');
+      if (lower.includes('social')) mapped.push('Social Media Marketing');
+      if (lower.includes('seo')) mapped.push('SEO & Sichtbarkeit');
+      if (lower.includes('ki') || lower.includes('agent')) mapped.push('KI-Agenten & Automation');
+      if (lower.includes('voice') || lower.includes('sprach')) mapped.push('Voicebots / Sprachassistenz');
+      if (lower.includes('prozess') || lower.includes('digital')) mapped.push('Prozessoptimierung & Digitalstrategie');
+      if (lower.includes('berat') || lower.includes('schul')) mapped.push('Beratung & Schulung');
+    });
+    return [...new Set(mapped)];
+  };
+
+  const loadCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setCreatorEmail(user.email || '');
+      // Versuche Namen aus Profil zu laden
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('user_id', user.id)
+        .single();
+      if (profile?.full_name) {
+        setCreatorName(profile.full_name);
+      }
+    }
+  };
 
   const loadReferenceData = async () => {
     try {
-      const [companiesRes, leadsRes, projectsRes] = await Promise.all([
-        supabase.from('crm_companies').select('id, company_name').order('company_name'),
-        supabase.from('crm_leads').select('id, lead_number, company_name, contact_first_name, contact_last_name').eq('status', 'qualifiziert').order('created_at', { ascending: false }),
-        supabase.from('crm_projects').select('id, project_number, title').in('status', ['planung', 'aktiv']).order('created_at', { ascending: false })
+      const [companiesRes, leadsRes] = await Promise.all([
+        supabase.from('crm_companies').select('id, company_name, industry, employee_count, email, phone').order('company_name'),
+        supabase.from('crm_leads').select('id, lead_number, company_name, contact_first_name, contact_last_name, contact_email, contact_phone, industry, company_size, services_interested, project_description').in('status', ['neu', 'qualifiziert', 'kontaktiert']).order('created_at', { ascending: false })
       ]);
 
       if (companiesRes.data) setCompanies(companiesRes.data);
-      if (leadsRes.data) setLeads(leadsRes.data);
-      if (projectsRes.data) setProjects(projectsRes.data);
+      if (leadsRes.data) setLeads(leadsRes.data as Lead[]);
     } catch (error) {
       console.error('Error loading reference data:', error);
     }
   };
 
-  const addLineItem = () => {
-    setLineItems([
-      ...lineItems,
-      { 
-        id: crypto.randomUUID(), 
-        position: lineItems.length + 1, 
-        title: '', 
-        description: '', 
-        quantity: 1, 
-        unit: 'Stück', 
-        unit_price_net: 0, 
-        discount_percent: 0 
+  const toggleService = (service: string) => {
+    setFormData(prev => ({
+      ...prev,
+      services_selected: prev.services_selected.includes(service)
+        ? prev.services_selected.filter(s => s !== service)
+        : [...prev.services_selected, service]
+    }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // ===== PRICE CALCULATIONS (from AngebotsGenerator) =====
+  const getSizeFactor = (): number => COMPANY_SIZE_FACTORS[formData.company_size] || 1.0;
+  const getTimeFactor = (): number => TIME_FACTORS[formData.project_start_timing]?.factor || 1.0;
+
+  const calculateWebsitePrice = (): { setup: number; monthly: number } => {
+    const factor = getSizeFactor();
+    const timeFactor = getTimeFactor();
+    let basePrice = 0;
+    let monthly = 0;
+
+    // Website-Typ
+    if (formData.website_type === 'onepager') basePrice += 1200;
+    else if (formData.website_type === 'landingpage') basePrice += 1500;
+    else if (formData.website_type === 'landingpage_starter') basePrice += 299;
+    else if (formData.website_type === '5-10') {
+      const pages = parseInt(formData.website_pages_count) || 5;
+      basePrice += 1900 + (pages - 5) * 300;
+    } else if (formData.website_type === '10-20') {
+      const pages = parseInt(formData.website_pages_count) || 10;
+      basePrice += 3400 + (pages - 10) * 250;
+    } else if (formData.website_type === '20-30') {
+      const pages = parseInt(formData.website_pages_count) || 20;
+      basePrice += 5900 + (pages - 20) * 200;
+    } else if (formData.website_type === '>30') {
+      const pages = parseInt(formData.website_pages_count) || 30;
+      basePrice += 7900 + (pages - 30) * 180;
+    }
+
+    // Features
+    if (formData.website_features.includes('Lead-/Vertriebsfokus')) basePrice += 2000;
+    if (formData.website_features.includes('Konfigurator')) basePrice += 4500;
+    if (formData.website_features.includes('ERP-Anbindung')) basePrice += 3500;
+    if (formData.website_features.includes('Blog/News-Bereich')) basePrice += 800;
+    if (formData.website_features.includes('Mehrsprachigkeit')) basePrice += 1500;
+    if (formData.website_features.includes('Online-Terminbuchung')) basePrice += 600;
+    if (formData.website_features.includes('Mitgliederbereich')) basePrice += 2500;
+
+    // Hosting
+    if (formData.hosting_type) {
+      const hosting = hostingPakete.find(h => h.id === formData.hosting_type);
+      if (hosting) monthly += hosting.monatlich;
+    }
+
+    // Service
+    if (formData.service_contract) {
+      const service = serviceVertraege.find(s => s.id === formData.service_contract);
+      if (service) monthly += service.monatlich;
+    }
+
+    return { setup: Math.round(basePrice * factor * timeFactor), monthly };
+  };
+
+  const calculateSEOPrice = (): { setup: number; monthly: number } => {
+    if (!formData.seo_package) return { setup: 0, monthly: 0 };
+    const paket = seoPakete.find(p => p.id === formData.seo_package);
+    return paket ? { setup: paket.setup || 0, monthly: paket.monthly || 0 } : { setup: 0, monthly: 0 };
+  };
+
+  const calculateKIPrice = (): { setup: number; monthly: number } => {
+    if (!formData.ki_type) return { setup: 0, monthly: 0 };
+    // kiAgentenPreise ist ein Objekt, kein Array
+    const kiType = formData.ki_type as keyof typeof kiAgentenPreise;
+    if (kiType === 'branche') {
+      // Branchenspezifische KI-Pakete
+      const branche = formData.ki_branche as keyof typeof kiAgentenPreise.branche;
+      if (branche && kiAgentenPreise.branche[branche]) {
+        const paket = kiAgentenPreise.branche[branche];
+        return { setup: paket.setup, monthly: paket.monthly };
       }
-    ]);
+      return { setup: 0, monthly: 0 };
+    }
+    const ki = kiAgentenPreise[kiType];
+    if (ki && 'setup' in ki) {
+      return { setup: ki.setup, monthly: ki.monthly };
+    }
+    return { setup: 0, monthly: 0 };
   };
 
-  const removeLineItem = (id: string) => {
-    if (lineItems.length <= 1) return;
-    setLineItems(lineItems.filter(item => item.id !== id).map((item, idx) => ({ ...item, position: idx + 1 })));
+  const calculateVoicebotPrice = (): { setup: number; monthly: number } => {
+    if (!formData.voice_type) return { setup: 0, monthly: 0 };
+    // voicebotPreise ist ein einfaches Objekt mit festen Werten
+    const voiceType = formData.voice_type as keyof typeof voicebotPreise;
+    const setupPrice = voicebotPreise[voiceType];
+    if (typeof setupPrice === 'number') {
+      return { setup: setupPrice, monthly: 0 };
+    }
+    return { setup: 0, monthly: 0 };
   };
 
-  const updateLineItem = (id: string, field: keyof LineItem, value: string | number) => {
-    setLineItems(lineItems.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
-    ));
-  };
+  const calculateTotalPrice = (): { setup: number; monthly: number; yearly: number } => {
+    let setup = 0;
+    let monthly = 0;
 
-  const calculateTotals = () => {
-    const itemsTotal = lineItems.reduce((sum, item) => {
-      const itemNet = item.quantity * item.unit_price_net * (1 - (item.discount_percent / 100));
-      return sum + itemNet;
-    }, 0);
-    
-    const discountedTotal = itemsTotal * (1 - (formData.discount_percent / 100));
-    return {
-      subtotal: itemsTotal,
-      discount: itemsTotal - discountedTotal,
-      total: discountedTotal
-    };
-  };
+    if (formData.services_selected.includes('Website & Digitale Plattformen')) {
+      const web = calculateWebsitePrice();
+      setup += web.setup;
+      monthly += web.monthly;
+    }
+    if (formData.services_selected.includes('SEO & Sichtbarkeit')) {
+      const seo = calculateSEOPrice();
+      setup += seo.setup;
+      monthly += seo.monthly;
+    }
+    if (formData.services_selected.includes('KI-Agenten & Automation')) {
+      const ki = calculateKIPrice();
+      setup += ki.setup;
+      monthly += ki.monthly;
+    }
+    if (formData.services_selected.includes('Voicebots / Sprachassistenz')) {
+      const voice = calculateVoicebotPrice();
+      setup += voice.setup;
+      monthly += voice.monthly;
+    }
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
+    return { setup, monthly, yearly: setup + (monthly * 12) };
   };
 
   const handleSubmit = async () => {
-    if (!formData.title.trim()) {
+    if (!offerTitle.trim()) {
       toast({ title: 'Fehler', description: 'Bitte geben Sie einen Titel ein.', variant: 'destructive' });
       return;
     }
-
-    if (!formData.company_id && !formData.lead_id) {
+    if (!selectedCompanyId && !selectedLeadId) {
       toast({ title: 'Fehler', description: 'Bitte wählen Sie eine Firma oder einen Lead aus.', variant: 'destructive' });
       return;
     }
-
-    const validLineItems = lineItems.filter(item => item.title.trim() && item.unit_price_net > 0);
-    if (validLineItems.length === 0) {
-      toast({ title: 'Fehler', description: 'Bitte fügen Sie mindestens eine Position hinzu.', variant: 'destructive' });
+    if (formData.services_selected.length === 0) {
+      toast({ title: 'Fehler', description: 'Bitte wählen Sie mindestens eine Leistung aus.', variant: 'destructive' });
       return;
     }
 
     setIsLoading(true);
     try {
-      const totals = calculateTotals();
+      const totals = calculateTotalPrice();
       const validFrom = new Date();
-      const validUntil = addDays(validFrom, formData.valid_days);
+      const validUntil = addDays(validFrom, validDays);
 
-      // Calculate monthly if any items have monthly indicator
-      const monthlyItems = validLineItems.filter(item => 
-        item.unit.toLowerCase().includes('monat') || 
-        item.title.toLowerCase().includes('monatlich') ||
-        item.title.toLowerCase().includes('hosting') ||
-        item.title.toLowerCase().includes('wartung')
-      );
-      const monthlyTotal = monthlyItems.reduce((sum, item) => sum + (item.quantity * item.unit_price_net), 0);
-      const setupTotal = totals.total - monthlyTotal;
+      // Line Items aus den Leistungen generieren
+      const lineItems = generateLineItems();
 
-      const { data: offer, error: offerError } = await supabase
+      const { error: offerError } = await supabase
         .from('crm_offers')
-        .insert({
-          title: formData.title,
-          description: formData.description || null,
-          company_id: formData.company_id || null,
-          lead_id: formData.lead_id || null,
-          project_id: formData.project_id || null,
+        .insert([{
+          title: offerTitle,
+          description: offerDescription || null,
+          company_id: selectedCompanyId && selectedCompanyId !== '_none' ? selectedCompanyId : null,
+          lead_id: selectedLeadId && selectedLeadId !== '_none' ? selectedLeadId : null,
           status: 'entwurf',
-          amount_setup: setupTotal,
-          amount_monthly: monthlyTotal,
-          amount_total: totals.total + (monthlyTotal * 12), // Jahreswert
-          discount_percent: formData.discount_percent,
+          amount_setup: totals.setup,
+          amount_monthly: totals.monthly,
+          amount_total: totals.yearly,
+          discount_percent: 0,
           valid_from: format(validFrom, 'yyyy-MM-dd'),
           valid_until: format(validUntil, 'yyyy-MM-dd'),
-          line_items: validLineItems.map(item => ({
-            position: item.position,
-            title: item.title,
-            description: item.description,
-            quantity: item.quantity,
-            unit: item.unit,
-            unit_price_net: item.unit_price_net,
-            discount_percent: item.discount_percent,
-            total_net: item.quantity * item.unit_price_net * (1 - (item.discount_percent / 100))
+          line_items: JSON.parse(JSON.stringify({
+            items: lineItems,
+            creator: { name: creatorName, email: creatorEmail },
+            formData: formData
           }))
-        })
-        .select()
-        .single();
+        }]);
 
       if (offerError) throw offerError;
 
-      toast({ title: 'Erfolg', description: `Angebot "${formData.title}" wurde erstellt.` });
+      toast({ title: 'Erfolg', description: `Angebot "${offerTitle}" wurde erstellt.` });
       
-      // Reset form
-      setFormData({ title: '', description: '', company_id: '', lead_id: '', project_id: '', discount_percent: 0, valid_days: 14 });
-      setLineItems([{ id: crypto.randomUUID(), position: 1, title: '', description: '', quantity: 1, unit: 'Stück', unit_price_net: 0, discount_percent: 0 }]);
+      // Reset
+      setFormData(initialFormData);
+      setOfferTitle('');
+      setOfferDescription('');
+      setSelectedCompanyId('');
+      setSelectedLeadId('');
       
       onSuccess();
       onOpenChange(false);
@@ -215,239 +398,705 @@ export function OfferCreateDialog({ open, onOpenChange, onSuccess }: OfferCreate
     }
   };
 
-  const totals = calculateTotals();
+  const generateLineItems = () => {
+    const items: Array<{ position: number; title: string; description: string; setup: number; monthly: number }> = [];
+    let pos = 1;
+
+    if (formData.services_selected.includes('Website & Digitale Plattformen')) {
+      const web = calculateWebsitePrice();
+      items.push({
+        position: pos++,
+        title: 'Website-Entwicklung',
+        description: `${formData.website_type || 'Individuelle Website'}, ${formData.website_features.join(', ') || 'Standard-Features'}`,
+        setup: web.setup,
+        monthly: web.monthly
+      });
+    }
+
+    if (formData.services_selected.includes('SEO & Sichtbarkeit')) {
+      const seo = calculateSEOPrice();
+      items.push({
+        position: pos++,
+        title: 'SEO-Optimierung',
+        description: formData.seo_package || 'SEO-Paket',
+        setup: seo.setup,
+        monthly: seo.monthly
+      });
+    }
+
+    if (formData.services_selected.includes('KI-Agenten & Automation')) {
+      const ki = calculateKIPrice();
+      items.push({
+        position: pos++,
+        title: 'KI-Agenten',
+        description: formData.ki_type || 'KI-Lösung',
+        setup: ki.setup,
+        monthly: ki.monthly
+      });
+    }
+
+    if (formData.services_selected.includes('Voicebots / Sprachassistenz')) {
+      const voice = calculateVoicebotPrice();
+      items.push({
+        position: pos++,
+        title: 'Voicebot',
+        description: formData.voice_type || 'Sprachassistent',
+        setup: voice.setup,
+        monthly: voice.monthly
+      });
+    }
+
+    if (formData.services_selected.includes('Social Media Marketing')) {
+      items.push({
+        position: pos++,
+        title: 'Social Media Marketing',
+        description: `Plattformen: ${formData.social_platforms.join(', ') || 'Nach Vereinbarung'}`,
+        setup: 0,
+        monthly: 0
+      });
+    }
+
+    if (formData.services_selected.includes('Beratung & Schulung')) {
+      items.push({
+        position: pos++,
+        title: 'Beratung & Schulung',
+        description: formData.beratung_topics.join(', ') || 'Individuelle Beratung',
+        setup: 0,
+        monthly: 0
+      });
+    }
+
+    return items;
+  };
+
+  const totals = calculateTotalPrice();
+
+  const serviceIcons: Record<string, React.ReactNode> = {
+    'Website & Digitale Plattformen': <Globe className="h-4 w-4" />,
+    'Social Media Marketing': <Megaphone className="h-4 w-4" />,
+    'SEO & Sichtbarkeit': <Search className="h-4 w-4" />,
+    'KI-Agenten & Automation': <Bot className="h-4 w-4" />,
+    'Voicebots / Sprachassistenz': <Phone className="h-4 w-4" />,
+    'Prozessoptimierung & Digitalstrategie': <Cog className="h-4 w-4" />,
+    'Beratung & Schulung': <GraduationCap className="h-4 w-4" />
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Neues Angebot erstellen</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            Neues Angebot erstellen
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 mt-4">
-          {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <Label htmlFor="title">Titel *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="z.B. Website-Relaunch inkl. SEO-Optimierung"
-              />
-            </div>
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="mt-4">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="kunde" className="gap-2">
+              <Building2 className="h-4 w-4" />
+              Kunde
+            </TabsTrigger>
+            <TabsTrigger value="leistungen" className="gap-2">
+              <Settings className="h-4 w-4" />
+              Leistungen
+            </TabsTrigger>
+            <TabsTrigger value="details" className="gap-2">
+              <FileText className="h-4 w-4" />
+              Details
+            </TabsTrigger>
+            <TabsTrigger value="kalkulation" className="gap-2">
+              <Calculator className="h-4 w-4" />
+              Kalkulation
+            </TabsTrigger>
+          </TabsList>
 
-            <div>
-              <Label htmlFor="company">Firma</Label>
-              <Select value={formData.company_id || '_none'} onValueChange={(v) => setFormData({ ...formData, company_id: v === '_none' ? '' : v, lead_id: '' })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Firma auswählen..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="_none">Keine Firma</SelectItem>
-                  {companies.map(c => (
-                    <SelectItem key={c.id} value={c.id}>{c.company_name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="lead">Oder Lead</Label>
-              <Select value={formData.lead_id || '_none'} onValueChange={(v) => setFormData({ ...formData, lead_id: v === '_none' ? '' : v, company_id: '' })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Lead auswählen..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="_none">Kein Lead</SelectItem>
-                  {leads.map(l => (
-                    <SelectItem key={l.id} value={l.id}>
-                      {l.lead_number} - {l.company_name || [l.contact_first_name, l.contact_last_name].filter(Boolean).join(' ')}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="project">Projekt (optional)</Label>
-              <Select value={formData.project_id || '_none'} onValueChange={(v) => setFormData({ ...formData, project_id: v === '_none' ? '' : v })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Projekt zuordnen..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="_none">Kein Projekt</SelectItem>
-                  {projects.map(p => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.project_number} - {p.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="valid_days">Gültigkeit (Tage)</Label>
-              <Input
-                id="valid_days"
-                type="number"
-                min={1}
-                max={90}
-                value={formData.valid_days}
-                onChange={(e) => setFormData({ ...formData, valid_days: parseInt(e.target.value) || 14 })}
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <Label htmlFor="description">Beschreibung</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Optionale Beschreibung des Angebots..."
-                rows={2}
-              />
-            </div>
-          </div>
-
-          {/* Line Items */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <Label className="text-base font-semibold">Positionen</Label>
-              <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
-                <Plus className="h-4 w-4 mr-1" />
-                Position hinzufügen
-              </Button>
-            </div>
-
-            <div className="space-y-3">
-              {lineItems.map((item, idx) => (
-                <Card key={item.id} className="bg-muted/30">
-                  <CardContent className="p-4">
-                    <div className="grid grid-cols-12 gap-3 items-end">
-                      <div className="col-span-1 text-center font-medium text-muted-foreground">
-                        {item.position}.
-                      </div>
-                      <div className="col-span-4">
-                        <Label className="text-xs">Bezeichnung *</Label>
-                        <Input
-                          value={item.title}
-                          onChange={(e) => updateLineItem(item.id, 'title', e.target.value)}
-                          placeholder="z.B. Website-Entwicklung"
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <Label className="text-xs">Menge</Label>
-                        <Input
-                          type="number"
-                          min={1}
-                          value={item.quantity}
-                          onChange={(e) => updateLineItem(item.id, 'quantity', parseInt(e.target.value) || 1)}
-                        />
-                      </div>
-                      <div className="col-span-2">
-                        <Label className="text-xs">Einheit</Label>
-                        <Select value={item.unit} onValueChange={(v) => updateLineItem(item.id, 'unit', v)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Stück">Stück</SelectItem>
-                            <SelectItem value="Stunden">Stunden</SelectItem>
-                            <SelectItem value="Tage">Tage</SelectItem>
-                            <SelectItem value="Monat">Monat</SelectItem>
-                            <SelectItem value="Pauschal">Pauschal</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="col-span-2">
-                        <Label className="text-xs">Einzelpreis (netto)</Label>
-                        <Input
-                          type="number"
-                          min={0}
-                          step={0.01}
-                          value={item.unit_price_net}
-                          onChange={(e) => updateLineItem(item.id, 'unit_price_net', parseFloat(e.target.value) || 0)}
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <Label className="text-xs">Rabatt %</Label>
-                        <Input
-                          type="number"
-                          min={0}
-                          max={100}
-                          value={item.discount_percent}
-                          onChange={(e) => updateLineItem(item.id, 'discount_percent', parseFloat(e.target.value) || 0)}
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeLineItem(item.id)}
-                          disabled={lineItems.length <= 1}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="mt-2 ml-12">
-                      <Input
-                        value={item.description}
-                        onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
-                        placeholder="Optionale Beschreibung der Position..."
-                        className="text-sm"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Totals */}
-          <div className="flex justify-end">
-            <Card className="w-80">
-              <CardContent className="p-4 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Zwischensumme:</span>
-                  <span>{formatCurrency(totals.subtotal)}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <div className="flex items-center gap-2">
-                    <span>Gesamtrabatt:</span>
+          {/* TAB 1: Kunde */}
+          <TabsContent value="kunde" className="space-y-6 mt-6">
+            {/* Ersteller / Mitarbeiter */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3 flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Erstellt von (Ansprechpartner DeutLicht)
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Name *</Label>
                     <Input
-                      type="number"
-                      min={0}
-                      max={100}
-                      value={formData.discount_percent}
-                      onChange={(e) => setFormData({ ...formData, discount_percent: parseFloat(e.target.value) || 0 })}
-                      className="w-16 h-7 text-right"
+                      value={creatorName}
+                      onChange={(e) => setCreatorName(e.target.value)}
+                      placeholder="Ihr Name"
                     />
-                    <span>%</span>
                   </div>
-                  <span className="text-red-500">-{formatCurrency(totals.discount)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-lg border-t pt-2">
-                  <span>Gesamt (netto):</span>
-                  <span className="text-primary">{formatCurrency(totals.total)}</span>
+                  <div>
+                    <Label>E-Mail</Label>
+                    <Input
+                      value={creatorEmail}
+                      onChange={(e) => setCreatorEmail(e.target.value)}
+                      placeholder="ihre@email.de"
+                      disabled
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Abbrechen
-            </Button>
-            <Button onClick={handleSubmit} disabled={isLoading}>
-              {isLoading ? 'Wird erstellt...' : 'Angebot erstellen'}
-            </Button>
-          </div>
-        </div>
+            {/* Kundenauswahl */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3">Kunde auswählen</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Aus Lead</Label>
+                    <Select 
+                      value={selectedLeadId || '_none'} 
+                      onValueChange={(v) => setSelectedLeadId(v === '_none' ? '' : v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Lead auswählen..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="_none">— Kein Lead —</SelectItem>
+                        {leads.map(l => (
+                          <SelectItem key={l.id} value={l.id}>
+                            {l.lead_number} - {l.company_name || [l.contact_first_name, l.contact_last_name].filter(Boolean).join(' ')}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Oder Bestandskunde</Label>
+                    <Select 
+                      value={selectedCompanyId || '_none'} 
+                      onValueChange={(v) => setSelectedCompanyId(v === '_none' ? '' : v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Firma auswählen..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="_none">— Keine Firma —</SelectItem>
+                        {companies.map(c => (
+                          <SelectItem key={c.id} value={c.id}>{c.company_name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Kundendaten (vorausgefüllt oder manuell) */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3">Kundendaten</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Firma *</Label>
+                    <Input
+                      name="company_name"
+                      value={formData.company_name}
+                      onChange={handleInputChange}
+                      placeholder="Firmenname"
+                    />
+                  </div>
+                  <div>
+                    <Label>Ansprechpartner</Label>
+                    <Input
+                      name="contact_person"
+                      value={formData.contact_person}
+                      onChange={handleInputChange}
+                      placeholder="Name des Ansprechpartners"
+                    />
+                  </div>
+                  <div>
+                    <Label>E-Mail</Label>
+                    <Input
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="email@firma.de"
+                    />
+                  </div>
+                  <div>
+                    <Label>Telefon</Label>
+                    <Input
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="+49..."
+                    />
+                  </div>
+                  <div>
+                    <Label>Branche</Label>
+                    <Select 
+                      value={formData.industry || '_none'} 
+                      onValueChange={(v) => setFormData(prev => ({ ...prev, industry: v === '_none' ? '' : v }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Branche wählen" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                        {INDUSTRIES.map(ind => (
+                          <SelectItem key={ind} value={ind}>{ind}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Unternehmensgröße</Label>
+                    <Select 
+                      value={formData.company_size} 
+                      onValueChange={(v) => setFormData(prev => ({ ...prev, company_size: v }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COMPANY_SIZES.map(size => (
+                          <SelectItem key={size.value} value={size.value}>{size.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-end">
+              <Button onClick={() => setCurrentTab('leistungen')}>
+                Weiter zu Leistungen →
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* TAB 2: Leistungen */}
+          <TabsContent value="leistungen" className="space-y-6 mt-6">
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-4">Gewünschte Leistungen auswählen</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {SERVICE_OPTIONS.map(service => (
+                    <label
+                      key={service}
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                        formData.services_selected.includes(service)
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <Checkbox
+                        checked={formData.services_selected.includes(service)}
+                        onCheckedChange={() => toggleService(service)}
+                      />
+                      <div className="flex items-center gap-2">
+                        {serviceIcons[service]}
+                        <span className="text-sm">{service}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Website-Details */}
+            {formData.services_selected.includes('Website & Digitale Plattformen') && (
+              <Card>
+                <CardContent className="p-4">
+                  <h4 className="font-medium mb-4 flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    Website-Konfiguration
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label>Website-Typ</Label>
+                      <Select 
+                        value={formData.website_type || '_none'} 
+                        onValueChange={(v) => setFormData(prev => ({ ...prev, website_type: v === '_none' ? '' : v }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Typ wählen" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                          <SelectItem value="landingpage_starter">Starter Landingpage (299€)</SelectItem>
+                          <SelectItem value="onepager">Onepager (ab 1.200€)</SelectItem>
+                          <SelectItem value="landingpage">Landingpage (ab 1.500€)</SelectItem>
+                          <SelectItem value="5-10">5-10 Seiten (ab 1.900€)</SelectItem>
+                          <SelectItem value="10-20">10-20 Seiten (ab 3.400€)</SelectItem>
+                          <SelectItem value="20-30">20-30 Seiten (ab 5.900€)</SelectItem>
+                          <SelectItem value=">30">&gt;30 Seiten (ab 7.900€)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {['5-10', '10-20', '20-30', '>30'].includes(formData.website_type) && (
+                      <div>
+                        <Label>Anzahl Seiten</Label>
+                        <Input
+                          name="website_pages_count"
+                          type="number"
+                          value={formData.website_pages_count}
+                          onChange={handleInputChange}
+                          placeholder="z.B. 8"
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <Label>Hosting</Label>
+                      <Select 
+                        value={formData.hosting_type || '_none'} 
+                        onValueChange={(v) => setFormData(prev => ({ ...prev, hosting_type: v === '_none' ? '' : v }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Hosting-Paket" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="_none">— Kein Hosting —</SelectItem>
+                          {hostingPakete.map(h => (
+                            <SelectItem key={h.id} value={h.id}>{h.name} ({h.monatlich}€/Monat)</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Service-Vertrag</Label>
+                      <Select 
+                        value={formData.service_contract || '_none'} 
+                        onValueChange={(v) => setFormData(prev => ({ ...prev, service_contract: v === '_none' ? '' : v }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Service-Vertrag" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="_none">— Kein Service —</SelectItem>
+                          {serviceVertraege.map(s => (
+                            <SelectItem key={s.id} value={s.id}>{s.name} ({s.monatlich}€/Monat)</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <Label>Features</Label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                      {WEBSITE_FEATURES.map(feature => (
+                        <label key={feature} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox
+                            checked={formData.website_features.includes(feature)}
+                            onCheckedChange={() => setFormData(prev => ({
+                              ...prev,
+                              website_features: prev.website_features.includes(feature)
+                                ? prev.website_features.filter(f => f !== feature)
+                                : [...prev.website_features, feature]
+                            }))}
+                          />
+                          {feature}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* SEO */}
+            {formData.services_selected.includes('SEO & Sichtbarkeit') && (
+              <Card>
+                <CardContent className="p-4">
+                  <h4 className="font-medium mb-4 flex items-center gap-2">
+                    <Search className="h-4 w-4" />
+                    SEO-Paket
+                  </h4>
+                  <Select 
+                    value={formData.seo_package || '_none'} 
+                    onValueChange={(v) => setFormData(prev => ({ ...prev, seo_package: v === '_none' ? '' : v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="SEO-Paket wählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                      {seoPakete.map(p => (
+                        <SelectItem key={p.id} value={p.id}>
+                          {p.name} {p.monthly > 0 ? `(${p.monthly}€/Monat)` : `(${p.setup}€ Setup)`}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* KI-Agenten */}
+            {formData.services_selected.includes('KI-Agenten & Automation') && (
+              <Card>
+                <CardContent className="p-4">
+                  <h4 className="font-medium mb-4 flex items-center gap-2">
+                    <Bot className="h-4 w-4" />
+                    KI-Agent
+                  </h4>
+                  <Select 
+                    value={formData.ki_type || '_none'} 
+                    onValueChange={(v) => setFormData(prev => ({ ...prev, ki_type: v === '_none' ? '' : v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="KI-Lösung wählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                      <SelectItem value="einfach">Einfacher Agent (Setup: {formatCurrency(kiAgentenPreise.einfach.setup)})</SelectItem>
+                      <SelectItem value="workflow">Workflow-Agent (Setup: {formatCurrency(kiAgentenPreise.workflow.setup)})</SelectItem>
+                      <SelectItem value="multi">Multi-Agent (Setup: {formatCurrency(kiAgentenPreise.multi.setup)})</SelectItem>
+                      <SelectItem value="branche">Branchenspezifisch (Preis nach Branche)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Voicebots */}
+            {formData.services_selected.includes('Voicebots / Sprachassistenz') && (
+              <Card>
+                <CardContent className="p-4">
+                  <h4 className="font-medium mb-4 flex items-center gap-2">
+                    <Phone className="h-4 w-4" />
+                    Voicebot
+                  </h4>
+                  <Select 
+                    value={formData.voice_type || '_none'} 
+                    onValueChange={(v) => setFormData(prev => ({ ...prev, voice_type: v === '_none' ? '' : v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Voicebot-Lösung wählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                      <SelectItem value="weiterleitung">Weiterleitung ({formatCurrency(voicebotPreise.weiterleitung)})</SelectItem>
+                      <SelectItem value="vorqualifizierung">Vorqualifizierung ({formatCurrency(voicebotPreise.vorqualifizierung)})</SelectItem>
+                      <SelectItem value="vollautomatisch">Vollautomatisch ({formatCurrency(voicebotPreise.vollautomatisch)})</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Social Media */}
+            {formData.services_selected.includes('Social Media Marketing') && (
+              <Card>
+                <CardContent className="p-4">
+                  <h4 className="font-medium mb-4 flex items-center gap-2">
+                    <Megaphone className="h-4 w-4" />
+                    Social Media
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {SOCIAL_PLATFORMS.map(platform => (
+                      <label key={platform} className="flex items-center gap-2 cursor-pointer">
+                        <Checkbox
+                          checked={formData.social_platforms.includes(platform)}
+                          onCheckedChange={() => setFormData(prev => ({
+                            ...prev,
+                            social_platforms: prev.social_platforms.includes(platform)
+                              ? prev.social_platforms.filter(p => p !== platform)
+                              : [...prev.social_platforms, platform]
+                          }))}
+                        />
+                        {platform}
+                      </label>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setCurrentTab('kunde')}>
+                ← Zurück
+              </Button>
+              <Button onClick={() => setCurrentTab('details')}>
+                Weiter zu Details →
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* TAB 3: Details */}
+          <TabsContent value="details" className="space-y-6 mt-6">
+            <Card>
+              <CardContent className="p-4 space-y-4">
+                <div>
+                  <Label>Angebots-Titel *</Label>
+                  <Input
+                    value={offerTitle}
+                    onChange={(e) => setOfferTitle(e.target.value)}
+                    placeholder="z.B. Website-Relaunch inkl. SEO"
+                  />
+                </div>
+                <div>
+                  <Label>Beschreibung / Einleitung</Label>
+                  <Textarea
+                    value={offerDescription}
+                    onChange={(e) => setOfferDescription(e.target.value)}
+                    placeholder="Optionale Einleitung für das Angebot..."
+                    rows={3}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Projektstart</Label>
+                    <Select 
+                      value={formData.project_start_timing || '_none'} 
+                      onValueChange={(v) => setFormData(prev => ({ ...prev, project_start_timing: v === '_none' ? '' : v }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Wann soll es losgehen?" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                        <SelectItem value="sofort">Sofortstart (innerhalb 7 Tage)</SelectItem>
+                        <SelectItem value="2wochen">In 2 Wochen</SelectItem>
+                        <SelectItem value="4wochen">In 4 Wochen</SelectItem>
+                        <SelectItem value="1-2monate">In 1-2 Monaten</SelectItem>
+                        <SelectItem value="6monate">Innerhalb 6 Monate</SelectItem>
+                        <SelectItem value="planung">Noch in Planung</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Gültigkeit (Tage)</Label>
+                    <Input
+                      type="number"
+                      min={7}
+                      max={90}
+                      value={validDays}
+                      onChange={(e) => setValidDays(parseInt(e.target.value) || 14)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Zusätzliche Notizen (intern)</Label>
+                  <Textarea
+                    name="additional_notes"
+                    value={formData.additional_notes}
+                    onChange={handleInputChange}
+                    placeholder="Interne Notizen zum Angebot..."
+                    rows={2}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setCurrentTab('leistungen')}>
+                ← Zurück
+              </Button>
+              <Button onClick={() => setCurrentTab('kalkulation')}>
+                Weiter zur Kalkulation →
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* TAB 4: Kalkulation */}
+          <TabsContent value="kalkulation" className="space-y-6 mt-6">
+            <Card>
+              <CardContent className="p-6">
+                <h4 className="font-medium mb-4 flex items-center gap-2">
+                  <Euro className="h-5 w-5" />
+                  Preisübersicht (intern)
+                </h4>
+
+                <div className="space-y-3 mb-6">
+                  {formData.services_selected.includes('Website & Digitale Plattformen') && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span>Website-Entwicklung</span>
+                      <div className="text-right">
+                        <span className="font-medium">{formatCurrency(calculateWebsitePrice().setup)}</span>
+                        {calculateWebsitePrice().monthly > 0 && (
+                          <span className="text-sm text-muted-foreground ml-2">+ {formatCurrency(calculateWebsitePrice().monthly)}/Monat</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {formData.services_selected.includes('SEO & Sichtbarkeit') && calculateSEOPrice().monthly > 0 && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span>SEO</span>
+                      <div className="text-right">
+                        <span className="font-medium">{formatCurrency(calculateSEOPrice().setup)}</span>
+                        <span className="text-sm text-muted-foreground ml-2">+ {formatCurrency(calculateSEOPrice().monthly)}/Monat</span>
+                      </div>
+                    </div>
+                  )}
+                  {formData.services_selected.includes('KI-Agenten & Automation') && calculateKIPrice().setup > 0 && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span>KI-Agent</span>
+                      <div className="text-right">
+                        <span className="font-medium">{formatCurrency(calculateKIPrice().setup)}</span>
+                        <span className="text-sm text-muted-foreground ml-2">+ {formatCurrency(calculateKIPrice().monthly)}/Monat</span>
+                      </div>
+                    </div>
+                  )}
+                  {formData.services_selected.includes('Voicebots / Sprachassistenz') && calculateVoicebotPrice().setup > 0 && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span>Voicebot</span>
+                      <div className="text-right">
+                        <span className="font-medium">{formatCurrency(calculateVoicebotPrice().setup)}</span>
+                        <span className="text-sm text-muted-foreground ml-2">+ {formatCurrency(calculateVoicebotPrice().monthly)}/Monat</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                  <div className="flex justify-between text-lg">
+                    <span>Einmalig (Setup):</span>
+                    <span className="font-bold">{formatCurrency(totals.setup)}</span>
+                  </div>
+                  <div className="flex justify-between text-lg">
+                    <span>Monatlich:</span>
+                    <span className="font-bold">{formatCurrency(totals.monthly)}</span>
+                  </div>
+                  <div className="flex justify-between text-xl border-t pt-2 mt-2">
+                    <span>Jahreswert (netto):</span>
+                    <span className="font-bold text-primary">{formatCurrency(totals.yearly)}</span>
+                  </div>
+                </div>
+
+                {formData.project_start_timing === 'sofort' && (
+                  <Badge className="mt-4" variant="secondary">
+                    ⚡ Expresszuschlag enthalten
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Zusammenfassung */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3">Zusammenfassung</h4>
+                <div className="text-sm text-muted-foreground space-y-1">
+                  <p><strong>Kunde:</strong> {formData.company_name || '—'}</p>
+                  <p><strong>Erstellt von:</strong> {creatorName || '—'}</p>
+                  <p><strong>Leistungen:</strong> {formData.services_selected.join(', ') || '—'}</p>
+                  <p><strong>Gültig:</strong> {validDays} Tage</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setCurrentTab('details')}>
+                ← Zurück
+              </Button>
+              <Button onClick={handleSubmit} disabled={isLoading} className="gap-2">
+                {isLoading ? 'Wird erstellt...' : (
+                  <>
+                    <FileText className="h-4 w-4" />
+                    Angebot erstellen
+                  </>
+                )}
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
