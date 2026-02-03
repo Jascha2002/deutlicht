@@ -2203,6 +2203,115 @@ export type Database = {
           },
         ]
       }
+      crm_orders: {
+        Row: {
+          actual_completion_date: string | null
+          amount_gross: number
+          amount_net: number
+          company_id: string | null
+          confirmation_pdf_url: string | null
+          confirmation_sent_at: string | null
+          created_at: string
+          created_by: string | null
+          customer_signature: string | null
+          customer_signed_at: string | null
+          customer_signed_ip: unknown
+          customer_signed_name: string | null
+          description: string | null
+          id: string
+          internal_notes: string | null
+          offer_id: string | null
+          order_date: string
+          order_number: string | null
+          project_id: string | null
+          start_date: string | null
+          status: string
+          target_completion_date: string | null
+          tax_amount: number
+          tax_rate: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_completion_date?: string | null
+          amount_gross?: number
+          amount_net?: number
+          company_id?: string | null
+          confirmation_pdf_url?: string | null
+          confirmation_sent_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_signature?: string | null
+          customer_signed_at?: string | null
+          customer_signed_ip?: unknown
+          customer_signed_name?: string | null
+          description?: string | null
+          id?: string
+          internal_notes?: string | null
+          offer_id?: string | null
+          order_date?: string
+          order_number?: string | null
+          project_id?: string | null
+          start_date?: string | null
+          status?: string
+          target_completion_date?: string | null
+          tax_amount?: number
+          tax_rate?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_completion_date?: string | null
+          amount_gross?: number
+          amount_net?: number
+          company_id?: string | null
+          confirmation_pdf_url?: string | null
+          confirmation_sent_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_signature?: string | null
+          customer_signed_at?: string | null
+          customer_signed_ip?: unknown
+          customer_signed_name?: string | null
+          description?: string | null
+          id?: string
+          internal_notes?: string | null
+          offer_id?: string | null
+          order_date?: string
+          order_number?: string | null
+          project_id?: string | null
+          start_date?: string | null
+          status?: string
+          target_completion_date?: string | null
+          tax_amount?: number
+          tax_rate?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_orders_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_orders_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_products: {
         Row: {
           category: Database["public"]["Enums"]["product_category"]
