@@ -13,8 +13,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from '@/components/ui/table';
 import { 
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
+import { 
   Search, Plus, FolderOpen, Building2, FileText, Receipt, 
-  BarChart3, Calendar, Euro, ArrowRight, Eye
+  BarChart3, Calendar, Euro, ArrowRight, Eye, Trash2, AlertTriangle
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -57,6 +60,7 @@ export function ProjectManagement() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<CrmProject | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
   const [newProject, setNewProject] = useState({
     title: '',
     description: '',
@@ -121,6 +125,35 @@ export function ProjectManagement() {
     } catch (error) {
       console.error('Error creating project:', error);
       toast({ title: 'Fehler', description: 'Projekt konnte nicht erstellt werden.', variant: 'destructive' });
+    }
+  };
+
+  const handleDeleteProject = async () => {
+    if (!deleteProjectId) return;
+    try {
+      // Delete related data first
+      await supabase.from('crm_orders').delete().eq('project_id', deleteProjectId);
+      await supabase.from('crm_offers').delete().eq('project_id', deleteProjectId);
+      await supabase.from('crm_invoices').delete().eq('project_id', deleteProjectId);
+      await supabase.from('crm_acceptance_protocols').delete().eq('project_id', deleteProjectId);
+      await supabase.from('crm_calendar_events').delete().eq('project_id', deleteProjectId);
+      
+      const { error } = await supabase.from('crm_projects').delete().eq('id', deleteProjectId);
+      if (error) throw error;
+      
+      toast({
+        title: 'Projekt gelöscht',
+        description: 'Das Projekt und alle zugehörigen Daten wurden entfernt.'
+      });
+      setDeleteProjectId(null);
+      loadProjects();
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Projekt konnte nicht gelöscht werden.',
+        variant: 'destructive'
+      });
     }
   };
 
@@ -332,9 +365,19 @@ export function ProjectManagement() {
                     {format(new Date(project.created_at), 'dd.MM.yyyy', { locale: de })}
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon" onClick={() => setSelectedProject(project)}>
-                      <Eye className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => setSelectedProject(project)}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="text-destructive hover:text-destructive"
+                        onClick={(e) => { e.stopPropagation(); setDeleteProjectId(project.id); }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
@@ -416,6 +459,27 @@ export function ProjectManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteProjectId} onOpenChange={(open) => !open && setDeleteProjectId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Projekt löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Das Projekt und alle zugehörigen Aufträge, Angebote, Rechnungen und Protokolle werden unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteProject} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

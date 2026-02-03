@@ -10,8 +10,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from '@/components/ui/table';
 import { 
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
+import { 
   Search, Plus, Receipt, CheckCircle, XCircle, Clock, 
-  AlertTriangle, Euro, Send, Eye
+  AlertTriangle, Euro, Send, Eye, Trash2
 } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -64,6 +67,7 @@ export function InvoiceManagement() {
   const [selectedInvoice, setSelectedInvoice] = useState<CrmInvoice | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [deleteInvoiceId, setDeleteInvoiceId] = useState<string | null>(null);
 
   useEffect(() => {
     loadInvoices();
@@ -123,6 +127,28 @@ export function InvoiceManagement() {
     setSelectedInvoice(null);
     setIsDetailOpen(false);
     setIsPaymentOpen(false);
+  };
+
+  const handleDeleteInvoice = async () => {
+    if (!deleteInvoiceId) return;
+    try {
+      const { error } = await supabase.from('crm_invoices').delete().eq('id', deleteInvoiceId);
+      if (error) throw error;
+      
+      toast({
+        title: 'Rechnung gelöscht',
+        description: 'Die Rechnung wurde entfernt.'
+      });
+      setDeleteInvoiceId(null);
+      loadInvoices();
+    } catch (error) {
+      console.error('Error deleting invoice:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Rechnung konnte nicht gelöscht werden.',
+        variant: 'destructive'
+      });
+    }
   };
 
   // Stats
@@ -301,16 +327,26 @@ export function InvoiceManagement() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenDetail(invoice);
-                        }}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenDetail(invoice);
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive hover:text-destructive"
+                          onClick={(e) => { e.stopPropagation(); setDeleteInvoiceId(invoice.id); }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -341,6 +377,27 @@ export function InvoiceManagement() {
         onOpenChange={setIsPaymentOpen}
         onSuccess={handleRefresh}
       />
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteInvoiceId} onOpenChange={(open) => !open && setDeleteInvoiceId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Rechnung löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Die Rechnung wird unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteInvoice} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

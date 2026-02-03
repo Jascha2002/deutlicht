@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Handshake, Check, X, Eye, Percent, ExternalLink, Building2, Mail, Phone, MapPin, Search, FileText } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Handshake, Check, X, Eye, Percent, ExternalLink, Building2, Mail, Phone, MapPin, Search, FileText, Trash2, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PartnerDetailDialog } from './PartnerDetailDialog';
 
@@ -70,6 +71,7 @@ export function PartnerManagement() {
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [newCommissionRate, setNewCommissionRate] = useState('');
+  const [deletePartnerId, setDeletePartnerId] = useState<string | null>(null);
 
   useEffect(() => {
     loadPartners();
@@ -197,6 +199,32 @@ export function PartnerManagement() {
   const openPartnerDetail = (partner: Partner) => {
     setSelectedPartner(partner);
     setDetailDialogOpen(true);
+  };
+
+  const handleDeletePartner = async () => {
+    if (!deletePartnerId) return;
+    try {
+      // Delete related data first
+      await supabase.from('partner_referrals').delete().eq('partner_id', deletePartnerId);
+      await supabase.from('partner_commissions').delete().eq('partner_id', deletePartnerId);
+      
+      const { error } = await supabase.from('partners').delete().eq('id', deletePartnerId);
+      if (error) throw error;
+      
+      toast({
+        title: 'Partner gelöscht',
+        description: 'Der Partner und alle zugehörigen Daten wurden entfernt.'
+      });
+      setDeletePartnerId(null);
+      await loadPartners();
+    } catch (error) {
+      console.error('Error deleting partner:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Partner konnte nicht gelöscht werden.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -514,6 +542,14 @@ export function PartnerManagement() {
                           </a>
                         </Button>
                       )}
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-8 w-8 text-destructive hover:text-destructive"
+                        onClick={() => setDeletePartnerId(partner.id)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
                   </td>
                 </tr>
@@ -540,6 +576,27 @@ export function PartnerManagement() {
           loadPartners();
         }}
       />
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deletePartnerId} onOpenChange={(open) => !open && setDeletePartnerId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Partner löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Der Partner und alle zugehörigen Daten (Vermittlungen, Provisionen) werden unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeletePartner} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
