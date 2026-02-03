@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Users, Plus, Trash2, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface UserWithRole {
@@ -18,6 +23,10 @@ export function UserManagement() {
   const { toast } = useToast();
   const [users, setUsers] = useState<UserWithRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', role: 'kunde' });
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     loadUsers();
@@ -87,6 +96,52 @@ export function UserManagement() {
     }
   };
 
+  const handleCreateUser = async () => {
+    if (!newUser.email || !newUser.password) {
+      toast({ title: 'Fehler', description: 'E-Mail und Passwort sind erforderlich.', variant: 'destructive' });
+      return;
+    }
+    if (newUser.password.length < 6) {
+      toast({ title: 'Fehler', description: 'Passwort muss mindestens 6 Zeichen haben.', variant: 'destructive' });
+      return;
+    }
+
+    setIsCreating(true);
+    try {
+      // Create user via Supabase Auth Admin (requires service role - this will only work if you have admin functions set up)
+      // For now, we'll show a message that this requires backend implementation
+      toast({
+        title: 'Hinweis',
+        description: 'Benutzer-Erstellung erfordert eine Edge Function mit Admin-Rechten. Bitte den Benutzer über die normale Registrierung anlegen lassen.',
+        variant: 'default'
+      });
+      setShowCreateDialog(false);
+      setNewUser({ email: '', password: '', full_name: '', role: 'kunde' });
+    } catch (error) {
+      console.error('Error creating user:', error);
+      toast({ title: 'Fehler', description: 'Benutzer konnte nicht erstellt werden.', variant: 'destructive' });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!deleteUserId) return;
+    try {
+      // Delete user roles first
+      await supabase.from('user_roles').delete().eq('user_id', deleteUserId);
+      // Delete profile
+      await supabase.from('profiles').delete().eq('user_id', deleteUserId);
+      
+      toast({ title: 'Benutzerprofil gelöscht', description: 'Das Profil wurde entfernt. Der Auth-Benutzer muss ggf. separat gelöscht werden.' });
+      setDeleteUserId(null);
+      await loadUsers();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({ title: 'Fehler', description: 'Benutzer konnte nicht gelöscht werden.', variant: 'destructive' });
+    }
+  };
+
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
@@ -115,7 +170,13 @@ export function UserManagement() {
           <Users className="w-5 h-5 text-accent" />
           <h2 className="text-lg font-semibold">Benutzerübersicht</h2>
         </div>
-        <span className="text-sm text-muted-foreground">{users.length} Benutzer</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">{users.length} Benutzer</span>
+          <Button size="sm" onClick={() => setShowCreateDialog(true)} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Benutzer anlegen
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -127,6 +188,7 @@ export function UserManagement() {
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktuelle Rolle</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Rolle ändern</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Registriert</th>
+              <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktionen</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -166,6 +228,16 @@ export function UserManagement() {
                 </td>
                 <td className="px-6 py-4 text-muted-foreground text-sm">
                   {new Date(user.created_at).toLocaleDateString('de-DE')}
+                </td>
+                <td className="px-6 py-4">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => setDeleteUserId(user.user_id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -214,6 +286,85 @@ export function UserManagement() {
           </p>
         </div>
       </div>
+
+      {/* Create User Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Neuen Benutzer anlegen</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label>Name</Label>
+              <Input
+                value={newUser.full_name}
+                onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
+                placeholder="Vollständiger Name"
+              />
+            </div>
+            <div>
+              <Label>E-Mail *</Label>
+              <Input
+                type="email"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                placeholder="email@beispiel.de"
+              />
+            </div>
+            <div>
+              <Label>Passwort *</Label>
+              <Input
+                type="password"
+                value={newUser.password}
+                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                placeholder="Mindestens 6 Zeichen"
+              />
+            </div>
+            <div>
+              <Label>Rolle</Label>
+              <Select value={newUser.role} onValueChange={(v) => setNewUser({ ...newUser, role: v })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
+                  <SelectItem value="kunde">Kunde</SelectItem>
+                  <SelectItem value="partner">Partner</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Abbrechen</Button>
+            <Button onClick={handleCreateUser} disabled={isCreating}>
+              {isCreating ? 'Erstelle...' : 'Benutzer erstellen'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteUserId} onOpenChange={(open) => !open && setDeleteUserId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Benutzer löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Das Profil und die Rolle dieses Benutzers werden gelöscht. 
+              Der Auth-Account muss ggf. separat im Backend entfernt werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -9,7 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Filter, Eye, Phone, Mail, Building2, Calendar, MessageSquare, RefreshCw, FolderOpen, ArrowRight } from 'lucide-react';
+import { Search, Filter, Eye, Phone, Mail, Building2, Calendar, MessageSquare, RefreshCw, FolderOpen, ArrowRight, Trash2, AlertTriangle } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import type { Database } from '@/integrations/supabase/types';
@@ -103,6 +104,7 @@ export function LeadManagement() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [activities, setActivities] = useState<LeadActivity[]>([]);
   const [newActivity, setNewActivity] = useState('');
+  const [deleteLeadId, setDeleteLeadId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -249,6 +251,28 @@ export function LeadManagement() {
       toast({
         title: 'Fehler',
         description: 'Notiz konnte nicht hinzugefügt werden.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleDeleteLead = async () => {
+    if (!deleteLeadId) return;
+    try {
+      // Delete activities first
+      await supabase.from('crm_lead_activities').delete().eq('lead_id', deleteLeadId);
+      // Delete lead
+      const { error } = await supabase.from('crm_leads').delete().eq('id', deleteLeadId);
+      if (error) throw error;
+
+      toast({ title: 'Lead gelöscht' });
+      setDeleteLeadId(null);
+      fetchLeads();
+    } catch (error) {
+      console.error('Error deleting lead:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Lead konnte nicht gelöscht werden.',
         variant: 'destructive',
       });
     }
@@ -402,12 +426,13 @@ export function LeadManagement() {
                         {format(new Date(lead.created_at), 'dd.MM.yyyy HH:mm', { locale: de })}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" size="sm" onClick={() => openLeadDetail(lead)}>
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                          </DialogTrigger>
+                        <div className="flex items-center justify-end gap-1">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" onClick={() => openLeadDetail(lead)}>
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </DialogTrigger>
                           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
                               <DialogTitle className="flex items-center gap-2">
@@ -533,6 +558,15 @@ export function LeadManagement() {
                             )}
                           </DialogContent>
                         </Dialog>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => setDeleteLeadId(lead.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -542,6 +576,27 @@ export function LeadManagement() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteLeadId} onOpenChange={(open) => !open && setDeleteLeadId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Lead löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie diesen Lead wirklich löschen? Alle zugehörigen Aktivitäten werden ebenfalls gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteLead} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

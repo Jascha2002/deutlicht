@@ -16,8 +16,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Search, Plus, FileText, FileCheck, FileX, Archive, 
-  Download, Eye, Send, Folder, File
+  Download, Eye, Send, Folder, File, Trash2, AlertTriangle
 } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 
@@ -83,6 +84,7 @@ export function DocumentManagement() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<CrmDocument | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [deleteDocId, setDeleteDocId] = useState<string | null>(null);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -193,6 +195,29 @@ export function DocumentManagement() {
       toast({
         title: 'Fehler',
         description: 'Status konnte nicht aktualisiert werden.',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleDeleteDocument = async () => {
+    if (!deleteDocId) return;
+    try {
+      const { error } = await supabase
+        .from('crm_documents')
+        .delete()
+        .eq('id', deleteDocId);
+
+      if (error) throw error;
+
+      toast({ title: 'Dokument gelöscht' });
+      setDeleteDocId(null);
+      loadDocuments();
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Dokument konnte nicht gelöscht werden.',
         variant: 'destructive'
       });
     }
@@ -410,9 +435,19 @@ export function DocumentManagement() {
                       {format(new Date(doc.created_at), 'dd.MM.yyyy', { locale: de })}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon">
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="icon">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive hover:text-destructive"
+                          onClick={(e) => { e.stopPropagation(); setDeleteDocId(doc.id); }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -606,6 +641,27 @@ export function DocumentManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteDocId} onOpenChange={(open) => !open && setDeleteDocId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Dokument löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie dieses Dokument wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteDocument} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
