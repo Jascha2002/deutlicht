@@ -1623,6 +1623,7 @@ export type Database = {
           is_indefinite: boolean | null
           modified_by: string | null
           notice_period_days: number | null
+          order_id: string | null
           payment_terms: string | null
           renewal_period_months: number | null
           signed_at: string | null
@@ -1651,6 +1652,7 @@ export type Database = {
           is_indefinite?: boolean | null
           modified_by?: string | null
           notice_period_days?: number | null
+          order_id?: string | null
           payment_terms?: string | null
           renewal_period_months?: number | null
           signed_at?: string | null
@@ -1679,6 +1681,7 @@ export type Database = {
           is_indefinite?: boolean | null
           modified_by?: string | null
           notice_period_days?: number | null
+          order_id?: string | null
           payment_terms?: string | null
           renewal_period_months?: number | null
           signed_at?: string | null
@@ -1704,6 +1707,150 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_contracts_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "crm_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_documents: {
+        Row: {
+          company_id: string | null
+          contract_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          document_number: string | null
+          document_type: string
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          internal_notes: string | null
+          invoice_id: string | null
+          offer_id: string | null
+          order_id: string | null
+          project_id: string | null
+          protocol_id: string | null
+          sent_at: string | null
+          sent_by: string | null
+          sent_to: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          company_id?: string | null
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          document_number?: string | null
+          document_type: string
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          internal_notes?: string | null
+          invoice_id?: string | null
+          offer_id?: string | null
+          order_id?: string | null
+          project_id?: string | null
+          protocol_id?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          sent_to?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          company_id?: string | null
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          document_number?: string | null
+          document_type?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          internal_notes?: string | null
+          invoice_id?: string | null
+          offer_id?: string | null
+          order_id?: string | null
+          project_id?: string | null
+          protocol_id?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          sent_to?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_documents_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "crm_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "crm_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_documents_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "crm_acceptance_protocols"
             referencedColumns: ["id"]
           },
         ]
@@ -1816,6 +1963,85 @@ export type Database = {
           },
         ]
       }
+      crm_invoice_items: {
+        Row: {
+          amount_gross: number
+          amount_net: number
+          created_at: string
+          description: string | null
+          discount_percent: number | null
+          id: string
+          invoice_id: string
+          order_item_id: string | null
+          position_number: number
+          product_id: string | null
+          quantity: number
+          tax_amount: number
+          tax_rate: number
+          title: string
+          unit: string | null
+          unit_price_net: number
+        }
+        Insert: {
+          amount_gross?: number
+          amount_net?: number
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          id?: string
+          invoice_id: string
+          order_item_id?: string | null
+          position_number?: number
+          product_id?: string | null
+          quantity?: number
+          tax_amount?: number
+          tax_rate?: number
+          title: string
+          unit?: string | null
+          unit_price_net?: number
+        }
+        Update: {
+          amount_gross?: number
+          amount_net?: number
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          id?: string
+          invoice_id?: string
+          order_item_id?: string | null
+          position_number?: number
+          product_id?: string | null
+          quantity?: number
+          tax_amount?: number
+          tax_rate?: number
+          title?: string
+          unit?: string | null
+          unit_price_net?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "crm_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoice_items_order_item_id_fkey"
+            columns: ["order_item_id"]
+            isOneToOne: false
+            referencedRelation: "crm_order_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoice_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "crm_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_invoices: {
         Row: {
           amount_gross: number | null
@@ -1838,6 +2064,7 @@ export type Database = {
           line_items: Json | null
           next_invoice_date: string | null
           offer_id: string | null
+          order_id: string | null
           paid_date: string | null
           payment_method: string | null
           payment_reference: string | null
@@ -1873,6 +2100,7 @@ export type Database = {
           line_items?: Json | null
           next_invoice_date?: string | null
           offer_id?: string | null
+          order_id?: string | null
           paid_date?: string | null
           payment_method?: string | null
           payment_reference?: string | null
@@ -1908,6 +2136,7 @@ export type Database = {
           line_items?: Json | null
           next_invoice_date?: string | null
           offer_id?: string | null
+          order_id?: string | null
           paid_date?: string | null
           payment_method?: string | null
           payment_reference?: string | null
@@ -1949,6 +2178,13 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "crm_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_invoices_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "crm_orders"
             referencedColumns: ["id"]
           },
           {

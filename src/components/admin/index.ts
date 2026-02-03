@@ -17,3 +17,6 @@ export { ReportManagement } from './ReportManagement';
 export { ProductManagement } from './ProductManagement';
 export { FollowupManagement } from './FollowupManagement';
 export { CalendarManagement } from './CalendarManagement';
+export { OrderManagement } from './OrderManagement';
+export { DocumentManagement } from './DocumentManagement';
+export { AcceptanceProtocolManagement } from './AcceptanceProtocolManagement';
