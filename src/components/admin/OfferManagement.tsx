@@ -12,10 +12,11 @@ import {
 } from '@/components/ui/table';
 import { 
   Search, FileText, Building2, CheckCircle, XCircle, Clock, 
-  Eye, Send, Euro, ExternalLink, Bell
+  Eye, Send, Euro, ExternalLink, Bell, Plus
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { OfferCreateDialog } from './offer/OfferCreateDialog';
 
 type OfferStatus = 'entwurf' | 'gesendet' | 'angesehen' | 'angenommen' | 'abgelehnt' | 'abgelaufen';
 
@@ -62,6 +63,7 @@ export function OfferManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOffer, setSelectedOffer] = useState<CrmOffer | null>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
 
   useEffect(() => {
     loadOffers();
@@ -258,6 +260,10 @@ export function OfferManagement() {
             </SelectContent>
           </Select>
         </div>
+        <Button onClick={() => setShowCreateDialog(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Neues Angebot
+        </Button>
       </div>
 
       {/* Table */}
@@ -436,6 +442,13 @@ export function OfferManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Create Dialog */}
+      <OfferCreateDialog 
+        open={showCreateDialog} 
+        onOpenChange={setShowCreateDialog} 
+        onSuccess={loadOffers} 
+      />
     </div>
   );
 }
