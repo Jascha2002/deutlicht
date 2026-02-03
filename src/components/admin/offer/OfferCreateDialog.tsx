@@ -239,12 +239,12 @@ export function OfferCreateDialog({ open, onOpenChange, onSuccess }: OfferCreate
 
             <div>
               <Label htmlFor="company">Firma</Label>
-              <Select value={formData.company_id} onValueChange={(v) => setFormData({ ...formData, company_id: v, lead_id: '' })}>
+              <Select value={formData.company_id || '_none'} onValueChange={(v) => setFormData({ ...formData, company_id: v === '_none' ? '' : v, lead_id: '' })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Firma auswählen..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Keine Firma</SelectItem>
+                  <SelectItem value="_none">Keine Firma</SelectItem>
                   {companies.map(c => (
                     <SelectItem key={c.id} value={c.id}>{c.company_name}</SelectItem>
                   ))}
@@ -254,12 +254,12 @@ export function OfferCreateDialog({ open, onOpenChange, onSuccess }: OfferCreate
 
             <div>
               <Label htmlFor="lead">Oder Lead</Label>
-              <Select value={formData.lead_id} onValueChange={(v) => setFormData({ ...formData, lead_id: v, company_id: '' })}>
+              <Select value={formData.lead_id || '_none'} onValueChange={(v) => setFormData({ ...formData, lead_id: v === '_none' ? '' : v, company_id: '' })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Lead auswählen..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Kein Lead</SelectItem>
+                  <SelectItem value="_none">Kein Lead</SelectItem>
                   {leads.map(l => (
                     <SelectItem key={l.id} value={l.id}>
                       {l.lead_number} - {l.company_name || [l.contact_first_name, l.contact_last_name].filter(Boolean).join(' ')}
@@ -271,12 +271,12 @@ export function OfferCreateDialog({ open, onOpenChange, onSuccess }: OfferCreate
 
             <div>
               <Label htmlFor="project">Projekt (optional)</Label>
-              <Select value={formData.project_id} onValueChange={(v) => setFormData({ ...formData, project_id: v })}>
+              <Select value={formData.project_id || '_none'} onValueChange={(v) => setFormData({ ...formData, project_id: v === '_none' ? '' : v })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Projekt zuordnen..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Kein Projekt</SelectItem>
+                  <SelectItem value="_none">Kein Projekt</SelectItem>
                   {projects.map(p => (
                     <SelectItem key={p.id} value={p.id}>
                       {p.project_number} - {p.title}
