@@ -12,8 +12,9 @@ import {
 } from '@/components/ui/table';
 import { 
   Search, FileText, Building2, CheckCircle, XCircle, Clock, 
-  Eye, Send, Euro, ExternalLink, Bell, Plus
+  Eye, Send, Euro, ExternalLink, Bell, Plus, Trash2, Edit, AlertTriangle
 } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { format, addDays } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { OfferCreateDialog } from './offer/OfferCreateDialog';
@@ -64,6 +65,8 @@ export function OfferManagement() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOffer, setSelectedOffer] = useState<CrmOffer | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [deleteOfferId, setDeleteOfferId] = useState<string | null>(null);
+  const [editOffer, setEditOffer] = useState<CrmOffer | null>(null);
 
   useEffect(() => {
     loadOffers();
@@ -142,6 +145,29 @@ export function OfferManagement() {
       toast({
         title: 'Fehler',
         description: 'Angebot konnte nicht gesendet werden.',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleDeleteOffer = async () => {
+    if (!deleteOfferId) return;
+    try {
+      const { error } = await supabase
+        .from('crm_offers')
+        .delete()
+        .eq('id', deleteOfferId);
+
+      if (error) throw error;
+
+      toast({ title: 'Angebot gelöscht' });
+      setDeleteOfferId(null);
+      loadOffers();
+    } catch (error) {
+      console.error('Error deleting offer:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Angebot konnte nicht gelöscht werden.',
         variant: 'destructive'
       });
     }
@@ -327,9 +353,16 @@ export function OfferManagement() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon" onClick={() => setSelectedOffer(offer)}>
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="icon" onClick={() => setSelectedOffer(offer)}>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        {offer.status === 'entwurf' && (
+                          <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={(e) => { e.stopPropagation(); setDeleteOfferId(offer.id); }}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -442,6 +475,27 @@ export function OfferManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteOfferId} onOpenChange={(open) => !open && setDeleteOfferId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Angebot löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Möchten Sie dieses Angebot wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteOffer} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Create Dialog */}
       <OfferCreateDialog 

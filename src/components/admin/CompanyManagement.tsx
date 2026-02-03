@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Plus, Building2, Eye, Edit, Globe, Phone, Mail, MapPin, RefreshCw } from 'lucide-react';
+import { Search, Plus, Building2, Eye, Edit, Globe, Phone, Mail, MapPin, RefreshCw, Trash2, AlertTriangle } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import type { Database } from '@/integrations/supabase/types';
 
 type TaxRegion = Database['public']['Enums']['tax_region'];
@@ -70,6 +71,7 @@ export function CompanyManagement() {
   const [isEditing, setIsEditing] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [formData, setFormData] = useState<Partial<Company>>({});
+  const [deleteCompanyId, setDeleteCompanyId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -181,6 +183,29 @@ export function CompanyManagement() {
     }
   };
 
+  const handleDeleteCompany = async () => {
+    if (!deleteCompanyId) return;
+    try {
+      const { error } = await supabase
+        .from('crm_companies')
+        .delete()
+        .eq('id', deleteCompanyId);
+
+      if (error) throw error;
+
+      toast({ title: 'Firma gelöscht' });
+      setDeleteCompanyId(null);
+      fetchCompanies();
+    } catch (error) {
+      console.error('Error deleting company:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Firma konnte nicht gelöscht werden. Möglicherweise gibt es verknüpfte Daten.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const filteredCompanies = companies.filter((company) => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -210,11 +235,12 @@ export function CompanyManagement() {
       </div>
       <div>
         <Label>Rechtsform</Label>
-        <Select value={formData.legal_form || ''} onValueChange={(v) => setFormData({ ...formData, legal_form: v })}>
+        <Select value={formData.legal_form || '_none'} onValueChange={(v) => setFormData({ ...formData, legal_form: v === '_none' ? '' : v })}>
           <SelectTrigger>
             <SelectValue placeholder="Auswählen" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="_none">— Keine —</SelectItem>
             <SelectItem value="GmbH">GmbH</SelectItem>
             <SelectItem value="UG">UG (haftungsbeschränkt)</SelectItem>
             <SelectItem value="AG">AG</SelectItem>
@@ -316,11 +342,12 @@ export function CompanyManagement() {
       </div>
       <div>
         <Label>Steuerregion</Label>
-        <Select value={formData.tax_region || ''} onValueChange={(v) => setFormData({ ...formData, tax_region: v as TaxRegion })}>
+        <Select value={formData.tax_region || '_none'} onValueChange={(v) => setFormData({ ...formData, tax_region: v === '_none' ? null : v as TaxRegion })}>
           <SelectTrigger>
             <SelectValue placeholder="Auswählen" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="_none">— Keine —</SelectItem>
             <SelectItem value="deutschland">Deutschland</SelectItem>
             <SelectItem value="eu">EU-Ausland</SelectItem>
             <SelectItem value="drittland">Drittland</SelectItem>
@@ -458,12 +485,13 @@ export function CompanyManagement() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" size="sm" onClick={() => openCompanyDetail(company)}>
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                          </DialogTrigger>
+                        <div className="flex items-center justify-end gap-1">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" onClick={() => openCompanyDetail(company)}>
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </DialogTrigger>
                           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
                               <DialogTitle className="flex items-center gap-2">
@@ -564,6 +592,32 @@ export function CompanyManagement() {
                             )}
                           </DialogContent>
                         </Dialog>
+                        <AlertDialog open={deleteCompanyId === company.id} onOpenChange={(open) => !open && setDeleteCompanyId(null)}>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setDeleteCompanyId(company.id)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="flex items-center gap-2">
+                                <AlertTriangle className="w-5 h-5 text-destructive" />
+                                Firma löschen?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Möchten Sie die Firma "{company.company_name}" wirklich löschen? 
+                                Diese Aktion kann nicht rückgängig gemacht werden.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                              <AlertDialogAction onClick={handleDeleteCompany} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Löschen
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
