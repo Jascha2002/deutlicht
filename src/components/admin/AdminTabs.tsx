@@ -1,7 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2,
-  FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell
+  FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell,
+  ClipboardList, Folder, ClipboardCheck
 } from "lucide-react";
 import { UserManagement } from "./UserManagement";
 import { PartnerManagement } from "./PartnerManagement";
@@ -17,6 +18,9 @@ import { ReportManagement } from "./ReportManagement";
 import { ProductManagement } from "./ProductManagement";
 import { FollowupManagement } from "./FollowupManagement";
 import { CalendarManagement } from "./CalendarManagement";
+import { OrderManagement } from "./OrderManagement";
+import { DocumentManagement } from "./DocumentManagement";
+import { AcceptanceProtocolManagement } from "./AcceptanceProtocolManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
@@ -38,9 +42,21 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
           <FileText className="w-4 h-4" />
           <span className="hidden sm:inline">Angebote</span>
         </TabsTrigger>
+        <TabsTrigger value="orders" className="gap-1 px-2 py-2 text-xs">
+          <ClipboardList className="w-4 h-4" />
+          <span className="hidden sm:inline">Aufträge</span>
+        </TabsTrigger>
         <TabsTrigger value="invoices" className="gap-1 px-2 py-2 text-xs">
           <Receipt className="w-4 h-4" />
           <span className="hidden sm:inline">Rechnungen</span>
+        </TabsTrigger>
+        <TabsTrigger value="acceptance" className="gap-1 px-2 py-2 text-xs">
+          <ClipboardCheck className="w-4 h-4" />
+          <span className="hidden sm:inline">Abnahmen</span>
+        </TabsTrigger>
+        <TabsTrigger value="documents" className="gap-1 px-2 py-2 text-xs">
+          <Folder className="w-4 h-4" />
+          <span className="hidden sm:inline">Dokumente</span>
         </TabsTrigger>
         <TabsTrigger value="followups" className="gap-1 px-2 py-2 text-xs">
           <Bell className="w-4 h-4" />
@@ -92,8 +108,20 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
         <OfferManagement />
       </TabsContent>
 
+      <TabsContent value="orders">
+        <OrderManagement />
+      </TabsContent>
+
       <TabsContent value="invoices">
         <InvoiceManagement />
+      </TabsContent>
+
+      <TabsContent value="acceptance">
+        <AcceptanceProtocolManagement />
+      </TabsContent>
+
+      <TabsContent value="documents">
+        <DocumentManagement />
       </TabsContent>
 
       <TabsContent value="followups">
