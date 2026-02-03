@@ -69,16 +69,17 @@ export function UserManagement() {
 
   const updateUserRole = async (userId: string, role: string) => {
     try {
-      await supabase
-        .from('user_roles')
-        .delete()
-        .eq('user_id', userId);
-
-      const { error } = await supabase
-        .from('user_roles')
-        .insert({ user_id: userId, role: role as any });
+      // Use SECURITY DEFINER function to bypass RLS
+      const { data, error } = await supabase.rpc('admin_manage_user_role', {
+        p_target_user_id: userId,
+        p_role: role,
+        p_action: 'replace'
+      });
 
       if (error) throw error;
+      
+      const result = data as { success: boolean; error?: string } | null;
+      if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
 
       toast({
         title: 'Rolle aktualisiert',
@@ -86,11 +87,11 @@ export function UserManagement() {
       });
 
       await loadUsers();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating role:', error);
       toast({
         title: 'Fehler',
-        description: 'Die Rolle konnte nicht aktualisiert werden.',
+        description: error.message || 'Die Rolle konnte nicht aktualisiert werden.',
         variant: 'destructive'
       });
     }
@@ -108,18 +109,40 @@ export function UserManagement() {
 
     setIsCreating(true);
     try {
-      // Create user via Supabase Auth Admin (requires service role - this will only work if you have admin functions set up)
-      // For now, we'll show a message that this requires backend implementation
-      toast({
-        title: 'Hinweis',
-        description: 'Benutzer-Erstellung erfordert eine Edge Function mit Admin-Rechten. Bitte den Benutzer über die normale Registrierung anlegen lassen.',
-        variant: 'default'
+      // Get current session for auth header
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Nicht angemeldet');
+      }
+
+      // Call Edge Function with admin privileges
+      const { data, error } = await supabase.functions.invoke('admin-create-user', {
+        body: {
+          email: newUser.email,
+          password: newUser.password,
+          full_name: newUser.full_name,
+          role: newUser.role
+        }
       });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: 'Benutzer erstellt',
+        description: `${newUser.email} wurde erfolgreich angelegt.`
+      });
+      
       setShowCreateDialog(false);
       setNewUser({ email: '', password: '', full_name: '', role: 'kunde' });
-    } catch (error) {
+      await loadUsers();
+    } catch (error: any) {
       console.error('Error creating user:', error);
-      toast({ title: 'Fehler', description: 'Benutzer konnte nicht erstellt werden.', variant: 'destructive' });
+      toast({ 
+        title: 'Fehler', 
+        description: error.message || 'Benutzer konnte nicht erstellt werden.', 
+        variant: 'destructive' 
+      });
     } finally {
       setIsCreating(false);
     }
@@ -128,17 +151,22 @@ export function UserManagement() {
   const handleDeleteUser = async () => {
     if (!deleteUserId) return;
     try {
-      // Delete user roles first
-      await supabase.from('user_roles').delete().eq('user_id', deleteUserId);
-      // Delete profile
-      await supabase.from('profiles').delete().eq('user_id', deleteUserId);
+      // Use SECURITY DEFINER function to bypass RLS
+      const { data, error } = await supabase.rpc('admin_delete_user', {
+        p_target_user_id: deleteUserId
+      });
       
-      toast({ title: 'Benutzerprofil gelöscht', description: 'Das Profil wurde entfernt. Der Auth-Benutzer muss ggf. separat gelöscht werden.' });
+      if (error) throw error;
+      
+      const result = data as { success: boolean; error?: string } | null;
+      if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
+      
+      toast({ title: 'Benutzerprofil gelöscht', description: 'Das Profil und die Rolle wurden entfernt.' });
       setDeleteUserId(null);
       await loadUsers();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting user:', error);
-      toast({ title: 'Fehler', description: 'Benutzer konnte nicht gelöscht werden.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: error.message || 'Benutzer konnte nicht gelöscht werden.', variant: 'destructive' });
     }
   };
 

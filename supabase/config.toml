@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.create-crm-lead]
 verify_jwt = false
+
+[functions.admin-create-user]
+verify_jwt = false

@@ -3963,6 +3963,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_user: { Args: { p_target_user_id: string }; Returns: Json }
+      admin_manage_user_role: {
+        Args: { p_action: string; p_role: string; p_target_user_id: string }
+        Returns: Json
+      }
       can_access_client: { Args: { _client_id: string }; Returns: boolean }
       can_access_resource: {
         Args: {
