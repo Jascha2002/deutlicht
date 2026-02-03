@@ -1033,6 +1033,121 @@ export type Database = {
           },
         ]
       }
+      crm_acceptance_protocols: {
+        Row: {
+          acceptance_date: string
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          customer_comments: string | null
+          customer_signature: string | null
+          customer_signed_at: string | null
+          customer_signed_name: string | null
+          customer_signed_position: string | null
+          defects_noted: string | null
+          description: string | null
+          follow_up_deadline: string | null
+          follow_up_required: boolean | null
+          id: string
+          internal_notes: string | null
+          items_accepted: Json | null
+          order_id: string | null
+          our_signature: string | null
+          our_signed_at: string | null
+          our_signed_name: string | null
+          overall_result: string | null
+          pdf_url: string | null
+          project_id: string | null
+          protocol_number: string | null
+          sent_at: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          acceptance_date?: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_comments?: string | null
+          customer_signature?: string | null
+          customer_signed_at?: string | null
+          customer_signed_name?: string | null
+          customer_signed_position?: string | null
+          defects_noted?: string | null
+          description?: string | null
+          follow_up_deadline?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          internal_notes?: string | null
+          items_accepted?: Json | null
+          order_id?: string | null
+          our_signature?: string | null
+          our_signed_at?: string | null
+          our_signed_name?: string | null
+          overall_result?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          protocol_number?: string | null
+          sent_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          acceptance_date?: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_comments?: string | null
+          customer_signature?: string | null
+          customer_signed_at?: string | null
+          customer_signed_name?: string | null
+          customer_signed_position?: string | null
+          defects_noted?: string | null
+          description?: string | null
+          follow_up_deadline?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          internal_notes?: string | null
+          items_accepted?: Json | null
+          order_id?: string | null
+          our_signature?: string | null
+          our_signed_at?: string | null
+          our_signed_name?: string | null
+          overall_result?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          protocol_number?: string | null
+          sent_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_acceptance_protocols_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_acceptance_protocols_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "crm_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_acceptance_protocols_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_calendar_events: {
         Row: {
           all_day: boolean | null
@@ -2199,6 +2314,75 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_order_items: {
+        Row: {
+          amount_net: number
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          discount_percent: number | null
+          id: string
+          order_id: string
+          position_number: number
+          product_id: string | null
+          quantity: number
+          status: string | null
+          tax_rate: number
+          title: string
+          unit: string | null
+          unit_price_net: number
+        }
+        Insert: {
+          amount_net?: number
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          id?: string
+          order_id: string
+          position_number?: number
+          product_id?: string | null
+          quantity?: number
+          status?: string | null
+          tax_rate?: number
+          title: string
+          unit?: string | null
+          unit_price_net?: number
+        }
+        Update: {
+          amount_net?: number
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          id?: string
+          order_id?: string
+          position_number?: number
+          product_id?: string | null
+          quantity?: number
+          status?: string | null
+          tax_rate?: number
+          title?: string
+          unit?: string | null
+          unit_price_net?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "crm_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "crm_products"
             referencedColumns: ["id"]
           },
         ]
