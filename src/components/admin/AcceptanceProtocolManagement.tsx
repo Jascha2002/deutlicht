@@ -15,8 +15,11 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { 
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
+import { 
   Search, Plus, ClipboardCheck, CheckCircle, XCircle, Clock, 
-  AlertTriangle, Eye, Send, FileCheck
+  AlertTriangle, Eye, Send, FileCheck, Trash2
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -68,6 +71,7 @@ export function AcceptanceProtocolManagement() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedProtocol, setSelectedProtocol] = useState<CrmAcceptanceProtocol | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [deleteProtocolId, setDeleteProtocolId] = useState<string | null>(null);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -216,6 +220,28 @@ export function AcceptanceProtocolManagement() {
       acceptance_date: new Date().toISOString().split('T')[0],
       internal_notes: ''
     });
+  };
+
+  const handleDeleteProtocol = async () => {
+    if (!deleteProtocolId) return;
+    try {
+      const { error } = await supabase.from('crm_acceptance_protocols').delete().eq('id', deleteProtocolId);
+      if (error) throw error;
+      
+      toast({
+        title: 'Protokoll gelöscht',
+        description: 'Das Abnahmeprotokoll wurde entfernt.'
+      });
+      setDeleteProtocolId(null);
+      loadProtocols();
+    } catch (error) {
+      console.error('Error deleting protocol:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Protokoll konnte nicht gelöscht werden.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const filteredProtocols = protocols.filter(protocol => {
@@ -377,9 +403,19 @@ export function AcceptanceProtocolManagement() {
                       {format(new Date(protocol.acceptance_date), 'dd.MM.yyyy', { locale: de })}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon">
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="icon">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive hover:text-destructive"
+                          onClick={(e) => { e.stopPropagation(); setDeleteProtocolId(protocol.id); }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -607,6 +643,27 @@ export function AcceptanceProtocolManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteProtocolId} onOpenChange={(open) => !open && setDeleteProtocolId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Abnahmeprotokoll löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Das Protokoll wird unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteProtocol} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -15,8 +15,11 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { 
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
+import { 
   Search, Plus, ClipboardList, CheckCircle, XCircle, Clock, 
-  PlayCircle, Euro, Eye, FileText, Send
+  PlayCircle, Euro, Eye, FileText, Send, Trash2, AlertTriangle
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -70,6 +73,7 @@ export function OrderManagement() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<CrmOrder | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -213,6 +217,32 @@ export function OrderManagement() {
       target_completion_date: '',
       internal_notes: ''
     });
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!deleteOrderId) return;
+    try {
+      // Delete related data first
+      await supabase.from('crm_acceptance_protocols').delete().eq('order_id', deleteOrderId);
+      await supabase.from('crm_invoices').delete().eq('order_id', deleteOrderId);
+      
+      const { error } = await supabase.from('crm_orders').delete().eq('id', deleteOrderId);
+      if (error) throw error;
+      
+      toast({
+        title: 'Auftrag gelöscht',
+        description: 'Der Auftrag und zugehörige Daten wurden entfernt.'
+      });
+      setDeleteOrderId(null);
+      loadOrders();
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Auftrag konnte nicht gelöscht werden.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const filteredOrders = orders.filter(order => {
@@ -392,9 +422,19 @@ export function OrderManagement() {
                       {format(new Date(order.order_date), 'dd.MM.yyyy', { locale: de })}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon">
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="icon">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive hover:text-destructive"
+                          onClick={(e) => { e.stopPropagation(); setDeleteOrderId(order.id); }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -636,6 +676,27 @@ export function OrderManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteOrderId} onOpenChange={(open) => !open && setDeleteOrderId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Auftrag löschen?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Der Auftrag und alle zugehörigen Abnahmeprotokolle und Rechnungen werden unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteOrder} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
