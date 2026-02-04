@@ -4013,6 +4013,7 @@ export type Database = {
         | "freelancer_drittland"
         | "lieferant"
         | "ki_agent"
+        | "produktion"
       company_role_type:
         | "kunde"
         | "partner"
@@ -4218,6 +4219,7 @@ export const Constants = {
         "freelancer_drittland",
         "lieferant",
         "ki_agent",
+        "produktion",
       ],
       company_role_type: [
         "kunde",
