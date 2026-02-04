@@ -1286,6 +1286,7 @@ export type Database = {
           phone: string | null
           phone_secondary: string | null
           postal_code: string | null
+          referred_by_partner_id: string | null
           state_province: string | null
           street: string | null
           street_number: string | null
@@ -1333,6 +1334,7 @@ export type Database = {
           phone?: string | null
           phone_secondary?: string | null
           postal_code?: string | null
+          referred_by_partner_id?: string | null
           state_province?: string | null
           street?: string | null
           street_number?: string | null
@@ -1380,6 +1382,7 @@ export type Database = {
           phone?: string | null
           phone_secondary?: string | null
           postal_code?: string | null
+          referred_by_partner_id?: string | null
           state_province?: string | null
           street?: string | null
           street_number?: string | null
@@ -1391,7 +1394,15 @@ export type Database = {
           vat_id?: string | null
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "crm_companies_referred_by_partner_id_fkey"
+            columns: ["referred_by_partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       crm_company_contacts: {
         Row: {
@@ -3096,6 +3107,72 @@ export type Database = {
           },
         ]
       }
+      customer_documents: {
+        Row: {
+          category: string | null
+          company_id: string | null
+          created_at: string | null
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          file_type: string | null
+          id: string
+          mime_type: string | null
+          project_id: string | null
+          status: string | null
+          updated_at: string | null
+          uploaded_by: string
+        }
+        Insert: {
+          category?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          mime_type?: string | null
+          project_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          uploaded_by: string
+        }
+        Update: {
+          category?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          mime_type?: string | null
+          project_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_documents_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_files: {
         Row: {
           created_at: string
@@ -3229,6 +3306,53 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_team_assignments: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string | null
+          company_id: string
+          created_at: string | null
+          id: string
+          is_primary: boolean | null
+          notes: string | null
+          role_in_team: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          company_id: string
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          notes?: string | null
+          role_in_team?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          company_id?: string
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          notes?: string | null
+          role_in_team?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_team_assignments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_permissions: {
         Row: {
           can_delete: boolean | null
@@ -3289,6 +3413,45 @@ export type Database = {
           user_id?: string | null
           valid_from?: string | null
           valid_until?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string | null
+          read_at: string | null
+          reference_id: string | null
+          reference_type: string | null
+          title: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          read_at?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          read_at?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title?: string
+          type?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -3500,6 +3663,7 @@ export type Database = {
           customer_user_id: string | null
           first_contact_date: string | null
           id: string
+          lead_id: string | null
           lifetime_value: number | null
           notes: string | null
           partner_id: string
@@ -3517,6 +3681,7 @@ export type Database = {
           customer_user_id?: string | null
           first_contact_date?: string | null
           id?: string
+          lead_id?: string | null
           lifetime_value?: number | null
           notes?: string | null
           partner_id: string
@@ -3534,6 +3699,7 @@ export type Database = {
           customer_user_id?: string | null
           first_contact_date?: string | null
           id?: string
+          lead_id?: string | null
           lifetime_value?: number | null
           notes?: string | null
           partner_id?: string
@@ -3543,6 +3709,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "partner_referrals_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "partner_referrals_partner_id_fkey"
             columns: ["partner_id"]

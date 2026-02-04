@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2,
   FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell,
   ClipboardList, Folder, ClipboardCheck
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { UserManagement } from "./UserManagement";
 import { PartnerManagement } from "./PartnerManagement";
 import { ReferralManagement } from "./ReferralManagement";
@@ -27,6 +29,34 @@ interface AdminTabsProps {
 }
 
 export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
+  const [currentUserRole, setCurrentUserRole] = useState<'admin' | 'mitarbeiter' | 'kunde' | 'partner' | 'produktion'>('admin');
+
+  useEffect(() => {
+    const loadUserRole = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id);
+
+      if (roles?.some(r => r.role === 'admin')) {
+        setCurrentUserRole('admin');
+      } else if (roles?.some(r => r.role === 'mitarbeiter')) {
+        setCurrentUserRole('mitarbeiter');
+      } else if (roles?.some(r => r.role === 'produktion')) {
+        setCurrentUserRole('produktion');
+      } else if (roles?.some(r => r.role === 'partner')) {
+        setCurrentUserRole('partner');
+      } else {
+        setCurrentUserRole('kunde');
+      }
+    };
+
+    loadUserRole();
+  }, []);
+
   return (
     <Tabs defaultValue={defaultTab} className="w-full">
       <TabsList className="flex flex-wrap justify-start mb-6 h-auto gap-1">
@@ -145,7 +175,7 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
       </TabsContent>
 
       <TabsContent value="users">
-        <UserManagement />
+        <UserManagement currentUserRole={currentUserRole} />
       </TabsContent>
 
       <TabsContent value="partners">

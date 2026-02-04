@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock, LogOut, User, Shield, BarChart3, Handshake } from 'lucide-react';
+import { Lock, LogOut, User, Shield, BarChart3, Handshake, FolderOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -11,11 +11,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
+import { NotificationBell } from '@/components/NotificationBell';
 
 const AuthLoginButton = () => {
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMitarbeiter, setIsMitarbeiter] = useState(false);
   const [isPartner, setIsPartner] = useState(false);
+  const [isKunde, setIsKunde] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -39,7 +42,9 @@ const AuthLoginButton = () => {
         }, 0);
       } else {
         setIsAdmin(false);
+        setIsMitarbeiter(false);
         setIsPartner(false);
+        setIsKunde(false);
       }
     });
 
@@ -54,7 +59,9 @@ const AuthLoginButton = () => {
         .eq('user_id', userId);
       
       setIsAdmin(data?.some(r => r.role === 'admin') || false);
+      setIsMitarbeiter(data?.some(r => r.role === 'mitarbeiter' || r.role === 'produktion') || false);
       setIsPartner(data?.some(r => r.role === 'partner') || false);
+      setIsKunde(data?.some(r => r.role === 'kunde') || false);
     } catch (error) {
       console.error('Error checking roles:', error);
     }
@@ -92,53 +99,76 @@ const AuthLoginButton = () => {
     );
   }
 
+  // Determine user role label
+  const getRoleLabel = () => {
+    if (isAdmin) return 'Administrator';
+    if (isMitarbeiter) return 'Mitarbeiter';
+    if (isPartner) return 'Partner';
+    if (isKunde) return 'Kunde';
+    return 'Benutzer';
+  };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          aria-label="Benutzermenü"
-        >
-          <User className="w-5 h-5" />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <div className="px-3 py-2 border-b border-border">
-          <p className="text-sm font-medium text-foreground truncate">
-            {user.email}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {isAdmin ? 'Administrator' : 'Benutzer'}
-          </p>
-        </div>
-        
-        <DropdownMenuItem onClick={() => navigate('/analyse')} className="cursor-pointer gap-2">
-          <BarChart3 className="w-4 h-4" />
-          Analyse Dashboard
-        </DropdownMenuItem>
-        
-        {isAdmin && (
-          <DropdownMenuItem onClick={() => navigate('/admin')} className="cursor-pointer gap-2">
-            <Shield className="w-4 h-4" />
-            Admin Dashboard
+    <div className="flex items-center gap-2">
+      {/* Notification Bell - only for logged in users */}
+      <NotificationBell />
+      
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            aria-label="Benutzermenü"
+          >
+            <User className="w-5 h-5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <div className="px-3 py-2 border-b border-border">
+            <p className="text-sm font-medium text-foreground truncate">
+              {user.email}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {getRoleLabel()}
+            </p>
+          </div>
+          
+          {(isAdmin || isMitarbeiter) && (
+            <DropdownMenuItem onClick={() => navigate('/analyse')} className="cursor-pointer gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Analyse Dashboard
+            </DropdownMenuItem>
+          )}
+          
+          {isAdmin && (
+            <DropdownMenuItem onClick={() => navigate('/admin')} className="cursor-pointer gap-2">
+              <Shield className="w-4 h-4" />
+              Admin Dashboard
+            </DropdownMenuItem>
+          )}
+          
+          {isPartner && (
+            <DropdownMenuItem onClick={() => navigate('/partner/dashboard')} className="cursor-pointer gap-2">
+              <Handshake className="w-4 h-4" />
+              Partner Dashboard
+            </DropdownMenuItem>
+          )}
+          
+          {isKunde && !isAdmin && !isMitarbeiter && (
+            <DropdownMenuItem onClick={() => navigate('/mein-bereich')} className="cursor-pointer gap-2">
+              <FolderOpen className="w-4 h-4" />
+              Mein Bereich
+            </DropdownMenuItem>
+          )}
+          
+          <DropdownMenuSeparator />
+          
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer gap-2 text-destructive focus:text-destructive">
+            <LogOut className="w-4 h-4" />
+            Abmelden
           </DropdownMenuItem>
-        )}
-        
-        {isPartner && (
-          <DropdownMenuItem onClick={() => navigate('/partner/dashboard')} className="cursor-pointer gap-2">
-            <Handshake className="w-4 h-4" />
-            Partner Dashboard
-          </DropdownMenuItem>
-        )}
-        
-        <DropdownMenuSeparator />
-        
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer gap-2 text-destructive focus:text-destructive">
-          <LogOut className="w-4 h-4" />
-          Abmelden
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
 
