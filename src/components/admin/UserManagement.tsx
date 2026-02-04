@@ -19,7 +19,11 @@ interface UserWithRole {
   created_at: string;
 }
 
-export function UserManagement() {
+interface UserManagementProps {
+  currentUserRole?: 'admin' | 'mitarbeiter' | 'kunde' | 'partner' | 'produktion';
+}
+
+export function UserManagement({ currentUserRole = 'admin' }: UserManagementProps) {
   const { toast } = useToast();
   const [users, setUsers] = useState<UserWithRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +31,12 @@ export function UserManagement() {
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', role: 'kunde' });
   const [isCreating, setIsCreating] = useState(false);
+  
+  // Mitarbeiter dürfen nur Kunden anlegen
+  const isAdmin = currentUserRole === 'admin';
+  const canCreateUsers = isAdmin || currentUserRole === 'mitarbeiter';
+  const canDeleteUsers = isAdmin;
+  const canChangeRoles = isAdmin;
 
   useEffect(() => {
     loadUsers();
@@ -200,10 +210,12 @@ export function UserManagement() {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{users.length} Benutzer</span>
-          <Button size="sm" onClick={() => setShowCreateDialog(true)} className="gap-2">
-            <Plus className="w-4 h-4" />
-            Benutzer anlegen
-          </Button>
+          {canCreateUsers && (
+            <Button size="sm" onClick={() => setShowCreateDialog(true)} className="gap-2">
+              <Plus className="w-4 h-4" />
+              Benutzer anlegen
+            </Button>
+          )}
         </div>
       </div>
 
@@ -239,33 +251,42 @@ export function UserManagement() {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <Select
-                    defaultValue={user.role}
-                    onValueChange={(value) => updateUserRole(user.user_id, value)}
-                  >
-                    <SelectTrigger className="w-[140px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
-                      <SelectItem value="kunde">Kunde</SelectItem>
-                      <SelectItem value="partner">Partner</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {canChangeRoles ? (
+                    <Select
+                      defaultValue={user.role}
+                      onValueChange={(value) => updateUserRole(user.user_id, value)}
+                    >
+                      <SelectTrigger className="w-[140px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
+                        <SelectItem value="produktion">Produktion</SelectItem>
+                        <SelectItem value="kunde">Kunde</SelectItem>
+                        <SelectItem value="partner">Partner</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">-</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 text-muted-foreground text-sm">
                   {new Date(user.created_at).toLocaleDateString('de-DE')}
                 </td>
                 <td className="px-6 py-4">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-destructive hover:text-destructive"
-                    onClick={() => setDeleteUserId(user.user_id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  {canDeleteUsers ? (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-destructive hover:text-destructive"
+                      onClick={() => setDeleteUserId(user.user_id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">-</span>
+                  )}
                 </td>
               </tr>
             ))}
@@ -355,10 +376,18 @@ export function UserManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
-                  <SelectItem value="kunde">Kunde</SelectItem>
-                  <SelectItem value="partner">Partner</SelectItem>
+                  {isAdmin ? (
+                    <>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
+                      <SelectItem value="produktion">Produktion</SelectItem>
+                      <SelectItem value="kunde">Kunde</SelectItem>
+                      <SelectItem value="partner">Partner</SelectItem>
+                    </>
+                  ) : (
+                    // Mitarbeiter können nur Kunden anlegen
+                    <SelectItem value="kunde">Kunde</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
