@@ -155,7 +155,6 @@ export function InvoiceCreateDialog({ open, onOpenChange, onSuccess }: InvoiceCr
         due_date: formData.due_date,
         amount_net: netTotal,
         tax_rate: formData.tax_rate,
-        tax_amount: taxAmount,
         amount_gross: grossTotal,
         amount_paid: 0,
         status: 'entwurf'
