@@ -36,8 +36,25 @@ import {
   voicebotPreise,
   COMPANY_SIZE_FACTORS,
   TIME_FACTORS,
-  formatCurrency
+  formatCurrency,
+  proHostingPakete
 } from '@/data/branchenPakete';
+
+// Shop-Systeme Optionen
+const SHOP_SYSTEMS = [
+  { id: 'woocommerce', name: 'WooCommerce (WordPress)' },
+  { id: 'shopify', name: 'Shopify' },
+  { id: 'shopware', name: 'Shopware' },
+  { id: 'magento', name: 'Magento' },
+  { id: 'prestashop', name: 'PrestaShop' },
+  { id: 'andere', name: 'Andere' }
+];
+
+const SHOP_PRODUCT_RANGES = [
+  { id: 'klein', name: 'Bis 100 Produkte', hosting: 'shop_klein' },
+  { id: 'mittel', name: '100-500 Produkte', hosting: 'shop_mittel' },
+  { id: 'gross', name: '500+ Produkte', hosting: 'shop_gross' }
+];
 
 interface Company {
   id: string;
@@ -253,10 +270,31 @@ export function OfferCreateDialog({
     if (formData.website_features.includes('Online-Terminbuchung')) basePrice += 600;
     if (formData.website_features.includes('Mitgliederbereich')) basePrice += 2500;
 
+    // Shop-Kosten
+    if (formData.shop_needed === 'ja') {
+      // Basis Shop-Setup je nach System
+      if (formData.shop_system === 'woocommerce') basePrice += 2500;
+      else if (formData.shop_system === 'shopify') basePrice += 1500;
+      else if (formData.shop_system === 'shopware') basePrice += 4000;
+      else if (formData.shop_system === 'magento') basePrice += 6000;
+      else if (formData.shop_system === 'prestashop') basePrice += 3000;
+      else if (formData.shop_system) basePrice += 2500; // Andere
+      
+      // Zusätzliche Kosten nach Produktanzahl
+      if (formData.shop_products === 'mittel') basePrice += 500;
+      else if (formData.shop_products === 'gross') basePrice += 1500;
+    }
+
     // Hosting
     if (formData.hosting_type) {
-      const hosting = hostingPakete.find(h => h.id === formData.hosting_type);
-      if (hosting) monthly += hosting.monatlich;
+      // Prüfe zuerst Pro-Hosting
+      const proHosting = proHostingPakete.find(h => h.id === formData.hosting_type);
+      if (proHosting) {
+        monthly += proHosting.monatlich;
+      } else {
+        const hosting = hostingPakete.find(h => h.id === formData.hosting_type);
+        if (hosting) monthly += hosting.monatlich;
+      }
     }
 
     // Service
@@ -797,6 +835,116 @@ export function OfferCreateDialog({
                       ))}
                     </div>
                   </div>
+
+                  {/* Shop-Optionen */}
+                  <div className="mt-6 pt-4 border-t">
+                    <Label className="text-base font-medium">Online-Shop benötigt?</Label>
+                    <div className="grid grid-cols-3 gap-2 mt-2">
+                      {['nein', 'ja'].map(option => (
+                        <label 
+                          key={option}
+                          className={`flex items-center justify-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                            formData.shop_needed === option 
+                              ? 'border-primary bg-primary/5' 
+                              : 'border-border hover:border-primary/50'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="shop_needed"
+                            value={option}
+                            checked={formData.shop_needed === option}
+                            onChange={(e) => setFormData(prev => ({ 
+                              ...prev, 
+                              shop_needed: e.target.value,
+                              // Reset shop fields when switching to "nein"
+                              ...(e.target.value === 'nein' ? { shop_system: '', shop_products: '' } : {})
+                            }))}
+                            className="sr-only"
+                          />
+                          <span className="capitalize">{option === 'ja' ? 'Ja, Shop benötigt' : 'Nein'}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Shop-Details wenn benötigt */}
+                  {formData.shop_needed === 'ja' && (
+                    <div className="grid grid-cols-2 gap-4 mt-4 p-4 bg-muted/30 rounded-lg">
+                      <div>
+                        <Label>Shop-System</Label>
+                        <Select 
+                          value={formData.shop_system || '_none'} 
+                          onValueChange={(v) => setFormData(prev => ({ ...prev, shop_system: v === '_none' ? '' : v }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Shop-System wählen" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                            {SHOP_SYSTEMS.map(sys => (
+                              <SelectItem key={sys.id} value={sys.id}>{sys.name}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Produktanzahl</Label>
+                        <Select 
+                          value={formData.shop_products || '_none'} 
+                          onValueChange={(v) => {
+                            const shopRange = SHOP_PRODUCT_RANGES.find(r => r.id === v);
+                            setFormData(prev => ({ 
+                              ...prev, 
+                              shop_products: v === '_none' ? '' : v,
+                              // Auto-select passenden Shop-Hosting-Plan
+                              hosting_type: shopRange ? shopRange.hosting : prev.hosting_type
+                            }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Produktanzahl wählen" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="_none">— Bitte wählen —</SelectItem>
+                            {SHOP_PRODUCT_RANGES.map(range => (
+                              <SelectItem key={range.id} value={range.id}>{range.name}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      {/* Pro-Shop-Server Option */}
+                      <div className="col-span-2 mt-2">
+                        <Label>Premium Shop-Hosting (optional)</Label>
+                        <div className="mt-2 p-3 border rounded-lg bg-background">
+                          <label className="flex items-start gap-3 cursor-pointer">
+                            <Checkbox
+                              checked={formData.hosting_type === 'pro_shop_server'}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setFormData(prev => ({ ...prev, hosting_type: 'pro_shop_server' }));
+                                } else {
+                                  // Zurück zum passenden Standard-Hosting
+                                  const shopRange = SHOP_PRODUCT_RANGES.find(r => r.id === formData.shop_products);
+                                  setFormData(prev => ({ 
+                                    ...prev, 
+                                    hosting_type: shopRange ? shopRange.hosting : '' 
+                                  }));
+                                }
+                              }}
+                            />
+                            <div>
+                              <span className="font-medium">Pro-Shop-Server</span>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {proHostingPakete[0].beschreibung} – {proHostingPakete[0].monatlich}€/Monat
+                              </p>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
