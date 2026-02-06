@@ -1277,6 +1277,7 @@ export type Database = {
           industry: string | null
           internal_notes: string | null
           is_active: boolean | null
+          is_reference_customer: boolean | null
           is_reverse_charge: boolean | null
           is_small_business: boolean | null
           legal_form: string | null
@@ -1286,6 +1287,7 @@ export type Database = {
           phone: string | null
           phone_secondary: string | null
           postal_code: string | null
+          reference_customer_notes: string | null
           referred_by_partner_id: string | null
           state_province: string | null
           street: string | null
@@ -1325,6 +1327,7 @@ export type Database = {
           industry?: string | null
           internal_notes?: string | null
           is_active?: boolean | null
+          is_reference_customer?: boolean | null
           is_reverse_charge?: boolean | null
           is_small_business?: boolean | null
           legal_form?: string | null
@@ -1334,6 +1337,7 @@ export type Database = {
           phone?: string | null
           phone_secondary?: string | null
           postal_code?: string | null
+          reference_customer_notes?: string | null
           referred_by_partner_id?: string | null
           state_province?: string | null
           street?: string | null
@@ -1373,6 +1377,7 @@ export type Database = {
           industry?: string | null
           internal_notes?: string | null
           is_active?: boolean | null
+          is_reference_customer?: boolean | null
           is_reverse_charge?: boolean | null
           is_small_business?: boolean | null
           legal_form?: string | null
@@ -1382,6 +1387,7 @@ export type Database = {
           phone?: string | null
           phone_secondary?: string | null
           postal_code?: string | null
+          reference_customer_notes?: string | null
           referred_by_partner_id?: string | null
           state_province?: string | null
           street?: string | null
@@ -3938,6 +3944,66 @@ export type Database = {
         }
         Relationships: []
       }
+      project_assets: {
+        Row: {
+          category: string | null
+          company_id: string | null
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          file_type: string | null
+          id: string
+          metadata: Json | null
+          project_id: string
+          uploaded_at: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          category?: string | null
+          company_id?: string | null
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          metadata?: Json | null
+          project_id: string
+          uploaded_at?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          category?: string | null
+          company_id?: string | null
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          metadata?: Json | null
+          project_id?: string
+          uploaded_at?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_assets_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_assets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_leads: {
         Row: {
           additional_notes: string | null
@@ -4027,6 +4093,47 @@ export type Database = {
           website_type?: string | null
         }
         Relationships: []
+      }
+      project_team_assignments: {
+        Row: {
+          access_level: string | null
+          assigned_at: string | null
+          assigned_by: string | null
+          id: string
+          notes: string | null
+          project_id: string
+          role_in_project: string | null
+          user_id: string
+        }
+        Insert: {
+          access_level?: string | null
+          assigned_at?: string | null
+          assigned_by?: string | null
+          id?: string
+          notes?: string | null
+          project_id: string
+          role_in_project?: string | null
+          user_id: string
+        }
+        Update: {
+          access_level?: string | null
+          assigned_at?: string | null
+          assigned_by?: string | null
+          id?: string
+          notes?: string | null
+          project_id?: string
+          role_in_project?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_team_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crm_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       support_tickets: {
         Row: {
