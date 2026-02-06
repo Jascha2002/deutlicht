@@ -47,6 +47,7 @@ import Partner from "./pages/Partner";
 import PartnerAnmelden from "./pages/PartnerAnmelden";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import KundenDashboard from "./pages/KundenDashboard";
+import TeamDashboard from "./pages/TeamDashboard";
 import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
 
@@ -104,6 +105,8 @@ const App = () => (
               <Route path="/partner/dashboard" element={<PartnerDashboard />} />
               <Route path="/mein-bereich" element={<KundenDashboard />} />
               <Route path="/kunde" element={<KundenDashboard />} />
+              <Route path="/team" element={<TeamDashboard />} />
+              <Route path="/projekte-team" element={<TeamDashboard />} />
               <Route path="/sitemap" element={<Sitemap />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

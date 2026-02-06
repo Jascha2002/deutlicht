@@ -108,11 +108,19 @@ export function OfferCreateDialog({
   const [selectedCompanyId, setSelectedCompanyId] = useState('');
   const [selectedLeadId, setSelectedLeadId] = useState('');
 
+  // Referenzkunde
+  const [isReferenceCustomer, setIsReferenceCustomer] = useState(false);
+
   // Angebotsdaten (basierend auf AngebotsGenerator)
   const [formData, setFormData] = useState<OfferFormData>(initialFormData);
   const [validDays, setValidDays] = useState(14);
   const [offerTitle, setOfferTitle] = useState('');
   const [offerDescription, setOfferDescription] = useState('');
+
+  // Manuell editierbare Preise (überschreiben kalkulierte Werte)
+  const [manualSetupPrice, setManualSetupPrice] = useState<number | null>(null);
+  const [manualMonthlyPrice, setManualMonthlyPrice] = useState<number | null>(null);
+  const [priceEditMode, setPriceEditMode] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -343,7 +351,7 @@ export function OfferCreateDialog({
     return { setup: 0, monthly: 0 };
   };
 
-  const calculateTotalPrice = (): { setup: number; monthly: number; yearly: number } => {
+  const calculateTotalPrice = (): { setup: number; monthly: number; yearly: number; calculatedSetup: number; calculatedMonthly: number } => {
     let setup = 0;
     let monthly = 0;
 
@@ -368,7 +376,17 @@ export function OfferCreateDialog({
       monthly += voice.monthly;
     }
 
-    return { setup, monthly, yearly: setup + (monthly * 12) };
+    // Manuelle Preise überschreiben kalkulierte Werte
+    const finalSetup = manualSetupPrice !== null ? manualSetupPrice : setup;
+    const finalMonthly = manualMonthlyPrice !== null ? manualMonthlyPrice : monthly;
+
+    return { 
+      setup: finalSetup, 
+      monthly: finalMonthly, 
+      yearly: finalSetup + (finalMonthly * 12),
+      calculatedSetup: setup,
+      calculatedMonthly: monthly
+    };
   };
 
   const handleSubmit = async () => {
@@ -394,6 +412,9 @@ export function OfferCreateDialog({
       // Line Items aus den Leistungen generieren
       const lineItems = generateLineItems();
 
+      // Get current user for created_by
+      const { data: { user } } = await supabase.auth.getUser();
+
       const { error: offerError } = await supabase
         .from('crm_offers')
         .insert([{
@@ -405,17 +426,36 @@ export function OfferCreateDialog({
           amount_setup: totals.setup,
           amount_monthly: totals.monthly,
           amount_total: totals.yearly,
-          discount_percent: 0,
+          discount_percent: manualSetupPrice !== null || manualMonthlyPrice !== null 
+            ? Math.round(((totals.calculatedSetup + totals.calculatedMonthly * 12) - totals.yearly) / (totals.calculatedSetup + totals.calculatedMonthly * 12) * 100) 
+            : 0,
           valid_from: format(validFrom, 'yyyy-MM-dd'),
           valid_until: format(validUntil, 'yyyy-MM-dd'),
+          created_by: user?.id,
           line_items: JSON.parse(JSON.stringify({
             items: lineItems,
             creator: { name: creatorName, email: creatorEmail },
-            formData: formData
+            formData: formData,
+            isReferenceCustomer: isReferenceCustomer,
+            manualPricing: {
+              enabled: manualSetupPrice !== null || manualMonthlyPrice !== null,
+              calculatedSetup: totals.calculatedSetup,
+              calculatedMonthly: totals.calculatedMonthly,
+              finalSetup: totals.setup,
+              finalMonthly: totals.monthly
+            }
           }))
         }]);
 
       if (offerError) throw offerError;
+
+      // Update company as reference customer if marked
+      if (isReferenceCustomer && selectedCompanyId && selectedCompanyId !== '_none') {
+        await supabase
+          .from('crm_companies')
+          .update({ is_reference_customer: true })
+          .eq('id', selectedCompanyId);
+      }
 
       toast({ title: 'Erfolg', description: `Angebot "${offerTitle}" wurde erstellt.` });
       
@@ -425,6 +465,10 @@ export function OfferCreateDialog({
       setOfferDescription('');
       setSelectedCompanyId('');
       setSelectedLeadId('');
+      setIsReferenceCustomer(false);
+      setManualSetupPrice(null);
+      setManualMonthlyPrice(null);
+      setPriceEditMode(false);
       
       onSuccess();
       onOpenChange(false);
@@ -436,16 +480,105 @@ export function OfferCreateDialog({
     }
   };
 
+  // Detaillierte Produktbeschreibungen für die Angebotspositionen
+  const getWebsiteTypeLabel = (type: string): string => {
+    const labels: Record<string, string> = {
+      'landingpage_starter': 'Starter Landingpage – Eine kompakte, konversionsorientierte Seite für schnellen Online-Auftritt',
+      'onepager': 'Moderner Onepager – Kompakte Präsentation aller wichtigen Inhalte auf einer Seite mit ansprechendem Design',
+      'landingpage': 'Professionelle Landingpage – Zielgerichtete Seite für Kampagnen, Lead-Generierung oder Produktvorstellung',
+      '5-10': `Unternehmenswebsite (${formData.website_pages_count || '5-10'} Seiten) – Vollständige Webpräsenz mit individueller Gestaltung`,
+      '10-20': `Umfangreiche Website (${formData.website_pages_count || '10-20'} Seiten) – Erweiterte Webpräsenz mit umfassender Inhaltsstruktur`,
+      '20-30': `Große Webplattform (${formData.website_pages_count || '20-30'} Seiten) – Komplexe Website mit erweiterten Funktionen und Bereichen`,
+      '>30': `Enterprise Website (${formData.website_pages_count || '30+'} Seiten) – Umfassende digitale Plattform für größere Unternehmen`
+    };
+    return labels[type] || 'Individuelle Website nach Maß';
+  };
+
+  const getFeatureDescriptions = (): string => {
+    if (!formData.website_features.length) return '';
+    const featureLabels: Record<string, string> = {
+      'Lead-/Vertriebsfokus': 'Lead-Generierung & Conversion-Optimierung',
+      'Konfigurator': 'Interaktiver Produkt-/Leistungskonfigurator',
+      'ERP-Anbindung': 'Integration in Ihre Warenwirtschaft/ERP-System',
+      'Blog/News-Bereich': 'Redaktioneller Bereich für Aktuelles & Artikel',
+      'Mehrsprachigkeit': 'Multilinguale Website-Struktur',
+      'Online-Terminbuchung': 'Direkte Terminvereinbarung für Ihre Kunden',
+      'Mitgliederbereich': 'Geschützter Bereich für registrierte Nutzer'
+    };
+    return formData.website_features.map(f => featureLabels[f] || f).join('; ');
+  };
+
+  const getShopDescription = (): string => {
+    if (formData.shop_needed !== 'ja') return '';
+    const systems: Record<string, string> = {
+      'woocommerce': 'WooCommerce (WordPress)',
+      'shopify': 'Shopify',
+      'shopware': 'Shopware',
+      'magento': 'Magento',
+      'prestashop': 'PrestaShop'
+    };
+    const ranges: Record<string, string> = {
+      'klein': 'bis 100 Produkte',
+      'mittel': '100-500 Produkte',
+      'gross': '500+ Produkte'
+    };
+    return `Online-Shop mit ${systems[formData.shop_system] || 'Shop-System'} – ${ranges[formData.shop_products] || 'flexible Produktanzahl'}`;
+  };
+
+  const getSeoDescription = (): string => {
+    const seoLabels: Record<string, string> = {
+      'lokal': 'Lokales SEO-Paket – Optimierung für regionale Sichtbarkeit, Google My Business, lokale Keywords',
+      'standard': 'Standard SEO – Technische Optimierung, OnPage-SEO, Content-Strategie für Ihre Zielgruppe',
+      'premium': 'Premium SEO – Umfassende Suchmaschinenoptimierung mit Linkbuilding, Content-Marketing & Reporting',
+      'enterprise': 'Enterprise SEO – Ganzheitliche SEO-Strategie für maximale organische Reichweite'
+    };
+    return seoLabels[formData.seo_package] || 'Professionelle Suchmaschinenoptimierung';
+  };
+
+  const getKiDescription = (): string => {
+    const kiLabels: Record<string, string> = {
+      'einfach': 'KI-Assistent (Basis) – Intelligenter Chatbot für FAQ, Kundenanfragen und einfache Automatisierungen',
+      'workflow': 'Workflow-Agent – Automatisierung komplexer Prozesse mit KI-gestützter Entscheidungslogik',
+      'multi': 'Multi-Agent-System – Mehrere spezialisierte KI-Agenten für komplexe Geschäftsprozesse',
+      'branche': `Branchenspezifischer KI-Agent – Maßgeschneiderte Lösung für Ihre Branche (${formData.ki_branche || 'individuell'})`
+    };
+    return kiLabels[formData.ki_type] || 'KI-gestützte Automatisierung nach Maß';
+  };
+
+  const getVoicebotDescription = (): string => {
+    const voiceLabels: Record<string, string> = {
+      'weiterleitung': 'Voicebot Weiterleitung – Intelligente Anrufannahme mit automatischer Weiterleitung an zuständige Mitarbeiter',
+      'vorqualifizierung': 'Voicebot mit Vorqualifizierung – Erfassung von Anliegen und Kundendaten vor der Weiterleitung',
+      'vollautomatisch': 'Vollautomatischer Voicebot – Eigenständige Bearbeitung von Anfragen, Terminbuchungen und Auskünften'
+    };
+    return voiceLabels[formData.voice_type] || 'Sprachgesteuerter Assistent für Ihre Telefonzentrale';
+  };
+
   const generateLineItems = () => {
     const items: Array<{ position: number; title: string; description: string; setup: number; monthly: number }> = [];
     let pos = 1;
 
     if (formData.services_selected.includes('Website & Digitale Plattformen')) {
       const web = calculateWebsitePrice();
+      const featureDesc = getFeatureDescriptions();
+      const shopDesc = getShopDescription();
+      
+      let description = getWebsiteTypeLabel(formData.website_type);
+      if (featureDesc) description += `\n\nInkl. Features: ${featureDesc}`;
+      if (shopDesc) description += `\n\n${shopDesc}`;
+      if (formData.hosting_type) {
+        const hosting = hostingPakete.find(h => h.id === formData.hosting_type) || proHostingPakete.find(h => h.id === formData.hosting_type);
+        if (hosting) description += `\n\nHosting: ${hosting.name}`;
+      }
+      if (formData.service_contract) {
+        const service = serviceVertraege.find(s => s.id === formData.service_contract);
+        if (service) description += `\nService-Vertrag: ${service.name}`;
+      }
+
       items.push({
         position: pos++,
-        title: 'Website-Entwicklung',
-        description: `${formData.website_type || 'Individuelle Website'}, ${formData.website_features.join(', ') || 'Standard-Features'}`,
+        title: 'Website-Entwicklung & Digitale Plattform',
+        description,
         setup: web.setup,
         monthly: web.monthly
       });
@@ -455,8 +588,8 @@ export function OfferCreateDialog({
       const seo = calculateSEOPrice();
       items.push({
         position: pos++,
-        title: 'SEO-Optimierung',
-        description: formData.seo_package || 'SEO-Paket',
+        title: 'Suchmaschinenoptimierung (SEO)',
+        description: getSeoDescription(),
         setup: seo.setup,
         monthly: seo.monthly
       });
@@ -466,8 +599,8 @@ export function OfferCreateDialog({
       const ki = calculateKIPrice();
       items.push({
         position: pos++,
-        title: 'KI-Agenten',
-        description: formData.ki_type || 'KI-Lösung',
+        title: 'KI-Agenten & Intelligente Automation',
+        description: getKiDescription(),
         setup: ki.setup,
         monthly: ki.monthly
       });
@@ -477,8 +610,8 @@ export function OfferCreateDialog({
       const voice = calculateVoicebotPrice();
       items.push({
         position: pos++,
-        title: 'Voicebot',
-        description: formData.voice_type || 'Sprachassistent',
+        title: 'Voicebot / Telefonassistent',
+        description: getVoicebotDescription(),
         setup: voice.setup,
         monthly: voice.monthly
       });
@@ -488,17 +621,30 @@ export function OfferCreateDialog({
       items.push({
         position: pos++,
         title: 'Social Media Marketing',
-        description: `Plattformen: ${formData.social_platforms.join(', ') || 'Nach Vereinbarung'}`,
+        description: `Professionelle Betreuung Ihrer Social-Media-Kanäle: ${formData.social_platforms.join(', ') || 'Plattformen nach Vereinbarung'}. Regelmäßige Content-Erstellung, Community-Management und Performance-Reporting.`,
         setup: 0,
         monthly: 0
       });
     }
 
     if (formData.services_selected.includes('Beratung & Schulung')) {
+      const topics = formData.beratung_topics.length > 0 
+        ? formData.beratung_topics.join(', ') 
+        : 'nach individueller Absprache';
       items.push({
         position: pos++,
         title: 'Beratung & Schulung',
-        description: formData.beratung_topics.join(', ') || 'Individuelle Beratung',
+        description: `Individuelle Beratung und Schulungsmaßnahmen für Ihr Team. Themen: ${topics}. Praxisnahe Vermittlung für nachhaltigen Wissenstransfer.`,
+        setup: 0,
+        monthly: 0
+      });
+    }
+
+    if (formData.services_selected.includes('Prozessoptimierung & Digitalstrategie')) {
+      items.push({
+        position: pos++,
+        title: 'Prozessoptimierung & Digitalstrategie',
+        description: 'Analyse Ihrer bestehenden Geschäftsprozesse und Entwicklung einer maßgeschneiderten Digitalisierungsstrategie. Identifikation von Automatisierungspotenzialen und Effizienzsteigerungen.',
         setup: 0,
         monthly: 0
       });
@@ -699,6 +845,22 @@ export function OfferCreateDialog({
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                {/* Referenzkunde Checkbox */}
+                <div className="mt-4 pt-4 border-t">
+                  <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors">
+                    <Checkbox
+                      checked={isReferenceCustomer}
+                      onCheckedChange={(checked) => setIsReferenceCustomer(!!checked)}
+                    />
+                    <div>
+                      <span className="font-medium text-primary">⭐ Referenzkunde</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Markieren Sie diesen Kunden als Referenzkunde für Sonderkonditionen
+                      </p>
+                    </div>
+                  </label>
                 </div>
               </CardContent>
             </Card>
@@ -1148,11 +1310,28 @@ export function OfferCreateDialog({
           <TabsContent value="kalkulation" className="space-y-6 mt-6">
             <Card>
               <CardContent className="p-6">
-                <h4 className="font-medium mb-4 flex items-center gap-2">
-                  <Euro className="h-5 w-5" />
-                  Preisübersicht (intern)
-                </h4>
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Euro className="h-5 w-5" />
+                    Preisübersicht {isReferenceCustomer && <Badge variant="outline" className="text-primary">⭐ Referenzkunde</Badge>}
+                  </h4>
+                  <Button 
+                    variant={priceEditMode ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      if (priceEditMode) {
+                        // Beim Deaktivieren: Preise zurücksetzen auf kalkulierte Werte
+                        setManualSetupPrice(null);
+                        setManualMonthlyPrice(null);
+                      }
+                      setPriceEditMode(!priceEditMode);
+                    }}
+                  >
+                    {priceEditMode ? 'Automatisch berechnen' : '✏️ Preise manuell anpassen'}
+                  </Button>
+                </div>
 
+                {/* Kalkulierte Positionen */}
                 <div className="space-y-3 mb-6">
                   {formData.services_selected.includes('Website & Digitale Plattformen') && (
                     <div className="flex justify-between py-2 border-b">
@@ -1194,22 +1373,81 @@ export function OfferCreateDialog({
                   )}
                 </div>
 
-                <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                  <div className="flex justify-between text-lg">
-                    <span>Einmalig (Setup):</span>
-                    <span className="font-bold">{formatCurrency(totals.setup)}</span>
+                {/* Editierbare Preise */}
+                {priceEditMode ? (
+                  <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 space-y-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200 flex items-center gap-2">
+                      <span>⚠️</span>
+                      Manuelle Preisanpassung aktiv – Kalkulierte Werte werden überschrieben
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Einmalpreis (Setup) €</Label>
+                        <Input
+                          type="number"
+                          value={manualSetupPrice ?? totals.calculatedSetup}
+                          onChange={(e) => setManualSetupPrice(parseFloat(e.target.value) || 0)}
+                          className="bg-background"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Kalkuliert: {formatCurrency(totals.calculatedSetup)}
+                        </p>
+                      </div>
+                      <div>
+                        <Label>Monatspreis €</Label>
+                        <Input
+                          type="number"
+                          value={manualMonthlyPrice ?? totals.calculatedMonthly}
+                          onChange={(e) => setManualMonthlyPrice(parseFloat(e.target.value) || 0)}
+                          className="bg-background"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Kalkuliert: {formatCurrency(totals.calculatedMonthly)}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-lg">
-                    <span>Monatlich:</span>
-                    <span className="font-bold">{formatCurrency(totals.monthly)}</span>
+                ) : (
+                  <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                    <div className="flex justify-between text-lg">
+                      <span>Einmalig (Setup):</span>
+                      <span className="font-bold">{formatCurrency(totals.setup)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg">
+                      <span>Monatlich:</span>
+                      <span className="font-bold">{formatCurrency(totals.monthly)}</span>
+                    </div>
+                    <div className="flex justify-between text-xl border-t pt-2 mt-2">
+                      <span>Jahreswert (netto):</span>
+                      <span className="font-bold text-primary">{formatCurrency(totals.yearly)}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-xl border-t pt-2 mt-2">
-                    <span>Jahreswert (netto):</span>
-                    <span className="font-bold text-primary">{formatCurrency(totals.yearly)}</span>
-                  </div>
-                </div>
+                )}
 
-                {formData.project_start_timing === 'sofort' && (
+                {/* Manuelle Preisübersicht wenn aktiv */}
+                {priceEditMode && (
+                  <div className="bg-muted/50 rounded-lg p-4 space-y-2 mt-4">
+                    <div className="flex justify-between text-lg">
+                      <span>Angebotspreis Einmalig:</span>
+                      <span className="font-bold">{formatCurrency(totals.setup)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg">
+                      <span>Angebotspreis Monatlich:</span>
+                      <span className="font-bold">{formatCurrency(totals.monthly)}</span>
+                    </div>
+                    <div className="flex justify-between text-xl border-t pt-2 mt-2">
+                      <span>Jahreswert (netto):</span>
+                      <span className="font-bold text-primary">{formatCurrency(totals.yearly)}</span>
+                    </div>
+                    {(manualSetupPrice !== null || manualMonthlyPrice !== null) && (
+                      <p className="text-xs text-amber-600 mt-2">
+                        💰 Rabatt: {formatCurrency((totals.calculatedSetup + totals.calculatedMonthly * 12) - totals.yearly)} Ersparnis für den Kunden
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {formData.project_start_timing === 'sofort' && !priceEditMode && (
                   <Badge className="mt-4" variant="secondary">
                     ⚡ Expresszuschlag enthalten
                   </Badge>
@@ -1222,10 +1460,13 @@ export function OfferCreateDialog({
               <CardContent className="p-4">
                 <h4 className="font-medium mb-3">Zusammenfassung</h4>
                 <div className="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Kunde:</strong> {formData.company_name || '—'}</p>
+                  <p><strong>Kunde:</strong> {formData.company_name || '—'} {isReferenceCustomer && <Badge variant="outline" className="ml-2 text-xs">⭐ Referenzkunde</Badge>}</p>
                   <p><strong>Erstellt von:</strong> {creatorName || '—'}</p>
                   <p><strong>Leistungen:</strong> {formData.services_selected.join(', ') || '—'}</p>
                   <p><strong>Gültig:</strong> {validDays} Tage</p>
+                  {(manualSetupPrice !== null || manualMonthlyPrice !== null) && (
+                    <p className="text-amber-600"><strong>Hinweis:</strong> Manuelle Preisanpassung aktiv</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
