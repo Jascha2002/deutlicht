@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
+import { lazy, Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -47,6 +48,7 @@ import Partner from "./pages/Partner";
 import PartnerAnmelden from "./pages/PartnerAnmelden";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import KundenDashboard from "./pages/KundenDashboard";
+import ProduktionDashboard from "./pages/ProduktionDashboard";
 import TeamDashboard from "./pages/TeamDashboard";
 import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
@@ -107,6 +109,7 @@ const App = () => (
               <Route path="/kunde" element={<KundenDashboard />} />
               <Route path="/team" element={<TeamDashboard />} />
               <Route path="/projekte-team" element={<TeamDashboard />} />
+              <Route path="/produktion" element={<ProduktionDashboard />} />
               <Route path="/sitemap" element={<Sitemap />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
