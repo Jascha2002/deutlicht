@@ -17,7 +17,7 @@ import {
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { format, addDays } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { OfferCreateDialog } from './offer/OfferCreateDialog';
+import { OfferCreateDialog, OfferDetailDialog } from './offer';
 
 type OfferStatus = 'entwurf' | 'gesendet' | 'angesehen' | 'angenommen' | 'abgelehnt' | 'abgelaufen';
 
@@ -373,108 +373,51 @@ export function OfferManagement() {
       </Card>
 
       {/* Detail Dialog */}
-      <Dialog open={!!selectedOffer} onOpenChange={() => setSelectedOffer(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          {selectedOffer && (
-            <>
-              <DialogHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <DialogTitle className="text-xl">{selectedOffer.title}</DialogTitle>
-                    <p className="text-muted-foreground">{selectedOffer.offer_number}</p>
-                  </div>
-                  <Badge className={statusConfig[selectedOffer.status]?.className}>
-                    {statusConfig[selectedOffer.status]?.label}
-                  </Badge>
-                </div>
-              </DialogHeader>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-primary">{formatCurrency(selectedOffer.amount_setup || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Einmalig</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-blue-500">{formatCurrency(selectedOffer.amount_monthly || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Monatlich</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <p className="text-2xl font-bold text-accent">{formatCurrency(selectedOffer.amount_total || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Jahreswert (netto)</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Kunde</p>
-                  <p className="font-medium">
-                    {selectedOffer.crm_companies?.company_name || selectedOffer.crm_leads?.company_name || '-'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Projekt</p>
-                  <p className="font-medium">
-                    {selectedOffer.crm_projects?.title || '-'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Gültig von - bis</p>
-                  <p className="font-medium">
-                    {format(new Date(selectedOffer.valid_from), 'dd.MM.yyyy', { locale: de })} - {format(new Date(selectedOffer.valid_until), 'dd.MM.yyyy', { locale: de })}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Rabatt</p>
-                  <p className="font-medium">
-                    {selectedOffer.discount_percent > 0 ? `${selectedOffer.discount_percent}%` : 'Kein Rabatt'}
-                  </p>
-                </div>
-              </div>
-
-              {selectedOffer.accepted_at && (
-                <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <p className="text-green-800 font-medium">
-                    ✓ Angenommen am {format(new Date(selectedOffer.accepted_at), 'dd.MM.yyyy HH:mm', { locale: de })}
-                    {selectedOffer.accepted_by && ` von ${selectedOffer.accepted_by}`}
-                  </p>
-                </div>
-              )}
-
-              <div className="flex gap-2 mt-6">
-                {selectedOffer.pdf_url && (
-                  <Button variant="outline" className="gap-2" asChild>
-                    <a href={selectedOffer.pdf_url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                      PDF öffnen
-                    </a>
-                  </Button>
-                )}
-                {selectedOffer.status === 'entwurf' && (
-                  <Button 
-                    className="gap-2"
-                    onClick={() => handleSendOffer(selectedOffer)}
-                  >
-                    <Send className="h-4 w-4" />
-                    Angebot senden
-                  </Button>
-                )}
-                {selectedOffer.status === 'gesendet' && (
-                  <Badge variant="outline" className="gap-1 py-2">
-                    <Bell className="h-3 w-3" />
-                    Wiedervorlage in 7 Tagen
-                  </Badge>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <OfferDetailDialog
+        offer={selectedOffer}
+        open={!!selectedOffer}
+        onOpenChange={(open) => !open && setSelectedOffer(null)}
+        onUpdate={() => {
+          loadOffers();
+          setSelectedOffer(null);
+        }}
+        onConvertToOrder={async (offerId) => {
+          try {
+            const offer = offers.find(o => o.id === offerId);
+            if (!offer) return;
+            
+            // Create order from offer
+            const { data: { user } } = await supabase.auth.getUser();
+            const { error } = await supabase.from('crm_orders').insert({
+              title: `Auftrag: ${offer.title}`,
+              description: offer.description,
+              company_id: offer.company_id,
+              lead_id: offer.lead_id,
+              offer_id: offerId,
+              status: 'bestaetigt',
+              amount_net: offer.amount_setup || 0,
+              amount_monthly: offer.amount_monthly || 0,
+              line_items: offer.line_items,
+              created_by: user?.id
+            });
+            
+            if (error) throw error;
+            
+            // Update offer with project reference
+            await supabase
+              .from('crm_offers')
+              .update({ status: 'angenommen' })
+              .eq('id', offerId);
+            
+            toast({ title: 'Auftrag erstellt', description: 'Das Angebot wurde in einen Auftrag umgewandelt.' });
+            loadOffers();
+            setSelectedOffer(null);
+          } catch (error) {
+            console.error('Error converting offer to order:', error);
+            toast({ title: 'Fehler', description: 'Auftrag konnte nicht erstellt werden.', variant: 'destructive' });
+          }
+        }}
+      />
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteOfferId} onOpenChange={(open) => !open && setDeleteOfferId(null)}>
