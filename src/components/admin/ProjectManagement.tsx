@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { ProjectDetailDialog } from './project';
 
 type ProjectStatus = 'planung' | 'aktiv' | 'pausiert' | 'abgeschlossen' | 'abgebrochen';
 
@@ -387,78 +388,15 @@ export function ProjectManagement() {
       </Card>
 
       {/* Detail Dialog */}
-      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          {selectedProject && (
-            <>
-              <DialogHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <DialogTitle className="text-xl">{selectedProject.title}</DialogTitle>
-                    <p className="text-muted-foreground">{selectedProject.project_number}</p>
-                  </div>
-                  <Badge className={statusConfig[selectedProject.status]?.className}>
-                    {statusConfig[selectedProject.status]?.label}
-                  </Badge>
-                </div>
-              </DialogHeader>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Euro className="h-6 w-6 mx-auto text-primary mb-2" />
-                    <p className="text-lg font-bold">{formatCurrency(selectedProject.budget_setup || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Budget Einmalig</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Calendar className="h-6 w-6 mx-auto text-blue-500 mb-2" />
-                    <p className="text-lg font-bold">{formatCurrency(selectedProject.budget_monthly || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Monatlich</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Receipt className="h-6 w-6 mx-auto text-green-500 mb-2" />
-                    <p className="text-lg font-bold">{formatCurrency(selectedProject.total_invoiced || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Abgerechnet</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <BarChart3 className="h-6 w-6 mx-auto text-accent mb-2" />
-                    <p className="text-lg font-bold">{formatCurrency(selectedProject.total_paid || 0)}</p>
-                    <p className="text-xs text-muted-foreground">Bezahlt</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {selectedProject.description && (
-                <div className="mt-4">
-                  <h4 className="font-medium mb-2">Beschreibung</h4>
-                  <p className="text-muted-foreground">{selectedProject.description}</p>
-                </div>
-              )}
-
-              <div className="flex gap-2 mt-6">
-                <Button variant="outline" className="gap-2">
-                  <FileText className="h-4 w-4" />
-                  Angebote anzeigen
-                </Button>
-                <Button variant="outline" className="gap-2">
-                  <Receipt className="h-4 w-4" />
-                  Rechnungen anzeigen
-                </Button>
-                <Button variant="outline" className="gap-2">
-                  <BarChart3 className="h-4 w-4" />
-                  Berichte anzeigen
-                </Button>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <ProjectDetailDialog
+        project={selectedProject}
+        open={!!selectedProject}
+        onOpenChange={(open) => !open && setSelectedProject(null)}
+        onUpdate={() => {
+          loadProjects();
+          setSelectedProject(null);
+        }}
+      />
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteProjectId} onOpenChange={(open) => !open && setDeleteProjectId(null)}>
