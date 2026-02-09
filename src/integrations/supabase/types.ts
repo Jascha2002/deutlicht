@@ -2657,6 +2657,7 @@ export type Database = {
           description: string | null
           id: string
           internal_notes: string | null
+          line_items: Json | null
           offer_id: string | null
           order_date: string
           order_number: string | null
@@ -2685,6 +2686,7 @@ export type Database = {
           description?: string | null
           id?: string
           internal_notes?: string | null
+          line_items?: Json | null
           offer_id?: string | null
           order_date?: string
           order_number?: string | null
@@ -2713,6 +2715,7 @@ export type Database = {
           description?: string | null
           id?: string
           internal_notes?: string | null
+          line_items?: Json | null
           offer_id?: string | null
           order_date?: string
           order_number?: string | null

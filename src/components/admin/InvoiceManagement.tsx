@@ -39,11 +39,14 @@ interface CrmInvoice {
   paid_date: string | null;
   reminder_count: number;
   pdf_url: string | null;
+  line_items?: unknown;
+  order_id?: string | null;
   created_at: string;
   company_id: string | null;
   project_id: string | null;
   crm_companies?: { company_name: string } | null;
   crm_projects?: { project_number: string; title: string } | null;
+  crm_orders?: { order_number: string; title: string } | null;
 }
 
 const statusConfig: Record<InvoiceStatus, { label: string; className: string; icon: typeof Receipt }> = {
@@ -81,7 +84,8 @@ export function InvoiceManagement() {
         .select(`
           *,
           crm_companies(company_name),
-          crm_projects(project_number, title)
+          crm_projects(project_number, title),
+          crm_orders(order_number, title)
         `)
         .order('created_at', { ascending: false });
 
@@ -264,9 +268,11 @@ export function InvoiceManagement() {
             <TableRow>
               <TableHead>Rechnung</TableHead>
               <TableHead>Kunde</TableHead>
+              <TableHead>Auftrag</TableHead>
+              <TableHead>Art</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Netto</TableHead>
               <TableHead className="text-right">Brutto</TableHead>
+              <TableHead className="text-right">Offen</TableHead>
               <TableHead>Fällig</TableHead>
               <TableHead className="w-[50px]"></TableHead>
             </TableRow>
@@ -274,13 +280,13 @@ export function InvoiceManagement() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
+                <TableCell colSpan={9} className="text-center py-8">
                   <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
                 </TableCell>
               </TableRow>
             ) : filteredInvoices.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                   Keine Rechnungen gefunden
                 </TableCell>
               </TableRow>
@@ -291,6 +297,7 @@ export function InvoiceManagement() {
                   ? differenceInDays(new Date(), new Date(invoice.due_date))
                   : 0;
                 const isOverdue = daysOverdue > 0;
+                const openAmount = (invoice.amount_gross || 0) - (invoice.amount_paid || 0);
                 
                 return (
                   <TableRow 
@@ -304,8 +311,14 @@ export function InvoiceManagement() {
                         <p className="text-sm text-muted-foreground">{invoice.invoice_number}</p>
                       </div>
                     </TableCell>
+                    <TableCell>{invoice.crm_companies?.company_name || '-'}</TableCell>
                     <TableCell>
-                      {invoice.crm_companies?.company_name || '-'}
+                      {invoice.crm_orders ? (
+                        <span className="text-sm">{invoice.crm_orders.order_number}</span>
+                      ) : '-'}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">{invoice.invoice_type || 'Rechnung'}</Badge>
                     </TableCell>
                     <TableCell>
                       <Badge className={statusConfig[invoice.status]?.className}>
@@ -314,11 +327,9 @@ export function InvoiceManagement() {
                         {invoice.reminder_count > 0 && ` (${invoice.reminder_count})`}
                       </Badge>
                     </TableCell>
+                    <TableCell className="text-right font-medium">{formatCurrency(invoice.amount_gross || 0)}</TableCell>
                     <TableCell className="text-right">
-                      {formatCurrency(invoice.amount_net || 0)}
-                    </TableCell>
-                    <TableCell className="text-right font-medium">
-                      {formatCurrency(invoice.amount_gross || 0)}
+                      <span className={openAmount > 0 ? 'text-orange-600 font-medium' : 'text-green-600'}>{formatCurrency(openAmount)}</span>
                     </TableCell>
                     <TableCell>
                       <span className={isOverdue ? 'text-destructive font-medium' : ''}>
@@ -328,22 +339,10 @@ export function InvoiceManagement() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenDetail(invoice);
-                          }}
-                        >
+                        <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleOpenDetail(invoice); }}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-destructive hover:text-destructive"
-                          onClick={(e) => { e.stopPropagation(); setDeleteInvoiceId(invoice.id); }}
-                        >
+                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={(e) => { e.stopPropagation(); setDeleteInvoiceId(invoice.id); }}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
