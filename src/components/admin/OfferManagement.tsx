@@ -388,18 +388,20 @@ export function OfferManagement() {
             
             // Create order from offer
             const { data: { user } } = await supabase.auth.getUser();
+            const netAmount = (offer.amount_setup || 0) + (offer.amount_monthly || 0) * 12;
+            const taxRate = 19;
             const { error } = await supabase.from('crm_orders').insert({
               title: `Auftrag: ${offer.title}`,
               description: offer.description,
               company_id: offer.company_id,
-              lead_id: offer.lead_id,
               offer_id: offerId,
               status: 'bestaetigt',
-              amount_net: offer.amount_setup || 0,
-              amount_monthly: offer.amount_monthly || 0,
-              line_items: offer.line_items,
+              amount_net: netAmount,
+              tax_rate: taxRate,
+              amount_gross: netAmount * (1 + taxRate / 100),
+              line_items: offer.line_items as any,
               created_by: user?.id
-            });
+            } as any);
             
             if (error) throw error;
             
