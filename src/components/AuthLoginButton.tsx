@@ -110,8 +110,6 @@ const AuthLoginButton = () => {
 
   return (
     <div className="flex items-center gap-2">
-      {/* Notification Bell - only for logged in users */}
-      <NotificationBell />
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
