@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Shield, ArrowLeft } from 'lucide-react';
 import { AdminTabs } from '@/components/admin';
+import { NotificationBell } from '@/components/NotificationBell';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -97,6 +98,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
+            <NotificationBell />
           </div>
 
           {/* Admin Tabs */}
