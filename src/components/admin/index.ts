@@ -20,3 +20,4 @@ export { CalendarManagement } from './CalendarManagement';
 export { OrderManagement } from './OrderManagement';
 export { DocumentManagement } from './DocumentManagement';
 export { AcceptanceProtocolManagement } from './AcceptanceProtocolManagement';
+export { QuickEntryDialog } from './QuickEntryDialog';

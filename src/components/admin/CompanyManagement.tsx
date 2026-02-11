@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Plus, Building2, Eye, Edit, Globe, Phone, Mail, MapPin, RefreshCw, Trash2, AlertTriangle } from 'lucide-react';
+import { Search, Plus, Building2, Eye, Edit, Globe, Phone, Mail, MapPin, RefreshCw, Trash2, AlertTriangle, Zap } from 'lucide-react';
+import { QuickEntryDialog } from './QuickEntryDialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -54,6 +55,21 @@ const roleLabels: Record<string, string> = {
   freelancer_eu: 'Freelancer (EU)',
   freelancer_drittland: 'Freelancer (Drittland)',
   lieferant: 'Lieferant',
+};
+
+const contactTypeLabels: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
+  lead: { label: 'Lead', variant: 'secondary' },
+  interessent: { label: 'Interessent', variant: 'outline' },
+  kunde: { label: 'Kunde', variant: 'default' },
+};
+
+const sourceChannelLabels: Record<string, string> = {
+  website: '🌐 Website',
+  vertrieb: '🤝 Vertrieb',
+  partner: '🔗 Partner',
+  telefon: '📞 Telefon',
+  messe: '🎪 Messe',
+  empfehlung: '⭐ Empfehlung',
 };
 
 const taxRegionLabels: Record<TaxRegion, string> = {
@@ -386,11 +402,12 @@ export function CompanyManagement() {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Aktualisieren
               </Button>
+              <QuickEntryDialog onCompanyCreated={() => fetchCompanies()} />
               <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                 <DialogTrigger asChild>
-                  <Button size="sm" onClick={() => setFormData({})}>
+                  <Button size="sm" variant="outline" onClick={() => setFormData({})}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Neue Firma
+                    Erweitert
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
@@ -431,10 +448,11 @@ export function CompanyManagement() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Firma</TableHead>
+                     <TableHead>Firma</TableHead>
+                    <TableHead>Typ</TableHead>
                     <TableHead>Ort</TableHead>
                     <TableHead>Kontakt</TableHead>
-                    <TableHead>Region</TableHead>
+                    <TableHead>Kanal</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead className="text-right">Aktionen</TableHead>
                   </TableRow>
@@ -449,6 +467,13 @@ export function CompanyManagement() {
                             <div className="text-sm text-muted-foreground">{company.trade_name}</div>
                           )}
                         </div>
+                      </TableCell>
+                      <TableCell>
+                        {(company as any).contact_type && (
+                          <Badge variant={contactTypeLabels[(company as any).contact_type]?.variant || 'outline'}>
+                            {contactTypeLabels[(company as any).contact_type]?.label || (company as any).contact_type}
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell>
                         {company.city && (
@@ -475,9 +500,9 @@ export function CompanyManagement() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        {company.tax_region && (
-                          <Badge variant="outline">{taxRegionLabels[company.tax_region] || company.tax_region}</Badge>
-                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {sourceChannelLabels[(company as any).source_channel] || (company as any).source_channel || '-'}
+                        </span>
                       </TableCell>
                       <TableCell>
                         <Badge variant={company.is_active ? 'default' : 'secondary'}>
