@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Shield, ArrowLeft } from 'lucide-react';
-import { AdminTabs } from '@/components/admin';
+import { AdminTabs, QuickEntryDialog } from '@/components/admin';
 import { NotificationBell } from '@/components/NotificationBell';
 
 const AdminDashboard = () => {
@@ -98,7 +98,10 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-            <NotificationBell />
+            <div className="flex items-center gap-3">
+              <QuickEntryDialog />
+              <NotificationBell />
+            </div>
           </div>
 
           {/* Admin Tabs */}

@@ -1258,6 +1258,11 @@ export type Database = {
           bic: string | null
           city: string | null
           company_name: string
+          contact_person_email: string | null
+          contact_person_name: string | null
+          contact_person_phone: string | null
+          contact_person_position: string | null
+          contact_type: string
           country: string | null
           country_code: string | null
           created_at: string
@@ -1289,6 +1294,7 @@ export type Database = {
           postal_code: string | null
           reference_customer_notes: string | null
           referred_by_partner_id: string | null
+          source_channel: string
           state_province: string | null
           street: string | null
           street_number: string | null
@@ -1308,6 +1314,11 @@ export type Database = {
           bic?: string | null
           city?: string | null
           company_name: string
+          contact_person_email?: string | null
+          contact_person_name?: string | null
+          contact_person_phone?: string | null
+          contact_person_position?: string | null
+          contact_type?: string
           country?: string | null
           country_code?: string | null
           created_at?: string
@@ -1339,6 +1350,7 @@ export type Database = {
           postal_code?: string | null
           reference_customer_notes?: string | null
           referred_by_partner_id?: string | null
+          source_channel?: string
           state_province?: string | null
           street?: string | null
           street_number?: string | null
@@ -1358,6 +1370,11 @@ export type Database = {
           bic?: string | null
           city?: string | null
           company_name?: string
+          contact_person_email?: string | null
+          contact_person_name?: string | null
+          contact_person_phone?: string | null
+          contact_person_position?: string | null
+          contact_type?: string
           country?: string | null
           country_code?: string | null
           created_at?: string
@@ -1389,6 +1406,7 @@ export type Database = {
           postal_code?: string | null
           reference_customer_notes?: string | null
           referred_by_partner_id?: string | null
+          source_channel?: string
           state_province?: string | null
           street?: string | null
           street_number?: string | null
