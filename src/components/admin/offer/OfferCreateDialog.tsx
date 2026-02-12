@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, Trash2, Euro, Building2, User, FileText, Settings, Calculator,
-  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap
+  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap, Package
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import {
@@ -55,6 +55,20 @@ const SHOP_PRODUCT_RANGES = [
   { id: 'mittel', name: '100-500 Produkte', hosting: 'shop_mittel' },
   { id: 'gross', name: '500+ Produkte', hosting: 'shop_gross' }
 ];
+
+interface CatalogProduct {
+  id: string;
+  name: string;
+  category: string;
+  description: string | null;
+  price_setup: number;
+  price_monthly: number;
+  price_yearly: number;
+}
+
+interface SelectedCatalogProduct extends CatalogProduct {
+  quantity: number;
+}
 
 interface Company {
   id: string;
@@ -98,6 +112,8 @@ export function OfferCreateDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [catalogProducts, setCatalogProducts] = useState<CatalogProduct[]>([]);
+  const [selectedCatalogProducts, setSelectedCatalogProducts] = useState<SelectedCatalogProduct[]>([]);
   const [currentTab, setCurrentTab] = useState('kunde');
 
   // Mitarbeiter/Ersteller
@@ -215,13 +231,15 @@ export function OfferCreateDialog({
 
   const loadReferenceData = async () => {
     try {
-      const [companiesRes, leadsRes] = await Promise.all([
+      const [companiesRes, leadsRes, productsRes] = await Promise.all([
         supabase.from('crm_companies').select('id, company_name, industry, employee_count, email, phone').order('company_name'),
-        supabase.from('crm_leads').select('id, lead_number, company_name, contact_first_name, contact_last_name, contact_email, contact_phone, industry, company_size, services_interested, project_description').in('status', ['neu', 'qualifiziert', 'kontaktiert']).order('created_at', { ascending: false })
+        supabase.from('crm_leads').select('id, lead_number, company_name, contact_first_name, contact_last_name, contact_email, contact_phone, industry, company_size, services_interested, project_description').in('status', ['neu', 'qualifiziert', 'kontaktiert']).order('created_at', { ascending: false }),
+        supabase.from('crm_products').select('id, name, category, description, price_setup, price_monthly, price_yearly').eq('is_active', true).order('category').order('name')
       ]);
 
       if (companiesRes.data) setCompanies(companiesRes.data);
       if (leadsRes.data) setLeads(leadsRes.data as Lead[]);
+      if (productsRes.data) setCatalogProducts(productsRes.data as CatalogProduct[]);
     } catch (error) {
       console.error('Error loading reference data:', error);
     }
@@ -376,6 +394,12 @@ export function OfferCreateDialog({
       monthly += voice.monthly;
     }
 
+    // Katalog-Produkte hinzufügen
+    selectedCatalogProducts.forEach(p => {
+      setup += (p.price_setup || 0) * p.quantity;
+      monthly += (p.price_monthly || 0) * p.quantity;
+    });
+
     // Manuelle Preise überschreiben kalkulierte Werte
     const finalSetup = manualSetupPrice !== null ? manualSetupPrice : setup;
     const finalMonthly = manualMonthlyPrice !== null ? manualMonthlyPrice : monthly;
@@ -398,8 +422,8 @@ export function OfferCreateDialog({
       toast({ title: 'Fehler', description: 'Bitte wählen Sie eine Firma oder einen Lead aus.', variant: 'destructive' });
       return;
     }
-    if (formData.services_selected.length === 0) {
-      toast({ title: 'Fehler', description: 'Bitte wählen Sie mindestens eine Leistung aus.', variant: 'destructive' });
+    if (formData.services_selected.length === 0 && selectedCatalogProducts.length === 0) {
+      toast({ title: 'Fehler', description: 'Bitte wählen Sie mindestens eine Leistung oder einen Artikel aus.', variant: 'destructive' });
       return;
     }
 
@@ -465,6 +489,10 @@ export function OfferCreateDialog({
       setSelectedCompanyId('');
       setSelectedLeadId('');
       setIsReferenceCustomer(false);
+      setManualSetupPrice(null);
+      setManualMonthlyPrice(null);
+      setPriceEditMode(false);
+      setSelectedCatalogProducts([]);
       setManualSetupPrice(null);
       setManualMonthlyPrice(null);
       setPriceEditMode(false);
@@ -648,6 +676,17 @@ export function OfferCreateDialog({
         monthly: 0
       });
     }
+
+    // Katalog-Produkte als eigene Positionen
+    selectedCatalogProducts.forEach(p => {
+      items.push({
+        position: pos++,
+        title: p.name,
+        description: p.description || `${p.category} – ${p.name}`,
+        setup: (p.price_setup || 0) * p.quantity,
+        monthly: (p.price_monthly || 0) * p.quantity
+      });
+    });
 
     return items;
   };
@@ -900,7 +939,115 @@ export function OfferCreateDialog({
               </CardContent>
             </Card>
 
-            {/* Website-Details */}
+            {/* Produkte aus Artikelstamm */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-4 flex items-center gap-2">
+                  <Package className="h-4 w-4" />
+                  Aus Artikelstamm hinzufügen
+                </h4>
+                {catalogProducts.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Keine Produkte im Artikelstamm verfügbar.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {/* Kategorie-gruppierte Produktauswahl */}
+                    {Object.entries(
+                      catalogProducts.reduce<Record<string, CatalogProduct[]>>((acc, p) => {
+                        const cat = p.category || 'sonstige';
+                        if (!acc[cat]) acc[cat] = [];
+                        acc[cat].push(p);
+                        return acc;
+                      }, {})
+                    ).map(([category, products]) => {
+                      const categoryLabels: Record<string, string> = {
+                        website: 'Website', hosting: 'Hosting', seo: 'SEO',
+                        ki_agent: 'KI-Agenten', voicebot: 'Voicebots',
+                        branchenbot: 'Branchenbots', service: 'Service',
+                        sonstige: 'Sonstige'
+                      };
+                      return (
+                        <div key={category}>
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                            {categoryLabels[category] || category}
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {products.map(product => {
+                              const selected = selectedCatalogProducts.find(s => s.id === product.id);
+                              return (
+                                <div
+                                  key={product.id}
+                                  className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
+                                    selected
+                                      ? 'border-primary bg-primary/5'
+                                      : 'border-border hover:border-primary/50'
+                                  }`}
+                                  onClick={() => {
+                                    if (selected) {
+                                      setSelectedCatalogProducts(prev => prev.filter(s => s.id !== product.id));
+                                    } else {
+                                      setSelectedCatalogProducts(prev => [...prev, { ...product, quantity: 1 }]);
+                                    }
+                                  }}
+                                >
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium truncate">{product.name}</p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {product.price_setup > 0 && `${formatCurrency(product.price_setup)} Setup`}
+                                      {product.price_setup > 0 && product.price_monthly > 0 && ' + '}
+                                      {product.price_monthly > 0 && `${formatCurrency(product.price_monthly)}/Monat`}
+                                      {product.price_setup === 0 && product.price_monthly === 0 && 'Preis auf Anfrage'}
+                                    </p>
+                                  </div>
+                                  {selected && (
+                                    <div className="flex items-center gap-2 ml-2" onClick={(e) => e.stopPropagation()}>
+                                      <Input
+                                        type="number"
+                                        min={1}
+                                        max={99}
+                                        value={selected.quantity}
+                                        onChange={(e) => {
+                                          const qty = parseInt(e.target.value) || 1;
+                                          setSelectedCatalogProducts(prev =>
+                                            prev.map(s => s.id === product.id ? { ...s, quantity: qty } : s)
+                                          );
+                                        }}
+                                        className="w-16 h-8 text-center"
+                                      />
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-8 w-8 p-0"
+                                        onClick={() => setSelectedCatalogProducts(prev => prev.filter(s => s.id !== product.id))}
+                                      >
+                                        <Trash2 className="h-3 w-3" />
+                                      </Button>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Ausgewählte Produkte Zusammenfassung */}
+                    {selectedCatalogProducts.length > 0 && (
+                      <div className="bg-muted/50 rounded-lg p-3 mt-2">
+                        <p className="text-sm font-medium mb-1">{selectedCatalogProducts.length} Artikel ausgewählt</p>
+                        <p className="text-xs text-muted-foreground">
+                          Setup: {formatCurrency(selectedCatalogProducts.reduce((sum, p) => sum + (p.price_setup || 0) * p.quantity, 0))}
+                          {' · '}
+                          Monatlich: {formatCurrency(selectedCatalogProducts.reduce((sum, p) => sum + (p.price_monthly || 0) * p.quantity, 0))}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+
             {formData.services_selected.includes('Website & Digitale Plattformen') && (
               <Card>
                 <CardContent className="p-4">
@@ -1370,6 +1517,18 @@ export function OfferCreateDialog({
                       </div>
                     </div>
                   )}
+                  {/* Katalog-Produkte */}
+                  {selectedCatalogProducts.map(p => (
+                    <div key={p.id} className="flex justify-between py-2 border-b">
+                      <span>{p.name} {p.quantity > 1 && `×${p.quantity}`}</span>
+                      <div className="text-right">
+                        {p.price_setup > 0 && <span className="font-medium">{formatCurrency(p.price_setup * p.quantity)}</span>}
+                        {p.price_monthly > 0 && (
+                          <span className="text-sm text-muted-foreground ml-2">+ {formatCurrency(p.price_monthly * p.quantity)}/Monat</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Editierbare Preise */}
@@ -1461,7 +1620,7 @@ export function OfferCreateDialog({
                 <div className="text-sm text-muted-foreground space-y-1">
                   <p><strong>Kunde:</strong> {formData.company_name || '—'} {isReferenceCustomer && <Badge variant="outline" className="ml-2 text-xs">⭐ Referenzkunde</Badge>}</p>
                   <p><strong>Erstellt von:</strong> {creatorName || '—'}</p>
-                  <p><strong>Leistungen:</strong> {formData.services_selected.join(', ') || '—'}</p>
+                  <p><strong>Leistungen:</strong> {[...formData.services_selected, ...selectedCatalogProducts.map(p => p.name)].join(', ') || '—'}</p>
                   <p><strong>Gültig:</strong> {validDays} Tage</p>
                   {(manualSetupPrice !== null || manualMonthlyPrice !== null) && (
                     <p className="text-amber-600"><strong>Hinweis:</strong> Manuelle Preisanpassung aktiv</p>
