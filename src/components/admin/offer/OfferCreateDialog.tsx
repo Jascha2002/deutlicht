@@ -425,7 +425,6 @@ export function OfferCreateDialog({
           status: 'entwurf',
           amount_setup: totals.setup,
           amount_monthly: totals.monthly,
-          amount_total: totals.yearly,
           discount_percent: manualSetupPrice !== null || manualMonthlyPrice !== null 
             ? Math.round(((totals.calculatedSetup + totals.calculatedMonthly * 12) - totals.yearly) / (totals.calculatedSetup + totals.calculatedMonthly * 12) * 100) 
             : 0,
