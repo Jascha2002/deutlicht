@@ -339,11 +339,16 @@ const handler = async (req: Request): Promise<Response> => {
     const data: AcceptOfferRequest = await req.json();
     
     // Validate required fields
-    if (!data.email || !data.fullName || !data.offerNumber) {
+    if (!data.email || !data.fullName) {
       return new Response(
-        JSON.stringify({ error: "Pflichtfelder fehlen" }),
+        JSON.stringify({ error: "Pflichtfelder fehlen (Name und E-Mail erforderlich)" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
+    }
+    
+    // Fallback for missing offerNumber
+    if (!data.offerNumber) {
+      data.offerNumber = `DIREKT-${new Date().toISOString().slice(0,10)}`;
     }
     
     // Generate order confirmation HTML
