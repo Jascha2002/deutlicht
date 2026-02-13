@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/table';
 import { 
   FileText, Receipt, FolderOpen, BarChart3, Euro, Calendar,
-  CheckCircle, Clock, Edit, Save, ExternalLink, Users, Briefcase
+  CheckCircle, Clock, Edit, Save, ExternalLink, Users, Briefcase,
+  Plus, Trash2, UserPlus
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -83,6 +84,12 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
   const [reports, setReports] = useState<RelatedDocument[]>([]);
   const [protocols, setProtocols] = useState<RelatedDocument[]>([]);
 
+  // Team assignments
+  const [teamMembers, setTeamMembers] = useState<{ id: string; user_id: string; role_in_project: string; full_name: string; email: string }[]>([]);
+  const [availableUsers, setAvailableUsers] = useState<{ id: string; full_name: string; email: string; roles: string[] }[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedRole, setSelectedRole] = useState('produktion');
+
   useEffect(() => {
     if (project && open) {
       setEditedProject({
@@ -93,6 +100,8 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
         budget_monthly: project.budget_monthly
       });
       loadRelatedDocuments();
+      loadTeamMembers();
+      loadAvailableUsers();
     }
   }, [project, open]);
 
@@ -170,6 +179,104 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
       }
     } catch (error) {
       console.error('Error loading related documents:', error);
+    }
+  };
+
+  const loadTeamMembers = async () => {
+    if (!project) return;
+    try {
+      const { data, error } = await supabase
+        .from('project_team_assignments')
+        .select('id, user_id, role_in_project')
+        .eq('project_id', project.id);
+      
+      if (error) throw error;
+      
+      // Get profile info for each user
+      const members = [];
+      for (const assignment of (data || [])) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('user_id', assignment.user_id)
+          .single();
+        members.push({
+          id: assignment.id,
+          user_id: assignment.user_id,
+          role_in_project: assignment.role_in_project || 'produktion',
+          full_name: profile?.full_name || '',
+          email: profile?.email || ''
+        });
+      }
+      setTeamMembers(members);
+    } catch (error) {
+      console.error('Error loading team members:', error);
+    }
+  };
+
+  const loadAvailableUsers = async () => {
+    try {
+      const { data: allRoles, error } = await supabase
+        .from('user_roles')
+        .select('user_id, role');
+      if (error) throw error;
+
+      // Get unique user IDs for produktion, mitarbeiter, freelancer roles
+      const relevantRoles = ['produktion', 'mitarbeiter', 'freelancer_eu', 'freelancer_drittland', 'admin'];
+      const userMap = new Map<string, string[]>();
+      for (const r of (allRoles || [])) {
+        if (relevantRoles.includes(r.role)) {
+          const existing = userMap.get(r.user_id) || [];
+          existing.push(r.role);
+          userMap.set(r.user_id, existing);
+        }
+      }
+
+      const users = [];
+      for (const [userId, roles] of userMap.entries()) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('user_id', userId)
+          .single();
+        if (profile) {
+          users.push({ id: userId, full_name: profile.full_name || profile.email, email: profile.email, roles });
+        }
+      }
+      setAvailableUsers(users);
+    } catch (error) {
+      console.error('Error loading available users:', error);
+    }
+  };
+
+  const handleAddTeamMember = async () => {
+    if (!project || !selectedUserId) return;
+    try {
+      const { error } = await supabase.from('project_team_assignments').insert({
+        project_id: project.id,
+        user_id: selectedUserId,
+        role_in_project: selectedRole,
+        access_level: selectedRole === 'produktion' ? 'limited' : 'full'
+      });
+      if (error) throw error;
+      toast({ title: 'Erfolg', description: 'Teammitglied zugewiesen.' });
+      setSelectedUserId('');
+      loadTeamMembers();
+    } catch (error) {
+      console.error('Error adding team member:', error);
+      toast({ title: 'Fehler', description: 'Zuweisung fehlgeschlagen.', variant: 'destructive' });
+    }
+  };
+
+  const handleRemoveTeamMember = async (assignmentId: string) => {
+    try {
+      const { error } = await supabase.from('project_team_assignments').delete().eq('id', assignmentId);
+      if (error) throw error;
+      toast({ title: 'Entfernt', description: 'Teammitglied wurde entfernt.' });
+      loadTeamMembers();
+    } catch (error) {
+      console.error('Error removing team member:', error);
+      toast({ title: 'Fehler', description: 'Entfernen fehlgeschlagen.', variant: 'destructive' });
     }
   };
 
@@ -300,7 +407,7 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview" className="gap-1">
               <FolderOpen className="h-4 w-4" />
               <span className="hidden sm:inline">Übersicht</span>
@@ -329,6 +436,11 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
               <CheckCircle className="h-4 w-4" />
               <span className="hidden sm:inline">Abnahmen</span>
               {protocols.length > 0 && <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 justify-center">{protocols.length}</Badge>}
+            </TabsTrigger>
+            <TabsTrigger value="team" className="gap-1">
+              <Users className="h-4 w-4" />
+              <span className="hidden sm:inline">Team</span>
+              {teamMembers.length > 0 && <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 justify-center">{teamMembers.length}</Badge>}
             </TabsTrigger>
           </TabsList>
 
@@ -508,6 +620,96 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
               </CardHeader>
               <CardContent>
                 {renderDocumentTable(protocols, 'Keine Abnahmeprotokolle für dieses Projekt vorhanden.')}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="team" className="mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Teamzuordnung
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Add member form */}
+                <div className="flex gap-2 items-end flex-wrap">
+                  <div className="flex-1 min-w-[200px]">
+                    <Label className="text-xs text-muted-foreground">Mitarbeiter</Label>
+                    <Select value={selectedUserId} onValueChange={setSelectedUserId}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Mitarbeiter auswählen..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableUsers
+                          .filter(u => !teamMembers.some(m => m.user_id === u.id))
+                          .map(u => (
+                            <SelectItem key={u.id} value={u.id}>
+                              {u.full_name} ({u.roles.join(', ')})
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="w-[160px]">
+                    <Label className="text-xs text-muted-foreground">Rolle im Projekt</Label>
+                    <Select value={selectedRole} onValueChange={setSelectedRole}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="produktion">Produktion</SelectItem>
+                        <SelectItem value="projektleitung">Projektleitung</SelectItem>
+                        <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
+                        <SelectItem value="freelancer">Freelancer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button onClick={handleAddTeamMember} disabled={!selectedUserId} className="gap-1">
+                    <UserPlus className="h-4 w-4" />
+                    Zuweisen
+                  </Button>
+                </div>
+
+                {/* Current team members */}
+                {teamMembers.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Noch keine Teammitglieder zugewiesen.
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>E-Mail</TableHead>
+                        <TableHead>Rolle</TableHead>
+                        <TableHead className="w-[50px]"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {teamMembers.map(member => (
+                        <TableRow key={member.id}>
+                          <TableCell className="font-medium">{member.full_name}</TableCell>
+                          <TableCell className="text-muted-foreground">{member.email}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{member.role_in_project}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="text-destructive hover:text-destructive"
+                              onClick={() => handleRemoveTeamMember(member.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
