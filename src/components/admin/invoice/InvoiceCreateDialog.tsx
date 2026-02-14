@@ -272,6 +272,8 @@ export function InvoiceCreateDialog({ open, onOpenChange, onSuccess }: InvoiceCr
         order_item_ref: item.order_item_ref || null
       }));
 
+      // IMPORTANT: tax_amount and amount_gross are GENERATED columns in crm_invoices
+      // They are automatically calculated from amount_net and tax_rate
       const { error } = await supabase.from('crm_invoices').insert({
         title: formData.title,
         description: formData.description || null,
@@ -283,8 +285,6 @@ export function InvoiceCreateDialog({ open, onOpenChange, onSuccess }: InvoiceCr
         due_date: formData.due_date,
         amount_net: netTotal,
         tax_rate: formData.tax_rate,
-        tax_amount: taxAmount,
-        amount_gross: grossTotal,
         amount_paid: 0,
         line_items: JSON.parse(JSON.stringify({ items: itemsToSave })),
         status: 'entwurf'

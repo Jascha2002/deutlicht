@@ -390,7 +390,7 @@ export function OfferManagement() {
             const { data: { user } } = await supabase.auth.getUser();
             const netAmount = (offer.amount_setup || 0) + (offer.amount_monthly || 0) * 12;
             const taxRate = 19;
-            const taxAmount = Math.round(netAmount * taxRate) / 100;
+            const taxAmount = Math.round(netAmount * taxRate / 100 * 100) / 100;
             const { error } = await supabase.from('crm_orders').insert({
               title: `Auftrag: ${offer.title}`,
               description: offer.description,
