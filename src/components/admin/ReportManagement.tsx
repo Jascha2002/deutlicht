@@ -63,6 +63,7 @@ export function ReportManagement() {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedReport, setSelectedReport] = useState<CrmReport | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     loadReports();
@@ -377,13 +378,83 @@ export function ReportManagement() {
                   </Button>
                 )}
                 {selectedReport.status === 'entwurf' && (
-                  <Button variant="outline" className="gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="gap-2"
+                    disabled={isUpdating}
+                    onClick={async () => {
+                      setIsUpdating(true);
+                      try {
+                        const { error } = await supabase
+                          .from('crm_reports')
+                          .update({ status: 'review' })
+                          .eq('id', selectedReport.id);
+                        if (error) throw error;
+                        setSelectedReport({ ...selectedReport, status: 'review' });
+                        toast({ title: 'Erfolg', description: 'Bericht zur Review weitergeleitet.' });
+                        loadReports();
+                      } catch (error) {
+                        console.error('Error updating report status:', error);
+                        toast({ title: 'Fehler', description: 'Status konnte nicht geändert werden.', variant: 'destructive' });
+                      } finally {
+                        setIsUpdating(false);
+                      }
+                    }}
+                  >
                     <CheckCircle className="h-4 w-4" />
                     Zur Review
                   </Button>
                 )}
+                {selectedReport.status === 'review' && (
+                  <Button 
+                    className="gap-2"
+                    disabled={isUpdating}
+                    onClick={async () => {
+                      setIsUpdating(true);
+                      try {
+                        const { error } = await supabase
+                          .from('crm_reports')
+                          .update({ status: 'freigegeben', approved_at: new Date().toISOString() })
+                          .eq('id', selectedReport.id);
+                        if (error) throw error;
+                        setSelectedReport({ ...selectedReport, status: 'freigegeben', approved_at: new Date().toISOString() });
+                        toast({ title: 'Erfolg', description: 'Bericht freigegeben.' });
+                        loadReports();
+                      } catch (error) {
+                        console.error('Error approving report:', error);
+                        toast({ title: 'Fehler', description: 'Freigabe fehlgeschlagen.', variant: 'destructive' });
+                      } finally {
+                        setIsUpdating(false);
+                      }
+                    }}
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                    Freigeben
+                  </Button>
+                )}
                 {selectedReport.status === 'freigegeben' && (
-                  <Button className="gap-2">
+                  <Button 
+                    className="gap-2"
+                    disabled={isUpdating}
+                    onClick={async () => {
+                      setIsUpdating(true);
+                      try {
+                        const { error } = await supabase
+                          .from('crm_reports')
+                          .update({ status: 'versendet', sent_to_client_at: new Date().toISOString() })
+                          .eq('id', selectedReport.id);
+                        if (error) throw error;
+                        setSelectedReport({ ...selectedReport, status: 'versendet', sent_to_client_at: new Date().toISOString() });
+                        toast({ title: 'Erfolg', description: 'Bericht als versendet markiert.' });
+                        loadReports();
+                      } catch (error) {
+                        console.error('Error sending report:', error);
+                        toast({ title: 'Fehler', description: 'Status konnte nicht geändert werden.', variant: 'destructive' });
+                      } finally {
+                        setIsUpdating(false);
+                      }
+                    }}
+                  >
                     <Send className="h-4 w-4" />
                     An Kunden senden
                   </Button>
