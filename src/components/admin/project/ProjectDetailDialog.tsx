@@ -296,7 +296,8 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
           description: editedProject.description,
           status: editedProject.status,
           budget_setup: editedProject.budget_setup,
-          budget_monthly: editedProject.budget_monthly
+          budget_monthly: editedProject.budget_monthly,
+          progress_percent: editedProject.progress_percent
         })
         .eq('id', project.id);
 
@@ -501,10 +502,30 @@ export function ProjectDetailDialog({ project, open, onOpenChange, onUpdate }: P
                 <CardTitle className="text-sm">Projektfortschritt</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center gap-4">
-                  <Progress value={progressPercent} className="flex-1" />
-                  <span className="text-lg font-bold">{progressPercent}%</span>
-                </div>
+                {isEditing ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        step={5}
+                        value={editedProject.progress_percent ?? progressPercent}
+                        onChange={(e) => setEditedProject({ ...editedProject, progress_percent: parseInt(e.target.value) })}
+                        className="flex-1 accent-primary"
+                      />
+                      <span className="text-lg font-bold w-14 text-right">
+                        {editedProject.progress_percent ?? progressPercent}%
+                      </span>
+                    </div>
+                    <Progress value={editedProject.progress_percent ?? progressPercent} className="flex-1" />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <Progress value={progressPercent} className="flex-1" />
+                    <span className="text-lg font-bold">{progressPercent}%</span>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
