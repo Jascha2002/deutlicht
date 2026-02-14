@@ -1,0 +1,1 @@
+ALTER TABLE public.crm_projects ADD COLUMN progress_percent INTEGER DEFAULT 0;

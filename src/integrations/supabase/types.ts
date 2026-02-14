@@ -2926,6 +2926,7 @@ export type Database = {
           lead_id: string | null
           legacy_project_id: string | null
           modified_by: string | null
+          progress_percent: number | null
           project_number: string | null
           services_included: string[] | null
           start_date: string | null
@@ -2951,6 +2952,7 @@ export type Database = {
           lead_id?: string | null
           legacy_project_id?: string | null
           modified_by?: string | null
+          progress_percent?: number | null
           project_number?: string | null
           services_included?: string[] | null
           start_date?: string | null
@@ -2976,6 +2978,7 @@ export type Database = {
           lead_id?: string | null
           legacy_project_id?: string | null
           modified_by?: string | null
+          progress_percent?: number | null
           project_number?: string | null
           services_included?: string[] | null
           start_date?: string | null
