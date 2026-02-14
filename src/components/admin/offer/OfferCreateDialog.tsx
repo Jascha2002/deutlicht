@@ -688,6 +688,22 @@ export function OfferCreateDialog({
       });
     });
 
+    // Wenn manuelle Preise gesetzt sind, die Differenz auf die Positionen verteilen
+    if (manualSetupPrice !== null || manualMonthlyPrice !== null) {
+      const itemsSetupTotal = items.reduce((sum, i) => sum + i.setup, 0);
+      const itemsMonthlyTotal = items.reduce((sum, i) => sum + i.monthly, 0);
+      const finalSetup = manualSetupPrice ?? itemsSetupTotal;
+      const finalMonthly = manualMonthlyPrice ?? itemsMonthlyTotal;
+
+      // If items sum to 0 but manual prices exist, distribute evenly or assign to first item
+      if (itemsSetupTotal === 0 && finalSetup > 0 && items.length > 0) {
+        items[0].setup = finalSetup;
+      }
+      if (itemsMonthlyTotal === 0 && finalMonthly > 0 && items.length > 0) {
+        items[0].monthly = finalMonthly;
+      }
+    }
+
     return items;
   };
 

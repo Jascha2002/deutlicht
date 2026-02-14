@@ -236,8 +236,11 @@ export function OfferDetailDialog({
     setLineItems(lineItems.filter(item => item.id !== id));
   };
 
-  const totalSetup = lineItems.reduce((sum, item) => sum + (item.einmalig * item.menge), 0);
-  const totalMonthly = lineItems.reduce((sum, item) => sum + (item.monatlich * item.menge), 0);
+  const lineItemsSetup = lineItems.reduce((sum, item) => sum + (item.einmalig * item.menge), 0);
+  const lineItemsMonthly = lineItems.reduce((sum, item) => sum + (item.monatlich * item.menge), 0);
+  // Use stored offer amounts as source of truth, fall back to line item calculation
+  const totalSetup = lineItemsSetup > 0 ? lineItemsSetup : (offer?.amount_setup || 0);
+  const totalMonthly = lineItemsMonthly > 0 ? lineItemsMonthly : (offer?.amount_monthly || 0);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
