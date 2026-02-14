@@ -99,9 +99,25 @@ function formatDate(date: Date): string {
   return date.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
+function generateQrCodeUrl(documentUrl: string): string {
+  // Google Charts QR API for reliable QR code generation
+  const encoded = encodeURIComponent(documentUrl);
+  return `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encoded}&format=svg`;
+}
+
+function makeFooterHtml(offerNumber: string, documentUrl?: string): string {
+  const qrHtml = documentUrl 
+    ? `<div class="footer-qr"><img src="${generateQrCodeUrl(documentUrl)}" alt="QR-Code" /></div>`
+    : '';
+  return `<div class="footer">
+    <div class="footer-text">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de<br/>${offerNumber}</div>
+    ${qrHtml}
+  </div>`;
+}
+
 // ==================== PDF GENERATION ====================
 
-function generateOfferHtml(data: any): string {
+function generateOfferHtml(data: any, documentUrl?: string): string {
   // Escape all user inputs
   const company = escapeHtml(data.company_name) || "Ihr Unternehmen";
   const contact = escapeHtml(data.contact_person) || "Ansprechpartner";
@@ -364,7 +380,10 @@ function generateOfferHtml(data: any): string {
     .contact-card p { margin: 5px 0; font-size: 10pt; }
     
     /* FOOTER */
-    .footer { position: absolute; bottom: 12mm; left: 20mm; right: 20mm; text-align: center; font-size: 8pt; color: var(--gray); padding-top: 10px; border-top: 1px solid #e2e8f0; }
+    .footer { position: absolute; bottom: 12mm; left: 20mm; right: 20mm; text-align: center; font-size: 8pt; color: var(--gray); padding-top: 10px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end; }
+    .footer-text { flex: 1; text-align: center; }
+    .footer-qr { width: 60px; height: 60px; flex-shrink: 0; }
+    .footer-qr img { width: 100%; height: 100%; }
     
     /* CALCULATION BOX */
     .calc-box { background: var(--light); padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 10pt; }
@@ -433,7 +452,7 @@ function generateOfferHtml(data: any): string {
     </div>
   </div>
   
-  <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
+  ${makeFooterHtml(offerNumber, documentUrl)}
 </div>
 
 <!-- PAGE 3: LEISTUNGSMODULE -->
@@ -481,7 +500,7 @@ function generateOfferHtml(data: any): string {
   </div>
   `}
   
-  <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
+  ${makeFooterHtml(offerNumber, documentUrl)}
 </div>
 
 <!-- PAGE 4: UMSETZUNG -->
@@ -540,7 +559,7 @@ function generateOfferHtml(data: any): string {
     <li>2 Korrekturrunden inklusive</li>
   </ul>
   
-  <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
+  ${makeFooterHtml(offerNumber, documentUrl)}
 </div>
 
 <!-- PAGE 5: INVESTMENT -->
@@ -611,7 +630,7 @@ function generateOfferHtml(data: any): string {
     </ul>
   </div>
   
-  <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
+  ${makeFooterHtml(offerNumber, documentUrl)}
 </div>
 
 <!-- PAGE 6: NÄCHSTE SCHRITTE -->
@@ -666,7 +685,7 @@ function generateOfferHtml(data: any): string {
     <p style="font-size: 12pt; font-weight: 600; margin: 0;">DeutLicht. Wo Komplexes einfach wird.</p>
   </div>
   
-  <div class="footer">Stadtnetz UG (haftungsbeschränkt) · handelnd unter DeutLicht® · Gemeindeweg 4, 07546 Gera · www.deutlicht.de</div>
+  ${makeFooterHtml(offerNumber, documentUrl)}
 </div>
 
 </body>
@@ -692,7 +711,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Generating offer for:", requestData.data.company_name);
     
-    const html = generateOfferHtml(requestData.data);
+    // Build document URL for QR code (will be updated with actual PDF URL after storage)
+    const baseUrl = Deno.env.get('SUPABASE_URL') || '';
+    const documentUrl = requestData.documentUrl || `${baseUrl.replace('.supabase.co', '.supabase.co')}/storage/v1/object/public/documents/offers/${requestData.data.company_name || 'offer'}.pdf`;
+    
+    const html = generateOfferHtml(requestData.data, requestData.documentUrl || undefined);
     const paket = getPaket(requestData.data.industry || "Sonstiges");
 
     return new Response(

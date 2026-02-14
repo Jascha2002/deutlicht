@@ -21,3 +21,4 @@ export { OrderManagement } from './OrderManagement';
 export { DocumentManagement } from './DocumentManagement';
 export { AcceptanceProtocolManagement } from './AcceptanceProtocolManagement';
 export { QuickEntryDialog } from './QuickEntryDialog';
+export { PermissionManagement } from './PermissionManagement';

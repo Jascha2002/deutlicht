@@ -2679,6 +2679,7 @@ export type Database = {
           offer_id: string | null
           order_date: string
           order_number: string | null
+          pdf_url: string | null
           project_id: string | null
           start_date: string | null
           status: string
@@ -2708,6 +2709,7 @@ export type Database = {
           offer_id?: string | null
           order_date?: string
           order_number?: string | null
+          pdf_url?: string | null
           project_id?: string | null
           start_date?: string | null
           status?: string
@@ -2737,6 +2739,7 @@ export type Database = {
           offer_id?: string | null
           order_date?: string
           order_number?: string | null
+          pdf_url?: string | null
           project_id?: string | null
           start_date?: string | null
           status?: string
@@ -4235,6 +4238,75 @@ export type Database = {
           },
         ]
       }
+      user_permissions: {
+        Row: {
+          can_create_invoices: boolean
+          can_create_offers: boolean
+          can_download_pdfs: boolean
+          can_edit_products: boolean
+          can_export_data: boolean
+          can_view_abnahmen: boolean
+          can_view_all_projects: boolean
+          can_view_angebote: boolean
+          can_view_auftraege: boolean
+          can_view_berichte: boolean
+          can_view_commissions: boolean
+          can_view_financials: boolean
+          can_view_rechnungen: boolean
+          can_view_vertraege: boolean
+          created_at: string
+          granted_by: string | null
+          id: string
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          can_create_invoices?: boolean
+          can_create_offers?: boolean
+          can_download_pdfs?: boolean
+          can_edit_products?: boolean
+          can_export_data?: boolean
+          can_view_abnahmen?: boolean
+          can_view_all_projects?: boolean
+          can_view_angebote?: boolean
+          can_view_auftraege?: boolean
+          can_view_berichte?: boolean
+          can_view_commissions?: boolean
+          can_view_financials?: boolean
+          can_view_rechnungen?: boolean
+          can_view_vertraege?: boolean
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          can_create_invoices?: boolean
+          can_create_offers?: boolean
+          can_download_pdfs?: boolean
+          can_edit_products?: boolean
+          can_export_data?: boolean
+          can_view_abnahmen?: boolean
+          can_view_all_projects?: boolean
+          can_view_angebote?: boolean
+          can_view_auftraege?: boolean
+          can_view_berichte?: boolean
+          can_view_commissions?: boolean
+          can_view_financials?: boolean
+          can_view_rechnungen?: boolean
+          can_view_vertraege?: boolean
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -4276,6 +4348,10 @@ export type Database = {
           p_resource_id: string
           p_resource_type: string
         }
+        Returns: boolean
+      }
+      check_user_permission: {
+        Args: { _permission: string; _user_id: string }
         Returns: boolean
       }
       create_audit_log: {

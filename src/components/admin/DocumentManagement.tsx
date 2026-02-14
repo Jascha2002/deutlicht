@@ -379,6 +379,7 @@ export function DocumentManagement() {
               <TableHead>Typ</TableHead>
               <TableHead>Kunde</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>PDF</TableHead>
               <TableHead>Erstellt</TableHead>
               <TableHead className="w-[50px]"></TableHead>
             </TableRow>
@@ -386,13 +387,13 @@ export function DocumentManagement() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
+                <TableCell colSpan={7} className="text-center py-8">
                   <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
                 </TableCell>
               </TableRow>
             ) : filteredDocuments.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Keine Dokumente gefunden
                 </TableCell>
               </TableRow>
@@ -430,6 +431,22 @@ export function DocumentManagement() {
                       <Badge className={statusConfig[doc.status]?.className}>
                         {statusConfig[doc.status]?.label}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {doc.file_url ? (
+                        <a
+                          href={doc.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-accent hover:underline text-sm"
+                        >
+                          <Download className="h-3 w-3" />
+                          PDF
+                        </a>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {format(new Date(doc.created_at), 'dd.MM.yyyy', { locale: de })}
