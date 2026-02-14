@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Users, Plus, Trash2, AlertTriangle } from 'lucide-react';
+import { Users, Plus, Trash2, AlertTriangle, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PermissionManagement } from './PermissionManagement';
 
 interface UserWithRole {
   id: string;
@@ -31,6 +32,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', role: 'kunde' });
   const [isCreating, setIsCreating] = useState(false);
+  const [permissionUser, setPermissionUser] = useState<{ userId: string; name: string; role: string } | null>(null);
   
   // Mitarbeiter dürfen nur Kunden anlegen
   const isAdmin = currentUserRole === 'admin';
@@ -228,6 +230,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktuelle Rolle</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Rolle ändern</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Registriert</th>
+              <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Berechtigungen</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktionen</th>
             </tr>
           </thead>
@@ -273,6 +276,19 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                 </td>
                 <td className="px-6 py-4 text-muted-foreground text-sm">
                   {new Date(user.created_at).toLocaleDateString('de-DE')}
+                </td>
+                <td className="px-6 py-4">
+                  {isAdmin && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setPermissionUser({ userId: user.user_id, name: user.full_name || user.email, role: user.role })}
+                      className="gap-1"
+                    >
+                      <Shield className="w-4 h-4" />
+                      <span className="hidden lg:inline">Rechte</span>
+                    </Button>
+                  )}
                 </td>
                 <td className="px-6 py-4">
                   {canDeleteUsers ? (
@@ -400,6 +416,17 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Permission Management */}
+      {permissionUser && (
+        <PermissionManagement
+          userId={permissionUser.userId}
+          userName={permissionUser.name}
+          userRole={permissionUser.role}
+          open={!!permissionUser}
+          onOpenChange={(open) => !open && setPermissionUser(null)}
+        />
+      )}
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteUserId} onOpenChange={(open) => !open && setDeleteUserId(null)}>

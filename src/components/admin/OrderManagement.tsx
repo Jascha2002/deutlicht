@@ -370,6 +370,7 @@ export function OrderManagement() {
               <TableHead>Kunde</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Betrag</TableHead>
+              <TableHead>PDF</TableHead>
               <TableHead>Auftragsdatum</TableHead>
               <TableHead className="w-[50px]"></TableHead>
             </TableRow>
@@ -377,13 +378,13 @@ export function OrderManagement() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
+                <TableCell colSpan={7} className="text-center py-8">
                   <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
                 </TableCell>
               </TableRow>
             ) : filteredOrders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Keine Aufträge gefunden
                 </TableCell>
               </TableRow>
@@ -417,6 +418,22 @@ export function OrderManagement() {
                     </TableCell>
                     <TableCell className="text-right font-medium">
                       {formatCurrency(order.amount_gross || 0)}
+                    </TableCell>
+                    <TableCell>
+                      {(order as any).pdf_url ? (
+                        <a
+                          href={(order as any).pdf_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-accent hover:underline text-sm"
+                        >
+                          <FileText className="h-3 w-3" />
+                          PDF
+                        </a>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {format(new Date(order.order_date), 'dd.MM.yyyy', { locale: de })}
