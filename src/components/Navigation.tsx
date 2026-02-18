@@ -314,25 +314,6 @@ submenu: [{
             <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
               <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-14 w-auto rounded-2xl shadow-md object-fill" />
             </Link>
-            {/* Temporary Incognito Button */}
-            <button
-              onClick={() => {
-                // Open in popup window - URL will be minimally visible
-                const width = 800;
-                const height = 700;
-                const left = (window.screen.width - width) / 2;
-                const top = (window.screen.height - height) / 2;
-                window.open(
-                  'https://elevenlabs.io/app/talk-to?agent_id=agent_5101kff7978mfvbtey1eserg78j2&branch_id=agtbrch_5301kff79843f85t3sfe0m3r63na',
-                  'demo',
-                  `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
-                );
-              }}
-              className="p-2 text-foreground/60 hover:text-accent transition-colors rounded-full hover:bg-muted/50"
-              title="Geheimlink"
-            >
-              <UserX className="w-5 h-5" />
-            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -413,7 +394,7 @@ submenu: [{
           </div>
 
           {/* CTA Buttons, Accessibility, Search, Login & Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-3">
             {/* Search Button */}
             <button onClick={() => setSearchOpen(!searchOpen)} className="p-2 text-foreground/80 hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="Suche öffnen">
               <Search className="w-5 h-5" />

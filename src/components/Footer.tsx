@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, FileText, ArrowRight, Handshake, Map } from "lucide-react";
+import { Mail, Phone, MapPin, FileText, ArrowRight, Handshake, Map, UserX } from "lucide-react";
 const Footer = () => {
   return (
     <footer role="contentinfo" aria-label="Fußzeile" className="border-t bg-inherit">
@@ -233,6 +233,23 @@ const Footer = () => {
                 <Map className="w-3 h-3" />
                 Sitemap
               </Link>
+              <button
+                onClick={() => {
+                  const width = 800;
+                  const height = 700;
+                  const left = (window.screen.width - width) / 2;
+                  const top = (window.screen.height - height) / 2;
+                  window.open(
+                    'https://elevenlabs.io/app/talk-to?agent_id=agent_5101kff7978mfvbtey1eserg78j2&branch_id=agtbrch_5301kff79843f85t3sfe0m3r63na',
+                    'demo',
+                    `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+                  );
+                }}
+                className="text-muted-foreground hover:text-accent transition-colors text-sm flex items-center gap-1"
+                title="Geheimlink"
+              >
+                <UserX className="w-3 h-3" />
+              </button>
             </nav>
           </div>
         </div>
