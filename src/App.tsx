@@ -48,6 +48,7 @@ import Partner from "./pages/Partner";
 import PartnerAnmelden from "./pages/PartnerAnmelden";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import KundenDashboard from "./pages/KundenDashboard";
+import KundenVorlagen from "./pages/KundenVorlagen";
 import ProduktionDashboard from "./pages/ProduktionDashboard";
 import TeamDashboard from "./pages/TeamDashboard";
 import Sitemap from "./pages/Sitemap";
@@ -107,6 +108,7 @@ const App = () => (
               <Route path="/partner/dashboard" element={<PartnerDashboard />} />
               <Route path="/mein-bereich" element={<KundenDashboard />} />
               <Route path="/kunde" element={<KundenDashboard />} />
+              <Route path="/dashboard/vorlagen" element={<KundenVorlagen />} />
               <Route path="/team" element={<TeamDashboard />} />
               <Route path="/projekte-team" element={<TeamDashboard />} />
               <Route path="/produktion" element={<ProduktionDashboard />} />

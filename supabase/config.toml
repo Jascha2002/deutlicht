@@ -44,3 +44,6 @@ verify_jwt = false
 
 [functions.admin-create-user]
 verify_jwt = false
+
+[functions.fetch-url-meta]
+verify_jwt = false

@@ -3386,6 +3386,38 @@ export type Database = {
           },
         ]
       }
+      customer_templates: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string | null
+          customer_id: string
+          id: string
+          template_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          customer_id: string
+          id?: string
+          template_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          customer_id?: string
+          id?: string
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_templates_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_permissions: {
         Row: {
           can_delete: boolean | null
@@ -4208,6 +4240,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      templates: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          tags: string[] | null
+          thumbnail_url: string | null
+          url: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          url: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          url?: string
+        }
+        Relationships: []
       }
       ticket_messages: {
         Row: {

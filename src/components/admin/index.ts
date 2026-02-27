@@ -22,3 +22,4 @@ export { DocumentManagement } from './DocumentManagement';
 export { AcceptanceProtocolManagement } from './AcceptanceProtocolManagement';
 export { QuickEntryDialog } from './QuickEntryDialog';
 export { PermissionManagement } from './PermissionManagement';
+export { TemplateManagement } from './TemplateManagement';
