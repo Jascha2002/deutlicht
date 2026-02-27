@@ -4265,6 +4265,41 @@ export type Database = {
           },
         ]
       }
+      template_feedback: {
+        Row: {
+          created_at: string
+          customer_id: string
+          feedback: string
+          id: string
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          feedback: string
+          id?: string
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          feedback?: string
+          id?: string
+          template_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_feedback_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       templates: {
         Row: {
           category: string | null

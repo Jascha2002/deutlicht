@@ -31,18 +31,15 @@ const KundenVorlagen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [templates, setTemplates] = useState<AssignedTemplate[]>([]);
   const [activeCategory, setActiveCategory] = useState('Alle');
-  const [previewTemplate, setPreviewTemplate] = useState<{ url: string; name: string } | null>(null);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    loadTemplates();
-  }, []);
+  useEffect(() => { loadTemplates(); }, []);
 
   const loadTemplates = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate('/auth'); return; }
 
-      // Single query — RLS handles access control via customer_id + company_id
       const { data, error } = await supabase
         .from('customer_templates')
         .select(`
@@ -63,15 +60,20 @@ const KundenVorlagen = () => {
 
   const categories = useMemo(() => {
     const cats = new Set<string>();
-    templates.forEach(t => {
-      if (t.template.category) cats.add(t.template.category);
-    });
+    templates.forEach(t => { if (t.template.category) cats.add(t.template.category); });
     return ['Alle', ...Array.from(cats)];
   }, [templates]);
 
   const filtered = activeCategory === 'Alle'
     ? templates
     : templates.filter(t => t.template.category === activeCategory);
+
+  // Build viewer-compatible list from filtered templates
+  const viewerTemplates = filtered.map(item => ({
+    url: item.template.url,
+    name: item.template.name,
+    templateId: item.template.id,
+  }));
 
   if (isLoading) {
     return (
@@ -91,7 +93,6 @@ const KundenVorlagen = () => {
 
       <main className="pt-20 min-h-screen bg-background">
         <div className="max-w-6xl mx-auto px-6 py-12">
-          {/* Header */}
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold text-foreground">Ihre Vorlagen</h1>
             <Button variant="ghost" onClick={() => navigate('/mein-bereich')} className="gap-2 text-sm">
@@ -104,7 +105,6 @@ const KundenVorlagen = () => {
             {filtered.length} Vorlage{filtered.length !== 1 ? 'n' : ''} verfügbar
           </p>
 
-          {/* Category filter */}
           {categories.length > 1 && (
             <div className="flex flex-wrap gap-2 mb-8">
               {categories.map(cat => (
@@ -123,7 +123,6 @@ const KundenVorlagen = () => {
             </div>
           )}
 
-          {/* Templates grid */}
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center mb-4">
@@ -136,9 +135,8 @@ const KundenVorlagen = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map(item => (
+              {filtered.map((item, idx) => (
                 <div key={item.id} className="bg-card rounded-xl shadow-sm border overflow-hidden flex flex-col">
-                  {/* Thumbnail */}
                   <div className="h-[200px] bg-muted flex items-center justify-center overflow-hidden">
                     <img
                       src={item.template.thumbnail_url || `https://image.thum.io/get/width/640/crop/400/${item.template.url}`}
@@ -147,16 +145,10 @@ const KundenVorlagen = () => {
                       onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                     />
                   </div>
-
-                  {/* Content */}
                   <div className="p-4 flex-1 flex flex-col">
                     <h3 className="font-semibold text-foreground mb-1">{item.template.name}</h3>
-                    {item.template.category && (
-                      <Badge className="w-fit mb-2 text-xs">{item.template.category}</Badge>
-                    )}
-                    {item.template.description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{item.template.description}</p>
-                    )}
+                    {item.template.category && <Badge className="w-fit mb-2 text-xs">{item.template.category}</Badge>}
+                    {item.template.description && <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{item.template.description}</p>}
                     {item.template.tags && item.template.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-2">
                         {item.template.tags.map(tag => (
@@ -168,13 +160,8 @@ const KundenVorlagen = () => {
                       Hinzugefügt am {new Date(item.assigned_at).toLocaleDateString('de-DE')}
                     </p>
                   </div>
-
-                  {/* Action */}
                   <div className="border-t p-4 pt-3">
-                    <Button
-                      className="w-full gap-2"
-                      onClick={() => setPreviewTemplate({ url: item.template.url, name: item.template.name })}
-                    >
+                    <Button className="w-full gap-2" onClick={() => setPreviewIndex(idx)}>
                       <Eye className="w-4 h-4" />
                       Vorschau ansehen
                     </Button>
@@ -188,12 +175,12 @@ const KundenVorlagen = () => {
 
       <Footer />
 
-      {/* Preview viewer */}
       <TemplatePreviewViewer
-        isOpen={!!previewTemplate}
-        onClose={() => setPreviewTemplate(null)}
-        url={previewTemplate?.url || ''}
-        name={previewTemplate?.name || ''}
+        isOpen={previewIndex !== null}
+        onClose={() => setPreviewIndex(null)}
+        templates={viewerTemplates}
+        currentIndex={previewIndex ?? 0}
+        onNavigate={setPreviewIndex}
       />
     </>
   );
