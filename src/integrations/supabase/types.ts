@@ -1303,6 +1303,7 @@ export type Database = {
           tax_region: Database["public"]["Enums"]["tax_region"] | null
           trade_name: string | null
           updated_at: string
+          user_id: string | null
           vat_id: string | null
           website: string | null
         }
@@ -1359,6 +1360,7 @@ export type Database = {
           tax_region?: Database["public"]["Enums"]["tax_region"] | null
           trade_name?: string | null
           updated_at?: string
+          user_id?: string | null
           vat_id?: string | null
           website?: string | null
         }
@@ -1415,6 +1417,7 @@ export type Database = {
           tax_region?: Database["public"]["Enums"]["tax_region"] | null
           trade_name?: string | null
           updated_at?: string
+          user_id?: string | null
           vat_id?: string | null
           website?: string | null
         }
@@ -3390,6 +3393,7 @@ export type Database = {
         Row: {
           assigned_at: string | null
           assigned_by: string | null
+          company_id: string | null
           customer_id: string
           id: string
           template_id: string
@@ -3397,6 +3401,7 @@ export type Database = {
         Insert: {
           assigned_at?: string | null
           assigned_by?: string | null
+          company_id?: string | null
           customer_id: string
           id?: string
           template_id: string
@@ -3404,11 +3409,19 @@ export type Database = {
         Update: {
           assigned_at?: string | null
           assigned_by?: string | null
+          company_id?: string | null
           customer_id?: string
           id?: string
           template_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "customer_templates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "customer_templates_template_id_fkey"
             columns: ["template_id"]
