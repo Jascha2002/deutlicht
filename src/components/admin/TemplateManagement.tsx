@@ -326,14 +326,15 @@ export function TemplateManagement() {
               )}
             </div>
 
-            {/* 2. Thumbnail Preview (full width, appears when available) */}
-            {formThumbnail && (
+            {/* 2. Screenshot Preview (full width, appears when URL is set) */}
+            {formUrl && formUrl.startsWith('http') && (
               <div className="md:col-span-2">
-                <div className="rounded-lg overflow-hidden border w-full max-h-48">
+                <Label className="mb-2 block">Vorschaubild (automatischer Screenshot der Startseite)</Label>
+                <div className="rounded-lg overflow-hidden border w-full">
                   <img
-                    src={formThumbnail}
-                    alt="Vorschau"
-                    className="w-full h-48 object-cover"
+                    src={`https://image.thum.io/get/width/800/crop/500/${formUrl}`}
+                    alt="Screenshot der Startseite"
+                    className="w-full h-56 object-cover object-top"
                     onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
@@ -397,20 +398,7 @@ export function TemplateManagement() {
               />
             </div>
 
-            {/* 6. Thumbnail URL */}
-            <div className="space-y-2">
-              <Label className="flex items-center gap-1">
-                Vorschaubild URL
-                {autoFilled.includes('thumbnail') && (
-                  <span className="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full ml-1">Automatisch ermittelt</span>
-                )}
-              </Label>
-              <Input
-                placeholder="https://... (wird automatisch ermittelt)"
-                value={formThumbnail}
-                onChange={e => { setFormThumbnail(e.target.value); setAutoFilled(prev => prev.filter(f => f !== 'thumbnail')); }}
-              />
-            </div>
+            {/* 6. Thumbnail URL removed — always uses auto-screenshot */}
 
             {/* 7. Tags */}
             <div className="space-y-2">
@@ -536,15 +524,18 @@ export function TemplateManagement() {
             <DialogTitle>Vorlage bearbeiten</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
-            {/* Live screenshot preview */}
+            {/* Screenshot preview — always from URL */}
             {editingTemplate?.url && (
-              <div className="rounded-lg overflow-hidden border w-full">
-                <img
-                  src={editThumbnail || `https://image.thum.io/get/width/640/crop/400/${editingTemplate.url}`}
-                  alt="Vorschau der Startseite"
-                  className="w-full h-40 object-cover"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                />
+              <div className="space-y-1">
+                <Label>Vorschaubild (automatischer Screenshot)</Label>
+                <div className="rounded-lg overflow-hidden border w-full">
+                  <img
+                    src={`https://image.thum.io/get/width/800/crop/500/${editingTemplate.url}`}
+                    alt="Screenshot der Startseite"
+                    className="w-full h-48 object-cover object-top"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
               </div>
             )}
             <div className="space-y-1">
@@ -562,10 +553,6 @@ export function TemplateManagement() {
             <div className="space-y-1">
               <Label>Tags (kommagetrennt)</Label>
               <Input value={editTags} onChange={e => setEditTags(e.target.value)} />
-            </div>
-            <div className="space-y-1">
-              <Label>Vorschaubild URL (optional, sonst Screenshot der Startseite)</Label>
-              <Input value={editThumbnail} onChange={e => setEditThumbnail(e.target.value)} placeholder="Leer lassen für automatischen Screenshot" />
             </div>
           </div>
           <DialogFooter>
