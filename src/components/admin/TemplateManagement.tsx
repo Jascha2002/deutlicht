@@ -226,8 +226,18 @@ export function TemplateManagement() {
   const handleAssign = async (templateId: string) => {
     if (!selectedCompanyId) return;
     const { data: { user } } = await supabase.auth.getUser();
+
+    // Find the company's linked user_id so the customer can see the template
+    const { data: companyData } = await supabase
+      .from('crm_companies')
+      .select('user_id')
+      .eq('id', selectedCompanyId)
+      .maybeSingle();
+
+    const customerId = companyData?.user_id || user?.id || '';
+
     const { error } = await supabase.from('customer_templates').insert({
-      customer_id: user?.id || '',
+      customer_id: customerId,
       company_id: selectedCompanyId,
       template_id: templateId,
       assigned_by: user?.id || null,
