@@ -4465,6 +4465,10 @@ export type Database = {
         }
         Returns: string
       }
+      get_accessible_company_ids: {
+        Args: { _user_id?: string }
+        Returns: string[]
+      }
       get_user_roles: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"][]
