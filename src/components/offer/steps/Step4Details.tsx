@@ -19,6 +19,16 @@ interface Step4Props {
   onToggleArray: (field: 'website_features' | 'social_platforms', value: string) => void;
 }
 
+// Shared styles for selectable cards
+const selectedClass = 'border-2 border-primary bg-primary/[0.12]';
+const unselectedClass = 'border-2 border-border hover:border-primary/50 hover:bg-primary/[0.05]';
+
+const SelectBadge = () => (
+  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+    <Check className="w-3.5 h-3.5 text-primary-foreground" />
+  </div>
+);
+
 // Website-Typen mit Beschreibungen
 const WEBSITE_TYPES = [
   { value: 'landingpage_starter', label: 'Landing Page Starter', description: 'Perfekt für schnelle Kampagnen oder Produktlaunches.', price: 'ab 399€' },
@@ -171,28 +181,27 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>Website-Typ</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {WEBSITE_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => onChange('website_type', type.value)}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.website_type === type.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {formData.website_type === type.value && <Check className="w-4 h-4 text-primary" />}
+                {WEBSITE_TYPES.map((type) => {
+                  const isSelected = formData.website_type === type.value;
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => onChange('website_type', type.value)}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="flex items-center justify-between pr-6">
                         <span className="font-medium">{type.label}</span>
+                        <span className="text-xs text-primary font-medium">{type.price}</span>
                       </div>
-                      <span className="text-xs text-primary font-medium">{type.price}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
-                  </button>
-                ))}
+                      <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -200,28 +209,27 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>Webshop-Pakete</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {SHOP_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => onChange('website_type', type.value)}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.website_type === type.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {formData.website_type === type.value && <Check className="w-4 h-4 text-primary" />}
+                {SHOP_TYPES.map((type) => {
+                  const isSelected = formData.website_type === type.value;
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => onChange('website_type', type.value)}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="flex items-center justify-between pr-6">
                         <span className="font-medium">{type.label}</span>
+                        <span className="text-xs text-primary font-medium">{type.price}</span>
                       </div>
-                      <span className="text-xs text-primary font-medium">{type.price}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
-                  </button>
-                ))}
+                      <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -248,14 +256,12 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                       type="button"
                       onClick={() => onToggleArray('website_features', feature.value)}
                       className={cn(
-                        'p-2 rounded-lg border text-left transition-all text-sm',
-                        isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
+                        'relative p-2 rounded-lg text-left transition-all duration-150 text-sm',
+                        isSelected ? selectedClass : unselectedClass
                       )}
                     >
-                      <div className="flex items-center gap-1">
-                        {isSelected && <Check className="w-3 h-3 text-primary" />}
-                        {feature.label}
-                      </div>
+                      {isSelected && <SelectBadge />}
+                      <span className="pr-6">{feature.label}</span>
                     </button>
                   );
                 })}
@@ -291,29 +297,31 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                   {isShopType ? 'Shop-Hosting-Paket' : 'Website-Hosting-Paket'}
                 </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {HOSTING_OPTIONS.map((type) => (
-                    <button
-                      key={type.value}
-                      type="button"
-                      onClick={() => onChange('hosting_type', type.value)}
-                      className={cn(
-                        'p-3 rounded-lg border text-left transition-all',
-                        formData.hosting_type === type.value
-                          ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                          : 'border-border hover:border-primary/50'
-                      )}
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <span className="font-medium block">{type.label}</span>
-                          {'description' in type && type.description && (
-                            <span className="text-xs text-muted-foreground">{type.description as string}</span>
-                          )}
+                  {HOSTING_OPTIONS.map((type) => {
+                    const isSelected = formData.hosting_type === type.value;
+                    return (
+                      <button
+                        key={type.value}
+                        type="button"
+                        onClick={() => onChange('hosting_type', type.value)}
+                        className={cn(
+                          'relative p-3 rounded-lg text-left transition-all duration-150',
+                          isSelected ? selectedClass : unselectedClass
+                        )}
+                      >
+                        {isSelected && <SelectBadge />}
+                        <div className="flex justify-between items-start pr-6">
+                          <div>
+                            <span className="font-medium block">{type.label}</span>
+                            {'description' in type && type.description && (
+                              <span className="text-xs text-muted-foreground">{type.description as string}</span>
+                            )}
+                          </div>
+                          <span className="text-sm text-primary font-medium whitespace-nowrap">{type.price}</span>
                         </div>
-                        <span className="text-sm text-primary font-medium whitespace-nowrap">{type.price}</span>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
                 {isShopType && (
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
@@ -339,24 +347,26 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
               <div className="space-y-2">
                 <Label>Service-Paket</Label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  {SERVICE_MINUTES.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => onChange('service_minutes', option.value)}
-                      className={cn(
-                        'p-3 rounded-lg border text-left transition-all',
-                        formData.service_minutes === option.value
-                          ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                          : 'border-border hover:border-primary/50'
-                      )}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{option.label}</span>
-                        <span className="text-sm text-muted-foreground">{option.price}</span>
-                      </div>
-                    </button>
-                  ))}
+                  {SERVICE_MINUTES.map((option) => {
+                    const isSelected = formData.service_minutes === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => onChange('service_minutes', option.value)}
+                        className={cn(
+                          'relative p-3 rounded-lg text-left transition-all duration-150',
+                          isSelected ? selectedClass : unselectedClass
+                        )}
+                      >
+                        {isSelected && <SelectBadge />}
+                        <div className="flex justify-between items-center pr-6">
+                          <span className="font-medium">{option.label}</span>
+                          <span className="text-sm text-muted-foreground">{option.price}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -379,11 +389,12 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                       type="button"
                       onClick={() => onToggleArray('social_platforms', platform.value)}
                       className={cn(
-                        'px-4 py-2 rounded-lg border transition-all',
-                        isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
+                        'relative px-4 py-2 rounded-lg transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
                       )}
                     >
-                      {platform.label}
+                      {isSelected && <SelectBadge />}
+                      <span className="pr-5">{platform.label}</span>
                     </button>
                   );
                 })}
@@ -436,22 +447,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>SEO-Paket</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {SEO_PACKAGES.map((pkg) => (
-                  <button
-                    key={pkg.value}
-                    type="button"
-                    onClick={() => onChange('seo_package', pkg.value)}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.seo_package === pkg.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium">{pkg.label}</div>
-                    <p className="text-xs text-muted-foreground">{pkg.description}</p>
-                  </button>
-                ))}
+                {SEO_PACKAGES.map((pkg) => {
+                  const isSelected = formData.seo_package === pkg.value;
+                  return (
+                    <button
+                      key={pkg.value}
+                      type="button"
+                      onClick={() => onChange('seo_package', pkg.value)}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium pr-6">{pkg.label}</div>
+                      <p className="text-xs text-muted-foreground">{pkg.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -465,22 +478,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>KI-Agent Typ</Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                {KI_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => { onChange('ki_type', type.value); onChange('ki_branche', ''); }}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.ki_type === type.value && !formData.ki_branche
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium">{type.label}</div>
-                    <p className="text-xs text-muted-foreground">{type.description}</p>
-                  </button>
-                ))}
+                {KI_TYPES.map((type) => {
+                  const isSelected = formData.ki_type === type.value && !formData.ki_branche;
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => { onChange('ki_type', type.value); onChange('ki_branche', ''); }}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium pr-6">{type.label}</div>
+                      <p className="text-xs text-muted-foreground">{type.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -490,22 +505,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                 Oder wählen Sie eine Branchenlösung:
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
-                {KI_BRANCHENLOESUNGEN.map((branche) => (
-                  <button
-                    key={branche.value}
-                    type="button"
-                    onClick={() => { onChange('ki_branche', branche.value); onChange('ki_type', ''); }}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.ki_branche === branche.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium text-sm">{branche.label}</div>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{branche.description}</p>
-                  </button>
-                ))}
+                {KI_BRANCHENLOESUNGEN.map((branche) => {
+                  const isSelected = formData.ki_branche === branche.value;
+                  return (
+                    <button
+                      key={branche.value}
+                      type="button"
+                      onClick={() => { onChange('ki_branche', branche.value); onChange('ki_type', ''); }}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium text-sm pr-6">{branche.label}</div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{branche.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -519,43 +536,47 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>Voicebot-Typ</Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                {VOICE_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => onChange('voice_type', type.value)}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.voice_type === type.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium">{type.label}</div>
-                    <p className="text-xs text-muted-foreground">{type.description}</p>
-                  </button>
-                ))}
+                {VOICE_TYPES.map((type) => {
+                  const isSelected = formData.voice_type === type.value;
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => onChange('voice_type', type.value)}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium pr-6">{type.label}</div>
+                      <p className="text-xs text-muted-foreground">{type.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div className="space-y-2">
               <Label>Anwendungsbereich</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {VOICE_ANWENDUNGEN.map((anwendung) => (
-                  <button
-                    key={anwendung.value}
-                    type="button"
-                    onClick={() => onChange('voice_anwendung', anwendung.value)}
-                    className={cn(
-                      'p-3 rounded-lg border text-left transition-all',
-                      formData.voice_anwendung === anwendung.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium text-sm">{anwendung.label}</div>
-                  </button>
-                ))}
+                {VOICE_ANWENDUNGEN.map((anwendung) => {
+                  const isSelected = formData.voice_anwendung === anwendung.value;
+                  return (
+                    <button
+                      key={anwendung.value}
+                      type="button"
+                      onClick={() => onChange('voice_anwendung', anwendung.value)}
+                      className={cn(
+                        'relative p-3 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium text-sm pr-6">{anwendung.label}</div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -568,22 +589,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>Leistungsart</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {PROZESS_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => onChange('prozess_type', type.value)}
-                    className={cn(
-                      'p-4 rounded-lg border text-left transition-all',
-                      formData.prozess_type === type.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium">{type.label}</div>
-                    <p className="text-sm text-muted-foreground">{type.description}</p>
-                  </button>
-                ))}
+                {PROZESS_TYPES.map((type) => {
+                  const isSelected = formData.prozess_type === type.value;
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => onChange('prozess_type', type.value)}
+                      className={cn(
+                        'relative p-4 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium pr-6">{type.label}</div>
+                      <p className="text-sm text-muted-foreground">{type.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -596,22 +619,24 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             <div className="space-y-2">
               <Label>Beratungsmodell</Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                {BERATUNG_MODELS.map((model) => (
-                  <button
-                    key={model.value}
-                    type="button"
-                    onClick={() => onChange('beratung_model', model.value)}
-                    className={cn(
-                      'p-4 rounded-lg border text-left transition-all',
-                      formData.beratung_model === model.value
-                        ? 'border-primary bg-primary/10 ring-2 ring-primary/20'
-                        : 'border-border hover:border-primary/50'
-                    )}
-                  >
-                    <div className="font-medium">{model.label}</div>
-                    <p className="text-sm text-muted-foreground">{model.price}</p>
-                  </button>
-                ))}
+                {BERATUNG_MODELS.map((model) => {
+                  const isSelected = formData.beratung_model === model.value;
+                  return (
+                    <button
+                      key={model.value}
+                      type="button"
+                      onClick={() => onChange('beratung_model', model.value)}
+                      className={cn(
+                        'relative p-4 rounded-lg text-left transition-all duration-150',
+                        isSelected ? selectedClass : unselectedClass
+                      )}
+                    >
+                      {isSelected && <SelectBadge />}
+                      <div className="font-medium pr-6">{model.label}</div>
+                      <p className="text-sm text-muted-foreground">{model.price}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
