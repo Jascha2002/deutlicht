@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  Plus, Loader2, Trash2, Pencil, UserPlus, X, Globe, CheckCircle, AlertCircle, RefreshCw
+  Plus, Loader2, Trash2, Pencil, UserPlus, X, CheckCircle, AlertCircle, RefreshCw
 } from "lucide-react";
 
 interface Template {
@@ -444,14 +444,13 @@ export function TemplateManagement() {
               {templates.map(t => (
                 <div key={t.id} className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-3 min-w-0">
-                      {t.thumbnail_url ? (
-                        <img src={t.thumbnail_url} alt="" className="w-16 h-10 rounded object-cover flex-shrink-0 border" />
-                      ) : (
-                        <div className="w-16 h-10 rounded bg-muted flex items-center justify-center flex-shrink-0">
-                          <Globe className="w-4 h-4 text-muted-foreground" />
-                        </div>
-                      )}
+                     <div className="flex items-start gap-3 min-w-0">
+                      <img
+                        src={t.thumbnail_url || `https://image.thum.io/get/width/320/crop/200/${t.url}`}
+                        alt={t.name}
+                        className="w-16 h-10 rounded object-cover flex-shrink-0 border"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                      />
                       <div className="min-w-0">
                         <p className="font-medium truncate">{t.name}</p>
                         <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline truncate block">
@@ -537,6 +536,17 @@ export function TemplateManagement() {
             <DialogTitle>Vorlage bearbeiten</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
+            {/* Live screenshot preview */}
+            {editingTemplate?.url && (
+              <div className="rounded-lg overflow-hidden border w-full">
+                <img
+                  src={editThumbnail || `https://image.thum.io/get/width/640/crop/400/${editingTemplate.url}`}
+                  alt="Vorschau der Startseite"
+                  className="w-full h-40 object-cover"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+            )}
             <div className="space-y-1">
               <Label>Name</Label>
               <Input value={editName} onChange={e => setEditName(e.target.value)} />
@@ -554,8 +564,8 @@ export function TemplateManagement() {
               <Input value={editTags} onChange={e => setEditTags(e.target.value)} />
             </div>
             <div className="space-y-1">
-              <Label>Vorschaubild URL</Label>
-              <Input value={editThumbnail} onChange={e => setEditThumbnail(e.target.value)} />
+              <Label>Vorschaubild URL (optional, sonst Screenshot der Startseite)</Label>
+              <Input value={editThumbnail} onChange={e => setEditThumbnail(e.target.value)} placeholder="Leer lassen für automatischen Screenshot" />
             </div>
           </div>
           <DialogFooter>

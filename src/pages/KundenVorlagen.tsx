@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { TemplatePreviewViewer } from '@/components/TemplatePreviewViewer';
-import { ArrowLeft, Globe, Eye, Loader2, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, Eye, Loader2, LayoutGrid } from 'lucide-react';
 
 interface AssignedTemplate {
   id: string;
@@ -166,19 +166,12 @@ const KundenVorlagen = () => {
                 <div key={item.id} className="bg-card rounded-xl shadow-sm border overflow-hidden flex flex-col">
                   {/* Thumbnail */}
                   <div className="h-[200px] bg-muted flex items-center justify-center overflow-hidden">
-                    {item.template.thumbnail_url ? (
-                      <img
-                        src={item.template.thumbnail_url}
-                        alt={item.template.name}
-                        className="w-full h-full object-cover"
-                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                        <Globe className="w-8 h-8 text-accent/40" />
-                        <span className="text-xs">{new URL(item.template.url).hostname}</span>
-                      </div>
-                    )}
+                    <img
+                      src={item.template.thumbnail_url || `https://image.thum.io/get/width/640/crop/400/${item.template.url}`}
+                      alt={item.template.name}
+                      className="w-full h-full object-cover"
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
                   </div>
 
                   {/* Content */}
