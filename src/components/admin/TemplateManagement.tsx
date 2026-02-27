@@ -30,18 +30,18 @@ interface Template {
 interface CustomerAssignment {
   id: string;
   customer_id: string;
+  company_id: string | null;
   template_id: string;
   assigned_at: string;
   customer_name?: string;
   customer_email?: string;
 }
 
-interface Profile {
-  user_id: string;
-  full_name: string | null;
+interface Company {
+  id: string;
+  company_name: string;
   email: string | null;
-  company_id: string | null;
-  company_name?: string | null;
+  contact_person_name: string | null;
 }
 
 export function TemplateManagement() {
@@ -70,16 +70,16 @@ export function TemplateManagement() {
 
   // Assign state
   const [assigningTemplateId, setAssigningTemplateId] = useState<string | null>(null);
-  const [customers, setCustomers] = useState<Profile[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [assignments, setAssignments] = useState<Record<string, CustomerAssignment[]>>({});
-  const [selectedCustomerId, setSelectedCustomerId] = useState("");
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
 
   // Delete confirm
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   useEffect(() => {
     loadTemplates();
-    loadCustomers();
+    loadCompanies();
   }, []);
 
   const loadTemplates = async () => {
@@ -110,36 +110,14 @@ export function TemplateManagement() {
     setIsLoading(false);
   };
 
-  const loadCustomers = async () => {
-    // Load all profiles that have 'kunde' role, joined with company info
-    const { data: roles } = await supabase
-      .from('user_roles')
-      .select('user_id')
-      .eq('role', 'kunde');
-
-    if (roles && roles.length > 0) {
-      const userIds = roles.map(r => r.user_id);
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select('user_id, full_name, email, company_id')
-        .in('user_id', userIds);
-
-      // Load company names for profiles that have a company_id
-      const companyIds = (profiles || []).map(p => p.company_id).filter(Boolean) as string[];
-      let companyMap: Record<string, string> = {};
-      if (companyIds.length > 0) {
-        const { data: companies } = await supabase
-          .from('crm_companies')
-          .select('id, company_name')
-          .in('id', companyIds);
-        (companies || []).forEach(c => { companyMap[c.id] = c.company_name; });
-      }
-
-      const enriched = (profiles || []).map(p => ({
-        ...p,
-        company_name: p.company_id ? companyMap[p.company_id] || null : null,
-      }));
-      setCustomers(enriched as Profile[]);
+  const loadCompanies = async () => {
+    const { data, error } = await supabase
+      .from('crm_companies')
+      .select('id, company_name, email, contact_person_name')
+      .eq('is_active', true)
+      .order('company_name');
+    if (!error) {
+      setCompanies((data as Company[]) || []);
     }
   };
 
@@ -246,13 +224,14 @@ export function TemplateManagement() {
   };
 
   const handleAssign = async (templateId: string) => {
-    if (!selectedCustomerId) return;
+    if (!selectedCompanyId) return;
     const { data: { user } } = await supabase.auth.getUser();
     const { error } = await supabase.from('customer_templates').insert({
-      customer_id: selectedCustomerId,
+      customer_id: user?.id || '',
+      company_id: selectedCompanyId,
       template_id: templateId,
       assigned_by: user?.id || null,
-    });
+    } as any);
 
     if (error) {
       if (error.code === '23505') {
@@ -261,8 +240,8 @@ export function TemplateManagement() {
         toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
       }
     } else {
-      toast({ title: 'Zugewiesen', description: 'Vorlage wurde dem Kunden zugewiesen.' });
-      setSelectedCustomerId("");
+      toast({ title: 'Zugewiesen', description: 'Vorlage wurde der Firma zugewiesen.' });
+      setSelectedCompanyId("");
       loadTemplates();
     }
   };
@@ -275,11 +254,12 @@ export function TemplateManagement() {
     }
   };
 
-  const getCustomerName = (customerId: string) => {
-    const c = customers.find(c => c.user_id === customerId);
-    if (!c) return customerId;
-    const name = c.full_name || c.email || customerId;
-    return c.company_name ? `${name} (${c.company_name})` : name;
+  const getCompanyName = (assignment: CustomerAssignment) => {
+    if (assignment.company_id) {
+      const c = companies.find(c => c.id === assignment.company_id);
+      return c ? `${c.company_name}${c.email ? ` (${c.email})` : ''}` : assignment.company_id;
+    }
+    return assignment.customer_id;
   };
 
   if (isLoading) {
@@ -511,7 +491,7 @@ export function TemplateManagement() {
                       <span className="text-xs text-muted-foreground mr-1">Zugewiesen:</span>
                       {assignments[t.id].map(a => (
                         <Badge key={a.id} variant="outline" className="text-xs gap-1">
-                          {getCustomerName(a.customer_id)}
+                          {getCompanyName(a)}
                           <button onClick={() => handleUnassign(a.id)} className="hover:text-destructive">
                             <X className="w-3 h-3" />
                           </button>
@@ -523,21 +503,19 @@ export function TemplateManagement() {
                   {/* Inline assign */}
                   {assigningTemplateId === t.id && (
                     <div className="flex items-center gap-2 pt-2 border-t">
-                      <Select value={selectedCustomerId} onValueChange={setSelectedCustomerId}>
+                      <Select value={selectedCompanyId} onValueChange={setSelectedCompanyId}>
                         <SelectTrigger className="flex-1">
-                          <SelectValue placeholder="Kunde auswählen" />
+                          <SelectValue placeholder="Firma auswählen" />
                         </SelectTrigger>
                         <SelectContent>
-                          {customers.map(c => (
-                            <SelectItem key={c.user_id} value={c.user_id}>
-                              {c.company_name
-                                ? `${c.company_name} — ${c.full_name || c.email || 'Unbenannt'}`
-                                : `${c.full_name || 'Unbenannt'} – ${c.email}`}
+                          {companies.map(c => (
+                            <SelectItem key={c.id} value={c.id}>
+                              {c.company_name}{c.email ? ` — ${c.email}` : ''}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      <Button size="sm" onClick={() => handleAssign(t.id)} disabled={!selectedCustomerId}>
+                      <Button size="sm" onClick={() => handleAssign(t.id)} disabled={!selectedCompanyId}>
                         Zuweisen
                       </Button>
                       <Button size="sm" variant="ghost" onClick={() => setAssigningTemplateId(null)}>

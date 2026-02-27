@@ -42,16 +42,41 @@ const KundenVorlagen = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate('/auth'); return; }
 
+      // Find company linked to this user
+      const { data: company } = await supabase
+        .from('crm_companies')
+        .select('id')
+        .eq('user_id', user.id)
+        .limit(1)
+        .maybeSingle();
+
+      if (!company) {
+        // No company linked - try legacy customer_id lookup
+        const { data, error } = await supabase
+          .from('customer_templates')
+          .select(`
+            id, template_id, assigned_at,
+            template:templates(id, name, url, description, category, tags, thumbnail_url)
+          `)
+          .eq('customer_id', user.id);
+
+        if (error) throw error;
+        const validTemplates = (data || []).filter((d: any) => d.template) as unknown as AssignedTemplate[];
+        setTemplates(validTemplates);
+        setIsLoading(false);
+        return;
+      }
+
+      // Company-based lookup
       const { data, error } = await supabase
         .from('customer_templates')
         .select(`
           id, template_id, assigned_at,
           template:templates(id, name, url, description, category, tags, thumbnail_url)
         `)
-        .eq('customer_id', user.id);
+        .eq('company_id', company.id);
 
       if (error) throw error;
-      // Filter out entries where template might be null (deactivated)
       const validTemplates = (data || []).filter((d: any) => d.template) as unknown as AssignedTemplate[];
       setTemplates(validTemplates);
     } catch (e: any) {
