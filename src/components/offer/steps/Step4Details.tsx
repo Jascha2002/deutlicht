@@ -12,6 +12,32 @@ import { OfferFormData, KI_BRANCHENLOESUNGEN, VOICE_ANWENDUNGEN } from '@/types/
 import { cn } from '@/lib/utils';
 import { Check, Info } from 'lucide-react';
 import detailKonfigHero from '@/assets/detail-konfiguration-hero.jpg';
+import FormTooltip from '@/components/FormTooltip';
+
+// Tooltip texts
+const FEATURE_TOOLTIPS: Record<string, string> = {
+  'Lead-/Vertriebsfokus': 'Ihre Website wird gezielt darauf ausgerichtet, Besucher in Kunden zu verwandeln. Mit strategisch platzierten Kontaktformularen, Calls-to-Action und Anfrage-Buttons wird jede Seite zum aktiven Verkaufswerkzeug für Ihr Unternehmen.',
+  'Konfigurator': 'Ein interaktives Tool auf Ihrer Website, mit dem Kunden ihr Wunschprodukt oder ihre Dienstleistung selbst zusammenstellen können — z.B. Größe, Material, Farbe oder Ausstattung wählen. Das Ergebnis wird automatisch als Anfrage an Sie übermittelt.',
+  'ERP-Anbindung': 'Verbindung Ihrer Website mit Ihrem internen Warenwirtschafts- oder Buchhaltungssystem (z.B. SAP, DATEV, Lexoffice). Bestellungen, Anfragen oder Kundendaten fließen automatisch ins System — ohne manuelle Übertragung und ohne Fehlerquellen.',
+  'Blog': 'Ein regelmäßig aktualisierter Bereich auf Ihrer Website mit Fachartikeln, News oder Tipps. Stärkt Ihre Sichtbarkeit in Suchmaschinen (SEO) und positioniert Sie als Experte in Ihrer Branche.',
+  'Mehrsprachigkeit': 'Ihre Website wird in mehreren Sprachen angeboten — z.B. Deutsch und Englisch. Besucher können die Sprache wechseln. Ideal für Unternehmen mit internationalen Kunden oder Mitarbeitern.',
+  'Terminbuchung': 'Kunden können direkt auf Ihrer Website einen Termin buchen — ohne Telefonat oder E-Mail. Sie sehen Ihre Verfügbarkeit in Echtzeit, wählen einen freien Slot und erhalten eine automatische Bestätigung. Spart Zeit und generiert mehr Anfragen.',
+  'Mitgliederbereich': 'Ein geschützter Bereich Ihrer Website, den nur angemeldete Nutzer sehen können. Ideal für exklusive Inhalte, Kundenportale, Kurs-Plattformen oder interne Dokumente. Zugang per Login mit Benutzername und Passwort.',
+};
+
+const HOSTING_TOOLTIPS: Record<string, string> = {
+  'onepager_landingpage': 'Ideal für einzelne Kampagnenseiten, Produktlaunches oder einfache Visitenkarten-Websites. Enthält SSL-Zertifikat, tägliche Backups und schnelle Ladezeiten.',
+  'website_5-10': 'Perfekt für klassische Unternehmenswebsites mit mehreren Seiten (z.B. Startseite, Leistungen, Über uns, Kontakt). Ausreichend Ressourcen für moderate Besucherzahlen.',
+  'website_10-20': 'Für umfangreichere Websites mit Blog, Galerie oder mehreren Leistungsbereichen. Mehr Speicherplatz und Bandbreite für wachsenden Traffic.',
+  'website_20-30': 'Für größere Unternehmenswebsites mit vielen Inhalten, Downloadbereichen oder mehreren Sprachen. Höhere Performance und priorisierter Support.',
+  'website_30+': 'Enterprise-Hosting für komplexe, große Websites mit hohem Datenvolumen. Maximale Stabilität, Sicherheit und Ressourcen — für Unternehmen mit professionellen Anforderungen.',
+};
+
+const SERVICE_TOOLTIPS: Record<string, string> = {
+  '20': 'Für kleine Anpassungen und gelegentliche Updates. Ideal wenn Ihre Website selten Änderungen benötigt — z.B. neue Öffnungszeiten, ein Bild tauschen oder einen Text anpassen.',
+  '60': 'Für regelmäßige Pflege und Weiterentwicklung. Umfasst Sicherheitsupdates, Inhaltspflege und kleinere neue Features. Empfohlen für aktive Unternehmenswebsites.',
+  '120': 'Vollumfängliche Website-Betreuung für anspruchsvolle Projekte. Regelmäßige Weiterentwicklung, Optimierungen, Analysen und schneller Support — Ihre Website im Dauercheck.',
+};
 
 interface Step4Props {
   formData: OfferFormData;
@@ -250,13 +276,14 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {WEBSITE_FEATURES_DETAILED.map((feature) => {
                   const isSelected = formData.website_features.includes(feature.value);
-                  return (
+                  const tooltip = FEATURE_TOOLTIPS[feature.value];
+                  const btn = (
                     <button
                       key={feature.value}
                       type="button"
                       onClick={() => onToggleArray('website_features', feature.value)}
                       className={cn(
-                        'relative p-2 rounded-lg text-left transition-all duration-150 text-sm',
+                        'relative p-2 rounded-lg text-left transition-all duration-150 text-sm w-full',
                         isSelected ? selectedClass : unselectedClass
                       )}
                     >
@@ -264,13 +291,20 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                       <span className="pr-6">{feature.label}</span>
                     </button>
                   );
+                  return tooltip ? (
+                    <FormTooltip key={feature.value} content={tooltip}>
+                      {btn}
+                    </FormTooltip>
+                  ) : btn;
                 })}
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Domain benötigt?</Label>
+                <FormTooltip content="Eine Domain ist die Adresse Ihrer Website im Internet — zum Beispiel www.ihr-unternehmen.de. Sie ist wie der Name auf einem Briefkasten: ohne sie findet niemand Ihre Seite. Wählen Sie Ja, wenn Sie noch keine eigene Domain besitzen.">
+                  <Label>Domain benötigt?</Label>
+                </FormTooltip>
                 <Select value={formData.domain_needed} onValueChange={(v) => onChange('domain_needed', v)}>
                   <SelectTrigger><SelectValue placeholder="Auswählen" /></SelectTrigger>
                   <SelectContent>
@@ -280,7 +314,9 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Hosting benötigt?</Label>
+                <FormTooltip content={'Hosting ist der Speicherplatz, auf dem Ihre Website-Dateien gespeichert werden \u2014 rund um die Uhr erreichbar für alle Besucher. Denken Sie daran als das \u201EHaus\u201C, in dem Ihre Website wohnt, während die Domain die Adresse dazu ist. Ohne Hosting ist Ihre Website nicht im Internet erreichbar.'}>
+                  <Label>Hosting benötigt?</Label>
+                </FormTooltip>
                 <Select value={formData.hosting_needed} onValueChange={(v) => onChange('hosting_needed', v)}>
                   <SelectTrigger><SelectValue placeholder="Auswählen" /></SelectTrigger>
                   <SelectContent>
@@ -296,16 +332,18 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                 <Label>
                   {isShopType ? 'Shop-Hosting-Paket' : 'Website-Hosting-Paket'}
                 </Label>
+                {/* Hosting package tooltips are on individual cards below */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                   {HOSTING_OPTIONS.map((type) => {
                     const isSelected = formData.hosting_type === type.value;
-                    return (
+                    const tooltip = HOSTING_TOOLTIPS[type.value];
+                    const btn = (
                       <button
                         key={type.value}
                         type="button"
                         onClick={() => onChange('hosting_type', type.value)}
                         className={cn(
-                          'relative p-3 rounded-lg text-left transition-all duration-150',
+                          'relative p-3 rounded-lg text-left transition-all duration-150 w-full',
                           isSelected ? selectedClass : unselectedClass
                         )}
                       >
@@ -321,6 +359,11 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                         </div>
                       </button>
                     );
+                    return tooltip ? (
+                      <FormTooltip key={type.value} content={tooltip}>
+                        {btn}
+                      </FormTooltip>
+                    ) : <span key={type.value}>{btn}</span>;
                   })}
                 </div>
                 {isShopType && (
@@ -333,7 +376,9 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
             )}
 
             <div className="space-y-2">
-              <Label>Service & Wartungsvertrag?</Label>
+              <FormTooltip content="Ein monatlicher Vertrag, bei dem wir Ihre Website aktiv betreuen: Sicherheitsupdates einspielen, Inhalte anpassen, technische Probleme lösen und Ihre Website auf dem neuesten Stand halten. So müssen Sie sich um nichts kümmern.">
+                <Label>Service & Wartungsvertrag?</Label>
+              </FormTooltip>
               <Select value={formData.service_contract} onValueChange={(v) => onChange('service_contract', v)}>
                 <SelectTrigger><SelectValue placeholder="Auswählen" /></SelectTrigger>
                 <SelectContent>
@@ -349,13 +394,14 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                   {SERVICE_MINUTES.map((option) => {
                     const isSelected = formData.service_minutes === option.value;
-                    return (
+                    const tooltip = SERVICE_TOOLTIPS[option.value];
+                    const btn = (
                       <button
                         key={option.value}
                         type="button"
                         onClick={() => onChange('service_minutes', option.value)}
                         className={cn(
-                          'relative p-3 rounded-lg text-left transition-all duration-150',
+                          'relative p-3 rounded-lg text-left transition-all duration-150 w-full',
                           isSelected ? selectedClass : unselectedClass
                         )}
                       >
@@ -366,6 +412,11 @@ export const Step4Details = ({ formData, onChange, onToggleArray }: Step4Props) 
                         </div>
                       </button>
                     );
+                    return tooltip ? (
+                      <FormTooltip key={option.value} content={tooltip}>
+                        {btn}
+                      </FormTooltip>
+                    ) : btn;
                   })}
                 </div>
               </div>
