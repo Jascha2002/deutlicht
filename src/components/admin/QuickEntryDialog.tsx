@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Zap, Building2, UserPlus, FileText, ArrowRight, Check } from 'lucide-react';
+import { Zap, Building2, UserPlus, FileText, ArrowRight, Check, Sparkles, Loader2 } from 'lucide-react';
 import type { Database } from '@/integrations/supabase/types';
 
 type TaxRegion = Database['public']['Enums']['tax_region'];
@@ -38,6 +38,8 @@ export function QuickEntryDialog({ onCompanyCreated, trigger }: QuickEntryDialog
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [createdCompanyId, setCreatedCompanyId] = useState<string | null>(null);
+  const [smartPasteText, setSmartPasteText] = useState('');
+  const [isParsing, setIsParsing] = useState(false);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -77,6 +79,7 @@ export function QuickEntryDialog({ onCompanyCreated, trigger }: QuickEntryDialog
   const resetForm = () => {
     setStep(1);
     setCreatedCompanyId(null);
+    setSmartPasteText('');
     setFormData({
       contact_type: 'interessent',
       source_channel: 'vertrieb',
@@ -195,8 +198,98 @@ export function QuickEntryDialog({ onCompanyCreated, trigger }: QuickEntryDialog
     </div>
   );
 
+  const handleSmartPaste = async () => {
+    if (!smartPasteText.trim() || smartPasteText.trim().length < 5) {
+      toast({ title: 'Bitte Text eingeben', variant: 'destructive' });
+      return;
+    }
+    setIsParsing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('parse-company-text', {
+        body: { text: smartPasteText.trim() },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      const d = data?.data;
+      if (!d) throw new Error('Keine Daten erkannt');
+
+      // Fill all fields that have values
+      const fieldMap: Record<string, string> = {
+        company_name: d.company_name || '',
+        legal_form: d.legal_form || '',
+        industry: d.industry || '',
+        contact_person_name: d.contact_person_name || '',
+        contact_person_position: d.contact_person_position || '',
+        contact_person_email: d.contact_person_email || '',
+        contact_person_phone: d.contact_person_phone || '',
+        street: d.street || '',
+        street_number: d.street_number || '',
+        postal_code: d.postal_code || '',
+        city: d.city || '',
+        country: d.country || 'Deutschland',
+        email: d.email || '',
+        phone: d.phone || '',
+        website: d.website || '',
+        internal_notes: d.internal_notes || '',
+      };
+
+      setFormData(prev => {
+        const updated = { ...prev };
+        for (const [key, value] of Object.entries(fieldMap)) {
+          if (value) (updated as any)[key] = value;
+        }
+        // Set country_code based on country
+        if (updated.country && updated.country !== 'Deutschland') {
+          updated.country_code = '';
+          updated.tax_region = 'eu' as any;
+        }
+        return updated;
+      });
+
+      const filledCount = Object.values(fieldMap).filter(v => v).length;
+      toast({ title: `${filledCount} Felder automatisch ausgefüllt` });
+    } catch (err: any) {
+      console.error('Smart paste error:', err);
+      toast({ title: 'Fehler bei der Analyse', description: err?.message || 'Bitte manuell ausfüllen.', variant: 'destructive' });
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
   const renderStep2 = () => (
     <div className="space-y-4">
+      {/* Smart Paste */}
+      <div className="bg-accent/5 border border-accent/20 rounded-xl p-4 space-y-3">
+        <Label className="text-sm font-semibold flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-accent" />
+          KI-Schnelleingabe
+        </Label>
+        <Textarea
+          value={smartPasteText}
+          onChange={e => setSmartPasteText(e.target.value)}
+          placeholder={"Firmendaten hier einfügen, z.B.:\nMuster GmbH, Max Mustermann (GF)\nMusterstraße 12, 07545 Gera\nTel: 0365 123456, info@muster.de\nwww.muster.de, Branche: IT"}
+          rows={4}
+          className="text-sm"
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleSmartPaste}
+          disabled={isParsing || !smartPasteText.trim()}
+          className="w-full gap-2"
+        >
+          {isParsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+          {isParsing ? 'Analysiere...' : 'Text analysieren & Felder ausfüllen'}
+        </Button>
+      </div>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
+        <div className="relative flex justify-center text-xs"><span className="bg-background px-2 text-muted-foreground">oder manuell ausfüllen</span></div>
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
           <Label>Firmenname *</Label>

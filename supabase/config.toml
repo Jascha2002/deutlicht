@@ -47,3 +47,6 @@ verify_jwt = false
 
 [functions.fetch-url-meta]
 verify_jwt = false
+
+[functions.parse-company-text]
+verify_jwt = false
