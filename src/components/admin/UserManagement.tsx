@@ -135,12 +135,29 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
     if (!companyAssignUser) return;
     try {
       const companyId = selectedCompanyId === '__none__' ? null : selectedCompanyId || null;
+      
+      // 1. Update profiles.company_id
       const { error } = await supabase
         .from('profiles')
         .update({ company_id: companyId })
         .eq('user_id', companyAssignUser.user_id);
-
       if (error) throw error;
+
+      // 2. Also link crm_companies.user_id so the customer portal works
+      if (companyId) {
+        await supabase
+          .from('crm_companies')
+          .update({ user_id: companyAssignUser.user_id })
+          .eq('id', companyId);
+      }
+      // If removing assignment, clear user_id from old company
+      if (!companyId && companyAssignUser.company_id) {
+        await supabase
+          .from('crm_companies')
+          .update({ user_id: null })
+          .eq('id', companyAssignUser.company_id)
+          .eq('user_id', companyAssignUser.user_id);
+      }
 
       toast({ title: 'Firma zugewiesen', description: companyId ? 'Der Benutzer wurde der Firma zugeordnet.' : 'Firma-Zuordnung entfernt.' });
       setCompanyAssignUser(null);
