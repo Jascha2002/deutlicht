@@ -9,7 +9,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { 
   User, FileText, FolderOpen, Upload, Receipt, Package, 
-  Clock, CheckCircle, AlertCircle, ArrowRight, Plus
+  Clock, CheckCircle, AlertCircle, ArrowRight, Plus, LayoutGrid
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -307,6 +307,25 @@ const KundenDashboard = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Vorlagen Card */}
+          <Card 
+            className="mb-8 cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate('/dashboard/vorlagen')}
+          >
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <LayoutGrid className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Ihre Vorlagen</p>
+                  <p className="text-sm text-muted-foreground">Website-Designs die wir für Sie erstellt haben</p>
+                </div>
+              </div>
+              <Badge className="rounded-full">Ansehen</Badge>
+            </CardContent>
+          </Card>
 
           {/* Tabs */}
           <Tabs defaultValue="documents" className="w-full">
