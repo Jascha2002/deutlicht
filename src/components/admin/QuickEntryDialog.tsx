@@ -214,6 +214,12 @@ export function QuickEntryDialog({ onCompanyCreated, trigger }: QuickEntryDialog
       const d = data?.data;
       if (!d) throw new Error('Keine Daten erkannt');
 
+      // Fallback: if only one email/phone found, use for both personal and company
+      const contactEmail = d.contact_person_email || '';
+      const companyEmail = d.email || '';
+      const contactPhone = d.contact_person_phone || '';
+      const companyPhone = d.phone || '';
+
       // Fill all fields that have values
       const fieldMap: Record<string, string> = {
         company_name: d.company_name || '',
@@ -221,15 +227,15 @@ export function QuickEntryDialog({ onCompanyCreated, trigger }: QuickEntryDialog
         industry: d.industry || '',
         contact_person_name: d.contact_person_name || '',
         contact_person_position: d.contact_person_position || '',
-        contact_person_email: d.contact_person_email || '',
-        contact_person_phone: d.contact_person_phone || '',
+        contact_person_email: contactEmail || companyEmail,
+        contact_person_phone: contactPhone || companyPhone,
         street: d.street || '',
         street_number: d.street_number || '',
         postal_code: d.postal_code || '',
         city: d.city || '',
         country: d.country || 'Deutschland',
-        email: d.email || '',
-        phone: d.phone || '',
+        email: companyEmail || contactEmail,
+        phone: companyPhone || contactPhone,
         website: d.website || '',
         internal_notes: d.internal_notes || '',
       };
