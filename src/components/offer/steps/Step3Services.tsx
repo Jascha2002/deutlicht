@@ -38,15 +38,14 @@ export const Step3Services = ({ formData, onToggleService }: Step3Props) => {
                 type="button"
                 onClick={() => onToggleService(service.label)}
                 className={cn(
-                  'relative p-6 rounded-xl border-2 text-left transition-all duration-200',
-                  'hover:border-primary/50 hover:shadow-md',
+                  'relative p-6 rounded-xl border-2 text-left transition-all duration-150',
                   isSelected
-                    ? 'border-primary bg-primary/5 shadow-md'
-                    : 'border-border bg-card'
+                    ? 'border-primary bg-primary/[0.12] shadow-md'
+                    : 'border-border bg-card hover:border-primary/50 hover:bg-primary/[0.05]'
                 )}
               >
                 {isSelected && (
-                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                     <Check className="w-4 h-4 text-primary-foreground" />
                   </div>
                 )}

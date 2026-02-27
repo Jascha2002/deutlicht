@@ -1,12 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { OfferFormData } from '@/types/offer';
 import { Mail, Phone, Calendar } from 'lucide-react';
@@ -18,6 +12,32 @@ interface Step2Props {
 }
 
 export const Step2Contact = ({ formData, onChange }: Step2Props) => {
+  const [resetHint, setResetHint] = useState(false);
+
+  // If project_start_timing changes and project_deadline is before it, clear deadline
+  useEffect(() => {
+    if (
+      formData.project_start_timing &&
+      formData.project_deadline &&
+      formData.project_deadline < formData.project_start_timing
+    ) {
+      setResetHint(true);
+      const timer = setTimeout(() => {
+        onChange('project_deadline', '');
+        setResetHint(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [formData.project_start_timing]);
+
+  const formattedStart = formData.project_start_timing
+    ? new Date(formData.project_start_timing).toLocaleDateString('de-DE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : '';
+
   return (
     <Card className="border-0 shadow-lg overflow-hidden">
       <div className="relative h-48 overflow-hidden">
@@ -73,41 +93,39 @@ export const Step2Contact = ({ formData, onChange }: Step2Props) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Gewünschter Projektstart</Label>
-              <Select
+              <Label htmlFor="project_start_timing">Gewünschter Projektstart</Label>
+              <Input
+                id="project_start_timing"
+                type="date"
                 value={formData.project_start_timing}
-                onValueChange={(value) => onChange('project_start_timing', value)}
-              >
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Zeitpunkt auswählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Sofort">Sofort</SelectItem>
-                  <SelectItem value="In 2 Wochen">In 2 Wochen</SelectItem>
-                  <SelectItem value="In 4 Wochen">In 4 Wochen</SelectItem>
-                  <SelectItem value="In 1-2 Monaten">In 1-2 Monaten</SelectItem>
-                  <SelectItem value="In 6 Monaten">In 6 Monaten</SelectItem>
-                  <SelectItem value="Noch in Planung">Noch in Planung</SelectItem>
-                </SelectContent>
-              </Select>
+                onChange={(e) => onChange('project_start_timing', e.target.value)}
+                className="h-12"
+              />
             </div>
 
             <div className="space-y-2">
-              <Label>Gewünschte Fertigstellung</Label>
-              <Select
+              <Label htmlFor="project_deadline">Gewünschte Fertigstellung</Label>
+              <Input
+                id="project_deadline"
+                type="date"
                 value={formData.project_deadline}
-                onValueChange={(value) => onChange('project_deadline', value)}
-              >
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Deadline auswählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="In 4 Wochen">In 4 Wochen</SelectItem>
-                  <SelectItem value="In 8 Wochen">In 8 Wochen</SelectItem>
-                  <SelectItem value="In 12 Wochen">In 12 Wochen</SelectItem>
-                  <SelectItem value="Flexibel">Flexibel</SelectItem>
-                </SelectContent>
-              </Select>
+                min={formData.project_start_timing || undefined}
+                onChange={(e) => onChange('project_deadline', e.target.value)}
+                className="h-12"
+              />
+              {resetHint ? (
+                <p className="text-xs text-destructive mt-1">
+                  Fertigstellungsdatum wurde zurückgesetzt
+                </p>
+              ) : formData.project_start_timing ? (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Frühestens ab {formattedStart}
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Bitte zuerst einen Projektstart wählen
+                </p>
+              )}
             </div>
           </div>
         </div>
