@@ -40,6 +40,8 @@ interface Profile {
   user_id: string;
   full_name: string | null;
   email: string | null;
+  company_id: string | null;
+  company_name?: string | null;
 }
 
 export function TemplateManagement() {
@@ -109,7 +111,7 @@ export function TemplateManagement() {
   };
 
   const loadCustomers = async () => {
-    // Load all profiles that have 'kunde' role
+    // Load all profiles that have 'kunde' role, joined with company info
     const { data: roles } = await supabase
       .from('user_roles')
       .select('user_id')
@@ -119,9 +121,25 @@ export function TemplateManagement() {
       const userIds = roles.map(r => r.user_id);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, full_name, email')
+        .select('user_id, full_name, email, company_id')
         .in('user_id', userIds);
-      setCustomers((profiles as Profile[]) || []);
+
+      // Load company names for profiles that have a company_id
+      const companyIds = (profiles || []).map(p => p.company_id).filter(Boolean) as string[];
+      let companyMap: Record<string, string> = {};
+      if (companyIds.length > 0) {
+        const { data: companies } = await supabase
+          .from('crm_companies')
+          .select('id, company_name')
+          .in('id', companyIds);
+        (companies || []).forEach(c => { companyMap[c.id] = c.company_name; });
+      }
+
+      const enriched = (profiles || []).map(p => ({
+        ...p,
+        company_name: p.company_id ? companyMap[p.company_id] || null : null,
+      }));
+      setCustomers(enriched as Profile[]);
     }
   };
 
@@ -259,7 +277,9 @@ export function TemplateManagement() {
 
   const getCustomerName = (customerId: string) => {
     const c = customers.find(c => c.user_id === customerId);
-    return c ? (c.full_name || c.email || customerId) : customerId;
+    if (!c) return customerId;
+    const name = c.full_name || c.email || customerId;
+    return c.company_name ? `${name} (${c.company_name})` : name;
   };
 
   if (isLoading) {
@@ -510,7 +530,9 @@ export function TemplateManagement() {
                         <SelectContent>
                           {customers.map(c => (
                             <SelectItem key={c.user_id} value={c.user_id}>
-                              {c.full_name || 'Unbenannt'} – {c.email}
+                              {c.company_name
+                                ? `${c.company_name} — ${c.full_name || c.email || 'Unbenannt'}`
+                                : `${c.full_name || 'Unbenannt'} – ${c.email}`}
                             </SelectItem>
                           ))}
                         </SelectContent>
