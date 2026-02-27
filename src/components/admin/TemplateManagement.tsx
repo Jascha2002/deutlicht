@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  Plus, Loader2, Check, Trash2, Pencil, UserPlus, X, Globe
+  Plus, Loader2, Trash2, Pencil, UserPlus, X, Globe, CheckCircle, AlertCircle, RefreshCw
 } from "lucide-react";
 
 interface Template {
@@ -47,8 +47,8 @@ export function TemplateManagement() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isFetchingMeta, setIsFetchingMeta] = useState(false);
-  const [metaFetched, setMetaFetched] = useState(false);
+  const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [autoFilled, setAutoFilled] = useState<string[]>([]);
 
   // Form state
   const [formUrl, setFormUrl] = useState("");
@@ -125,38 +125,34 @@ export function TemplateManagement() {
     }
   };
 
-  // Debounced URL meta fetch
   const fetchUrlMeta = useCallback(async (url: string) => {
-    if (!url || !url.startsWith('http')) return;
-    setIsFetchingMeta(true);
-    setMetaFetched(false);
+    if (!url || !url.startsWith('http') || !url.includes('.')) return;
+    setFetchStatus('loading');
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
       const { data, error } = await supabase.functions.invoke('fetch-url-meta', {
         body: { url }
       });
+      if (error) throw error;
 
-      if (!error && data) {
-        if (data.title && !formName) setFormName(data.title);
-        if (data.description && !formDescription) setFormDescription(data.description);
-        if (data.thumbnailUrl && !formThumbnail) setFormThumbnail(data.thumbnailUrl);
-        setMetaFetched(true);
-      }
+      const filled: string[] = [];
+      if (!formName && data.name) { setFormName(data.name); filled.push('name'); }
+      if (!formDescription && data.description) { setFormDescription(data.description); filled.push('description'); }
+      if (!formThumbnail && data.thumbnailUrl) { setFormThumbnail(data.thumbnailUrl); filled.push('thumbnail'); }
+      if (!formCategory && data.category && data.category !== 'Allgemein') { setFormCategory(data.category); filled.push('category'); }
+      setAutoFilled(filled);
+      setFetchStatus('success');
     } catch (e) {
       console.error('Meta fetch failed:', e);
-    } finally {
-      setIsFetchingMeta(false);
+      setFetchStatus('error');
     }
-  }, [formName, formDescription, formThumbnail]);
+  }, [formName, formDescription, formThumbnail, formCategory]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (formUrl && formUrl.startsWith('http')) {
+      if (formUrl && formUrl.startsWith('http') && formUrl.includes('.')) {
         fetchUrlMeta(formUrl);
       }
-    }, 800);
+    }, 900);
     return () => clearTimeout(timer);
   }, [formUrl]);
 
@@ -184,7 +180,7 @@ export function TemplateManagement() {
 
       toast({ title: 'Vorlage gespeichert', description: `"${formName}" wurde erfolgreich erstellt.` });
       setFormUrl(""); setFormName(""); setFormDescription(""); setFormCategory(""); setFormTags(""); setFormThumbnail("");
-      setMetaFetched(false);
+      setAutoFilled([]); setFetchStatus('idle');
       loadTemplates();
     } catch (e: any) {
       toast({ title: 'Fehler', description: e.message, variant: 'destructive' });
@@ -286,54 +282,137 @@ export function TemplateManagement() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* 1. URL Field with status */}
             <div className="space-y-2 md:col-span-2">
               <Label>Website URL *</Label>
-              <Input
-                placeholder="https://mein-projekt.lovable.app"
-                value={formUrl}
-                onChange={e => setFormUrl(e.target.value)}
-              />
-              {isFetchingMeta && (
-                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                  <Loader2 className="w-3 h-3 animate-spin" /> Metadaten werden geladen...
-                </p>
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    placeholder="https://mein-projekt.lovable.app"
+                    value={formUrl}
+                    onChange={e => setFormUrl(e.target.value)}
+                    className="pr-10"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {fetchStatus === 'loading' && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+                    {fetchStatus === 'success' && <CheckCircle className="w-4 h-4 text-green-500" />}
+                    {fetchStatus === 'error' && <AlertCircle className="w-4 h-4 text-destructive" />}
+                  </div>
+                </div>
+                {fetchStatus !== 'idle' && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => { setAutoFilled([]); fetchUrlMeta(formUrl); }}
+                    className="gap-1 text-xs"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Erneut
+                  </Button>
+                )}
+              </div>
+              {fetchStatus === 'loading' && (
+                <p className="text-sm text-muted-foreground">Website wird analysiert...</p>
+              )}
+              {fetchStatus === 'success' && autoFilled.length > 0 && (
+                <p className="text-sm text-green-600">✓ {autoFilled.length} Felder automatisch ausgefüllt — bitte prüfen</p>
+              )}
+              {fetchStatus === 'success' && autoFilled.length === 0 && (
+                <p className="text-sm text-muted-foreground">Website geladen — keine zusätzlichen Metadaten gefunden</p>
+              )}
+              {fetchStatus === 'error' && (
+                <p className="text-sm text-destructive">Website konnte nicht analysiert werden — bitte manuell ausfüllen</p>
               )}
             </div>
 
+            {/* 2. Thumbnail Preview (full width, appears when available) */}
+            {formThumbnail && (
+              <div className="md:col-span-2">
+                <div className="rounded-lg overflow-hidden border w-full max-h-48">
+                  <img
+                    src={formThumbnail}
+                    alt="Vorschau"
+                    className="w-full h-48 object-cover"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 3. Name */}
             <div className="space-y-2">
               <Label className="flex items-center gap-1">
                 Name der Vorlage *
-                {metaFetched && formName && <Check className="w-3 h-3 text-green-500" />}
+                {autoFilled.includes('name') && (
+                  <span className="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full ml-1">Automatisch ermittelt</span>
+                )}
               </Label>
               <Input
                 placeholder="z.B. Metallbau Kutschbach – Design 1"
                 value={formName}
-                onChange={e => setFormName(e.target.value)}
+                onChange={e => { setFormName(e.target.value); setAutoFilled(prev => prev.filter(f => f !== 'name')); }}
               />
             </div>
 
+            {/* 4. Category with datalist */}
             <div className="space-y-2">
-              <Label>Kategorie</Label>
+              <Label className="flex items-center gap-1">
+                Kategorie
+                {autoFilled.includes('category') && (
+                  <span className="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full ml-1">Automatisch ermittelt</span>
+                )}
+              </Label>
               <Input
                 placeholder="z.B. Metallbau, Handwerk, Gastronomie"
                 value={formCategory}
-                onChange={e => setFormCategory(e.target.value)}
+                onChange={e => { setFormCategory(e.target.value); setAutoFilled(prev => prev.filter(f => f !== 'category')); }}
+                list="template-categories"
               />
+              <datalist id="template-categories">
+                <option value="Metallbau" />
+                <option value="Handwerk" />
+                <option value="Gastronomie" />
+                <option value="Beauty" />
+                <option value="Medizin" />
+                <option value="E-Commerce" />
+                <option value="Dienstleistung" />
+                <option value="Allgemein" />
+              </datalist>
             </div>
 
+            {/* 5. Description */}
             <div className="space-y-2 md:col-span-2">
               <Label className="flex items-center gap-1">
                 Kurzbeschreibung
-                {metaFetched && formDescription && <Check className="w-3 h-3 text-green-500" />}
+                {autoFilled.includes('description') && (
+                  <span className="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full ml-1">Automatisch ermittelt</span>
+                )}
               </Label>
               <Textarea
                 rows={3}
                 placeholder="Professionelle Website für Metallbauunternehmen..."
                 value={formDescription}
-                onChange={e => setFormDescription(e.target.value)}
+                onChange={e => { setFormDescription(e.target.value); setAutoFilled(prev => prev.filter(f => f !== 'description')); }}
               />
             </div>
 
+            {/* 6. Thumbnail URL */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1">
+                Vorschaubild URL
+                {autoFilled.includes('thumbnail') && (
+                  <span className="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full ml-1">Automatisch ermittelt</span>
+                )}
+              </Label>
+              <Input
+                placeholder="https://... (wird automatisch ermittelt)"
+                value={formThumbnail}
+                onChange={e => { setFormThumbnail(e.target.value); setAutoFilled(prev => prev.filter(f => f !== 'thumbnail')); }}
+              />
+            </div>
+
+            {/* 7. Tags */}
             <div className="space-y-2">
               <Label>Tags (kommagetrennt)</Label>
               <Input
@@ -341,30 +420,13 @@ export function TemplateManagement() {
                 value={formTags}
                 onChange={e => setFormTags(e.target.value)}
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="flex items-center gap-1">
-                Vorschaubild URL
-                {metaFetched && formThumbnail && <Check className="w-3 h-3 text-green-500" />}
-              </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  placeholder="https://... (wird automatisch ermittelt)"
-                  value={formThumbnail}
-                  onChange={e => setFormThumbnail(e.target.value)}
-                  className="flex-1"
-                />
-                {formThumbnail && (
-                  <img src={formThumbnail} alt="Preview" className="h-[38px] w-auto rounded border object-cover" />
-                )}
-              </div>
+              <p className="text-xs text-muted-foreground">z.B. modern, dunkel, B2B — mit Komma trennen</p>
             </div>
           </div>
 
           <Button onClick={handleSaveTemplate} disabled={isSaving || !formUrl || !formName} className="mt-4 gap-2">
             {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-            Vorlage speichern
+            {isSaving ? 'Wird gespeichert...' : 'Vorlage speichern'}
           </Button>
         </CardContent>
       </Card>
