@@ -9,7 +9,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { 
   User, FileText, FolderOpen, Upload, Receipt, Package, 
-  Clock, CheckCircle, AlertCircle, ArrowRight, Plus, LayoutGrid
+  Plus, LayoutGrid
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -18,14 +18,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 interface CustomerProject {
   id: string;
   project_number: string;
-  name: string;
+  title: string;
   status: string;
   start_date: string | null;
-  end_date: string | null;
+  target_end_date: string | null;
   progress_percent: number | null;
 }
 
@@ -34,17 +35,18 @@ interface CustomerOrder {
   order_number: string;
   title: string;
   status: string;
-  total_amount: number;
-  created_at: string;
+  amount_gross: number;
+  order_date: string;
 }
 
 interface CustomerInvoice {
   id: string;
   invoice_number: string;
+  title: string | null;
   status: string;
-  total_gross: number;
+  amount_gross: number;
   due_date: string;
-  paid_at: string | null;
+  paid_date: string | null;
 }
 
 interface CustomerDocument {
@@ -62,6 +64,7 @@ const KundenDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCustomer, setIsCustomer] = useState(false);
   const [companyId, setCompanyId] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState<string>('');
   const [projects, setProjects] = useState<CustomerProject[]>([]);
   const [orders, setOrders] = useState<CustomerOrder[]>([]);
   const [invoices, setInvoices] = useState<CustomerInvoice[]>([]);
@@ -85,7 +88,6 @@ const KundenDashboard = () => {
         return;
       }
 
-      // Check if user is customer
       const { data: roles } = await supabase
         .from('user_roles')
         .select('role')
@@ -95,7 +97,6 @@ const KundenDashboard = () => {
       const userIsAdmin = roles?.some(r => r.role === 'admin');
       const userIsMitarbeiter = roles?.some(r => r.role === 'mitarbeiter');
 
-      // Admins and employees should use the admin dashboard
       if (userIsAdmin || userIsMitarbeiter) {
         navigate('/admin');
         return;
@@ -113,10 +114,17 @@ const KundenDashboard = () => {
 
       setIsCustomer(true);
 
-      // Try to find associated company
-      // This would need a profile->company link which we'll implement
-      // For now, load data based on user_id
-      await loadCustomerData(user.id);
+      // Get company_id from profile
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('user_id', user.id)
+        .single();
+
+      const cId = profile?.company_id ?? null;
+      setCompanyId(cId);
+
+      await loadCustomerData(user.id, cId);
 
     } catch (error) {
       console.error('Error:', error);
@@ -130,7 +138,7 @@ const KundenDashboard = () => {
     }
   };
 
-  const loadCustomerData = async (userId: string) => {
+  const loadCustomerData = async (userId: string, cId: string | null) => {
     // Load documents uploaded by this customer
     const { data: docs } = await supabase
       .from('customer_documents')
@@ -140,8 +148,43 @@ const KundenDashboard = () => {
 
     setDocuments(docs || []);
 
-    // Note: Projects, orders, invoices would need company_id association
-    // This is a placeholder - in production you'd link customer user to company
+    if (!cId) return;
+
+    // Load company name
+    const { data: company } = await supabase
+      .from('crm_companies')
+      .select('company_name')
+      .eq('id', cId)
+      .single();
+
+    if (company) setCompanyName(company.company_name);
+
+    // Load projects for this company
+    const { data: projectData } = await supabase
+      .from('crm_projects')
+      .select('id, project_number, title, status, start_date, target_end_date, progress_percent')
+      .eq('company_id', cId)
+      .order('created_at', { ascending: false });
+
+    setProjects(projectData || []);
+
+    // Load orders for this company
+    const { data: orderData } = await supabase
+      .from('crm_orders')
+      .select('id, order_number, title, status, amount_gross, order_date')
+      .eq('company_id', cId)
+      .order('created_at', { ascending: false });
+
+    setOrders(orderData || []);
+
+    // Load invoices for this company
+    const { data: invoiceData } = await supabase
+      .from('crm_invoices')
+      .select('id, invoice_number, title, status, amount_gross, due_date, paid_date')
+      .eq('company_id', cId)
+      .order('created_at', { ascending: false });
+
+    setInvoices(invoiceData || []);
   };
 
   const handleFileUpload = async () => {
@@ -152,8 +195,6 @@ const KundenDashboard = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Nicht angemeldet');
 
-      // Upload file to storage
-      const fileExt = uploadFile.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}-${uploadFile.name}`;
       
       const { error: uploadError } = await supabase.storage
@@ -162,7 +203,6 @@ const KundenDashboard = () => {
 
       if (uploadError) throw uploadError;
 
-      // Create document record
       const { error: docError } = await supabase
         .from('customer_documents')
         .insert({
@@ -191,8 +231,7 @@ const KundenDashboard = () => {
       setUploadDescription('');
       setUploadCategory('sonstiges');
       
-      // Reload documents
-      await loadCustomerData(user.id);
+      await loadCustomerData(user.id, companyId);
 
     } catch (error: any) {
       console.error('Upload error:', error);
@@ -209,12 +248,20 @@ const KundenDashboard = () => {
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline', label: string }> = {
       'neu': { variant: 'default', label: 'Neu' },
+      'planung': { variant: 'secondary', label: 'Planung' },
       'in_bearbeitung': { variant: 'secondary', label: 'In Bearbeitung' },
+      'aktiv': { variant: 'default', label: 'Aktiv' },
       'abgeschlossen': { variant: 'outline', label: 'Abgeschlossen' },
       'offen': { variant: 'destructive', label: 'Offen' },
       'bezahlt': { variant: 'outline', label: 'Bezahlt' },
+      'teilbezahlt': { variant: 'secondary', label: 'Teilbezahlt' },
+      'ueberfaellig': { variant: 'destructive', label: 'Überfällig' },
       'gesehen': { variant: 'secondary', label: 'Gesehen' },
       'verarbeitet': { variant: 'outline', label: 'Verarbeitet' },
+      'entwurf': { variant: 'secondary', label: 'Entwurf' },
+      'gesendet': { variant: 'default', label: 'Gesendet' },
+      'bestaetigt': { variant: 'outline', label: 'Bestätigt' },
+      'storniert': { variant: 'destructive', label: 'Storniert' },
     };
     
     const config = statusConfig[status] || { variant: 'secondary' as const, label: status };
@@ -251,7 +298,9 @@ const KundenDashboard = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Mein Kundenbereich</h1>
-                <p className="text-muted-foreground">Ihre Projekte, Aufträge und Dokumente</p>
+                <p className="text-muted-foreground">
+                  {companyName ? `${companyName} — ` : ''}Ihre Projekte, Aufträge und Dokumente
+                </p>
               </div>
             </div>
             <Button onClick={() => setShowUploadDialog(true)} className="gap-2">
@@ -259,6 +308,23 @@ const KundenDashboard = () => {
               Dokument hochladen
             </Button>
           </div>
+
+          {/* No company linked notice */}
+          {!companyId && (
+            <Card className="mb-8 border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20">
+              <CardContent className="p-4 flex items-center gap-4">
+                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center shrink-0">
+                  <User className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Firma noch nicht verknüpft</p>
+                  <p className="text-sm text-muted-foreground">
+                    Ihr Konto wird in Kürze mit Ihrer Firma verbunden. Danach sehen Sie hier Projekte, Aufträge und Rechnungen.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -328,7 +394,7 @@ const KundenDashboard = () => {
           </Card>
 
           {/* Tabs */}
-          <Tabs defaultValue="documents" className="w-full">
+          <Tabs defaultValue="projects" className="w-full">
             <TabsList className="mb-6">
               <TabsTrigger value="projects" className="gap-2">
                 <FolderOpen className="w-4 h-4" />
@@ -358,17 +424,34 @@ const KundenDashboard = () => {
                   {projects.length === 0 ? (
                     <div className="text-center py-12 text-muted-foreground">
                       <FolderOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Noch keine Projekte vorhanden</p>
+                      <p>{companyId ? 'Noch keine Projekte vorhanden' : 'Firma wird noch verknüpft'}</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {projects.map(project => (
-                        <div key={project.id} className="flex items-center justify-between p-4 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{project.name}</p>
-                            <p className="text-sm text-muted-foreground">{project.project_number}</p>
+                        <div key={project.id} className="p-4 border rounded-lg space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-medium">{project.title}</p>
+                              <p className="text-sm text-muted-foreground">{project.project_number}</p>
+                            </div>
+                            {getStatusBadge(project.status)}
                           </div>
-                          {getStatusBadge(project.status)}
+                          {project.progress_percent != null && (
+                            <div className="flex items-center gap-3">
+                              <Progress value={project.progress_percent} className="flex-1 h-2" />
+                              <span className="text-sm text-muted-foreground font-medium w-10 text-right">
+                                {project.progress_percent}%
+                              </span>
+                            </div>
+                          )}
+                          {(project.start_date || project.target_end_date) && (
+                            <p className="text-xs text-muted-foreground">
+                              {project.start_date && `Start: ${new Date(project.start_date).toLocaleDateString('de-DE')}`}
+                              {project.start_date && project.target_end_date && ' • '}
+                              {project.target_end_date && `Ziel: ${new Date(project.target_end_date).toLocaleDateString('de-DE')}`}
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -387,7 +470,7 @@ const KundenDashboard = () => {
                   {orders.length === 0 ? (
                     <div className="text-center py-12 text-muted-foreground">
                       <Package className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Noch keine Aufträge vorhanden</p>
+                      <p>{companyId ? 'Noch keine Aufträge vorhanden' : 'Firma wird noch verknüpft'}</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -395,10 +478,14 @@ const KundenDashboard = () => {
                         <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div>
                             <p className="font-medium">{order.title}</p>
-                            <p className="text-sm text-muted-foreground">{order.order_number}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {order.order_number} • {new Date(order.order_date).toLocaleDateString('de-DE')}
+                            </p>
                           </div>
-                          <div className="text-right">
-                            <p className="font-medium">{order.total_amount.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</p>
+                          <div className="text-right flex items-center gap-3">
+                            <p className="font-medium">
+                              {order.amount_gross?.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                            </p>
                             {getStatusBadge(order.status)}
                           </div>
                         </div>
@@ -419,7 +506,7 @@ const KundenDashboard = () => {
                   {invoices.length === 0 ? (
                     <div className="text-center py-12 text-muted-foreground">
                       <Receipt className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Noch keine Rechnungen vorhanden</p>
+                      <p>{companyId ? 'Noch keine Rechnungen vorhanden' : 'Firma wird noch verknüpft'}</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -428,11 +515,15 @@ const KundenDashboard = () => {
                           <div>
                             <p className="font-medium">{invoice.invoice_number}</p>
                             <p className="text-sm text-muted-foreground">
+                              {invoice.title && `${invoice.title} • `}
                               Fällig: {new Date(invoice.due_date).toLocaleDateString('de-DE')}
+                              {invoice.paid_date && ` • Bezahlt: ${new Date(invoice.paid_date).toLocaleDateString('de-DE')}`}
                             </p>
                           </div>
-                          <div className="text-right">
-                            <p className="font-medium">{invoice.total_gross.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</p>
+                          <div className="text-right flex items-center gap-3">
+                            <p className="font-medium">
+                              {invoice.amount_gross?.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                            </p>
                             {getStatusBadge(invoice.status)}
                           </div>
                         </div>

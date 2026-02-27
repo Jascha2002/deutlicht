@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Users, Plus, Trash2, AlertTriangle, Shield } from 'lucide-react';
+import { Users, Plus, Trash2, AlertTriangle, Shield, Building2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PermissionManagement } from './PermissionManagement';
 
@@ -18,6 +18,13 @@ interface UserWithRole {
   full_name: string | null;
   role: 'admin' | 'mitarbeiter' | 'kunde' | 'partner';
   created_at: string;
+  company_id: string | null;
+  company_name: string | null;
+}
+
+interface CrmCompany {
+  id: string;
+  company_name: string;
 }
 
 interface UserManagementProps {
@@ -27,14 +34,17 @@ interface UserManagementProps {
 export function UserManagement({ currentUserRole = 'admin' }: UserManagementProps) {
   const { toast } = useToast();
   const [users, setUsers] = useState<UserWithRole[]>([]);
+  const [companies, setCompanies] = useState<CrmCompany[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', role: 'kunde' });
   const [isCreating, setIsCreating] = useState(false);
   const [permissionUser, setPermissionUser] = useState<{ userId: string; name: string; role: string } | null>(null);
+  const [companyAssignUser, setCompanyAssignUser] = useState<UserWithRole | null>(null);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+  const [companySearch, setCompanySearch] = useState('');
   
-  // Mitarbeiter dürfen nur Kunden anlegen
   const isAdmin = currentUserRole === 'admin';
   const canCreateUsers = isAdmin || currentUserRole === 'mitarbeiter';
   const canDeleteUsers = isAdmin;
@@ -42,13 +52,22 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
 
   useEffect(() => {
     loadUsers();
+    loadCompanies();
   }, []);
+
+  const loadCompanies = async () => {
+    const { data } = await supabase
+      .from('crm_companies')
+      .select('id, company_name')
+      .order('company_name');
+    setCompanies(data || []);
+  };
 
   const loadUsers = async () => {
     try {
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, user_id, email, full_name, created_at');
+        .select('id, user_id, email, full_name, created_at, company_id');
 
       if (profilesError) throw profilesError;
 
@@ -58,11 +77,23 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
 
       if (rolesError) throw rolesError;
 
+      // Get company names for profiles that have company_id
+      const companyIds = (profiles || []).map(p => p.company_id).filter(Boolean);
+      let companyMap: Record<string, string> = {};
+      if (companyIds.length > 0) {
+        const { data: companyData } = await supabase
+          .from('crm_companies')
+          .select('id, company_name')
+          .in('id', companyIds);
+        companyData?.forEach(c => { companyMap[c.id] = c.company_name; });
+      }
+
       const usersWithRoles: UserWithRole[] = (profiles || []).map(profile => {
         const role = userRoles?.find(r => r.user_id === profile.user_id);
         return {
           ...profile,
-          role: (role?.role as 'admin' | 'mitarbeiter' | 'kunde' | 'partner') || 'kunde'
+          role: (role?.role as 'admin' | 'mitarbeiter' | 'kunde' | 'partner') || 'kunde',
+          company_name: profile.company_id ? companyMap[profile.company_id] || null : null
         };
       });
 
@@ -81,7 +112,6 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
 
   const updateUserRole = async (userId: string, role: string) => {
     try {
-      // Use SECURITY DEFINER function to bypass RLS
       const { data, error } = await supabase.rpc('admin_manage_user_role', {
         p_target_user_id: userId,
         p_role: role,
@@ -93,19 +123,32 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
       const result = data as { success: boolean; error?: string } | null;
       if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
 
-      toast({
-        title: 'Rolle aktualisiert',
-        description: 'Die Benutzerrolle wurde erfolgreich geändert.'
-      });
-
+      toast({ title: 'Rolle aktualisiert', description: 'Die Benutzerrolle wurde erfolgreich geändert.' });
       await loadUsers();
     } catch (error: any) {
       console.error('Error updating role:', error);
-      toast({
-        title: 'Fehler',
-        description: error.message || 'Die Rolle konnte nicht aktualisiert werden.',
-        variant: 'destructive'
-      });
+      toast({ title: 'Fehler', description: error.message || 'Die Rolle konnte nicht aktualisiert werden.', variant: 'destructive' });
+    }
+  };
+
+  const handleAssignCompany = async () => {
+    if (!companyAssignUser) return;
+    try {
+      const companyId = selectedCompanyId === '__none__' ? null : selectedCompanyId || null;
+      const { error } = await supabase
+        .from('profiles')
+        .update({ company_id: companyId })
+        .eq('user_id', companyAssignUser.user_id);
+
+      if (error) throw error;
+
+      toast({ title: 'Firma zugewiesen', description: companyId ? 'Der Benutzer wurde der Firma zugeordnet.' : 'Firma-Zuordnung entfernt.' });
+      setCompanyAssignUser(null);
+      setSelectedCompanyId('');
+      setCompanySearch('');
+      await loadUsers();
+    } catch (error: any) {
+      toast({ title: 'Fehler', description: error.message || 'Zuordnung fehlgeschlagen.', variant: 'destructive' });
     }
   };
 
@@ -121,40 +164,23 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
 
     setIsCreating(true);
     try {
-      // Get current session for auth header
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Nicht angemeldet');
-      }
+      if (!session) throw new Error('Nicht angemeldet');
 
-      // Call Edge Function with admin privileges
       const { data, error } = await supabase.functions.invoke('admin-create-user', {
-        body: {
-          email: newUser.email,
-          password: newUser.password,
-          full_name: newUser.full_name,
-          role: newUser.role
-        }
+        body: { email: newUser.email, password: newUser.password, full_name: newUser.full_name, role: newUser.role }
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      toast({
-        title: 'Benutzer erstellt',
-        description: `${newUser.email} wurde erfolgreich angelegt.`
-      });
-      
+      toast({ title: 'Benutzer erstellt', description: `${newUser.email} wurde erfolgreich angelegt.` });
       setShowCreateDialog(false);
       setNewUser({ email: '', password: '', full_name: '', role: 'kunde' });
       await loadUsers();
     } catch (error: any) {
       console.error('Error creating user:', error);
-      toast({ 
-        title: 'Fehler', 
-        description: error.message || 'Benutzer konnte nicht erstellt werden.', 
-        variant: 'destructive' 
-      });
+      toast({ title: 'Fehler', description: error.message || 'Benutzer konnte nicht erstellt werden.', variant: 'destructive' });
     } finally {
       setIsCreating(false);
     }
@@ -163,16 +189,10 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
   const handleDeleteUser = async () => {
     if (!deleteUserId) return;
     try {
-      // Use SECURITY DEFINER function to bypass RLS
-      const { data, error } = await supabase.rpc('admin_delete_user', {
-        p_target_user_id: deleteUserId
-      });
-      
+      const { data, error } = await supabase.rpc('admin_delete_user', { p_target_user_id: deleteUserId });
       if (error) throw error;
-      
       const result = data as { success: boolean; error?: string } | null;
       if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
-      
       toast({ title: 'Benutzerprofil gelöscht', description: 'Das Profil und die Rolle wurden entfernt.' });
       setDeleteUserId(null);
       await loadUsers();
@@ -184,16 +204,16 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'admin':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
-      case 'mitarbeiter':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
-      case 'partner':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400';
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+      case 'admin': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+      case 'mitarbeiter': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'partner': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
     }
   };
+
+  const filteredCompanies = companySearch
+    ? companies.filter(c => c.company_name.toLowerCase().includes(companySearch.toLowerCase()))
+    : companies;
 
   if (isLoading) {
     return (
@@ -227,6 +247,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             <tr>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Name</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">E-Mail</th>
+              <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Firma</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktuelle Rolle</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Rolle ändern</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Registriert</th>
@@ -238,30 +259,36 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             {users.map((user) => (
               <tr key={user.id} className="hover:bg-muted/30 transition-colors">
                 <td className="px-6 py-4">
-                  <span className="font-medium text-foreground">
-                    {user.full_name || 'Kein Name'}
-                  </span>
+                  <span className="font-medium text-foreground">{user.full_name || 'Kein Name'}</span>
                 </td>
-                <td className="px-6 py-4 text-muted-foreground">
-                  {user.email}
+                <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
+                <td className="px-6 py-4">
+                  {user.company_name ? (
+                    <button
+                      onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(user.company_id || ''); }}
+                      className="flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors"
+                    >
+                      <Building2 className="w-3.5 h-3.5" />
+                      {user.company_name}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(''); }}
+                      className="text-sm text-muted-foreground hover:text-accent transition-colors"
+                    >
+                      + Firma zuweisen
+                    </button>
+                  )}
                 </td>
                 <td className="px-6 py-4">
-                  <span className={cn(
-                    "px-3 py-1 rounded-full text-xs font-medium",
-                    getRoleBadgeColor(user.role)
-                  )}>
+                  <span className={cn("px-3 py-1 rounded-full text-xs font-medium", getRoleBadgeColor(user.role))}>
                     {user.role}
                   </span>
                 </td>
                 <td className="px-6 py-4">
                   {canChangeRoles ? (
-                    <Select
-                      defaultValue={user.role}
-                      onValueChange={(value) => updateUserRole(user.user_id, value)}
-                    >
-                      <SelectTrigger className="w-[140px]">
-                        <SelectValue />
-                      </SelectTrigger>
+                    <Select defaultValue={user.role} onValueChange={(value) => updateUserRole(user.user_id, value)}>
+                      <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="admin">Admin</SelectItem>
                         <SelectItem value="mitarbeiter">Mitarbeiter</SelectItem>
@@ -279,9 +306,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                 </td>
                 <td className="px-6 py-4">
                   {isAdmin && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <Button variant="ghost" size="sm"
                       onClick={() => setPermissionUser({ userId: user.user_id, name: user.full_name || user.email, role: user.role })}
                       className="gap-1"
                     >
@@ -292,10 +317,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                 </td>
                 <td className="px-6 py-4">
                   {canDeleteUsers ? (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-destructive hover:text-destructive"
+                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive"
                       onClick={() => setDeleteUserId(user.user_id)}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -311,86 +333,50 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
       </div>
 
       {users.length === 0 && (
-        <div className="p-12 text-center text-muted-foreground">
-          Keine Benutzer gefunden.
-        </div>
+        <div className="p-12 text-center text-muted-foreground">Keine Benutzer gefunden.</div>
       )}
 
       {/* Role Descriptions */}
       <div className="p-6 border-t border-border grid md:grid-cols-4 gap-4">
         <div className="bg-muted/30 rounded-lg p-4">
-          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('admin'))}>
-            Admin
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Vollzugriff auf alle Funktionen, Benutzer-, Partner- und Rollenverwaltung.
-          </p>
+          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('admin'))}>Admin</div>
+          <p className="text-xs text-muted-foreground">Vollzugriff auf alle Funktionen, Benutzer-, Partner- und Rollenverwaltung.</p>
         </div>
         <div className="bg-muted/30 rounded-lg p-4">
-          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('mitarbeiter'))}>
-            Mitarbeiter
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Kann Analysen erstellen/bearbeiten, Partner-Daten einsehen (erweitert).
-          </p>
+          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('mitarbeiter'))}>Mitarbeiter</div>
+          <p className="text-xs text-muted-foreground">Kann Analysen erstellen/bearbeiten, Partner-Daten einsehen (erweitert).</p>
         </div>
         <div className="bg-muted/30 rounded-lg p-4">
-          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('partner'))}>
-            Partner
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Eigene Kunden und Provisionen einsehen, Marketing-Material Zugriff.
-          </p>
+          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('partner'))}>Partner</div>
+          <p className="text-xs text-muted-foreground">Eigene Kunden und Provisionen einsehen, Marketing-Material Zugriff.</p>
         </div>
         <div className="bg-muted/30 rounded-lg p-4">
-          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('kunde'))}>
-            Kunde
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Lesezugriff auf eigene Berichte und Dokumente.
-          </p>
+          <div className={cn("inline-flex px-3 py-1 rounded-full text-xs font-medium mb-2", getRoleBadgeColor('kunde'))}>Kunde</div>
+          <p className="text-xs text-muted-foreground">Lesezugriff auf eigene Berichte und Dokumente.</p>
         </div>
       </div>
 
       {/* Create User Dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Neuen Benutzer anlegen</DialogTitle>
-          </DialogHeader>
+          <DialogHeader><DialogTitle>Neuen Benutzer anlegen</DialogTitle></DialogHeader>
           <div className="space-y-4 py-4">
             <div>
               <Label>Name</Label>
-              <Input
-                value={newUser.full_name}
-                onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
-                placeholder="Vollständiger Name"
-              />
+              <Input value={newUser.full_name} onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })} placeholder="Vollständiger Name" />
             </div>
             <div>
               <Label>E-Mail *</Label>
-              <Input
-                type="email"
-                value={newUser.email}
-                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                placeholder="email@beispiel.de"
-              />
+              <Input type="email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} placeholder="email@beispiel.de" />
             </div>
             <div>
               <Label>Passwort *</Label>
-              <Input
-                type="password"
-                value={newUser.password}
-                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                placeholder="Mindestens 6 Zeichen"
-              />
+              <Input type="password" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} placeholder="Mindestens 6 Zeichen" />
             </div>
             <div>
               <Label>Rolle</Label>
               <Select value={newUser.role} onValueChange={(v) => setNewUser({ ...newUser, role: v })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {isAdmin ? (
                     <>
@@ -401,7 +387,6 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                       <SelectItem value="partner">Partner</SelectItem>
                     </>
                   ) : (
-                    // Mitarbeiter können nur Kunden anlegen
                     <SelectItem value="kunde">Kunde</SelectItem>
                   )}
                 </SelectContent>
@@ -410,9 +395,63 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Abbrechen</Button>
-            <Button onClick={handleCreateUser} disabled={isCreating}>
-              {isCreating ? 'Erstelle...' : 'Benutzer erstellen'}
-            </Button>
+            <Button onClick={handleCreateUser} disabled={isCreating}>{isCreating ? 'Erstelle...' : 'Benutzer erstellen'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Company Assignment Dialog */}
+      <Dialog open={!!companyAssignUser} onOpenChange={(open) => { if (!open) { setCompanyAssignUser(null); setCompanySearch(''); } }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Building2 className="w-5 h-5" />
+              Firma zuweisen
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-sm text-muted-foreground">
+              Benutzer: <strong>{companyAssignUser?.full_name || companyAssignUser?.email}</strong>
+            </p>
+            <div>
+              <Label>Firma suchen</Label>
+              <Input
+                value={companySearch}
+                onChange={(e) => setCompanySearch(e.target.value)}
+                placeholder="Firmenname eingeben..."
+                className="mt-1"
+              />
+            </div>
+            <div className="max-h-48 overflow-y-auto border rounded-lg">
+              <button
+                onClick={() => setSelectedCompanyId('__none__')}
+                className={cn(
+                  "w-full text-left px-4 py-2.5 text-sm hover:bg-muted/50 transition-colors border-b",
+                  selectedCompanyId === '__none__' && "bg-accent/10 text-accent font-medium"
+                )}
+              >
+                Keine Firma (Zuordnung entfernen)
+              </button>
+              {filteredCompanies.map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => setSelectedCompanyId(c.id)}
+                  className={cn(
+                    "w-full text-left px-4 py-2.5 text-sm hover:bg-muted/50 transition-colors border-b last:border-0",
+                    selectedCompanyId === c.id && "bg-accent/10 text-accent font-medium"
+                  )}
+                >
+                  {c.company_name}
+                </button>
+              ))}
+              {filteredCompanies.length === 0 && companySearch && (
+                <p className="px-4 py-3 text-sm text-muted-foreground">Keine Firma gefunden</p>
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setCompanyAssignUser(null); setCompanySearch(''); }}>Abbrechen</Button>
+            <Button onClick={handleAssignCompany} disabled={!selectedCompanyId}>Zuweisen</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -437,15 +476,13 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
               Benutzer löschen?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Das Profil und die Rolle dieses Benutzers werden gelöscht. 
+              Das Profil und die Rolle dieses Benutzers werden gelöscht.
               Der Auth-Account muss ggf. separat im Backend entfernt werden.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Löschen
-            </AlertDialogAction>
+            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Löschen</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
