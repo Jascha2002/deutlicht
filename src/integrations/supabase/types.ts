@@ -3968,6 +3968,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           company: string | null
+          company_id: string | null
           created_at: string
           email: string | null
           full_name: string | null
@@ -3980,6 +3981,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           company?: string | null
+          company_id?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
@@ -3992,6 +3994,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           company?: string | null
+          company_id?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
@@ -4001,7 +4004,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_assets: {
         Row: {
