@@ -43,6 +43,7 @@ import Foerderberatung from "./pages/Foerderberatung";
 import Digitalisierung from "./pages/Digitalisierung";
 import DigitalisierungsAnalyse from "./pages/DigitalisierungsAnalyse";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import Partner from "./pages/Partner";
 import PartnerAnmelden from "./pages/PartnerAnmelden";
@@ -102,6 +103,7 @@ const App = () => (
               <Route path="/intern/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/partner" element={<Partner />} />
               <Route path="/partner/anmelden" element={<PartnerAnmelden />} />

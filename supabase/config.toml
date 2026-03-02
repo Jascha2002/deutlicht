@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.parse-company-text]
 verify_jwt = false
+
+[functions.admin-reset-password]
+verify_jwt = false

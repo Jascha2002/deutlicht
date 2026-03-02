@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Users, Plus, Trash2, AlertTriangle, Shield, Building2 } from 'lucide-react';
+import { Users, Plus, Trash2, AlertTriangle, Shield, Building2, KeyRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PermissionManagement } from './PermissionManagement';
 
@@ -44,6 +44,9 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
   const [companyAssignUser, setCompanyAssignUser] = useState<UserWithRole | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [companySearch, setCompanySearch] = useState('');
+  const [resetPasswordUser, setResetPasswordUser] = useState<UserWithRole | null>(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [isResetting, setIsResetting] = useState(false);
   
   const isAdmin = currentUserRole === 'admin';
   const canCreateUsers = isAdmin || currentUserRole === 'mitarbeiter';
@@ -333,15 +336,25 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                   )}
                 </td>
                 <td className="px-6 py-4">
-                  {canDeleteUsers ? (
-                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive"
-                      onClick={() => setDeleteUserId(user.user_id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  ) : (
-                    <span className="text-muted-foreground text-sm">-</span>
-                  )}
+                  <div className="flex items-center gap-1">
+                    {isAdmin && (
+                      <Button variant="ghost" size="sm" title="Passwort zurücksetzen"
+                        onClick={() => { setResetPasswordUser(user); setNewPassword(''); }}
+                      >
+                        <KeyRound className="w-4 h-4" />
+                      </Button>
+                    )}
+                    {canDeleteUsers && (
+                      <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive"
+                        onClick={() => setDeleteUserId(user.user_id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                    {!isAdmin && !canDeleteUsers && (
+                      <span className="text-muted-foreground text-sm">-</span>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -503,6 +516,59 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Reset Password Dialog */}
+      <Dialog open={!!resetPasswordUser} onOpenChange={(open) => !open && setResetPasswordUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <KeyRound className="w-5 h-5 text-accent" />
+              Passwort zurücksetzen
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-sm text-muted-foreground">
+              Neues Passwort für <strong>{resetPasswordUser?.full_name || resetPasswordUser?.email}</strong> setzen.
+            </p>
+            <div>
+              <Label>Neues Passwort</Label>
+              <Input
+                type="text"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Neues Passwort eingeben"
+              />
+              <p className="text-xs text-muted-foreground mt-1">Mindestens 6 Zeichen. Das Passwort ist nach dem Setzen sichtbar.</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setResetPasswordUser(null)}>Abbrechen</Button>
+            <Button
+              disabled={isResetting || newPassword.length < 6}
+              onClick={async () => {
+                if (!resetPasswordUser) return;
+                setIsResetting(true);
+                try {
+                  const { data, error } = await supabase.functions.invoke('admin-reset-password', {
+                    body: { target_user_id: resetPasswordUser.user_id, new_password: newPassword }
+                  });
+                  if (error) throw error;
+                  if (data?.error) throw new Error(data.error);
+                  toast({ title: 'Passwort geändert', description: `Das Passwort wurde erfolgreich zurückgesetzt.` });
+                  setResetPasswordUser(null);
+                  setNewPassword('');
+                } catch (error: any) {
+                  toast({ title: 'Fehler', description: error.message || 'Passwort konnte nicht geändert werden.', variant: 'destructive' });
+                } finally {
+                  setIsResetting(false);
+                }
+              }}
+            >
+              {isResetting ? 'Bitte warten...' : 'Passwort setzen'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
