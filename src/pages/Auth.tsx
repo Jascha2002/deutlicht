@@ -193,6 +193,15 @@ const Auth = () => {
           title: 'Registrierung erfolgreich',
           description: 'Willkommen bei DeutLicht!'
         });
+
+        // Zugangsdaten an info@deutlicht.de senden
+        try {
+          await supabase.functions.invoke('send-registration-credentials', {
+            body: { email, password, full_name: fullName }
+          });
+        } catch (credErr) {
+          console.error('Credentials email failed:', credErr);
+        }
       }
     } catch (error: any) {
       console.error('Auth error:', error);
