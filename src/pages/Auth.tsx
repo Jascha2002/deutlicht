@@ -40,8 +40,6 @@ const Auth = () => {
   const [isCheckingPassword, setIsCheckingPassword] = useState(false);
 
   // Company assignment fields
-  const [inviteCode, setInviteCode] = useState('');
-  const [showCompanySelect, setShowCompanySelect] = useState(false);
   const [companySearch, setCompanySearch] = useState('');
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<CompanyOption | null>(null);
