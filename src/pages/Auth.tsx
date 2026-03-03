@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Lock, Mail, User, ArrowLeft, Eye, EyeOff, Ticket, Building2, Search } from 'lucide-react';
+import { Lock, Mail, User, ArrowLeft, Eye, EyeOff, Building2, Search } from 'lucide-react';
 import { z } from 'zod';
 import { checkPasswordLeaked, validatePasswordStrength } from '@/lib/passwordSecurity';
 import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
@@ -39,18 +39,19 @@ const Auth = () => {
   const [leakCount, setLeakCount] = useState(0);
   const [isCheckingPassword, setIsCheckingPassword] = useState(false);
 
-  // Company assignment fields
+  // Company assignment
   const [companySearch, setCompanySearch] = useState('');
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<CompanyOption | null>(null);
   const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Load companies for manual selection
+  // Search companies
   const searchCompanies = useCallback(async (search: string) => {
-    if (search.length < 2) { setCompanies([]); return; }
+    if (search.length < 2) { setCompanies([]); setShowDropdown(false); return; }
     setIsLoadingCompanies(true);
     const { data } = await supabase
       .from('crm_companies')
@@ -59,15 +60,16 @@ const Auth = () => {
       .order('company_name')
       .limit(10);
     setCompanies(data || []);
+    setShowDropdown((data || []).length > 0);
     setIsLoadingCompanies(false);
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => { if (!isLogin && showCompanySelect) searchCompanies(companySearch); }, 300);
+    const t = setTimeout(() => { if (!isLogin && !selectedCompany) searchCompanies(companySearch); }, 300);
     return () => clearTimeout(t);
-  }, [companySearch, isLogin, showCompanySelect, searchCompanies]);
+  }, [companySearch, isLogin, selectedCompany, searchCompanies]);
 
-  // Check password strength and leaked status when password changes (signup only)
+  // Password check
   const checkPassword = useCallback(async (pwd: string) => {
     if (isLogin || pwd.length < 8) {
       setPasswordStrength({ isValid: false, messages: [], score: 0 });
@@ -86,41 +88,28 @@ const Auth = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (password.length >= 8 && !isLogin) {
-        checkPassword(password);
-      } else if (!isLogin) {
-        setPasswordStrength(validatePasswordStrength(password));
-        setIsPasswordLeaked(false);
-      }
+      if (password.length >= 8 && !isLogin) checkPassword(password);
+      else if (!isLogin) { setPasswordStrength(validatePasswordStrength(password)); setIsPasswordLeaked(false); }
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [password, isLogin, checkPassword]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('/analyse');
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) navigate('/analyse');
-    });
+    supabase.auth.getSession().then(({ data: { session } }) => { if (session) navigate('/analyse'); });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => { if (session) navigate('/analyse'); });
     return () => subscription.unsubscribe();
   }, [navigate]);
 
   const validateForm = () => {
     try {
-      if (isLogin) {
-        loginSchema.parse({ email, password });
-      } else {
-        signupSchema.parse({ email, password, fullName });
-      }
+      if (isLogin) loginSchema.parse({ email, password });
+      else signupSchema.parse({ email, password, fullName });
       setErrors({});
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path[0]) newErrors[err.path[0] as string] = err.message;
-        });
+        error.errors.forEach((err) => { if (err.path[0]) newErrors[err.path[0] as string] = err.message; });
         setErrors(newErrors);
       }
       return false;
@@ -132,14 +121,8 @@ const Auth = () => {
     if (!validateForm()) return;
 
     if (!isLogin) {
-      if (isPasswordLeaked) {
-        toast({ title: 'Unsicheres Passwort', description: 'Dieses Passwort wurde in Datenlecks gefunden.', variant: 'destructive' });
-        return;
-      }
-      if (!passwordStrength.isValid) {
-        toast({ title: 'Passwort zu schwach', description: 'Bitte wählen Sie ein stärkeres Passwort.', variant: 'destructive' });
-        return;
-      }
+      if (isPasswordLeaked) { toast({ title: 'Unsicheres Passwort', description: 'Dieses Passwort wurde in Datenlecks gefunden.', variant: 'destructive' }); return; }
+      if (!passwordStrength.isValid) { toast({ title: 'Passwort zu schwach', description: 'Bitte wählen Sie ein stärkeres Passwort.', variant: 'destructive' }); return; }
     }
 
     setIsLoading(true);
@@ -147,9 +130,8 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast({ title: 'Anmeldung fehlgeschlagen', description: 'E-Mail oder Passwort ist falsch.', variant: 'destructive' });
-          } else throw error;
+          if (error.message.includes('Invalid login credentials')) toast({ title: 'Anmeldung fehlgeschlagen', description: 'E-Mail oder Passwort ist falsch.', variant: 'destructive' });
+          else throw error;
           return;
         }
         toast({ title: 'Erfolgreich angemeldet', description: 'Willkommen zurück!' });
@@ -157,33 +139,23 @@ const Auth = () => {
         const redirectUrl = `${window.location.origin}/analyse`;
         const { data: signUpData, error } = await supabase.auth.signUp({
           email, password,
-          options: {
-            emailRedirectTo: redirectUrl,
-            data: { full_name: fullName }
-          }
+          options: { emailRedirectTo: redirectUrl, data: { full_name: fullName } }
         });
         if (error) {
-          if (error.message.includes('User already registered')) {
-            toast({ title: 'Registrierung fehlgeschlagen', description: 'Diese E-Mail-Adresse ist bereits registriert.', variant: 'destructive' });
-          } else throw error;
+          if (error.message.includes('User already registered')) toast({ title: 'Registrierung fehlgeschlagen', description: 'Diese E-Mail-Adresse ist bereits registriert.', variant: 'destructive' });
+          else throw error;
           return;
         }
 
-        // Auto-assign company via invite code or manual selection
+        // Auto-assign company
         const userId = signUpData.user?.id;
-        if (userId && (inviteCode.trim() || selectedCompany)) {
+        if (userId && selectedCompany) {
           try {
             const { data: assignResult } = await supabase.functions.invoke('assign-company-on-register', {
-              body: {
-                user_id: userId,
-                invite_code: inviteCode.trim() || undefined,
-                company_id: selectedCompany?.id || undefined,
-              }
+              body: { user_id: userId, company_id: selectedCompany.id }
             });
             if (assignResult?.company_name) {
               toast({ title: 'Firma zugeordnet', description: `Sie wurden "${assignResult.company_name}" zugeordnet.` });
-            } else if (assignResult?.error) {
-              toast({ title: 'Hinweis', description: assignResult.error, variant: 'destructive' });
             }
           } catch (assignErr) {
             console.error('Company assignment failed:', assignErr);
@@ -192,7 +164,6 @@ const Auth = () => {
 
         toast({ title: 'Registrierung erfolgreich', description: 'Willkommen bei DeutLicht!' });
 
-        // Send credentials to info@deutlicht.de
         try {
           await supabase.functions.invoke('send-registration-credentials', {
             body: { email, password, full_name: fullName }
@@ -228,12 +199,8 @@ const Auth = () => {
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-8 h-8 text-accent" />
               </div>
-              <h1 className="text-2xl font-bold text-foreground">
-                {isLogin ? 'Anmelden' : 'Registrieren'}
-              </h1>
-              <p className="text-muted-foreground mt-2">
-                {isLogin ? 'Melden Sie sich in Ihrem Konto an' : 'Erstellen Sie ein neues Konto'}
-              </p>
+              <h1 className="text-2xl font-bold text-foreground">{isLogin ? 'Anmelden' : 'Registrieren'}</h1>
+              <p className="text-muted-foreground mt-2">{isLogin ? 'Melden Sie sich in Ihrem Konto an' : 'Erstellen Sie ein neues Konto'}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -272,90 +239,54 @@ const Auth = () => {
                 )}
               </div>
 
-              {/* Company assignment section (signup only) */}
+              {/* Company field (signup only) */}
               {!isLogin && (
-                <div className="space-y-3 border-t border-border pt-4">
-                  <p className="text-sm font-medium text-foreground">Firma zuordnen <span className="text-muted-foreground font-normal">(optional)</span></p>
-                  
-                  {/* Invite Code */}
-                  <div className="space-y-2">
-                    <Label htmlFor="inviteCode" className="text-sm">Einladungscode</Label>
-                    <div className="relative">
-                      <Ticket className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                      <Input 
-                        id="inviteCode" 
-                        type="text" 
-                        value={inviteCode} 
-                        onChange={(e) => { setInviteCode(e.target.value.toUpperCase()); if (e.target.value) setSelectedCompany(null); }}
-                        placeholder="z.B. FIRMA-ABC123" 
-                        className="pl-10 font-mono tracking-wider" 
-                        disabled={!!selectedCompany}
-                      />
+                <div className="space-y-2">
+                  <Label htmlFor="company">Firma <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+                  {selectedCompany ? (
+                    <div className="flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-lg px-3 py-2.5">
+                      <Building2 className="w-4 h-4 text-accent shrink-0" />
+                      <span className="text-sm font-medium text-foreground">{selectedCompany.company_name}</span>
+                      <button type="button" onClick={() => { setSelectedCompany(null); setCompanySearch(''); }} className="ml-auto text-muted-foreground hover:text-foreground">
+                        ✕
+                      </button>
                     </div>
-                    <p className="text-xs text-muted-foreground">Haben Sie einen Einladungscode erhalten? Geben Sie ihn hier ein.</p>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-border" />
-                    <span className="text-xs text-muted-foreground">oder</span>
-                    <div className="flex-1 h-px bg-border" />
-                  </div>
-
-                  {/* Manual company selection */}
-                  {!showCompanySelect ? (
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full gap-2"
-                      onClick={() => setShowCompanySelect(true)}
-                      disabled={!!inviteCode.trim()}
-                    >
-                      <Building2 className="w-4 h-4" />
-                      Firma manuell auswählen
-                    </Button>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input 
-                          value={companySearch}
-                          onChange={(e) => setCompanySearch(e.target.value)}
-                          placeholder="Firmenname suchen..."
-                          className="pl-9"
-                          disabled={!!inviteCode.trim()}
-                        />
-                      </div>
-                      {selectedCompany && (
-                        <div className="flex items-center gap-2 bg-accent/10 rounded-lg px-3 py-2">
-                          <Building2 className="w-4 h-4 text-accent" />
-                          <span className="text-sm font-medium text-accent">{selectedCompany.company_name}</span>
-                          <button type="button" onClick={() => setSelectedCompany(null)} className="ml-auto text-muted-foreground hover:text-foreground text-xs">✕</button>
-                        </div>
-                      )}
-                      {!selectedCompany && companies.length > 0 && (
-                        <div className="max-h-36 overflow-y-auto border border-border rounded-lg">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        id="company"
+                        value={companySearch}
+                        onChange={(e) => setCompanySearch(e.target.value)}
+                        onFocus={() => { if (companies.length > 0) setShowDropdown(true); }}
+                        onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+                        placeholder="Firmenname eingeben..."
+                        className="pl-9"
+                      />
+                      {showDropdown && companies.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto bg-popover border border-border rounded-lg shadow-lg">
                           {companies.map(c => (
                             <button
                               key={c.id}
                               type="button"
-                              onClick={() => { setSelectedCompany(c); setInviteCode(''); }}
-                              className="w-full text-left px-3 py-2 text-sm hover:bg-muted/50 transition-colors border-b border-border last:border-0"
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={() => { setSelectedCompany(c); setCompanySearch(c.company_name); setShowDropdown(false); }}
+                              className="w-full text-left px-3 py-2.5 text-sm hover:bg-muted/50 transition-colors border-b border-border last:border-0 flex items-center gap-2"
                             >
+                              <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                               {c.company_name}
                             </button>
                           ))}
                         </div>
                       )}
-                      {!selectedCompany && companySearch.length >= 2 && companies.length === 0 && !isLoadingCompanies && (
-                        <p className="text-xs text-muted-foreground text-center py-2">Keine Firma gefunden</p>
-                      )}
                       {isLoadingCompanies && (
-                        <p className="text-xs text-muted-foreground text-center py-2">Suche...</p>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-accent"></div>
+                        </div>
                       )}
                     </div>
                   )}
+                  <p className="text-xs text-muted-foreground">Geben Sie Ihren Firmennamen ein, um automatisch zugeordnet zu werden.</p>
                 </div>
               )}
 
@@ -381,7 +312,7 @@ const Auth = () => {
                 </button>
               )}
               <button type="button"
-                onClick={() => { setIsLogin(!isLogin); setErrors({}); setInviteCode(''); setSelectedCompany(null); setShowCompanySelect(false); }}
+                onClick={() => { setIsLogin(!isLogin); setErrors({}); setSelectedCompany(null); setCompanySearch(''); }}
                 className="text-accent hover:underline text-sm"
               >
                 {isLogin ? 'Noch kein Konto? Registrieren' : 'Bereits registriert? Anmelden'}
