@@ -56,3 +56,6 @@ verify_jwt = false
 
 [functions.send-registration-credentials]
 verify_jwt = false
+
+[functions.assign-company-on-register]
+verify_jwt = false

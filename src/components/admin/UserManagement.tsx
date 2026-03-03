@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Users, Plus, Trash2, AlertTriangle, Shield, Building2, KeyRound } from 'lucide-react';
+import { Users, Plus, Trash2, AlertTriangle, Shield, Building2, KeyRound, Link2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PermissionManagement } from './PermissionManagement';
 
@@ -20,6 +20,7 @@ interface UserWithRole {
   created_at: string;
   company_id: string | null;
   company_name: string | null;
+  assigned_companies?: { id: string; company_name: string }[];
 }
 
 interface CrmCompany {
@@ -71,43 +72,50 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, user_id, email, full_name, created_at, company_id');
-
       if (profilesError) throw profilesError;
 
       const { data: userRoles, error: rolesError } = await supabase
         .from('user_roles')
         .select('user_id, role');
-
       if (rolesError) throw rolesError;
 
-      // Get company names for profiles that have company_id
-      const companyIds = (profiles || []).map(p => p.company_id).filter(Boolean);
+      // Load all user_company_assignments
+      const { data: assignments } = await supabase
+        .from('user_company_assignments')
+        .select('user_id, company_id');
+
+      // Get all relevant company IDs
+      const allCompanyIds = new Set<string>();
+      (profiles || []).forEach(p => { if (p.company_id) allCompanyIds.add(p.company_id); });
+      (assignments || []).forEach(a => { if (a.company_id) allCompanyIds.add(a.company_id); });
+
       let companyMap: Record<string, string> = {};
-      if (companyIds.length > 0) {
+      if (allCompanyIds.size > 0) {
         const { data: companyData } = await supabase
           .from('crm_companies')
           .select('id, company_name')
-          .in('id', companyIds);
+          .in('id', Array.from(allCompanyIds));
         companyData?.forEach(c => { companyMap[c.id] = c.company_name; });
       }
 
       const usersWithRoles: UserWithRole[] = (profiles || []).map(profile => {
         const role = userRoles?.find(r => r.user_id === profile.user_id);
+        const userAssignments = (assignments || [])
+          .filter(a => a.user_id === profile.user_id)
+          .map(a => ({ id: a.company_id, company_name: companyMap[a.company_id] || 'Unbekannt' }));
+
         return {
           ...profile,
           role: (role?.role as 'admin' | 'mitarbeiter' | 'kunde' | 'partner') || 'kunde',
-          company_name: profile.company_id ? companyMap[profile.company_id] || null : null
+          company_name: profile.company_id ? companyMap[profile.company_id] || null : null,
+          assigned_companies: userAssignments,
         };
       });
 
       setUsers(usersWithRoles);
     } catch (error) {
       console.error('Error loading users:', error);
-      toast({
-        title: 'Fehler',
-        description: 'Benutzer konnten nicht geladen werden.',
-        variant: 'destructive'
-      });
+      toast({ title: 'Fehler', description: 'Benutzer konnten nicht geladen werden.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -116,59 +124,66 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
   const updateUserRole = async (userId: string, role: string) => {
     try {
       const { data, error } = await supabase.rpc('admin_manage_user_role', {
-        p_target_user_id: userId,
-        p_role: role,
-        p_action: 'replace'
+        p_target_user_id: userId, p_role: role, p_action: 'replace'
       });
-
       if (error) throw error;
-      
       const result = data as { success: boolean; error?: string } | null;
       if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
-
       toast({ title: 'Rolle aktualisiert', description: 'Die Benutzerrolle wurde erfolgreich geändert.' });
       await loadUsers();
     } catch (error: any) {
-      console.error('Error updating role:', error);
-      toast({ title: 'Fehler', description: error.message || 'Die Rolle konnte nicht aktualisiert werden.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: error.message || 'Rolle konnte nicht aktualisiert werden.', variant: 'destructive' });
     }
   };
 
   const handleAssignCompany = async () => {
-    if (!companyAssignUser) return;
+    if (!companyAssignUser || !selectedCompanyId) return;
     try {
-      const companyId = selectedCompanyId === '__none__' ? null : selectedCompanyId || null;
-      
-      // 1. Update profiles.company_id
-      const { error } = await supabase
-        .from('profiles')
-        .update({ company_id: companyId })
-        .eq('user_id', companyAssignUser.user_id);
-      if (error) throw error;
+      if (selectedCompanyId === '__none__') {
+        // Remove all assignments
+        await supabase.from('user_company_assignments').delete().eq('user_id', companyAssignUser.user_id);
+        await supabase.from('profiles').update({ company_id: null }).eq('user_id', companyAssignUser.user_id);
+        if (companyAssignUser.company_id) {
+          await supabase.from('crm_companies').update({ user_id: null }).eq('id', companyAssignUser.company_id).eq('user_id', companyAssignUser.user_id);
+        }
+        toast({ title: 'Zuordnungen entfernt' });
+      } else {
+        // Add company assignment (many-to-many)
+        const { error } = await supabase.from('user_company_assignments').upsert(
+          { user_id: companyAssignUser.user_id, company_id: selectedCompanyId },
+          { onConflict: 'user_id,company_id' }
+        );
+        if (error) throw error;
 
-      // 2. Also link crm_companies.user_id so the customer portal works
-      if (companyId) {
-        await supabase
-          .from('crm_companies')
-          .update({ user_id: companyAssignUser.user_id })
-          .eq('id', companyId);
-      }
-      // If removing assignment, clear user_id from old company
-      if (!companyId && companyAssignUser.company_id) {
-        await supabase
-          .from('crm_companies')
-          .update({ user_id: null })
-          .eq('id', companyAssignUser.company_id)
-          .eq('user_id', companyAssignUser.user_id);
+        // Set primary company in profiles if none set
+        if (!companyAssignUser.company_id) {
+          await supabase.from('profiles').update({ company_id: selectedCompanyId }).eq('user_id', companyAssignUser.user_id);
+        }
+
+        toast({ title: 'Firma hinzugefügt', description: 'Die Firma wurde dem Benutzer zugeordnet.' });
       }
 
-      toast({ title: 'Firma zugewiesen', description: companyId ? 'Der Benutzer wurde der Firma zugeordnet.' : 'Firma-Zuordnung entfernt.' });
       setCompanyAssignUser(null);
       setSelectedCompanyId('');
       setCompanySearch('');
       await loadUsers();
     } catch (error: any) {
       toast({ title: 'Fehler', description: error.message || 'Zuordnung fehlgeschlagen.', variant: 'destructive' });
+    }
+  };
+
+  const handleRemoveCompanyAssignment = async (userId: string, companyId: string) => {
+    try {
+      await supabase.from('user_company_assignments').delete().eq('user_id', userId).eq('company_id', companyId);
+      // If this was the primary company, clear it
+      const user = users.find(u => u.user_id === userId);
+      if (user?.company_id === companyId) {
+        await supabase.from('profiles').update({ company_id: null }).eq('user_id', userId);
+      }
+      toast({ title: 'Firma entfernt' });
+      await loadUsers();
+    } catch (error: any) {
+      toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
     }
   };
 
@@ -181,25 +196,20 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
       toast({ title: 'Fehler', description: 'Passwort muss mindestens 6 Zeichen haben.', variant: 'destructive' });
       return;
     }
-
     setIsCreating(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('Nicht angemeldet');
-
       const { data, error } = await supabase.functions.invoke('admin-create-user', {
         body: { email: newUser.email, password: newUser.password, full_name: newUser.full_name, role: newUser.role }
       });
-
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-
       toast({ title: 'Benutzer erstellt', description: `${newUser.email} wurde erfolgreich angelegt.` });
       setShowCreateDialog(false);
       setNewUser({ email: '', password: '', full_name: '', role: 'kunde' });
       await loadUsers();
     } catch (error: any) {
-      console.error('Error creating user:', error);
       toast({ title: 'Fehler', description: error.message || 'Benutzer konnte nicht erstellt werden.', variant: 'destructive' });
     } finally {
       setIsCreating(false);
@@ -213,12 +223,11 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
       if (error) throw error;
       const result = data as { success: boolean; error?: string } | null;
       if (result && !result.success) throw new Error(result.error || 'Unbekannter Fehler');
-      toast({ title: 'Benutzerprofil gelöscht', description: 'Das Profil und die Rolle wurden entfernt.' });
+      toast({ title: 'Benutzerprofil gelöscht' });
       setDeleteUserId(null);
       await loadUsers();
     } catch (error: any) {
-      console.error('Error deleting user:', error);
-      toast({ title: 'Fehler', description: error.message || 'Benutzer konnte nicht gelöscht werden.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
     }
   };
 
@@ -267,7 +276,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             <tr>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Name</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">E-Mail</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Firma</th>
+              <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Firmen</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Aktuelle Rolle</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Rolle ändern</th>
               <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Registriert</th>
@@ -283,22 +292,38 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                 </td>
                 <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
                 <td className="px-6 py-4">
-                  {user.company_name ? (
-                    <button
-                      onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(user.company_id || ''); }}
-                      className="flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors"
-                    >
-                      <Building2 className="w-3.5 h-3.5" />
-                      {user.company_name}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(''); }}
-                      className="text-sm text-muted-foreground hover:text-accent transition-colors"
-                    >
-                      + Firma zuweisen
-                    </button>
-                  )}
+                  <div className="flex flex-col gap-1">
+                    {(user.assigned_companies || []).length > 0 ? (
+                      <>
+                        {user.assigned_companies!.map(c => (
+                          <div key={c.id} className="flex items-center gap-1.5 group">
+                            <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                            <span className="text-sm text-foreground">{c.company_name}</span>
+                            {isAdmin && (
+                              <button
+                                onClick={() => handleRemoveCompanyAssignment(user.user_id, c.id)}
+                                className="opacity-0 group-hover:opacity-100 text-destructive hover:text-destructive/80 text-xs ml-1 transition-opacity"
+                                title="Entfernen"
+                              >✕</button>
+                            )}
+                          </div>
+                        ))}
+                        <button
+                          onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(''); }}
+                          className="text-xs text-accent hover:underline mt-0.5 text-left flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" /> Weitere Firma
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => { setCompanyAssignUser(user); setSelectedCompanyId(''); }}
+                        className="text-sm text-muted-foreground hover:text-accent transition-colors flex items-center gap-1"
+                      >
+                        <Link2 className="w-3.5 h-3.5" /> Firma zuweisen
+                      </button>
+                    )}
+                  </div>
                 </td>
                 <td className="px-6 py-4">
                   <span className={cn("px-3 py-1 rounded-full text-xs font-medium", getRoleBadgeColor(user.role))}>
@@ -430,7 +455,7 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
         </DialogContent>
       </Dialog>
 
-      {/* Company Assignment Dialog */}
+      {/* Company Assignment Dialog - now supports adding multiple */}
       <Dialog open={!!companyAssignUser} onOpenChange={(open) => { if (!open) { setCompanyAssignUser(null); setCompanySearch(''); } }}>
         <DialogContent>
           <DialogHeader>
@@ -443,8 +468,24 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             <p className="text-sm text-muted-foreground">
               Benutzer: <strong>{companyAssignUser?.full_name || companyAssignUser?.email}</strong>
             </p>
+            
+            {/* Show current assignments */}
+            {companyAssignUser && (companyAssignUser.assigned_companies || []).length > 0 && (
+              <div>
+                <Label className="text-xs text-muted-foreground">Aktuelle Zuordnungen</Label>
+                <div className="mt-1 space-y-1">
+                  {companyAssignUser.assigned_companies!.map(c => (
+                    <div key={c.id} className="flex items-center gap-2 bg-muted/30 rounded px-3 py-1.5 text-sm">
+                      <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
+                      {c.company_name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div>
-              <Label>Firma suchen</Label>
+              <Label>Firma hinzufügen</Label>
               <Input
                 value={companySearch}
                 onChange={(e) => setCompanySearch(e.target.value)}
@@ -460,9 +501,11 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                   selectedCompanyId === '__none__' && "bg-accent/10 text-accent font-medium"
                 )}
               >
-                Keine Firma (Zuordnung entfernen)
+                Alle Zuordnungen entfernen
               </button>
-              {filteredCompanies.map(c => (
+              {filteredCompanies
+                .filter(c => !(companyAssignUser?.assigned_companies || []).some(ac => ac.id === c.id))
+                .map(c => (
                 <button
                   key={c.id}
                   onClick={() => setSelectedCompanyId(c.id)}
@@ -507,7 +550,6 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             </AlertDialogTitle>
             <AlertDialogDescription>
               Das Profil und die Rolle dieses Benutzers werden gelöscht.
-              Der Auth-Account muss ggf. separat im Backend entfernt werden.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -532,13 +574,8 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
             </p>
             <div>
               <Label>Neues Passwort</Label>
-              <Input
-                type="text"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Neues Passwort eingeben"
-              />
-              <p className="text-xs text-muted-foreground mt-1">Mindestens 6 Zeichen. Das Passwort ist nach dem Setzen sichtbar.</p>
+              <Input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Neues Passwort eingeben" />
+              <p className="text-xs text-muted-foreground mt-1">Mindestens 6 Zeichen.</p>
             </div>
           </div>
           <DialogFooter>
@@ -554,11 +591,11 @@ export function UserManagement({ currentUserRole = 'admin' }: UserManagementProp
                   });
                   if (error) throw error;
                   if (data?.error) throw new Error(data.error);
-                  toast({ title: 'Passwort geändert', description: `Das Passwort wurde erfolgreich zurückgesetzt.` });
+                  toast({ title: 'Passwort geändert' });
                   setResetPasswordUser(null);
                   setNewPassword('');
                 } catch (error: any) {
-                  toast({ title: 'Fehler', description: error.message || 'Passwort konnte nicht geändert werden.', variant: 'destructive' });
+                  toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
                 } finally {
                   setIsResetting(false);
                 }
