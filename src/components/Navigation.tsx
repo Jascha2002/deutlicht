@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, UserX, type LucideIcon } from "lucide-react";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, UserX, Share2, Heart, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -117,6 +117,11 @@ const searchablePages = [{
   path: "/datenschutz",
   keywords: ["dsgvo", "privacy"],
   content: "Datenschutz DSGVO Privacy Datenschutzerklärung Cookies personenbezogene Daten Rechte Verarbeitung"
+}, {
+  title: "CODS – Codierte Daten Systeme",
+  path: "/cods",
+  keywords: ["cods", "codierte daten", "digitale dna", "erfindung", "carsten"],
+  content: "CODS Codierte Daten Systeme Digitale DNA Erfindung Carsten van de Sand Gera Business Connect Life Prozess-Architekt Kommunikation Individualsysteme"
 }];
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -290,6 +295,22 @@ submenu: [{
       name: "Förderberatung",
       href: "/leistungen/foerderberatung",
       icon: FileText
+    }]
+  }, {
+    name: "CODS",
+    href: "/cods",
+    submenu: [{
+      name: "CODS Business",
+      href: "/cods#business",
+      icon: Building2
+    }, {
+      name: "CODS Connect",
+      href: "/cods#connect",
+      icon: Share2
+    }, {
+      name: "CODS Life",
+      href: "/cods#life",
+      icon: Heart
     }]
   }, {
     name: "Projektanfrage",
