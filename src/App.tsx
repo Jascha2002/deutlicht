@@ -42,6 +42,7 @@ import PIM from "./pages/PIM";
 import Foerderberatung from "./pages/Foerderberatung";
 import Digitalisierung from "./pages/Digitalisierung";
 import DigitalisierungsAnalyse from "./pages/DigitalisierungsAnalyse";
+import CODS from "./pages/CODS";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
