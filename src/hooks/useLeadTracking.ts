@@ -25,7 +25,7 @@ export const useLeadTracking = () => {
   const [sessionId] = useState<string>(() => getSessionId());
   const [leadId, setLeadId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSavedData = useRef<string>('');
 
   // Create or update lead in database
