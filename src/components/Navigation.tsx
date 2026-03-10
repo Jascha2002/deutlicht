@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, UserX, type LucideIcon } from "lucide-react";
+import { Menu, X, ChevronDown, Monitor, Cog, Building2, Package, BookOpen, Smartphone, Globe, Megaphone, FileText, Users, Lock, Bot, Search, GraduationCap, Mic, TrendingUp, Brain, Layers, Sparkles, UserX, Share2, Heart, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackNavClick, trackCTAClick } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeToggle";
