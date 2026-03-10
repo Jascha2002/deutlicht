@@ -95,7 +95,7 @@ const VoiceAgentDemo = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const abortRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { toast } = useToast();
 
   // Cleanup audio on unmount
