@@ -116,7 +116,7 @@ const CODS = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <p className="text-xl sm:text-2xl text-primary-foreground/80 max-w-3xl mx-auto mb-10 leading-relaxed">
+              <p className="text-xl sm:text-2xl text-primary-foreground/80 max-w-3xl mx-auto mb-10 leading-relaxed bg-primary">
                 Intelligente, mitwachsende digitale Organismen – die{" "}
                 <strong className="text-accent">Digitale DNA</strong> hinter
                 allen Lösungen von DeutLicht®.
