@@ -12,62 +12,62 @@ import codsLife from "@/assets/cods-life.jpg";
 import carstenImg from "@/assets/carsten-van-de-sand.jpg";
 
 const produkte = [
-  {
-    id: "business",
-    name: "CODS Business",
-    subtitle: "Der Prozess-Architekt",
-    icon: Building2,
-    image: codsBusiness,
-    beschreibung:
-      "Vollständige Abbildung von Unternehmensprozessen. Inklusive ERP-Anbindung, Warenwirtschaft und Auftragsmanagement.",
-    zielgruppe: "Mittelstand, Handwerksbetriebe, E-Commerce-Unternehmen",
-    nutzen:
-      "Wegfall von Insellösungen. Alle Daten fließen in einem codierten System zusammen.",
-    features: [
-      "ERP-Integration & Warenwirtschaft",
-      "Auftragsmanagement & Workflow-Automatisierung",
-      "Zentrale Datenhaltung ohne Medienbrüche",
-      "Skalierbar vom Einmannbetrieb bis zum Mittelstand",
-    ],
-  },
-  {
-    id: "connect",
-    name: "CODS Connect",
-    subtitle: "Der Kommunikations-Knotenpunkt",
-    icon: Share2,
-    image: codsConnect,
-    beschreibung:
-      "Vernetzung von Kommunikationskanälen. Direkte Anbindung von Social Media Feeds (Instagram, LinkedIn etc.) mit Rückfluss von Interaktionsdaten in das CRM.",
-    zielgruppe: "Marketingagenturen, Vereine, öffentliche Institutionen",
-    nutzen:
-      "Maximale Reichweite bei minimalem Pflegeaufwand durch automatisierte Schnittstellen.",
-    features: [
-      "Social Media Feed-Integration (Instagram, LinkedIn, etc.)",
-      "Automatischer Rückfluss in CRM-Systeme",
-      "Cross-Channel-Analyse & Reporting",
-      "Content-Automatisierung & Planung",
-    ],
-  },
-  {
-    id: "life",
-    name: "CODS Life",
-    subtitle: "Die individuelle Lebenshilfe",
-    icon: Heart,
-    image: codsLife,
-    beschreibung:
-      "Ein System, das private und berufliche Bedürfnisse synchronisiert. Individual-Programmierung für spezifische Lebenslagen.",
-    zielgruppe:
-      "Privatpersonen mit komplexen Verwaltungsbedürfnissen, Stiftungen, familiengeführte Unternehmen",
-    nutzen:
-      "Digitale Ordnung, die sich dem Menschen anpasst, nicht umgekehrt.",
-    features: [
-      "Familienverwaltung für große Stammbäume",
-      "Persönliche Wissensdatenbanken",
-      "Synchronisation privater & beruflicher Daten",
-      "Individuelle Programmierung nach Lebenslage",
-    ],
-  },
-];
+{
+  id: "business",
+  name: "CODS Business",
+  subtitle: "Der Prozess-Architekt",
+  icon: Building2,
+  image: codsBusiness,
+  beschreibung:
+  "Vollständige Abbildung von Unternehmensprozessen. Inklusive ERP-Anbindung, Warenwirtschaft und Auftragsmanagement.",
+  zielgruppe: "Mittelstand, Handwerksbetriebe, E-Commerce-Unternehmen",
+  nutzen:
+  "Wegfall von Insellösungen. Alle Daten fließen in einem codierten System zusammen.",
+  features: [
+  "ERP-Integration & Warenwirtschaft",
+  "Auftragsmanagement & Workflow-Automatisierung",
+  "Zentrale Datenhaltung ohne Medienbrüche",
+  "Skalierbar vom Einmannbetrieb bis zum Mittelstand"]
+
+},
+{
+  id: "connect",
+  name: "CODS Connect",
+  subtitle: "Der Kommunikations-Knotenpunkt",
+  icon: Share2,
+  image: codsConnect,
+  beschreibung:
+  "Vernetzung von Kommunikationskanälen. Direkte Anbindung von Social Media Feeds (Instagram, LinkedIn etc.) mit Rückfluss von Interaktionsdaten in das CRM.",
+  zielgruppe: "Marketingagenturen, Vereine, öffentliche Institutionen",
+  nutzen:
+  "Maximale Reichweite bei minimalem Pflegeaufwand durch automatisierte Schnittstellen.",
+  features: [
+  "Social Media Feed-Integration (Instagram, LinkedIn, etc.)",
+  "Automatischer Rückfluss in CRM-Systeme",
+  "Cross-Channel-Analyse & Reporting",
+  "Content-Automatisierung & Planung"]
+
+},
+{
+  id: "life",
+  name: "CODS Life",
+  subtitle: "Die individuelle Lebenshilfe",
+  icon: Heart,
+  image: codsLife,
+  beschreibung:
+  "Ein System, das private und berufliche Bedürfnisse synchronisiert. Individual-Programmierung für spezifische Lebenslagen.",
+  zielgruppe:
+  "Privatpersonen mit komplexen Verwaltungsbedürfnissen, Stiftungen, familiengeführte Unternehmen",
+  nutzen:
+  "Digitale Ordnung, die sich dem Menschen anpasst, nicht umgekehrt.",
+  features: [
+  "Familienverwaltung für große Stammbäume",
+  "Persönliche Wissensdatenbanken",
+  "Synchronisation privater & beruflicher Daten",
+  "Individuelle Programmierung nach Lebenslage"]
+
+}];
+
 
 const CODS = () => {
   return (
@@ -76,8 +76,8 @@ const CODS = () => {
         <title>CODS – Codierte Daten Systeme | Die Digitale DNA von DeutLicht®</title>
         <meta
           name="description"
-          content="CODS (Codierte Daten Systeme) – Die Erfindung von Carsten van de Sand. Intelligente, mitwachsende digitale Organismen für Business, Kommunikation und Leben."
-        />
+          content="CODS (Codierte Daten Systeme) – Die Erfindung von Carsten van de Sand. Intelligente, mitwachsende digitale Organismen für Business, Kommunikation und Leben." />
+        
         <link rel="canonical" href="https://deutlicht.de/cods" />
       </Helmet>
 
@@ -90,8 +90,8 @@ const CODS = () => {
             <img
               src={codsHeroBg}
               alt="CODS Digitale DNA Visualisierung"
-              className="w-full h-full object-cover"
-            />
+              className="w-full h-full object-cover" />
+            
             <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
           </div>
 
@@ -127,15 +127,15 @@ const CODS = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   to="/projektanfrage"
-                  className="group flex items-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all hover:scale-105"
-                >
+                  className="group flex items-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all hover:scale-105">
+                  
                   CODS-System anfragen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
                   href="#produkte"
-                  className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground px-8 py-4 rounded-lg font-medium transition-all hover:bg-primary-foreground/20"
-                >
+                  className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground px-8 py-4 rounded-lg font-medium transition-all hover:bg-primary-foreground/20">
+                  
                   Leistungsklassen entdecken
                 </a>
               </div>
@@ -161,13 +161,13 @@ const CODS = () => {
               <div className="bg-card border border-border rounded-2xl p-8 sm:p-12 shadow-lg">
                 <div className="flex items-start gap-4 mb-6">
                   <Quote className="w-10 h-10 text-accent flex-shrink-0 mt-1" />
-                  <blockquote className="text-lg sm:text-xl leading-relaxed text-foreground/90 italic">
-                    „CODS sind weit mehr als Webseiten. Sie sind intelligente,
-                    mitwachsende Organismen. Geboren aus der tiefen Verwurzelung
-                    des Erfinders in seiner Heimatstadt Gera und seiner
-                    familiären Geschichte, die bis ins erste Jahrtausend
-                    zurückreicht, steht CODS für Beständigkeit und Fortschritt
-                    zugleich."
+                  <blockquote className="text-lg sm:text-xl leading-relaxed text-foreground/90 italic">„CODS sind weit mehr als Webseiten. Sie sind intelligente, mitwachsende Organismen. Geboren aus der tiefen Verwurzelung des Erfinders in seiner Heimatstadt Gera und seiner familiären Geschichte, die bis ins erste Jahrtausend vom Niederrhein zurückreicht, steht CODS für Beständigkeit und Fortschritt zugleich."
+
+
+
+
+
+
                   </blockquote>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mt-6">
@@ -213,9 +213,9 @@ const CODS = () => {
                   <ScrollReveal key={produkt.id} delay={index * 0.1}>
                     <div
                       className={`flex flex-col ${
-                        isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
-                      } gap-8 lg:gap-16 items-center`}
-                    >
+                      isReversed ? "lg:flex-row-reverse" : "lg:flex-row"} gap-8 lg:gap-16 items-center`
+                      }>
+                      
                       {/* Image */}
                       <div className="w-full lg:w-1/2">
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-square">
@@ -223,8 +223,8 @@ const CODS = () => {
                             src={produkt.image}
                             alt={produkt.name}
                             className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
+                            loading="lazy" />
+                          
                           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                           <div className="absolute bottom-6 left-6">
                             <div className="flex items-center gap-3 bg-primary/80 backdrop-blur-sm rounded-xl px-5 py-3 border border-accent/20">
@@ -271,30 +271,30 @@ const CODS = () => {
                         </div>
 
                         <ul className="space-y-3">
-                          {produkt.features.map((feature) => (
-                            <li
-                              key={feature}
-                              className="flex items-start gap-3"
-                            >
+                          {produkt.features.map((feature) =>
+                          <li
+                            key={feature}
+                            className="flex items-start gap-3">
+                            
                               <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                               <span className="text-foreground/80">
                                 {feature}
                               </span>
                             </li>
-                          ))}
+                          )}
                         </ul>
 
                         <Link
                           to="/projektanfrage"
-                          className="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all"
-                        >
+                          className="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all">
+                          
                           {produkt.name} anfragen
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>
                     </div>
-                  </ScrollReveal>
-                );
+                  </ScrollReveal>);
+
               })}
             </div>
           </div>
@@ -323,8 +323,8 @@ const CODS = () => {
                       src={carstenImg}
                       alt="Carsten van de Sand – Erfinder von CODS"
                       className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                      loading="lazy" />
+                    
                     <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
                       <p className="font-display text-xl font-bold text-primary-foreground">
@@ -363,14 +363,14 @@ const CODS = () => {
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
                     {[
-                      { label: "Standort", value: "Gera, Thüringen" },
-                      { label: "Gegründet", value: "Stadtnetz UG" },
-                      { label: "Vorgestellt", value: "2026" },
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="bg-card border border-border rounded-xl p-4 text-center"
-                      >
+                    { label: "Standort", value: "Gera, Thüringen" },
+                    { label: "Gegründet", value: "Stadtnetz UG" },
+                    { label: "Vorgestellt", value: "2026" }].
+                    map((item) =>
+                    <div
+                      key={item.label}
+                      className="bg-card border border-border rounded-xl p-4 text-center">
+                      
                         <p className="text-accent font-bold text-lg">
                           {item.value}
                         </p>
@@ -378,13 +378,13 @@ const CODS = () => {
                           {item.label}
                         </p>
                       </div>
-                    ))}
+                    )}
                   </div>
 
                   <Link
                     to="/ueber-uns/hintergrund"
-                    className="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all pt-2"
-                  >
+                    className="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all pt-2">
+                    
                     Mehr über die Geschichte erfahren
                     <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -411,15 +411,15 @@ const CODS = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   to="/projektanfrage"
-                  className="group flex items-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all hover:scale-105 shadow-lg shadow-accent/20"
-                >
+                  className="group flex items-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-medium transition-all hover:scale-105 shadow-lg shadow-accent/20">
+                  
                   Kostenlose Beratung anfragen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   to="/kontakt"
-                  className="flex items-center gap-2 bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all hover:bg-muted"
-                >
+                  className="flex items-center gap-2 bg-card border border-border text-foreground px-8 py-4 rounded-lg font-medium transition-all hover:bg-muted">
+                  
                   Kontakt aufnehmen
                 </Link>
               </div>
@@ -429,8 +429,8 @@ const CODS = () => {
       </main>
 
       <Footer />
-    </>
-  );
+    </>);
+
 };
 
 export default CODS;
