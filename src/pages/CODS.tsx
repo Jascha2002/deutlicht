@@ -352,13 +352,13 @@ const CODS = () => {
                     digitaler Effizienz.
                   </p>
 
-                  <p className="text-muted-foreground leading-relaxed">
-                    Geboren aus der tiefen Verwurzelung des Erfinders in seiner
-                    Heimatstadt Gera und seiner familiären Geschichte, die bis
-                    ins erste Jahrtausend zurückreicht, steht CODS für
-                    Beständigkeit und Fortschritt zugleich. Es ist die Antwort
-                    auf die Frage, wie wir im digitalen Zeitalter arbeiten und
-                    leben wollen – maßgeschneidert, sicher und effizient.
+                  <p className="text-muted-foreground leading-relaxed">Geboren aus der tiefen Verwurzelung des Erfinders in seiner Heimatstadt Gera und seiner familiären Geschichte, die bis ins erste Jahrtausend an den Niederrhein (Kreis Kleve, bei Rees, Große Sand/Kleine Sand) zurückreicht, steht CODS für Beständigkeit und Fortschritt zugleich. Es ist die Antwort auf die Frage, wie wir im digitalen Zeitalter arbeiten und leben wollen – maßgeschneidert, sicher und effizient.
+
+
+
+
+
+
                   </p>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
