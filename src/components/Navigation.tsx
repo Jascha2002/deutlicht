@@ -331,9 +331,9 @@ submenu: [{
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-md" aria-label="DeutLicht Startseite">
-              <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-14 w-auto rounded-2xl shadow-md object-fill" />
+              <img alt="DeutLicht - Klare Vision, Starke Präsenz" src="/lovable-uploads/5f7352e5-870e-4afc-b12d-2e93d61e4f60.png" className="h-20 w-auto rounded-2xl shadow-md object-fill" />
             </Link>
           </div>
 
