@@ -279,7 +279,8 @@ export function DemosManagement() {
 
   const handleClick = (link: typeof ALL_DEEP_LINKS[0]) => {
     if (link.type === 'internal') {
-      navigate(link.route!);
+      const separator = link.route!.includes('?') ? '&' : '?';
+      navigate(`${link.route}${separator}from=demos`);
     } else {
       window.open(link.url!, '_blank');
     }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -12,9 +12,11 @@ import { NotificationBell } from '@/components/NotificationBell';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const defaultTab = searchParams.get('tab') || 'leads';
 
   useEffect(() => {
     checkAdmin();
@@ -105,7 +107,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Admin Tabs */}
-          <AdminTabs />
+          <AdminTabs defaultTab={defaultTab} />
         </div>
       </main>
       
