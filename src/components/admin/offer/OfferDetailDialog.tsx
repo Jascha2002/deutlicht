@@ -162,6 +162,65 @@ export function OfferDetailDialog({
   const handleSendOffer = async () => {
     setIsLoading(true);
     try {
+      // Fetch company details for email
+      let recipientEmail = 'info@deutlicht.de';
+      let contactPerson = '';
+      let companyName = offer.crm_companies?.company_name || '';
+
+      if (offer.company_id) {
+        const { data: company } = await supabase
+          .from('crm_companies')
+          .select('email, contact_person_email, contact_person_name, company_name')
+          .eq('id', offer.company_id)
+          .single();
+
+        if (company) {
+          recipientEmail = company.contact_person_email || company.email || 'info@deutlicht.de';
+          contactPerson = company.contact_person_name || '';
+          companyName = company.company_name || companyName;
+        }
+      }
+
+      // Parse line items for service list
+      const services: string[] = [];
+      try {
+        const parsed = typeof offer.line_items === 'string' ? JSON.parse(offer.line_items) : offer.line_items;
+        if (parsed?.items && Array.isArray(parsed.items)) {
+          parsed.items.forEach((item: any) => {
+            services.push(item.bezeichnung || item.name || 'Leistung');
+          });
+        }
+      } catch { /* ignore parse errors */ }
+      if (services.length === 0) services.push(offer.title);
+
+      const validUntil = offer.valid_until 
+        ? format(new Date(offer.valid_until), 'dd.MM.yyyy', { locale: de })
+        : format(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 'dd.MM.yyyy', { locale: de });
+
+      const acceptUrl = `${window.location.origin}/angebot/${offer.id}`;
+
+      // Send email via edge function
+      const { error: emailError } = await supabase.functions.invoke('send-offer-email', {
+        body: {
+          to: recipientEmail,
+          offerNumber: offer.offer_number || offer.id,
+          companyName,
+          contactPerson,
+          totalSetup: offer.amount_setup || 0,
+          totalMonthly: offer.amount_monthly || 0,
+          services,
+          validUntil,
+          acceptUrl,
+        },
+      });
+
+      if (emailError) {
+        console.error('Email send error:', emailError);
+        // Continue with status update even if email fails
+        toast({ title: 'Warnung', description: 'E-Mail konnte nicht gesendet werden, Angebot wird trotzdem als gesendet markiert.', variant: 'destructive' });
+      }
+
+      // Update offer status
       const { error } = await supabase
         .from('crm_offers')
         .update({ 
@@ -172,7 +231,7 @@ export function OfferDetailDialog({
 
       if (error) throw error;
 
-      toast({ title: 'Angebot gesendet', description: 'Das Angebot wurde als gesendet markiert.' });
+      toast({ title: 'Angebot gesendet', description: 'Das Angebot wurde per E-Mail versendet.' });
       onUpdate();
     } catch (error) {
       console.error('Error sending offer:', error);
