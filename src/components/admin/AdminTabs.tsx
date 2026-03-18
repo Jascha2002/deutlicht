@@ -130,6 +130,10 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
           <LayoutGrid className="w-4 h-4" />
           <span className="hidden sm:inline">Vorlagen</span>
         </TabsTrigger>
+        <TabsTrigger value="demos" className="gap-1 px-2 py-2 text-xs">
+          <Monitor className="w-4 h-4" />
+          <span className="hidden sm:inline">Demos & Referenzen</span>
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="leads">
