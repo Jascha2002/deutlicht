@@ -11,6 +11,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollDepthTracker } from "@/components/ScrollDepthTracker";
 import ElevenLabsWidget from "@/components/ElevenLabsWidget";
 import GedankenblitzButton from "@/components/GedankenblitzButton";
+import { DemoBackButton } from "@/components/DemoBackButton";
 import Index from "./pages/Index";
 import UeberUns from "./pages/UeberUns";
 import Hintergrund from "./pages/Hintergrund";
