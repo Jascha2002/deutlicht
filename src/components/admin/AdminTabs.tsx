@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2,
   FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell,
-  ClipboardList, Folder, ClipboardCheck, LayoutGrid
+  ClipboardList, Folder, ClipboardCheck, LayoutGrid, Monitor
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserManagement } from "./UserManagement";
