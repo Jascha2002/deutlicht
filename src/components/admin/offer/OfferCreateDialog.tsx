@@ -134,6 +134,12 @@ export function OfferCreateDialog({
   const [offerTitle, setOfferTitle] = useState('');
   const [offerDescription, setOfferDescription] = useState('');
 
+  // Smart Paste
+  const [smartPasteText, setSmartPasteText] = useState('');
+  const [smartPasteLoading, setSmartPasteLoading] = useState(false);
+  const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
+  const [smartPasteResult, setSmartPasteResult] = useState<string | null>(null);
+
   // Manuell editierbare Preise (überschreiben kalkulierte Werte)
   const [manualSetupPrice, setManualSetupPrice] = useState<number | null>(null);
   const [manualMonthlyPrice, setManualMonthlyPrice] = useState<number | null>(null);
