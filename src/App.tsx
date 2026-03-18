@@ -126,6 +126,7 @@ const App = () => (
             <CookieBanner />
             <GedankenblitzButton />
             <ElevenLabsWidget />
+            <DemoBackButton />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

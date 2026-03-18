@@ -107,7 +107,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Admin Tabs */}
-          <AdminTabs />
+          <AdminTabs defaultTab={defaultTab} />
         </div>
       </main>
       
