@@ -52,6 +52,37 @@ const AngebotsGenerator = ({ onComplete }: AngebotsGeneratorProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const leistung = searchParams.get('leistung');
+    const demo = searchParams.get('demo');
+
+    if (leistung) {
+      const leistungMap: Record<string, string[]> = {
+        'website': ['website'],
+        'ki': ['ki_agenten'],
+        'voicebot': ['voicebot'],
+        'seo': ['seo'],
+        'marketing': ['social_media'],
+      };
+      if (leistungMap[leistung]) {
+        setFormData(prev => ({
+          ...prev,
+          selected_services: leistungMap[leistung],
+        }));
+      }
+    }
+
+    if (demo === 'true') {
+      setFormData(prev => ({
+        ...prev,
+        company_name: 'Beispiel GmbH',
+        industry: 'Einzelhandel',
+        company_size: 'small',
+      }));
+    }
+  }, [searchParams]);
 
   // ===== CALCULATION FUNCTIONS =====
 

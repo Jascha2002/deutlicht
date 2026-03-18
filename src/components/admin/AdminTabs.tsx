@@ -203,6 +203,10 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
       <TabsContent value="templates">
         <TemplateManagement />
       </TabsContent>
+
+      <TabsContent value="demos">
+        <DemosManagement />
+      </TabsContent>
     </Tabs>
   );
 }
