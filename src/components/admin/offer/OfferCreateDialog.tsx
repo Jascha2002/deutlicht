@@ -282,8 +282,11 @@ export function OfferCreateDialog({
     setSmartPasteLoading(true);
     setSmartPasteResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke('parse-company-text', {
-        body: { text: smartPasteText },
+      const { data, error } = await supabase.functions.invoke('parse-offer-text', {
+        body: {
+          text: smartPasteText,
+          catalogProductNames: catalogProducts.map(p => p.name),
+        },
       });
 
       if (error) throw error;
@@ -292,28 +295,32 @@ export function OfferCreateDialog({
       const parsed = data?.data;
       if (!parsed) throw new Error('Keine Daten erkannt');
 
-      // Map parse-company-text fields to form fields
-      const fieldMap: Record<string, string> = {
-        company_name: parsed.company_name || '',
-        contact_person: [parsed.contact_person_name, parsed.contact_person_position].filter(Boolean).join(', ') || '',
-        email: parsed.contact_person_email || parsed.email || '',
-        phone: parsed.contact_person_phone || parsed.phone || '',
-        industry: parsed.industry || '',
-        company_size: '',
-      };
-
-      // Try to match industry to allowed values
-      const allowedIndustries = ['Handel', 'Handwerk', 'Gastronomie', 'Gesundheit', 'Immobilien', 'IT & Software', 'Industrie', 'Dienstleistungen', 'Bildung', 'Tourismus', 'Landwirtschaft', 'Sonstige'];
-      if (fieldMap.industry && !allowedIndustries.includes(fieldMap.industry)) {
-        const match = allowedIndustries.find(i => fieldMap.industry.toLowerCase().includes(i.toLowerCase()));
-        fieldMap.industry = match || '';
-      }
-
       const filled = new Set<string>();
       let filledCount = 0;
-      const updates: Partial<OfferFormData> = {};
 
-      for (const [key, value] of Object.entries(fieldMap)) {
+      // 1. Company / contact fields
+      const companyFields: Record<string, string> = {
+        company_name: parsed.company_name || '',
+        contact_person: parsed.contact_person || '',
+        email: parsed.email || '',
+        phone: parsed.phone || '',
+        industry: parsed.industry || '',
+        company_size: parsed.company_size || '',
+      };
+
+      const allowedIndustries = ['Handel', 'Handwerk', 'Gastronomie', 'Gesundheit', 'Immobilien', 'IT & Software', 'Industrie', 'Dienstleistungen', 'Bildung', 'Tourismus', 'Landwirtschaft', 'Sonstige'];
+      if (companyFields.industry && !allowedIndustries.includes(companyFields.industry)) {
+        const match = allowedIndustries.find(i => companyFields.industry.toLowerCase().includes(i.toLowerCase()));
+        companyFields.industry = match || '';
+      }
+
+      const allowedSizes = ['1-10', '11-50', '51-250', '>250'];
+      if (companyFields.company_size && !allowedSizes.includes(companyFields.company_size)) {
+        companyFields.company_size = '';
+      }
+
+      const updates: Partial<OfferFormData> = {};
+      for (const [key, value] of Object.entries(companyFields)) {
         if (value && value.trim()) {
           (updates as any)[key] = value.trim();
           filled.add(key);
@@ -321,9 +328,90 @@ export function OfferCreateDialog({
         }
       }
 
+      // 2. Services
+      const validServices = SERVICE_OPTIONS.map(s => s.name);
+      if (Array.isArray(parsed.services) && parsed.services.length > 0) {
+        const matchedServices = parsed.services.filter((s: string) => validServices.includes(s));
+        if (matchedServices.length > 0) {
+          updates.services_selected = matchedServices;
+          filled.add('services');
+          filledCount += matchedServices.length;
+        }
+      }
+
+      // 3. Website config
+      if (parsed.website_type) {
+        updates.website_type = parsed.website_type;
+        filled.add('website_type');
+        filledCount++;
+      }
+      if (parsed.website_pages_count) {
+        updates.website_pages_count = parsed.website_pages_count;
+      }
+      if (Array.isArray(parsed.website_features) && parsed.website_features.length > 0) {
+        updates.website_features = parsed.website_features;
+        filledCount++;
+      }
+      if (parsed.shop_needed === 'ja') {
+        updates.shop_needed = 'ja';
+        if (parsed.shop_system) updates.shop_system = parsed.shop_system;
+        filledCount++;
+      }
+
+      // 4. SEO
+      if (parsed.seo_package) {
+        updates.seo_package = parsed.seo_package;
+        filled.add('seo_package');
+        filledCount++;
+      }
+
+      // 5. KI
+      if (parsed.ki_type) {
+        updates.ki_type = parsed.ki_type;
+        filled.add('ki_type');
+        filledCount++;
+      }
+
+      // 6. Voicebot
+      if (parsed.voice_type) {
+        updates.voice_type = parsed.voice_type;
+        filled.add('voice_type');
+        filledCount++;
+      }
+
+      // 7. Additional notes
+      if (parsed.additional_notes) {
+        updates.additional_notes = parsed.additional_notes;
+      }
+
+      // Apply all form updates
       setFormData(prev => ({ ...prev, ...updates }));
+
+      // 8. Catalog products
+      if (Array.isArray(parsed.catalog_products) && parsed.catalog_products.length > 0) {
+        const matchedProducts: SelectedCatalogProduct[] = [];
+        for (const name of parsed.catalog_products) {
+          const product = catalogProducts.find(p =>
+            p.name.toLowerCase() === name.toLowerCase() ||
+            p.name.toLowerCase().includes(name.toLowerCase()) ||
+            name.toLowerCase().includes(p.name.toLowerCase())
+          );
+          if (product && !matchedProducts.find(m => m.id === product.id)) {
+            matchedProducts.push({ ...product, quantity: 1 });
+            filledCount++;
+          }
+        }
+        if (matchedProducts.length > 0) {
+          setSelectedCatalogProducts(prev => {
+            const existingIds = new Set(prev.map(p => p.id));
+            const newProducts = matchedProducts.filter(p => !existingIds.has(p.id));
+            return [...prev, ...newProducts];
+          });
+        }
+      }
+
       setHighlightedFields(filled);
-      setSmartPasteResult(`✅ ${filledCount} von 6 Felder erkannt`);
+      setSmartPasteResult(`✅ ${filledCount} Felder/Leistungen erkannt`);
 
       if (parsed.company_name) {
         setOfferTitle(`Angebot für ${parsed.company_name}`);
