@@ -13,7 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, Trash2, Euro, Building2, User, FileText, Settings, Calculator,
-  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap, Package
+  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap, Package,
+  ClipboardPaste, Loader2
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import {
@@ -132,6 +133,12 @@ export function OfferCreateDialog({
   const [validDays, setValidDays] = useState(14);
   const [offerTitle, setOfferTitle] = useState('');
   const [offerDescription, setOfferDescription] = useState('');
+
+  // Smart Paste
+  const [smartPasteText, setSmartPasteText] = useState('');
+  const [smartPasteLoading, setSmartPasteLoading] = useState(false);
+  const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
+  const [smartPasteResult, setSmartPasteResult] = useState<string | null>(null);
 
   // Manuell editierbare Preise (überschreiben kalkulierte Werte)
   const [manualSetupPrice, setManualSetupPrice] = useState<number | null>(null);
@@ -257,6 +264,88 @@ export function OfferCreateDialog({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Remove highlight when user manually edits
+    if (highlightedFields.has(name)) {
+      setHighlightedFields(prev => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+    }
+  };
+
+  const handleSmartPaste = async () => {
+    if (!smartPasteText.trim() || smartPasteText.trim().length < 5) {
+      toast({ title: 'Fehler', description: 'Bitte fügen Sie zuerst Text ein.', variant: 'destructive' });
+      return;
+    }
+    setSmartPasteLoading(true);
+    setSmartPasteResult(null);
+    try {
+      const prompt = `Analysiere den folgenden Text und extrahiere alle Kontaktdaten. Antworte NUR mit einem JSON-Objekt mit diesen Feldern (leere Felder als leeren String lassen): { "company_name": "", "contact_person": "", "email": "", "phone": "", "industry": "", "company_size": "" } Industrie-Wert muss exakt einer dieser Optionen entsprechen wenn erkennbar: Handel, Handwerk, Gastronomie, Gesundheit, Immobilien, IT & Software, Industrie, Dienstleistungen, Bildung, Tourismus, Landwirtschaft, Sonstige. Unternehmensgröße muss exakt einer dieser Werte sein wenn erkennbar: 1-10, 11-50, 51-250, >250. Text: ${smartPasteText}`;
+
+      const { data, error } = await supabase.functions.invoke('deutlicht-chat', {
+        body: { messages: [{ role: 'user', content: prompt }] },
+      });
+
+      if (error) throw error;
+
+      // Parse streamed response or direct response
+      let responseText = '';
+      if (typeof data === 'string') {
+        // Parse SSE stream
+        const lines = data.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const parsed = JSON.parse(line.slice(6));
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) responseText += content;
+            } catch { /* skip unparseable lines */ }
+          }
+        }
+      } else if (data?.choices?.[0]?.message?.content) {
+        responseText = data.choices[0].message.content;
+      }
+
+      // Extract JSON from response (may be wrapped in markdown code blocks)
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON found');
+
+      const parsed = JSON.parse(jsonMatch[0]);
+      const fields: (keyof typeof parsed)[] = ['company_name', 'contact_person', 'email', 'phone', 'industry', 'company_size'];
+      const filled = new Set<string>();
+      let filledCount = 0;
+
+      const updates: Partial<OfferFormData> = {};
+      for (const field of fields) {
+        const value = parsed[field];
+        if (value && typeof value === 'string' && value.trim()) {
+          (updates as any)[field] = value.trim();
+          filled.add(String(field));
+          filledCount++;
+        }
+      }
+
+      setFormData(prev => ({ ...prev, ...updates }));
+      setHighlightedFields(filled);
+      setSmartPasteResult(`✅ ${filledCount} von 6 Felder erkannt`);
+
+      if (parsed.company_name) {
+        setOfferTitle(`Angebot für ${parsed.company_name}`);
+      }
+    } catch (err) {
+      console.error('Smart Paste error:', err);
+      toast({ title: 'Fehler', description: 'Automatisches Ausfüllen fehlgeschlagen – bitte Daten manuell eingeben.', variant: 'destructive' });
+    } finally {
+      setSmartPasteLoading(false);
+    }
+  };
+
+  const getFieldHighlightClass = (fieldName: string) => {
+    return highlightedFields.has(fieldName)
+      ? 'bg-green-50 dark:bg-green-950/30 border-green-300'
+      : '';
   };
 
   // ===== PRICE CALCULATIONS (from AngebotsGenerator) =====
@@ -751,6 +840,40 @@ export function OfferCreateDialog({
 
           {/* TAB 1: Kunde */}
           <TabsContent value="kunde" className="space-y-6 mt-6">
+            {/* Smart Paste */}
+            <Card className="border-dashed border-primary/40">
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3 flex items-center gap-2">
+                  <ClipboardPaste className="h-4 w-4" />
+                  Smart Paste – Kontaktdaten einfügen
+                </h4>
+                <div className="flex gap-3 items-start">
+                  <Textarea
+                    value={smartPasteText}
+                    onChange={(e) => setSmartPasteText(e.target.value)}
+                    placeholder="Kontaktdaten hier einfügen oder reinschreiben – z.B. aus E-Mail, LinkedIn, Website, Visitenkarte..."
+                    rows={3}
+                    className="flex-1 resize-none"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleSmartPaste}
+                    disabled={smartPasteLoading || !smartPasteText.trim()}
+                    className="shrink-0"
+                  >
+                    {smartPasteLoading ? (
+                      <><Loader2 className="h-4 w-4 animate-spin mr-1" /> Analysiere...</>
+                    ) : (
+                      <>Automatisch ausfüllen ✨</>
+                    )}
+                  </Button>
+                </div>
+                {smartPasteResult && (
+                  <p className="text-sm text-green-600 dark:text-green-400 mt-2 font-medium">{smartPasteResult}</p>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Ersteller / Mitarbeiter */}
             <Card>
               <CardContent className="p-4">
@@ -837,6 +960,7 @@ export function OfferCreateDialog({
                       value={formData.company_name}
                       onChange={handleInputChange}
                       placeholder="Firmenname"
+                      className={getFieldHighlightClass('company_name')}
                     />
                   </div>
                   <div>
@@ -846,6 +970,7 @@ export function OfferCreateDialog({
                       value={formData.contact_person}
                       onChange={handleInputChange}
                       placeholder="Name des Ansprechpartners"
+                      className={getFieldHighlightClass('contact_person')}
                     />
                   </div>
                   <div>
@@ -855,6 +980,7 @@ export function OfferCreateDialog({
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="email@firma.de"
+                      className={getFieldHighlightClass('email')}
                     />
                   </div>
                   <div>
@@ -864,15 +990,19 @@ export function OfferCreateDialog({
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="+49..."
+                      className={getFieldHighlightClass('phone')}
                     />
                   </div>
                   <div>
                     <Label>Branche</Label>
                     <Select 
                       value={formData.industry || '_none'} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, industry: v === '_none' ? '' : v }))}
+                      onValueChange={(v) => {
+                        setFormData(prev => ({ ...prev, industry: v === '_none' ? '' : v }));
+                        setHighlightedFields(prev => { const next = new Set(prev); next.delete('industry'); return next; });
+                      }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className={getFieldHighlightClass('industry')}>
                         <SelectValue placeholder="Branche wählen" />
                       </SelectTrigger>
                       <SelectContent>
@@ -887,9 +1017,12 @@ export function OfferCreateDialog({
                     <Label>Unternehmensgröße</Label>
                     <Select 
                       value={formData.company_size} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, company_size: v }))}
+                      onValueChange={(v) => {
+                        setFormData(prev => ({ ...prev, company_size: v }));
+                        setHighlightedFields(prev => { const next = new Set(prev); next.delete('company_size'); return next; });
+                      }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className={getFieldHighlightClass('company_size')}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
