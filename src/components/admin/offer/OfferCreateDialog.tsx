@@ -329,9 +329,8 @@ export function OfferCreateDialog({
       }
 
       // 2. Services
-      const validServices = SERVICE_OPTIONS.map(s => s.name);
       if (Array.isArray(parsed.services) && parsed.services.length > 0) {
-        const matchedServices = parsed.services.filter((s: string) => validServices.includes(s));
+        const matchedServices = parsed.services.filter((s: string) => SERVICE_OPTIONS.includes(s));
         if (matchedServices.length > 0) {
           updates.services_selected = matchedServices;
           filled.add('services');
