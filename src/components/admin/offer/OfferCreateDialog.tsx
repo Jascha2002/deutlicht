@@ -282,47 +282,41 @@ export function OfferCreateDialog({
     setSmartPasteLoading(true);
     setSmartPasteResult(null);
     try {
-      const prompt = `Analysiere den folgenden Text und extrahiere alle Kontaktdaten. Antworte NUR mit einem JSON-Objekt mit diesen Feldern (leere Felder als leeren String lassen): { "company_name": "", "contact_person": "", "email": "", "phone": "", "industry": "", "company_size": "" } Industrie-Wert muss exakt einer dieser Optionen entsprechen wenn erkennbar: Handel, Handwerk, Gastronomie, Gesundheit, Immobilien, IT & Software, Industrie, Dienstleistungen, Bildung, Tourismus, Landwirtschaft, Sonstige. Unternehmensgröße muss exakt einer dieser Werte sein wenn erkennbar: 1-10, 11-50, 51-250, >250. Text: ${smartPasteText}`;
-
-      const { data, error } = await supabase.functions.invoke('deutlicht-chat', {
-        body: { messages: [{ role: 'user', content: prompt }] },
+      const { data, error } = await supabase.functions.invoke('parse-company-text', {
+        body: { text: smartPasteText },
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
 
-      // Parse streamed response or direct response
-      let responseText = '';
-      if (typeof data === 'string') {
-        // Parse SSE stream
-        const lines = data.split('\n');
-        for (const line of lines) {
-          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-            try {
-              const parsed = JSON.parse(line.slice(6));
-              const content = parsed.choices?.[0]?.delta?.content;
-              if (content) responseText += content;
-            } catch { /* skip unparseable lines */ }
-          }
-        }
-      } else if (data?.choices?.[0]?.message?.content) {
-        responseText = data.choices[0].message.content;
+      const parsed = data?.data;
+      if (!parsed) throw new Error('Keine Daten erkannt');
+
+      // Map parse-company-text fields to form fields
+      const fieldMap: Record<string, string> = {
+        company_name: parsed.company_name || '',
+        contact_person: [parsed.contact_person_name, parsed.contact_person_position].filter(Boolean).join(', ') || '',
+        email: parsed.contact_person_email || parsed.email || '',
+        phone: parsed.contact_person_phone || parsed.phone || '',
+        industry: parsed.industry || '',
+        company_size: '',
+      };
+
+      // Try to match industry to allowed values
+      const allowedIndustries = ['Handel', 'Handwerk', 'Gastronomie', 'Gesundheit', 'Immobilien', 'IT & Software', 'Industrie', 'Dienstleistungen', 'Bildung', 'Tourismus', 'Landwirtschaft', 'Sonstige'];
+      if (fieldMap.industry && !allowedIndustries.includes(fieldMap.industry)) {
+        const match = allowedIndustries.find(i => fieldMap.industry.toLowerCase().includes(i.toLowerCase()));
+        fieldMap.industry = match || '';
       }
 
-      // Extract JSON from response (may be wrapped in markdown code blocks)
-      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('No JSON found');
-
-      const parsed = JSON.parse(jsonMatch[0]);
-      const fields: (keyof typeof parsed)[] = ['company_name', 'contact_person', 'email', 'phone', 'industry', 'company_size'];
       const filled = new Set<string>();
       let filledCount = 0;
-
       const updates: Partial<OfferFormData> = {};
-      for (const field of fields) {
-        const value = parsed[field];
-        if (value && typeof value === 'string' && value.trim()) {
-          (updates as any)[field] = value.trim();
-          filled.add(String(field));
+
+      for (const [key, value] of Object.entries(fieldMap)) {
+        if (value && value.trim()) {
+          (updates as any)[key] = value.trim();
+          filled.add(key);
           filledCount++;
         }
       }
