@@ -840,6 +840,40 @@ export function OfferCreateDialog({
 
           {/* TAB 1: Kunde */}
           <TabsContent value="kunde" className="space-y-6 mt-6">
+            {/* Smart Paste */}
+            <Card className="border-dashed border-primary/40">
+              <CardContent className="p-4">
+                <h4 className="font-medium mb-3 flex items-center gap-2">
+                  <ClipboardPaste className="h-4 w-4" />
+                  Smart Paste – Kontaktdaten einfügen
+                </h4>
+                <div className="flex gap-3 items-start">
+                  <Textarea
+                    value={smartPasteText}
+                    onChange={(e) => setSmartPasteText(e.target.value)}
+                    placeholder="Kontaktdaten hier einfügen oder reinschreiben – z.B. aus E-Mail, LinkedIn, Website, Visitenkarte..."
+                    rows={3}
+                    className="flex-1 resize-none"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleSmartPaste}
+                    disabled={smartPasteLoading || !smartPasteText.trim()}
+                    className="shrink-0"
+                  >
+                    {smartPasteLoading ? (
+                      <><Loader2 className="h-4 w-4 animate-spin mr-1" /> Analysiere...</>
+                    ) : (
+                      <>Automatisch ausfüllen ✨</>
+                    )}
+                  </Button>
+                </div>
+                {smartPasteResult && (
+                  <p className="text-sm text-green-600 dark:text-green-400 mt-2 font-medium">{smartPasteResult}</p>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Ersteller / Mitarbeiter */}
             <Card>
               <CardContent className="p-4">
@@ -926,6 +960,7 @@ export function OfferCreateDialog({
                       value={formData.company_name}
                       onChange={handleInputChange}
                       placeholder="Firmenname"
+                      className={getFieldHighlightClass('company_name')}
                     />
                   </div>
                   <div>
@@ -935,6 +970,7 @@ export function OfferCreateDialog({
                       value={formData.contact_person}
                       onChange={handleInputChange}
                       placeholder="Name des Ansprechpartners"
+                      className={getFieldHighlightClass('contact_person')}
                     />
                   </div>
                   <div>
@@ -944,6 +980,7 @@ export function OfferCreateDialog({
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="email@firma.de"
+                      className={getFieldHighlightClass('email')}
                     />
                   </div>
                   <div>
@@ -953,15 +990,19 @@ export function OfferCreateDialog({
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="+49..."
+                      className={getFieldHighlightClass('phone')}
                     />
                   </div>
                   <div>
                     <Label>Branche</Label>
                     <Select 
                       value={formData.industry || '_none'} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, industry: v === '_none' ? '' : v }))}
+                      onValueChange={(v) => {
+                        setFormData(prev => ({ ...prev, industry: v === '_none' ? '' : v }));
+                        setHighlightedFields(prev => { const next = new Set(prev); next.delete('industry'); return next; });
+                      }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className={getFieldHighlightClass('industry')}>
                         <SelectValue placeholder="Branche wählen" />
                       </SelectTrigger>
                       <SelectContent>
@@ -976,9 +1017,12 @@ export function OfferCreateDialog({
                     <Label>Unternehmensgröße</Label>
                     <Select 
                       value={formData.company_size} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, company_size: v }))}
+                      onValueChange={(v) => {
+                        setFormData(prev => ({ ...prev, company_size: v }));
+                        setHighlightedFields(prev => { const next = new Set(prev); next.delete('company_size'); return next; });
+                      }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className={getFieldHighlightClass('company_size')}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
