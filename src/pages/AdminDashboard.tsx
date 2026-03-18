@@ -12,9 +12,11 @@ import { NotificationBell } from '@/components/NotificationBell';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const defaultTab = searchParams.get('tab') || 'leads';
 
   useEffect(() => {
     checkAdmin();
