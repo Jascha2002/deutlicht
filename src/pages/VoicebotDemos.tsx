@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { 
   Phone, 
   PhoneOff, 
@@ -318,6 +318,29 @@ const VoicebotDemos = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("alle");
   const abortRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const scenarioId = searchParams.get('scenario');
+    const categoryId = searchParams.get('category');
+
+    if (scenarioId) {
+      const scenario = voicebotScenarios.find(s => s.id === scenarioId);
+      if (scenario) {
+        setActiveScenario(scenario);
+        setTimeout(() => {
+          document.getElementById('demos')?.scrollIntoView({ behavior: 'smooth' });
+        }, 400);
+      }
+    }
+
+    if (categoryId && categoryId !== 'alle') {
+      setSelectedCategory(categoryId);
+      setTimeout(() => {
+        document.getElementById('demos')?.scrollIntoView({ behavior: 'smooth' });
+      }, 400);
+    }
+  }, [searchParams]);
   const { toast } = useToast();
 
   useEffect(() => {

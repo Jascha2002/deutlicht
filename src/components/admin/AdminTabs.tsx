@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Handshake, DollarSign, UserCheck, Receipt, Target, Building2,
   FolderOpen, FileText, BarChart3, Package, CalendarDays, Bell,
-  ClipboardList, Folder, ClipboardCheck, LayoutGrid
+  ClipboardList, Folder, ClipboardCheck, LayoutGrid, Monitor
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserManagement } from "./UserManagement";
@@ -24,6 +24,7 @@ import { OrderManagement } from "./OrderManagement";
 import { DocumentManagement } from "./DocumentManagement";
 import { AcceptanceProtocolManagement } from "./AcceptanceProtocolManagement";
 import { TemplateManagement } from "./TemplateManagement";
+import { DemosManagement } from "./DemosManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
@@ -129,6 +130,10 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
           <LayoutGrid className="w-4 h-4" />
           <span className="hidden sm:inline">Vorlagen</span>
         </TabsTrigger>
+        <TabsTrigger value="demos" className="gap-1 px-2 py-2 text-xs">
+          <Monitor className="w-4 h-4" />
+          <span className="hidden sm:inline">Demos & Referenzen</span>
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="leads">
@@ -197,6 +202,10 @@ export function AdminTabs({ defaultTab = "leads" }: AdminTabsProps) {
 
       <TabsContent value="templates">
         <TemplateManagement />
+      </TabsContent>
+
+      <TabsContent value="demos">
+        <DemosManagement />
       </TabsContent>
     </Tabs>
   );
