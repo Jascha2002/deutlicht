@@ -264,6 +264,88 @@ export function OfferCreateDialog({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Remove highlight when user manually edits
+    if (highlightedFields.has(name)) {
+      setHighlightedFields(prev => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+    }
+  };
+
+  const handleSmartPaste = async () => {
+    if (!smartPasteText.trim() || smartPasteText.trim().length < 5) {
+      toast({ title: 'Fehler', description: 'Bitte fügen Sie zuerst Text ein.', variant: 'destructive' });
+      return;
+    }
+    setSmartPasteLoading(true);
+    setSmartPasteResult(null);
+    try {
+      const prompt = `Analysiere den folgenden Text und extrahiere alle Kontaktdaten. Antworte NUR mit einem JSON-Objekt mit diesen Feldern (leere Felder als leeren String lassen): { "company_name": "", "contact_person": "", "email": "", "phone": "", "industry": "", "company_size": "" } Industrie-Wert muss exakt einer dieser Optionen entsprechen wenn erkennbar: Handel, Handwerk, Gastronomie, Gesundheit, Immobilien, IT & Software, Industrie, Dienstleistungen, Bildung, Tourismus, Landwirtschaft, Sonstige. Unternehmensgröße muss exakt einer dieser Werte sein wenn erkennbar: 1-10, 11-50, 51-250, >250. Text: ${smartPasteText}`;
+
+      const { data, error } = await supabase.functions.invoke('deutlicht-chat', {
+        body: { messages: [{ role: 'user', content: prompt }] },
+      });
+
+      if (error) throw error;
+
+      // Parse streamed response or direct response
+      let responseText = '';
+      if (typeof data === 'string') {
+        // Parse SSE stream
+        const lines = data.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const parsed = JSON.parse(line.slice(6));
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) responseText += content;
+            } catch { /* skip unparseable lines */ }
+          }
+        }
+      } else if (data?.choices?.[0]?.message?.content) {
+        responseText = data.choices[0].message.content;
+      }
+
+      // Extract JSON from response (may be wrapped in markdown code blocks)
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON found');
+
+      const parsed = JSON.parse(jsonMatch[0]);
+      const fields: (keyof typeof parsed)[] = ['company_name', 'contact_person', 'email', 'phone', 'industry', 'company_size'];
+      const filled = new Set<string>();
+      let filledCount = 0;
+
+      const updates: Partial<OfferFormData> = {};
+      for (const field of fields) {
+        const value = parsed[field];
+        if (value && typeof value === 'string' && value.trim()) {
+          (updates as any)[field] = value.trim();
+          filled.add(field);
+          filledCount++;
+        }
+      }
+
+      setFormData(prev => ({ ...prev, ...updates }));
+      setHighlightedFields(filled);
+      setSmartPasteResult(`✅ ${filledCount} von 6 Felder erkannt`);
+
+      if (parsed.company_name) {
+        setOfferTitle(`Angebot für ${parsed.company_name}`);
+      }
+    } catch (err) {
+      console.error('Smart Paste error:', err);
+      toast({ title: 'Fehler', description: 'Automatisches Ausfüllen fehlgeschlagen – bitte Daten manuell eingeben.', variant: 'destructive' });
+    } finally {
+      setSmartPasteLoading(false);
+    }
+  };
+
+  const getFieldHighlightClass = (fieldName: string) => {
+    return highlightedFields.has(fieldName)
+      ? 'bg-green-50 dark:bg-green-950/30 border-green-300'
+      : '';
   };
 
   // ===== PRICE CALCULATIONS (from AngebotsGenerator) =====
