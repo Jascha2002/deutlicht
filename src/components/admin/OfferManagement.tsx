@@ -414,7 +414,7 @@ export function OfferManagement() {
                         <Button variant="ghost" size="icon" onClick={() => setSelectedOffer(offer)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        {offer.status === 'entwurf' && (
+                        {(offer.status === 'entwurf' || offer.status === 'gesendet') && (
                           <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={(e) => { e.stopPropagation(); setDeleteOfferId(offer.id); }}>
                             <Trash2 className="h-4 w-4" />
                           </Button>

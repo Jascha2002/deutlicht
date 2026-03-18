@@ -37,6 +37,7 @@ interface OfferEmailRequest {
   services: string[];
   validUntil: string;
   acceptUrl: string;
+  lineItems?: any;
 }
 
 const generateOfferEmailHtml = (data: OfferEmailRequest): string => {
@@ -197,6 +198,65 @@ const generateOfferEmailHtml = (data: OfferEmailRequest): string => {
   `;
 };
 
+const generateInternalCopyHtml = (data: OfferEmailRequest): string => {
+  // Parse line items for detailed table
+  let items: any[] = [];
+  if (data.lineItems) {
+    try {
+      const parsed = typeof data.lineItems === 'string' ? JSON.parse(data.lineItems) : data.lineItems;
+      items = parsed?.items || [];
+    } catch { /* ignore */ }
+  }
+
+  const positionsHtml = items.length > 0 
+    ? items.map((item: any) => `
+        <tr>
+          <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;">${escapeHtml(item.title || item.bezeichnung || item.name || '')}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:right;">${formatCurrency(item.setup || item.einmalig || 0)}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:right;">${formatCurrency(item.monthly || item.monatlich || 0)}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="3" style="padding:8px 12px;color:#64748b;">Keine Positionen vorhanden</td></tr>`;
+
+  const yearlyValue = data.totalSetup + (data.totalMonthly * 12);
+
+  return `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; padding: 30px; max-width: 650px; margin: 0 auto;">
+      <h2 style="margin: 0 0 20px; color: #0f172a;">📤 Angebot wurde versendet</h2>
+      
+      <table style="width: 100%; margin-bottom: 25px;">
+        <tr><td style="padding:6px 0;color:#64748b;width:160px;">An:</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(data.to)}</td></tr>
+        <tr><td style="padding:6px 0;color:#64748b;">Unternehmen:</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(data.companyName)}</td></tr>
+        <tr><td style="padding:6px 0;color:#64748b;">Ansprechpartner:</td><td style="padding:6px 0;">${escapeHtml(data.contactPerson)}</td></tr>
+        <tr><td style="padding:6px 0;color:#64748b;">Angebotsnummer:</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(data.offerNumber)}</td></tr>
+        <tr><td style="padding:6px 0;color:#64748b;">Gültig bis:</td><td style="padding:6px 0;">${escapeHtml(data.validUntil)}</td></tr>
+      </table>
+      
+      <h3 style="margin: 0 0 10px; color: #0f172a; font-size: 15px;">Leistungspositionen:</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+        <thead>
+          <tr style="background: #f1f5f9;">
+            <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #cbd5e1;font-size:13px;">Bezeichnung</th>
+            <th style="padding:10px 12px;text-align:right;border-bottom:2px solid #cbd5e1;font-size:13px;">Einmalig</th>
+            <th style="padding:10px 12px;text-align:right;border-bottom:2px solid #cbd5e1;font-size:13px;">Monatlich</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${positionsHtml}
+        </tbody>
+      </table>
+      
+      <div style="background: #f8fafc; padding: 15px 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <table style="width: 100%;">
+          <tr><td style="padding:4px 0;font-weight:600;">Einmalig gesamt:</td><td style="padding:4px 0;text-align:right;font-weight:700;font-size:16px;">${formatCurrency(data.totalSetup)}</td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">Monatlich gesamt:</td><td style="padding:4px 0;text-align:right;font-weight:700;font-size:16px;">${formatCurrency(data.totalMonthly)}</td></tr>
+          <tr style="border-top:1px solid #cbd5e1;"><td style="padding:8px 0 4px;font-weight:600;">Jahreswert:</td><td style="padding:8px 0 4px;text-align:right;font-weight:700;font-size:18px;color:#0066FF;">${formatCurrency(yearlyValue)}</td></tr>
+        </table>
+      </div>
+    </div>
+  `;
+};
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -218,7 +278,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Send offer email to customer
     const emailResult = await resend.emails.send({
-      from: "DeutLicht <angebote@deutlicht.de>",
+      from: "DeutLicht <info@deutlicht.de>",
       to: [data.to],
       subject: `Ihr personalisiertes Angebot – ${data.offerNumber}`,
       html: emailHtml,
@@ -226,28 +286,15 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("Offer email sent:", emailResult);
     
+    // Generate internal copy HTML
+    const internalHtml = generateInternalCopyHtml(data);
+    
     // Send copy to internal
     await resend.emails.send({
-      from: "DeutLicht System <system@deutlicht.de>",
+      from: "DeutLicht <info@deutlicht.de>",
       to: ["info@deutlicht.de"],
       subject: `📤 Angebot versendet: ${data.companyName || data.contactPerson} – ${data.offerNumber}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Angebot wurde versendet</h2>
-          <p><strong>An:</strong> ${escapeHtml(data.to)}</p>
-          <p><strong>Unternehmen:</strong> ${escapeHtml(data.companyName)}</p>
-          <p><strong>Ansprechpartner:</strong> ${escapeHtml(data.contactPerson)}</p>
-          <p><strong>Angebotsnummer:</strong> ${escapeHtml(data.offerNumber)}</p>
-          <p><strong>Einmalig:</strong> ${formatCurrency(data.totalSetup)}</p>
-          <p><strong>Monatlich:</strong> ${formatCurrency(data.totalMonthly)}</p>
-          <p><strong>Gültig bis:</strong> ${escapeHtml(data.validUntil)}</p>
-          <hr>
-          <p><strong>Leistungen:</strong></p>
-          <ul>
-            ${data.services.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
-          </ul>
-        </div>
-      `,
+      html: internalHtml,
     });
     
     return new Response(
