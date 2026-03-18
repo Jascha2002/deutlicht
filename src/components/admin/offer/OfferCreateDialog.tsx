@@ -322,7 +322,7 @@ export function OfferCreateDialog({
         const value = parsed[field];
         if (value && typeof value === 'string' && value.trim()) {
           (updates as any)[field] = value.trim();
-          filled.add(field);
+          filled.add(String(field));
           filledCount++;
         }
       }
