@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   ExternalLink, ArrowRight, Zap, Monitor, Bot, Mic, FileText,
-  Globe, Search, Brain, Building2, UtensilsCrossed, Wrench,
+  Globe, Brain, Building2, UtensilsCrossed, Wrench,
   Home, Stethoscope, Calendar, Package, LayoutDashboard, Eye, EyeOff
 } from 'lucide-react';
 
