@@ -24,6 +24,7 @@ import { OrderManagement } from "./OrderManagement";
 import { DocumentManagement } from "./DocumentManagement";
 import { AcceptanceProtocolManagement } from "./AcceptanceProtocolManagement";
 import { TemplateManagement } from "./TemplateManagement";
+import { DemosManagement } from "./DemosManagement";
 
 interface AdminTabsProps {
   defaultTab?: string;
