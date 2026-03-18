@@ -13,7 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, Trash2, Euro, Building2, User, FileText, Settings, Calculator,
-  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap, Package
+  Globe, Megaphone, Search, Bot, Phone, Cog, GraduationCap, Package,
+  ClipboardPaste, Loader2, Sparkles
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import {
