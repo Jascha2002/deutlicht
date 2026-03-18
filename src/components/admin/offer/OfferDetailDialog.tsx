@@ -187,7 +187,7 @@ export function OfferDetailDialog({
         const parsed = typeof offer.line_items === 'string' ? JSON.parse(offer.line_items) : offer.line_items;
         if (parsed?.items && Array.isArray(parsed.items)) {
           parsed.items.forEach((item: any) => {
-            services.push(item.bezeichnung || item.name || 'Leistung');
+            services.push(item.title || item.bezeichnung || item.name || 'Leistung');
           });
         }
       } catch { /* ignore parse errors */ }
@@ -211,6 +211,7 @@ export function OfferDetailDialog({
           services,
           validUntil,
           acceptUrl,
+          lineItems: offer.line_items,
         },
       });
 

@@ -127,7 +127,7 @@ export function OfferManagement() {
         const parsed = typeof offer.line_items === 'string' ? JSON.parse(offer.line_items) : offer.line_items;
         if (parsed?.items && Array.isArray(parsed.items)) {
           parsed.items.forEach((item: any) => {
-            services.push(item.bezeichnung || item.name || 'Leistung');
+            services.push(item.title || item.bezeichnung || item.name || 'Leistung');
           });
         }
       } catch { /* ignore parse errors */ }
@@ -151,6 +151,7 @@ export function OfferManagement() {
           services,
           validUntil,
           acceptUrl,
+          lineItems: offer.line_items,
         },
       });
 
@@ -413,7 +414,7 @@ export function OfferManagement() {
                         <Button variant="ghost" size="icon" onClick={() => setSelectedOffer(offer)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        {offer.status === 'entwurf' && (
+                        {(offer.status === 'entwurf' || offer.status === 'gesendet') && (
                           <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={(e) => { e.stopPropagation(); setDeleteOfferId(offer.id); }}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
