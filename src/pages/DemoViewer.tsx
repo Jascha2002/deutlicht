@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Loader2 } from 'lucide-react';
 
 const DemoViewer = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const url = searchParams.get('url') || '';
+  const [loading, setLoading] = useState(true);
+  const rawUrl = searchParams.get('url') || '';
+  const decodedUrl = decodeURIComponent(rawUrl);
   const label = searchParams.get('label') || 'Demo';
 
   return (
@@ -29,16 +32,25 @@ const DemoViewer = () => {
       </div>
 
       {/* Demo warning banner */}
-      <div className="px-4 py-1.5 bg-amber-100 text-amber-800 text-xs text-center shrink-0">
+      <div className="px-4 py-1.5 bg-orange-50 border-b border-orange-200 text-orange-800 text-xs text-center shrink-0">
         ⚠️ Demo-Modus aktiv – Formulare & Buchungen sind in der Vorschau deaktiviert
       </div>
 
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        </div>
+      )}
+
       {/* Iframe */}
       <iframe
-        src={url}
-        className="flex-1 w-full border-0"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        src={decodedUrl}
+        width="100%"
+        style={{ border: 'none', display: loading ? 'none' : 'block', height: 'calc(100vh - 80px)' }}
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
         title={label}
+        onLoad={() => setLoading(false)}
       />
     </div>
   );
