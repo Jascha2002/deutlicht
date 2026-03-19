@@ -292,22 +292,6 @@ submenu: [{
       icon: FileText
     }]
   }, {
-    name: "CODS",
-    href: "/cods",
-    submenu: [{
-      name: "CODS Business",
-      href: "/cods#business",
-      icon: Building2
-    }, {
-      name: "CODS Connect",
-      href: "/cods#connect",
-      icon: Share2
-    }, {
-      name: "CODS Life",
-      href: "/cods#life",
-      icon: Heart
-    }]
-  }, {
     name: "Projektanfrage",
     href: "/projektanfrage"
   }, {

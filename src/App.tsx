@@ -102,7 +102,7 @@ const App = () => (
               <Route path="/leistungen/pim" element={<PIM />} />
               <Route path="/leistungen/foerderberatung" element={<Foerderberatung />} />
               <Route path="/leistungen/digitalisierung" element={<Digitalisierung />} />
-              <Route path="/cods" element={<CODS />} />
+              <Route path="/cods" element={<Navigate to="/" replace />} />
               <Route path="/intern/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/auth" element={<Auth />} />
