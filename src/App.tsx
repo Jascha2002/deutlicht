@@ -55,6 +55,7 @@ import KundenVorlagen from "./pages/KundenVorlagen";
 import ProduktionDashboard from "./pages/ProduktionDashboard";
 import TeamDashboard from "./pages/TeamDashboard";
 import Sitemap from "./pages/Sitemap";
+import DemoViewer from "./pages/DemoViewer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
