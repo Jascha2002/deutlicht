@@ -199,13 +199,13 @@ export function TemplateManagement() {
     const { data: { user } } = await supabase.auth.getUser();
     const { data: companyData } = await supabase
       .from('crm_companies').select('user_id').eq('id', selectedCompanyId).maybeSingle();
-    const customerId = companyData?.user_id || user?.id || '';
+    const customerId = companyData?.user_id || selectedCompanyId;
     const { error } = await supabase.from('customer_templates').insert({
       customer_id: customerId, company_id: selectedCompanyId,
       template_id: templateId, assigned_by: user?.id || null,
     } as any);
     if (error) {
-      if (error.code === '23505') toast({ title: 'Info', description: 'Bereits zugewiesen.' });
+      if (error.code === '23505') toast({ title: 'Info', description: 'Diese Vorlage ist dieser Firma bereits zugewiesen.' });
       else toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Zugewiesen', description: 'Vorlage wurde der Firma zugewiesen.' });
