@@ -282,7 +282,9 @@ export function DemosManagement() {
       const separator = link.route!.includes('?') ? '&' : '?';
       navigate(`${link.route}${separator}from=demos`);
     } else {
-      window.open(link.url!, '_blank');
+      const encodedUrl = encodeURIComponent(link.url!);
+      const encodedLabel = encodeURIComponent(link.label);
+      navigate(`/demo-viewer?url=${encodedUrl}&label=${encodedLabel}`);
     }
   };
 

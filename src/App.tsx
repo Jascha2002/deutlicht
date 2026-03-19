@@ -118,6 +118,7 @@ const App = () => (
               <Route path="/team" element={<TeamDashboard />} />
               <Route path="/projekte-team" element={<TeamDashboard />} />
               <Route path="/produktion" element={<ProduktionDashboard />} />
+              <Route path="/demo-viewer" element={<DemoViewer />} />
               <Route path="/sitemap" element={<Sitemap />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
