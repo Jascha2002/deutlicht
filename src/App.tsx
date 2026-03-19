@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookieBanner } from "@/components/CookieBanner";
@@ -102,7 +102,7 @@ const App = () => (
               <Route path="/leistungen/pim" element={<PIM />} />
               <Route path="/leistungen/foerderberatung" element={<Foerderberatung />} />
               <Route path="/leistungen/digitalisierung" element={<Digitalisierung />} />
-              <Route path="/cods" element={<CODS />} />
+              <Route path="/cods" element={<Navigate to="/" replace />} />
               <Route path="/intern/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/analyse" element={<DigitalisierungsAnalyse />} />
               <Route path="/auth" element={<Auth />} />
