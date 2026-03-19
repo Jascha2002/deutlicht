@@ -55,6 +55,7 @@ import KundenVorlagen from "./pages/KundenVorlagen";
 import ProduktionDashboard from "./pages/ProduktionDashboard";
 import TeamDashboard from "./pages/TeamDashboard";
 import Sitemap from "./pages/Sitemap";
+import DemoViewer from "./pages/DemoViewer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -117,6 +118,7 @@ const App = () => (
               <Route path="/team" element={<TeamDashboard />} />
               <Route path="/projekte-team" element={<TeamDashboard />} />
               <Route path="/produktion" element={<ProduktionDashboard />} />
+              <Route path="/demo-viewer" element={<DemoViewer />} />
               <Route path="/sitemap" element={<Sitemap />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
