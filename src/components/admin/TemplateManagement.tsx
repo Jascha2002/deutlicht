@@ -197,19 +197,24 @@ export function TemplateManagement() {
   const handleAssign = async (templateId: string) => {
     if (!selectedCompanyId) return;
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: 'Fehler', description: 'Nicht angemeldet.', variant: 'destructive' });
+      return;
+    }
     const { data: companyData } = await supabase
       .from('crm_companies').select('user_id').eq('id', selectedCompanyId).maybeSingle();
-    const customerId = companyData?.user_id || selectedCompanyId;
+    // customer_id must be a valid auth.users UUID — use company's user or current admin as fallback
+    const customerId = companyData?.user_id || user.id;
     const { error } = await supabase.from('customer_templates').insert({
       customer_id: customerId, company_id: selectedCompanyId,
-      template_id: templateId, assigned_by: user?.id || null,
+      template_id: templateId, assigned_by: user.id,
     } as any);
     if (error) {
       if (error.code === '23505') toast({ title: 'Info', description: 'Diese Vorlage ist dieser Firma bereits zugewiesen.' });
       else toast({ title: 'Fehler', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Zugewiesen', description: 'Vorlage wurde der Firma zugewiesen.' });
-      setSelectedCompanyId(""); loadTemplates();
+      setSelectedCompanyId(""); setAssigningTemplateId(null); loadTemplates();
     }
   };
 
