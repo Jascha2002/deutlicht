@@ -94,11 +94,24 @@ const Auth = () => {
     return () => clearTimeout(timeoutId);
   }, [password, isLogin, checkPassword]);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => { if (session) navigate('/analyse'); });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => { if (session) navigate('/analyse'); });
-    return () => subscription.unsubscribe();
+  const redirectByRole = useCallback(async (userId: string) => {
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId);
+    
+    const roleList = roles?.map(r => r.role) || [];
+    if (roleList.includes('admin')) navigate('/admin');
+    else if (roleList.includes('mitarbeiter') || roleList.includes('produktion')) navigate('/analyse');
+    else if (roleList.includes('partner')) navigate('/partner/dashboard');
+    else navigate('/mein-bereich');
   }, [navigate]);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => { if (session) redirectByRole(session.user.id); });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => { if (session) redirectByRole(session.user.id); });
+    return () => subscription.unsubscribe();
+  }, [navigate, redirectByRole]);
 
   const validateForm = () => {
     try {
