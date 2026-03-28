@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { FileText, ChevronDown, Loader2, FileCheck, Receipt } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { FileText, ChevronDown, Loader2, FileCheck, Receipt, Eye, Download } from 'lucide-react';
 import { useDocumentPdf } from '@/hooks/useDocumentPdf';
 
 export function OfferPdfButton({ offerId, variant = 'outline' }: { offerId: string; variant?: 'default' | 'outline' | 'ghost' }) {
   const [loading, setLoading] = useState<string | null>(null);
   const { generateDocument, offerToData } = useDocumentPdf();
 
-  const handle = async (type: 'angebot' | 'auftragsbestaetigung') => {
+  const handle = async (type: 'angebot' | 'auftragsbestaetigung', preview = false) => {
     setLoading(type);
     try {
       const data = await offerToData(offerId);
@@ -26,9 +26,9 @@ export function OfferPdfButton({ offerId, variant = 'outline' }: { offerId: stri
             { label: 'Umsetzung & Entwicklung' },
             { label: 'Übergabe & Freigabe durch Auftraggeber' },
           ],
-        });
+        }, { preview });
       } else {
-        await generateDocument('angebot', data);
+        await generateDocument('angebot', data, { preview });
       }
     } finally {
       setLoading(null);
@@ -48,12 +48,21 @@ export function OfferPdfButton({ offerId, variant = 'outline' }: { offerId: stri
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handle('angebot')} className="gap-2">
-          <FileText className="h-4 w-4 text-blue-500" />
-          Angebot PDF
+          <Download className="h-4 w-4" />
+          Angebot PDF herunterladen
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handle('angebot', true)} className="gap-2">
+          <Eye className="h-4 w-4" />
+          Angebot Vorschau
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => handle('auftragsbestaetigung')} className="gap-2">
-          <FileCheck className="h-4 w-4 text-green-500" />
+          <Download className="h-4 w-4" />
           Auftragsbestätigung PDF
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handle('auftragsbestaetigung', true)} className="gap-2">
+          <Eye className="h-4 w-4" />
+          Auftragsbestätigung Vorschau
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -64,20 +73,36 @@ export function InvoicePdfButton({ invoiceId, variant = 'outline' }: { invoiceId
   const [loading, setLoading] = useState(false);
   const { generateDocument, invoiceToData } = useDocumentPdf();
 
-  const handle = async () => {
+  const handle = async (preview = false) => {
     setLoading(true);
     try {
       const data = await invoiceToData(invoiceId);
       if (!data) return;
-      await generateDocument('rechnung', data);
+      await generateDocument('rechnung', data, { preview });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Button variant={variant} disabled={loading} onClick={handle} className="gap-2">
-      {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Erstelle...</> : <><Receipt className="h-4 w-4" />Rechnung PDF</>}
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={variant} disabled={loading} className="gap-2">
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Receipt className="h-4 w-4" />}
+          Rechnung PDF
+          <ChevronDown className="h-3 w-3" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => handle(false)} className="gap-2">
+          <Download className="h-4 w-4" />
+          Rechnung PDF herunterladen
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handle(true)} className="gap-2">
+          <Eye className="h-4 w-4" />
+          Rechnung Vorschau
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
