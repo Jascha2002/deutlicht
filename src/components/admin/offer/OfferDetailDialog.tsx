@@ -538,6 +538,7 @@ export function OfferDetailDialog({
             </>
           ) : (
             <>
+              <OfferPdfButton offerId={offer.id} />
               {offer.pdf_url && (
                 <Button variant="outline" className="gap-2" asChild>
                   <a href={offer.pdf_url} target="_blank" rel="noopener noreferrer">
