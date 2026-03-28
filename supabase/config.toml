@@ -59,3 +59,6 @@ verify_jwt = false
 
 [functions.assign-company-on-register]
 verify_jwt = false
+
+[functions.generate-document-pdf]
+verify_jwt = false
