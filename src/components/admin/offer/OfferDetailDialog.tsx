@@ -17,6 +17,7 @@ import {
   Edit, Trash2, Plus, Save, ArrowRight, Briefcase
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { OfferPdfButton } from '@/components/admin/DocumentPdfButtons';
 import { de } from 'date-fns/locale';
 
 type OfferStatus = 'entwurf' | 'gesendet' | 'angesehen' | 'angenommen' | 'abgelehnt' | 'abgelaufen';
@@ -537,6 +538,7 @@ export function OfferDetailDialog({
             </>
           ) : (
             <>
+              <OfferPdfButton offerId={offer.id} />
               {offer.pdf_url && (
                 <Button variant="outline" className="gap-2" asChild>
                   <a href={offer.pdf_url} target="_blank" rel="noopener noreferrer">

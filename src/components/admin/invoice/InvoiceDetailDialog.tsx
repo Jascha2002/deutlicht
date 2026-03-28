@@ -18,6 +18,7 @@ import {
   ClipboardList, FileText, Link2
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { InvoicePdfButton } from '@/components/admin/DocumentPdfButtons';
 import { de } from 'date-fns/locale';
 
 type InvoiceStatus = 'entwurf' | 'gesendet' | 'ueberfaellig' | 'bezahlt' | 'storniert' | 'mahnung';
@@ -451,6 +452,7 @@ export function InvoiceDetailDialog({ invoice, open, onOpenChange, onPayment, on
             </>
           ) : (
             <>
+              <InvoicePdfButton invoiceId={invoice.id} />
               {invoice.pdf_url && (
                 <Button variant="outline" className="gap-2" asChild>
                   <a href={invoice.pdf_url} target="_blank" rel="noopener noreferrer"><ExternalLink className="h-4 w-4" />PDF öffnen</a>
