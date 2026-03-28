@@ -1,12 +1,25 @@
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export type DocumentType = 'angebot' | 'auftragsbestaetigung' | 'rechnung';
 
+const DOC_LABELS: Record<DocumentType, string> = {
+  angebot: 'Angebot',
+  auftragsbestaetigung: 'Auftragsbestätigung',
+  rechnung: 'Rechnung',
+};
+
 export function useDocumentPdf() {
   const { toast } = useToast();
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateDocument = async (type: DocumentType, data: any): Promise<string | null> => {
+  const generateDocument = async (
+    type: DocumentType,
+    data: any,
+    options?: { preview?: boolean }
+  ): Promise<string | null> => {
+    setIsGenerating(true);
     try {
       const { data: result, error } = await supabase.functions.invoke('generate-document-pdf', {
         body: { type, data },
@@ -14,21 +27,71 @@ export function useDocumentPdf() {
       if (error) throw error;
       if (!result?.success) throw new Error(result?.error || 'Fehler');
 
-      if (result.html) {
+      if (!result.html) throw new Error('Kein HTML erhalten');
+
+      const label = DOC_LABELS[type];
+
+      if (options?.preview) {
+        // Open preview in new window
         const win = window.open('', '_blank');
         if (win) {
           win.document.write(result.html);
           win.document.close();
-          win.document.title = `${type === 'rechnung' ? 'Rechnung' : type === 'angebot' ? 'Angebot' : 'Auftragsbestätigung'} – DeutLicht`;
-          setTimeout(() => win.print(), 600);
+          win.document.title = `${label} – DeutLicht`;
         }
-        toast({ title: 'Dokument geöffnet', description: 'Strg+P → Als PDF speichern im neuen Fenster.' });
+        toast({ title: 'Vorschau geöffnet', description: `${label} wird im neuen Fenster angezeigt.` });
+        return result.html;
       }
-      return result.html || null;
-    } catch (error) {
-      console.error('PDF error:', error);
-      toast({ title: 'Fehler', description: 'Dokument konnte nicht erstellt werden.', variant: 'destructive' });
+
+      // Generate actual downloadable PDF using html2pdf.js
+      const html2pdf = (await import('html2pdf.js')).default;
+
+      const container = document.createElement('div');
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(result.html, 'text/html');
+      while (doc.body.firstChild) {
+        container.appendChild(doc.body.firstChild);
+      }
+      // Copy styles
+      const styles = doc.querySelectorAll('style');
+      styles.forEach(style => container.prepend(style.cloneNode(true)));
+
+      document.body.appendChild(container);
+
+      const customerName = data.customer?.companyName || data.customer?.contactName || 'Kunde';
+      const docNum = data.offerNumber || data.invoiceNumber || '';
+      const filename = `DeutLicht-${label}${docNum ? `-${docNum}` : ''}-${customerName}.pdf`
+        .replace(/[^a-zA-Z0-9äöüÄÖÜß\-_.]/g, '_');
+
+      const opt = {
+        margin: 0,
+        filename,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const },
+        pagebreak: { mode: 'css' as const },
+      };
+
+      await html2pdf().set(opt).from(container).save();
+
+      document.body.removeChild(container);
+
+      toast({
+        title: `${label} heruntergeladen`,
+        description: `${filename} wurde als PDF gespeichert.`,
+      });
+
+      return result.html;
+    } catch (err) {
+      console.error('PDF error:', err);
+      toast({
+        title: 'Fehler',
+        description: 'Dokument konnte nicht erstellt werden.',
+        variant: 'destructive',
+      });
       return null;
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -45,7 +108,7 @@ export function useDocumentPdf() {
     const customer = {
       companyName: co?.company_name || le?.company_name || '',
       contactName: co?.contact_person_name || [le?.contact_first_name, le?.contact_last_name].filter(Boolean).join(' ') || '',
-      street: co ? `${co.street||''} ${co.street_number||''}`.trim() : '',
+      street: co ? `${co.street || ''} ${co.street_number || ''}`.trim() : '',
       postalCode: co?.postal_code || '',
       city: co?.city || '',
       email: co?.email || le?.contact_email || '',
@@ -65,7 +128,7 @@ export function useDocumentPdf() {
         amount: item.setup || item.einmalig || item.amount_setup || item.amount || 0,
         priceType: (item.monthly > 0 || item.monatlich > 0) ? 'monatlich' : 'einmalig',
       }));
-    } catch {}
+    } catch { /* ignore parse errors */ }
 
     return {
       offerNumber: offer.offer_number || offer.id,
@@ -90,7 +153,7 @@ export function useDocumentPdf() {
     const customer = {
       companyName: co?.company_name || '',
       contactName: co?.contact_person_name || '',
-      street: co ? `${co.street||''} ${co.street_number||''}`.trim() : '',
+      street: co ? `${co.street || ''} ${co.street_number || ''}`.trim() : '',
       postalCode: co?.postal_code || '',
       city: co?.city || '',
     };
@@ -109,7 +172,7 @@ export function useDocumentPdf() {
           isDiscount: item.isDiscount || false,
         }));
       }
-    } catch {}
+    } catch { /* ignore parse errors */ }
 
     if (lineItems.length === 0) {
       lineItems = [{ title: inv.title || 'Leistungen gemäß Auftrag', qty: 1, amount: inv.amount_net || 0 }];
@@ -127,5 +190,5 @@ export function useDocumentPdf() {
     };
   };
 
-  return { generateDocument, offerToData, invoiceToData };
+  return { generateDocument, offerToData, invoiceToData, isGenerating };
 }
