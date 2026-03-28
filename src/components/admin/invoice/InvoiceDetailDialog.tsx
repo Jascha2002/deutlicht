@@ -18,6 +18,7 @@ import {
   ClipboardList, FileText, Link2
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { InvoicePdfButton } from '@/components/admin/DocumentPdfButtons';
 import { de } from 'date-fns/locale';
 
 type InvoiceStatus = 'entwurf' | 'gesendet' | 'ueberfaellig' | 'bezahlt' | 'storniert' | 'mahnung';
